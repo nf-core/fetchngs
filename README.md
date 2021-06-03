@@ -16,20 +16,22 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Write a 1-2 sentence summary of what data the pipeline is for and what it does -->
-**nf-core/fetchfastq** is a bioinformatics best-practice analysis pipeline for Pipeline to fetch metadata and raw FastQ files from public databases.
+**nf-core/fetchfastq** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases. At present, the pipeline supports SRA / ENA / GEO ids (see [usage docs](https://nf-co.re/fetchfastq/usage#introduction)).
 
-The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies. Where possible, these processes have been submitted to and installed from [nf-core/modules](https://github.com/nf-core/modules) in order to make them available to all nf-core pipelines, and to everyone within the Nextflow community!
+The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
 
-<!-- TODO nf-core: Add full-sized test dataset and amend the paragraph below if applicable -->
 On release, automated continuous integration tests run the pipeline on a full-sized dataset on the AWS cloud infrastructure. This ensures that the pipeline runs on AWS, has sensible resource allocation defaults set to run on real-world datasets, and permits the persistent storage of results to benchmark between pipeline releases and other analysis sources. The results obtained from the full-sized test can be viewed on the [nf-core website](https://nf-co.re/fetchfastq/results).
 
 ## Pipeline summary
 
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
+Via a single file of ids, provided one-per-line the pipeline performs the following steps:
 
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the EBI API
+2. Fetch extensive id metadata including direct download links to FastQ files via ENA API
+3. Download FastQ files in parallel via `curl` and perform `md5sum` check
+4. Collate id metadata and paths to FastQ files in a single samplesheet
+
+The columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://github.com/nf-core/rnaseq) and [nf-core/viralrecon](https://github.com/nf-core/viralrecon). You can use the `--nf_core_pipeline` to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core.
 
 ## Quick Start
 
@@ -49,10 +51,8 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 4. Start running your own analysis!
 
-    <!-- TODO nf-core: Update the example "typical command" below used to run the pipeline -->
-
     ```console
-    nextflow run nf-core/fetchfastq -profile <docker/singularity/podman/shifter/charliecloud/conda/institute> --input samplesheet.csv --genome GRCh37
+    nextflow run nf-core/fetchfastq -profile <docker/singularity/podman/shifter/charliecloud/conda/institute> --input ids.txt
     ```
 
 ## Documentation
@@ -61,11 +61,7 @@ The nf-core/fetchfastq pipeline comes with documentation about the pipeline [usa
 
 ## Credits
 
-nf-core/fetchfastq was originally written by Harshil Patel.
-
-We thank the following people for their extensive assistance in the development of this pipeline:
-
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+nf-core/fetchfastq was originally written by Harshil Patel ([@drpatelh](https://github.com/drpatelh)) from [The Bioinformatics & Biostatistics Group](https://www.crick.ac.uk/research/science-technology-platforms/bioinformatics-and-biostatistics/) at [The Francis Crick Institute, London](https://www.crick.ac.uk/) and Jose Espinosa-Carrasco ([@JoseEspinosa](https://github.com/JoseEspinosa)) from [The Bioinformatics & Genomics Group](https://www.crg.eu/en/cedric_notredame) at [The Centre for Genomic Regulation, Spain](https://www.crg.eu/).
 
 ## Contributions and Support
 
@@ -78,7 +74,6 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 <!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
 <!-- If you use  nf-core/fetchfastq for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
 
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 
 You can cite the `nf-core` publication as follows:
