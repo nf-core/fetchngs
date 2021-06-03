@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/drpatelh/fetchfastq/master/assets/schema_input.json",
+    "$id": "https://raw.githubusercontent.com/nf-core/fetchfastq/master/assets/schema_input.json",
     "title": "nf-core/fetchfastq pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
