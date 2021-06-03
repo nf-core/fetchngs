@@ -9,7 +9,7 @@ Initial release of nf-core/fetchfastq, created with the [nf-core](https://nf-co.
 
 ## Pipeline summary
 
-nf-core/fetchfastq is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases.
+Via a single file of ids, provided one-per-line the pipeline performs the following steps:
 
 1. Resolve database ids to be compatible with EBI API
 2. Fetch extensive id metadata including direct download links to FastQ files via ENA API
