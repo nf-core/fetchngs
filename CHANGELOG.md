@@ -11,12 +11,14 @@ Initial release of nf-core/fetchfastq, created with the [nf-core](https://nf-co.
 
 Via a single file of ids, provided one-per-line the pipeline performs the following steps:
 
-1. Resolve database ids to be compatible with EBI API
+1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the [ENA API](https://ena-docs.readthedocs.io/en/latest/retrieval/programmatic-access.html)
 2. Fetch extensive id metadata including direct download links to FastQ files via ENA API
 3. Download FastQ files in parallel via `curl` and perform `md5sum` check
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ## Supported database ids
+
+Currently, the following types of example identifiers are supported:
 
 | `SRA`        | `ENA`        | `GEO`      |
 |--------------|--------------|------------|
