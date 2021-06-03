@@ -16,7 +16,7 @@
 
 ## Introduction
 
-**nf-core/fetchfastq** is a bioinformatics analysis pipeline to fetch metadata and raw FastQ files from public databases.
+**nf-core/fetchfastq** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases.
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
 
@@ -25,9 +25,9 @@ On release, automated continuous integration tests run the pipeline on a full-si
 ## Pipeline summary
 
 1. Resolve database ids to be compatible with EBI API
-2. Fetch id metadata including direct download links to FastQ files via ENA API
+2. Fetch extensive id metadata including direct download links to FastQ files via ENA API
 3. Download FastQ files in parallel via `curl` and perform `md5sum` check
-4. Concatenate id metadata and paths to FastQ files in a single samplesheet
+4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ## Supported database ids
 
