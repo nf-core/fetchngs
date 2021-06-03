@@ -29,7 +29,7 @@ def parse_sra_runinfo(file_in):
         header = fin.readline().strip().split('\t')
         for line in fin:
             line_dict   = dict(zip(header,line.strip().split('\t')))
-            line_dict   = collections.OrderedDict(sorted(list(line_dict.items())))
+            line_dict   = collections.OrderedDict(list(line_dict.items()))
             run_id      = line_dict['run_accession']
             exp_id      = line_dict['experiment_accession']
             library     = line_dict['library_layout']
