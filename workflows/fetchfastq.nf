@@ -4,27 +4,26 @@
 ========================================================================================
 */
 
+def valid_params = [
+    ena_metadata_fields : ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
+]
+
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
 // Validate input parameters
-WorkflowFetchfastq.initialise(params, log)
-
-// TODO nf-core: Add all file path parameters for the pipeline to the list below
-// Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.multiqc_config, params.fasta ]
-for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
+WorkflowFetchfastq.initialise(params, log, valid_params)
 
 // Check mandatory parameters
-if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-
-/*
-========================================================================================
-    CONFIG FILES
-========================================================================================
-*/
-
-ch_multiqc_config        = file("$projectDir/assets/multiqc_config.yaml", checkIfExists: true)
-ch_multiqc_custom_config = params.multiqc_config ? Channel.fromPath(params.multiqc_config) : Channel.empty()
+if (params.input) {
+    Channel
+        .from(file(params.input, checkIfExists: true))
+        .splitCsv(header:false, sep:'', strip:true)
+        .map { it[0] }
+        .unique()
+        .set { ch_ids }
+} else {
+    exit 1, 'Input file with public database ids not specified!'
+}
 
 /*
 ========================================================================================
@@ -35,30 +34,11 @@ ch_multiqc_custom_config = params.multiqc_config ? Channel.fromPath(params.multi
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
 
-//
-// MODULE: Local to the pipeline
-//
-include { GET_SOFTWARE_VERSIONS } from '../modules/local/get_software_versions' addParams( options: [publish_files : ['csv':'']] )
-
-//
-// SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
-//
-include { INPUT_CHECK } from '../subworkflows/local/input_check' addParams( options: [:] )
-
-/*
-========================================================================================
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
-========================================================================================
-*/
-
-def multiqc_options   = modules['multiqc']
-multiqc_options.args += params.multiqc_title ? Utils.joinModuleArgs(["--title \"$params.multiqc_title\""]) : ''
-
-//
-// MODULE: Installed directly from nf-core/modules
-//
-include { FASTQC  } from '../modules/nf-core/software/fastqc/main'  addParams( options: modules['fastqc'] )
-include { MULTIQC } from '../modules/nf-core/software/multiqc/main' addParams( options: multiqc_options   )
+include { SRA_IDS_TO_RUNINFO    } from '../modules/local/sra_ids_to_runinfo'    addParams( options: modules['sra_ids_to_runinfo']    )
+include { SRA_RUNINFO_TO_FTP    } from '../modules/local/sra_runinfo_to_ftp'    addParams( options: modules['sra_runinfo_to_ftp']    )
+include { SRA_FASTQ_FTP         } from '../modules/local/sra_fastq_ftp'         addParams( options: modules['sra_fastq_ftp']         )
+include { SRA_TO_SAMPLESHEET    } from '../modules/local/sra_to_samplesheet'    addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
+include { SRA_MERGE_SAMPLESHEET } from '../modules/local/sra_merge_samplesheet' addParams( options: modules['sra_merge_samplesheet'] )
 
 /*
 ========================================================================================
@@ -66,61 +46,66 @@ include { MULTIQC } from '../modules/nf-core/software/multiqc/main' addParams( o
 ========================================================================================
 */
 
-// Info required for completion email and summary
-def multiqc_report = []
-
 workflow FETCHFASTQ {
 
-    ch_software_versions = Channel.empty()
-
     //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
+    // MODULE: Get SRA run information for public database ids
     //
-    INPUT_CHECK (
-        ch_input
+    SRA_IDS_TO_RUNINFO (
+        ch_ids,
+        params.ena_metadata_fields ?: ''
     )
 
     //
-    // MODULE: Run FastQC
+    // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
     //
-    FASTQC (
-        INPUT_CHECK.out.reads
-    )
-    ch_software_versions = ch_software_versions.mix(FASTQC.out.version.first().ifEmpty(null))
-
-    //
-    // MODULE: Pipeline reporting
-    //
-    ch_software_versions
-        .map { it -> if (it) [ it.baseName, it ] }
-        .groupTuple()
-        .map { it[1][0] }
-        .flatten()
-        .collect()
-        .set { ch_software_versions }
-
-    GET_SOFTWARE_VERSIONS (
-        ch_software_versions.map { it }.collect()
+    SRA_RUNINFO_TO_FTP (
+        SRA_IDS_TO_RUNINFO.out.tsv
     )
 
-    //
-    // MODULE: MultiQC
-    //
-    workflow_summary    = WorkflowFetchfastq.paramsSummaryMultiqc(workflow, summary_params)
-    ch_workflow_summary = Channel.value(workflow_summary)
+    SRA_RUNINFO_TO_FTP
+        .out
+        .tsv
+        .splitCsv(header:true, sep:'\t')
+        .map {
+            meta ->
+                meta.single_end = meta.single_end.toBoolean()
+                [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+        }
+        .unique()
+        .set { ch_sra_reads }
 
-    ch_multiqc_files = Channel.empty()
-    ch_multiqc_files = ch_multiqc_files.mix(Channel.from(ch_multiqc_config))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_multiqc_custom_config.collect().ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(GET_SOFTWARE_VERSIONS.out.yaml.collect())
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+    if (!params.skip_fastq_download) {
+        //
+        // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
+        //
+        SRA_FASTQ_FTP (
+            ch_sra_reads.map { meta, reads -> if (meta.fastq_1)  [ meta, reads ] }
+        )
 
-    MULTIQC (
-        ch_multiqc_files.collect()
-    )
-    multiqc_report       = MULTIQC.out.report.toList()
-    ch_software_versions = ch_software_versions.mix(MULTIQC.out.version.ifEmpty(null))
+        //
+        // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet for the pipeline
+        //
+        SRA_TO_SAMPLESHEET (
+            SRA_FASTQ_FTP.out.fastq
+        )
+
+        //
+        // MODULE: Create a merged samplesheet across all samples for the pipeline
+        //
+        SRA_MERGE_SAMPLESHEET (
+            SRA_TO_SAMPLESHEET.out.csv.collect{it[1]}
+        )
+
+        //
+        // If ids don't have a direct FTP download link write them to file for download outside of the pipeline
+        //
+        def no_ids_file = ["${params.outdir}", "${modules['sra_fastq_ftp'].publish_dir}", "IDS_NOT_DOWNLOADED.txt" ].join(File.separator)
+        ch_sra_reads
+            .map { meta, reads -> if (!meta.fastq_1) "${meta.id.split('_')[0..-2].join('_')}" }
+            .unique()
+            .collectFile(name: no_ids_file, sort: true, newLine: true)
+    }
 }
 
 /*
@@ -130,8 +115,9 @@ workflow FETCHFASTQ {
 */
 
 workflow.onComplete {
-    NfcoreTemplate.email(workflow, params, summary_params, projectDir, log, multiqc_report)
+    NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
     NfcoreTemplate.summary(workflow, params, log)
+    WorkflowFetchfastq.curateSamplesheetWarn(log)
 }
 
 /*
