@@ -9,7 +9,7 @@ process SRA_FASTQ_FTP {
     label 'process_medium'
     label 'error_retry'
     publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
+        mode: params.publish_dir_mode_fastq,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
