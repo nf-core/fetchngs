@@ -18,13 +18,13 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 * `fastq/`
     * `*.fastq.gz`: Paired-end/single-end reads downloaded from the ENA / SRA.
-* `md5/`
+* `fastq/md5/`
     * `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA / SRA.
 * `samplesheet/`
-    * `samplesheet.csv`: Auto-created samplesheet that can be used to run the pipeline.
+    * `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
 * `metadata/`
-    * `*.runinfo.tsv`: Original metadata file downloaded from the ENA
     * `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA
+    * `*.runinfo.tsv`: Original metadata file downloaded from the ENA
 
 </details>
 
