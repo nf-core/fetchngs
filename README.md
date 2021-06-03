@@ -16,7 +16,7 @@
 
 ## Introduction
 
-**nf-core/fetchfastq** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases.
+**nf-core/fetchfastq** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases. At present, the pipeline supports SRA / ENA / GEO ids (see [usage docs](https://nf-co.re/fetchfastq/usage#introduction)).
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
 
@@ -24,38 +24,12 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 ## Pipeline summary
 
-1. Resolve database ids to be compatible with EBI API
+Via a single file of ids, provided one-per-line the pipeline performs the following steps:
+
+1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the EBI API
 2. Fetch extensive id metadata including direct download links to FastQ files via ENA API
 3. Download FastQ files in parallel via `curl` and perform `md5sum` check
 4. Collate id metadata and paths to FastQ files in a single samplesheet
-
-## Supported database ids
-
-| `SRA`        | `ENA`        | `GEO`      |
-|--------------|--------------|------------|
-| SRR11605097  | ERR4007730   | GSM4432381 |
-| SRX8171613   | ERX4009132   | GSE147507  |
-| SRS6531847   | ERS4399630   |            |
-| SAMN14689442 | SAMEA6638373 |            |
-| SRP256957    | ERP120836    |            |
-| SRA1068758   | ERA2420837   |            |
-| PRJNA625551  | PRJEB37513   |            |
-
-If `SRR`/`ERR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
-
-The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP otherwise they will NOT be downloaded. This is intentional because tools such as `parallel-fastq-dump`, `fasterq-dump`, `prefetch` etc require pre-existing configuration files in the users home directory which makes automation tricky across different platforms and containerisation. We may add this functionality in later releases.
-
-As a bonus, the pipeline will also generate a valid samplesheet with paths to the downloaded data that can be used as input to a selected list of nf-core pipelines, however, it is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too.
-
-All of the sample metadata obtained from the ENA will be appended as additional columns to help you manually curate the samplesheet before you run the pipeline. You can customise the metadata fields that are appended to the samplesheet via the `--ena_metadata_fields` parameter. The default list of fields used by the pipeline can be found at the top of the [`bin/sra_ids_to_runinfo.py`](https://github.com/nf-core/fetchfastq/blob/master/bin/sra_ids_to_runinfo.py) script within the pipeline repo. This pipeline requires a minimal set of fields to download FastQ files i.e. `'run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5'`. A comprehensive list of accepted metadata fields can be obtained from the [ENA API](https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run]).
-
-If you have a GEO accession (found in the data availability section of published papers) you can directly download a text file containing the appropriate SRA ids to pass to the pipeline:
-
-* Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
-* Click `SRA Run Selector` at the bottom of the GEO accession page
-* Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
-
-This downloads a text file called `SRR_Acc_List.txt` which can be directly provided to the pipeline e.g. `--public_data_ids SRR_Acc_List.txt`.
 
 ## Quick Start
 
