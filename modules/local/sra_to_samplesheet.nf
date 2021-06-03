@@ -14,6 +14,7 @@ process SRA_TO_SAMPLESHEET {
 
     input:
     tuple val(meta), path(fastq)
+    val   pipeline
 
     output:
     tuple val(meta), path("*csv"), emit: csv
@@ -28,13 +29,19 @@ process SRA_TO_SAMPLESHEET {
     meta_map.remove("md5_2")
     meta_map.remove("single_end")
 
-    // Add required fields for the pipeline to the beginning of the map
+    // Add relevant fields to the beginning of the map
     pipeline_map = [
-        sample      : "${meta.id.split('_')[0..-2].join('_')}",
-        fastq_1     : "${params.outdir}/${params.results_dir}/${fastq[0]}",
-        fastq_2     : meta.single_end ? '' : "${params.outdir}/${params.results_dir}/${fastq[1]}",
-        strandedness: 'unstranded'
+        sample  : "${meta.id.split('_')[0..-2].join('_')}",
+        fastq_1 : "${params.outdir}/${params.results_dir}/${fastq[0]}",
+        fastq_2 : meta.single_end ? '' : "${params.outdir}/${params.results_dir}/${fastq[1]}"
     ]
+
+    // Add nf-core pipeline specific entries
+    if (pipeline) {
+        if (pipeline == 'rnaseq') {
+            pipeline_map << [ strandedness: 'unstranded' ]
+        }
+    }
     pipeline_map << meta_map
 
     // Create a samplesheet

@@ -31,6 +31,8 @@ Via a single file of ids, provided one-per-line the pipeline performs the follow
 3. Download FastQ files in parallel via `curl` and perform `md5sum` check
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
+The columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://github.com/nf-core/rnaseq) and [nf-core/viralrecon](https://github.com/nf-core/viralrecon). You can use the `--nf_core_pipeline` to customise this behaviour e.g. `--nf_core_pipeline rnaseq`.
+
 ## Quick Start
 
 1. Install [`Nextflow`](https://nf-co.re/usage/installation) (`>=21.04.0`)

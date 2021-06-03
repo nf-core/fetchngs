@@ -84,10 +84,11 @@ workflow FETCHFASTQ {
         )
 
         //
-        // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet for the pipeline
+        // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
         //
         SRA_TO_SAMPLESHEET (
-            SRA_FASTQ_FTP.out.fastq
+            SRA_FASTQ_FTP.out.fastq,
+            params.nf_core_pipeline ?: ''
         )
 
         //
