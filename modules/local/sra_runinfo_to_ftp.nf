@@ -1,13 +1,12 @@
 // Import generic module functions
-include { saveFiles } from './functions'
+include { saveFiles; getSoftwareName } from './functions'
 
 params.options = [:]
 
-process SAMPLESHEET_CHECK {
-    tag "$samplesheet"
+process SRA_RUNINFO_TO_FTP {
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'pipeline_info', meta:[:], publish_by_meta:[]) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
 
     conda (params.enable_conda ? "conda-forge::python=3.8.3" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
@@ -17,15 +16,15 @@ process SAMPLESHEET_CHECK {
     }
 
     input:
-    path samplesheet
+    path runinfo
 
     output:
-    path '*.csv'
+    path "*.tsv", emit: tsv
 
-    script: // This script is bundled with the pipeline, in nf-core/fetchfastq/bin/
+    script:
     """
-    check_samplesheet.py \\
-        $samplesheet \\
-        samplesheet.valid.csv
+    sra_runinfo_to_ftp.py \\
+        ${runinfo.join(',')} \\
+        ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
     """
 }

@@ -10,10 +10,20 @@
 
 ## Pipeline tools
 
-* [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+* [Python](http://www.python.org)
 
-* [MultiQC](https://www.ncbi.nlm.nih.gov/pubmed/27312411/)
-    > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
+* [Requests](https://docs.python-requests.org/)
+
+## Pipeline resources
+
+* [ENA](https://pubmed.ncbi.nlm.nih.gov/33175160/)
+    > Harrison PW, Ahamed A, Aslam R, Alako BTF, Burgin J, Buso N, Courtot M, Fan J, Gupta D, Haseeb M, Holt S, Ibrahim T, Ivanov E, Jayathilaka S, Kadhirvelu VB, Kumar M, Lopez R, Kay S, Leinonen R, Liu X, O'Cathail C, Pakseresht A, Park Y, Pesant S, Rahman N, Rajan J, Sokolov A, Vijayaraja S, Waheed Z, Zyoud A, Burdett T, Cochrane G. The European Nucleotide Archive in 2020. Nucleic Acids Res. 2021 Jan 8;49(D1):D82-D85. doi: 10.1093/nar/gkaa1028. PubMed PMID: 33175160; PubMed Central PMCID: PMC7778925.
+
+* [SRA](https://pubmed.ncbi.nlm.nih.gov/21062823/)
+    > Leinonen R, Sugawara H, Shumway M, International Nucleotide Sequence Database Collaboration. The sequence read archive. Nucleic Acids Res. 2011 Jan;39 (Database issue):D19-21. doi: 10.1093/nar/gkq1019. Epub 2010 Nov 9. PubMed PMID: 21062823; PubMed Central PMCID: PMC3013647.
+
+* [GEO](https://pubmed.ncbi.nlm.nih.gov/23193258/)
+    > Barrett T, Wilhite SE, Ledoux P, Evangelista C, Kim IF, Tomashevsky M, Marshall KA, Phillippy KH, Sherman PM, Holko M, Yefanov A, Lee H, Zhang N, Robertson CL, Serova N, Davis S, Soboleva A. NCBI GEO: archive for functional genomics data sets--update. Nucleic Acids Res. 2013 Jan;41(Database issue):D991-5. doi: 10.1093/nar/gks1193. Epub 2012 Nov 27. PubMed PMID: 23193258; PubMed Central PMCID: PMC3531084.
 
 ## Software packaging/containerisation tools
 
