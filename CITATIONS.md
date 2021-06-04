@@ -1,5 +1,8 @@
 # nf-core/fetchfastq: Citations
 
+## [pachterlab/ffq](https://github.com/pachterlab/ffq)
+This project was [inspired](https://twitter.com/aka_hpatel/status/1397088558457016320?s=20) by the [`ffq`](https://github.com/pachterlab/ffq) (**f**etch **f**ast**q**) tool developed in the Pachter Lab at Caltech by [@lioscro](https://github.com/lioscro) and [@sbooeshaghi](https://github.com/sbooeshaghi).
+
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 
 > Ewels PA, Peltzer A, Fillinger S, Patel H, Alneberg J, Wilm A, Garcia MU, Di Tommaso P, Nahnsen S. The nf-core framework for community-curated bioinformatics pipelines. Nat Biotechnol. 2020 Mar;38(3):276-278. doi: 10.1038/s41587-020-0439-x. PubMed PMID: 32055031.
