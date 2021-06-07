@@ -31,7 +31,7 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 3. Download FastQ files in parallel via `curl` and perform `md5sum` check
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
-The columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input) and [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format). You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core.
+The columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input) and the Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format). You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core.
 
 ## Quick Start
 
@@ -52,7 +52,7 @@ The columns in the auto-created samplesheet can be tailored to be accepted out-o
 4. Start running your own analysis!
 
     ```console
-    nextflow run nf-core/fetchngs -profile <docker/singularity/podman/shifter/charliecloud/conda/institute> --input ids.txt
+    nextflow run nf-core/fetchngs --input ids.txt -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
     ```
 
 ## Documentation
