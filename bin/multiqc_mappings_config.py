@@ -3,12 +3,11 @@
 import sys
 
 with open(sys.argv[1], "r") as fin, open(sys.argv[2], "w") as fout:
-    header = fin.readline().split('\t')
+    header = fin.readline().split(',')
     config = "sample_names_rename_buttons:\n"
-    config += "\n".join(['  - ' + x for x in header])
+    config += "\n".join(['  - ' + x.strip('"') for x in header])
     config += "sample_names_rename:\n"
     for line in fin:
-        lspl = ['"' + x + '"' for x in line.strip().split('\t')]
-        config += f"  - [{', '.join(lspl)}]\n"
+        config += f"  - [{', '.join(line.strip().split(','))}]\n"
     fout.write(config)
 

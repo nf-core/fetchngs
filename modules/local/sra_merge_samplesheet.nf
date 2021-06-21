@@ -20,8 +20,8 @@ process SRA_MERGE_SAMPLESHEET {
     path ('mappings/*')
 
     output:
-    path "*csv", emit: csv
-    path "*tsv", emit: tsv
+    path "samplesheet.csv", emit: samplesheet
+    path "id_mappings.csv"   , emit: mappings
 
     script:
     """
@@ -30,9 +30,9 @@ process SRA_MERGE_SAMPLESHEET {
         awk 'NR>1' \$fileid >> samplesheet.csv
     done
 
-    head -n 1 `ls ./mappings/* | head -n 1` > mappings.tsv
+    head -n 1 `ls ./mappings/* | head -n 1` > id_mappings.csv
     for fileid in `ls ./mappings/*`; do
-        awk 'NR>1' \$fileid >> mappings.tsv
+        awk 'NR>1' \$fileid >> id_mappings.csv
     done
     """
 }

@@ -101,8 +101,8 @@ workflow FETCHNGS {
         // MODULE: Create a merged samplesheet across all samples for the pipeline
         //
         SRA_MERGE_SAMPLESHEET (
-            SRA_TO_SAMPLESHEET.out.csv.collect{it[1]},
-            SRA_TO_SAMPLESHEET.out.tsv.collect{it[1]}
+            SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
+            SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
         )
 
         //
@@ -110,7 +110,7 @@ workflow FETCHNGS {
         //
         if (params.sample_mapping_fields) {
             MULTIQC_MAPPINGS_CONFIG (
-                SRA_MERGE_SAMPLESHEET.out.tsv
+                SRA_MERGE_SAMPLESHEET.out.mappings
             )
         }
 

@@ -22,7 +22,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
     * `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA / SRA.
 * `samplesheet/`
     * `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
-    * `mappings.tsv`: File with selected fields that can be used to rename samples to more informative names; see [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
+    * `id_mappings.csv`: File with selected fields that can be used to rename samples to more informative names; see [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
     * `multiqc_config.yml`: [MultiQC](https://multiqc.info/docs/#bulk-sample-renaming) config file that can be passed to most nf-core pipelines via the `--multiqc_config` parameter for bulk renaming of sample names from database ids; [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
 * `metadata/`
     * `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA.

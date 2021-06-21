@@ -16,7 +16,7 @@ process MULTIQC_MAPPINGS_CONFIG {
     }
 
     input:
-    path tsv
+    path csv
 
     output:
     path "*yml"         , emit: yml
@@ -25,7 +25,7 @@ process MULTIQC_MAPPINGS_CONFIG {
     script:
     """
     multiqc_mappings_config.py \\
-        $tsv \\
+        $csv \\
         multiqc_config.yml
 
     python --version | sed -e "s/Python //g" > python.version.txt
