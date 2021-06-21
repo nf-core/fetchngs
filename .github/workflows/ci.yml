@@ -51,7 +51,7 @@ jobs:
         parameters:
           [
             "--nf_core_pipeline rnaseq",
-            "--ena_metadata_fields run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5",
+            "--ena_metadata_fields run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5 --sample_mapping_fields run_accession,library_layout",
             --skip_fastq_download,
           ]
     steps:
