@@ -19,12 +19,15 @@ process SRA_RUNINFO_TO_FTP {
     path runinfo
 
     output:
-    path "*.tsv", emit: tsv
+    path "*.tsv"         , emit: tsv
+    path  "*.version.txt", emit: version
 
     script:
     """
     sra_runinfo_to_ftp.py \\
         ${runinfo.join(',')} \\
         ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
+
+    python --version | sed -e "s/Python //g" > python.version.txt
     """
 }

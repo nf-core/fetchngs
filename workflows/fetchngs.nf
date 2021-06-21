@@ -39,6 +39,7 @@ include { SRA_RUNINFO_TO_FTP    } from '../modules/local/sra_runinfo_to_ftp'    
 include { SRA_FASTQ_FTP         } from '../modules/local/sra_fastq_ftp'         addParams( options: modules['sra_fastq_ftp']         )
 include { SRA_TO_SAMPLESHEET    } from '../modules/local/sra_to_samplesheet'    addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
 include { SRA_MERGE_SAMPLESHEET } from '../modules/local/sra_merge_samplesheet' addParams( options: modules['sra_merge_samplesheet'] )
+include { GET_SOFTWARE_VERSIONS } from '../modules/local/get_software_versions' addParams( options: [publish_files : ['tsv':'']]     )
 
 /*
 ========================================================================================
@@ -47,6 +48,8 @@ include { SRA_MERGE_SAMPLESHEET } from '../modules/local/sra_merge_samplesheet' 
 */
 
 workflow FETCHNGS {
+
+    ch_software_versions = Channel.empty()
 
     //
     // MODULE: Get SRA run information for public database ids
@@ -74,6 +77,7 @@ workflow FETCHNGS {
         }
         .unique()
         .set { ch_sra_reads }
+    ch_software_versions = ch_software_versions.mix(SRA_RUNINFO_TO_FTP.out.version.first().ifEmpty(null))
 
     if (!params.skip_fastq_download) {
         //
@@ -107,6 +111,21 @@ workflow FETCHNGS {
             .unique()
             .collectFile(name: no_ids_file, sort: true, newLine: true)
     }
+
+    //
+    // MODULE: Pipeline reporting
+    //
+    ch_software_versions
+        .map { it -> if (it) [ it.baseName, it ] }
+        .groupTuple()
+        .map { it[1][0] }
+        .flatten()
+        .collect()
+        .set { ch_software_versions }
+
+    GET_SOFTWARE_VERSIONS (
+        ch_software_versions.map { it }.collect()
+    )
 }
 
 /*
