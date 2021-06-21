@@ -15,11 +15,17 @@ process SRA_TO_SAMPLESHEET {
     input:
     tuple val(meta), path(fastq)
     val   pipeline
+    val   mapping_fields
 
     output:
     tuple val(meta), path("*csv"), emit: csv
+    tuple val(meta), path("*tsv"), emit: tsv
 
     exec:
+    //
+    // Create samplesheet containing metadata
+    //
+
     //  Remove custom keys needed to download the data
     def meta_map = meta.clone()
     meta_map.remove("id")
@@ -48,7 +54,24 @@ process SRA_TO_SAMPLESHEET {
     csv  = pipeline_map.keySet().collect{ '"' + it + '"'}.join(",") + '\n'
     csv += pipeline_map.values().collect{ '"' + it + '"'}.join(",")
 
-    // Write to file
-    def file = task.workDir.resolve("${meta.id}.samplesheet.csv")
-    file.text = csv
+    // Write samplesheet to file
+    def samplesheet_file = task.workDir.resolve("${meta.id}.samplesheet.csv")
+    samplesheet_file.text = csv
+
+    //
+    // Create sample id mappings file
+    //
+    mappings_map = pipeline_map.clone()
+    def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect{ it.trim().toLowerCase() } : []
+    if ((mappings_map.keySet() + fields).unique().size() != mappings_map.keySet().size()) {
+        error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${mappings_map.keySet().join(', ')}")
+    }
+
+    // Create mappings
+    tsv  = fields.join("\t") + '\n'
+    tsv += mappings_map.subMap(fields).values().join("\t")
+
+    // Write mappings to file
+    def mappings_file = task.workDir.resolve("${meta.id}.mappings.tsv")
+    mappings_file.text = tsv
 }

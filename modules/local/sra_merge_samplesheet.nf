@@ -17,15 +17,22 @@ process SRA_MERGE_SAMPLESHEET {
 
     input:
     path ('samplesheets/*')
+    path ('mappings/*')
 
     output:
     path "*csv", emit: csv
+    path "*tsv", emit: tsv
 
     script:
     """
     head -n 1 `ls ./samplesheets/* | head -n 1` > samplesheet.csv
     for fileid in `ls ./samplesheets/*`; do
         awk 'NR>1' \$fileid >> samplesheet.csv
+    done
+
+    head -n 1 `ls ./mappings/* | head -n 1` > mappings.tsv
+    for fileid in `ls ./mappings/*`; do
+        awk 'NR>1' \$fileid >> mappings.tsv
     done
     """
 }

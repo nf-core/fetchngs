@@ -92,14 +92,16 @@ workflow FETCHNGS {
         //
         SRA_TO_SAMPLESHEET (
             SRA_FASTQ_FTP.out.fastq,
-            params.nf_core_pipeline ?: ''
+            params.nf_core_pipeline ?: '',
+            params.sample_mapping_fields
         )
 
         //
         // MODULE: Create a merged samplesheet across all samples for the pipeline
         //
         SRA_MERGE_SAMPLESHEET (
-            SRA_TO_SAMPLESHEET.out.csv.collect{it[1]}
+            SRA_TO_SAMPLESHEET.out.csv.collect{it[1]},
+            SRA_TO_SAMPLESHEET.out.tsv.collect{it[1]}
         )
 
         //
