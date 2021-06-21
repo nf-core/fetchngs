@@ -27,7 +27,7 @@ process MULTIQC_MAPPINGS_CONFIG {
     multiqc_mappings_config.py \\
         $tsv \\
         multiqc_config.yml
-    
+
     python --version | sed -e "s/Python //g" > python.version.txt
     """
 }

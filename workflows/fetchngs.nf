@@ -113,7 +113,7 @@ workflow FETCHNGS {
                 SRA_MERGE_SAMPLESHEET.out.tsv
             )
         }
-        
+
         //
         // If ids don't have a direct FTP download link write them to file for download outside of the pipeline
         //
