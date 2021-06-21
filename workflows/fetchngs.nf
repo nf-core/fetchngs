@@ -34,12 +34,13 @@ if (params.input) {
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
 
-include { SRA_IDS_TO_RUNINFO    } from '../modules/local/sra_ids_to_runinfo'    addParams( options: modules['sra_ids_to_runinfo']    )
-include { SRA_RUNINFO_TO_FTP    } from '../modules/local/sra_runinfo_to_ftp'    addParams( options: modules['sra_runinfo_to_ftp']    )
-include { SRA_FASTQ_FTP         } from '../modules/local/sra_fastq_ftp'         addParams( options: modules['sra_fastq_ftp']         )
-include { SRA_TO_SAMPLESHEET    } from '../modules/local/sra_to_samplesheet'    addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
-include { SRA_MERGE_SAMPLESHEET } from '../modules/local/sra_merge_samplesheet' addParams( options: modules['sra_merge_samplesheet'] )
-include { GET_SOFTWARE_VERSIONS } from '../modules/local/get_software_versions' addParams( options: [publish_files : ['tsv':'']]     )
+include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'      addParams( options: modules['sra_ids_to_runinfo']      )
+include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'      addParams( options: modules['sra_runinfo_to_ftp']      )
+include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'           addParams( options: modules['sra_fastq_ftp']           )
+include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'      addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
+include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'   addParams( options: modules['sra_merge_samplesheet']   )
+include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config' addParams( options: modules['multiqc_mappings_config'] )
+include { GET_SOFTWARE_VERSIONS   } from '../modules/local/get_software_versions'   addParams( options: [publish_files : ['tsv':'']]       )
 
 /*
 ========================================================================================
@@ -104,6 +105,15 @@ workflow FETCHNGS {
             SRA_TO_SAMPLESHEET.out.tsv.collect{it[1]}
         )
 
+        //
+        // MODULE: Create a MutiQC config file with sample name mappings
+        //
+        if (params.sample_mapping_fields) {
+            MULTIQC_MAPPINGS_CONFIG (
+                SRA_MERGE_SAMPLESHEET.out.tsv
+            )
+        }
+        
         //
         // If ids don't have a direct FTP download link write them to file for download outside of the pipeline
         //
