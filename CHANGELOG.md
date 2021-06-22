@@ -3,6 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.1](https://github.com/nf-core/fetchngs/releases/tag/1.1)] - 2021-06-22
+
+### Enhancements & fixes
+
+* [[#12](https://github.com/nf-core/fetchngs/issues/12)] - Error when using singularity - /etc/resolv.conf doesn't exist in container
+* Added `--sample_mapping_fields` parameter to create a separate `id_mappings.csv` and `multiqc_config.yml` with selected fields that can be used to rename samples in general and in [MultiQC](https://multiqc.info/docs/#bulk-sample-renaming)
+
 ## [[1.0](https://github.com/nf-core/fetchngs/releases/tag/1.0)] - 2021-06-08
 
 Initial release of nf-core/fetchngs, created with the [nf-core](https://nf-co.re/) template.
