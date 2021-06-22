@@ -41,7 +41,7 @@ The columns in the auto-created samplesheet can be tailored to be accepted out-o
 
 3. Download the pipeline and test it on a minimal dataset with a single command:
 
-    ```console
+    ```bash
     nextflow run nf-core/fetchngs -profile test,<docker/singularity/podman/shifter/charliecloud/conda/institute>
     ```
 
@@ -51,7 +51,7 @@ The columns in the auto-created samplesheet can be tailored to be accepted out-o
 
 4. Start running your own analysis!
 
-    ```console
+    ```bash
     nextflow run nf-core/fetchngs --input ids.txt -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
     ```
 

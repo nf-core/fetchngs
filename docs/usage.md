@@ -46,7 +46,7 @@ This will launch the pipeline with the `docker` configuration profile. See below
 
 Note that the pipeline will create the following files in your working directory:
 
-```bash
+```console
 work            # Directory containing the nextflow working files
 results         # Finished results (configurable, see below)
 .nextflow_log   # Log file from Nextflow

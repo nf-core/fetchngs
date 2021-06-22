@@ -34,11 +34,13 @@ if (params.input) {
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
 
-include { SRA_IDS_TO_RUNINFO    } from '../modules/local/sra_ids_to_runinfo'    addParams( options: modules['sra_ids_to_runinfo']    )
-include { SRA_RUNINFO_TO_FTP    } from '../modules/local/sra_runinfo_to_ftp'    addParams( options: modules['sra_runinfo_to_ftp']    )
-include { SRA_FASTQ_FTP         } from '../modules/local/sra_fastq_ftp'         addParams( options: modules['sra_fastq_ftp']         )
-include { SRA_TO_SAMPLESHEET    } from '../modules/local/sra_to_samplesheet'    addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
-include { SRA_MERGE_SAMPLESHEET } from '../modules/local/sra_merge_samplesheet' addParams( options: modules['sra_merge_samplesheet'] )
+include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'      addParams( options: modules['sra_ids_to_runinfo']      )
+include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'      addParams( options: modules['sra_runinfo_to_ftp']      )
+include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'           addParams( options: modules['sra_fastq_ftp']           )
+include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'      addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
+include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'   addParams( options: modules['sra_merge_samplesheet']   )
+include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config' addParams( options: modules['multiqc_mappings_config'] )
+include { GET_SOFTWARE_VERSIONS   } from '../modules/local/get_software_versions'   addParams( options: [publish_files : ['tsv':'']]       )
 
 /*
 ========================================================================================
@@ -47,6 +49,8 @@ include { SRA_MERGE_SAMPLESHEET } from '../modules/local/sra_merge_samplesheet' 
 */
 
 workflow FETCHNGS {
+
+    ch_software_versions = Channel.empty()
 
     //
     // MODULE: Get SRA run information for public database ids
@@ -74,6 +78,7 @@ workflow FETCHNGS {
         }
         .unique()
         .set { ch_sra_reads }
+    ch_software_versions = ch_software_versions.mix(SRA_RUNINFO_TO_FTP.out.version.first().ifEmpty(null))
 
     if (!params.skip_fastq_download) {
         //
@@ -88,15 +93,26 @@ workflow FETCHNGS {
         //
         SRA_TO_SAMPLESHEET (
             SRA_FASTQ_FTP.out.fastq,
-            params.nf_core_pipeline ?: ''
+            params.nf_core_pipeline ?: '',
+            params.sample_mapping_fields
         )
 
         //
         // MODULE: Create a merged samplesheet across all samples for the pipeline
         //
         SRA_MERGE_SAMPLESHEET (
-            SRA_TO_SAMPLESHEET.out.csv.collect{it[1]}
+            SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
+            SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
         )
+
+        //
+        // MODULE: Create a MutiQC config file with sample name mappings
+        //
+        if (params.sample_mapping_fields) {
+            MULTIQC_MAPPINGS_CONFIG (
+                SRA_MERGE_SAMPLESHEET.out.mappings
+            )
+        }
 
         //
         // If ids don't have a direct FTP download link write them to file for download outside of the pipeline
@@ -107,6 +123,21 @@ workflow FETCHNGS {
             .unique()
             .collectFile(name: no_ids_file, sort: true, newLine: true)
     }
+
+    //
+    // MODULE: Pipeline reporting
+    //
+    ch_software_versions
+        .map { it -> if (it) [ it.baseName, it ] }
+        .groupTuple()
+        .map { it[1][0] }
+        .flatten()
+        .collect()
+        .set { ch_software_versions }
+
+    GET_SOFTWARE_VERSIONS (
+        ch_software_versions.map { it }.collect()
+    )
 }
 
 /*
