@@ -32,7 +32,7 @@
                 "sample_mapping_fields": {
                     "type": "string",
                     "fa_icon": "fas fa-globe-americas",
-                    "description": "Comma-separated list of ENA metadata fields used to create mappings file for sample id mapping or renaming.",
+                    "description": "Comma-separated list of ENA metadata fields used to create a separate 'id_mappings.csv' and 'multiqc_config.yml' with selected fields that can be used to rename samples in general and in MultiQC.",
                     "default": "run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description,description"
                 },
                 "nf_core_pipeline": {
