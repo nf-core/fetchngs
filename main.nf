@@ -33,12 +33,12 @@ WorkflowMain.initialise(workflow, params, log)
 ========================================================================================
 */
 
-workflow NFCORE_FETCHNGS {
+include { FETCHNGS } from './workflows/fetchngs'
 
-    //
-    // WORKFLOW: Run main nf-core/fetchngs analysis pipeline
-    //
-    include { FETCHNGS } from './workflows/fetchngs'
+//
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline
+//
+workflow NFCORE_FETCHNGS {
     FETCHNGS ()
 }
 
