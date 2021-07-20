@@ -147,7 +147,9 @@ workflow FETCHNGS {
 */
 
 workflow.onComplete {
-    NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
+    if (params.email || params.email_on_fail) {
+        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
+    }
     NfcoreTemplate.summary(workflow, params, log)
     WorkflowFetchngs.curateSamplesheetWarn(log)
 }
