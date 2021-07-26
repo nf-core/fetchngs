@@ -79,7 +79,7 @@ def id_to_srx(db_id):
 def id_to_erx(db_id):
     ids = []
     fields = ['run_accession', 'experiment_accession']
-    url = 'http://www.ebi.ac.uk/ena/data/warehouse/filereport?accession={}&result=read_run&fields={}'.format(db_id,','.join(fields))
+    url = 'http://www.ebi.ac.uk/ena/portal/api/filereport?accession={}&result=read_run&fields={}'.format(db_id,','.join(fields))
     for row in csv.DictReader(fetch_url(url), delimiter='\t'):
         ids.append(row['experiment_accession'])
     return ids
