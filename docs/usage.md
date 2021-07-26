@@ -32,7 +32,7 @@ If you have a GEO accession (found in the data availability section of published
 * Click `SRA Run Selector` at the bottom of the GEO accession page
 * Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
-This downloads a text file called `SRR_Acc_List.txt` which can be directly provided to the pipeline e.g. `--public_data_ids SRR_Acc_List.txt`.
+This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
 
 ## Running the pipeline
 
