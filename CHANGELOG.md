@@ -3,11 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unpublished Version / DEV]
+## [[1.2](https://github.com/nf-core/fetchngs/releases/tag/1.2)] - 2021-07-28
 
 ### Enhancements & fixes
 
 * Updated pipeline template to [nf-core/tools 2.0.1](https://github.com/nf-core/tools/releases/tag/2.0.1)
+* [[#26](https://github.com/nf-core/fetchngs/pull/26)] - Update ebi api url in fetch_sra_runinfo
 
 ## [[1.1](https://github.com/nf-core/fetchngs/releases/tag/1.1)] - 2021-06-22
 
