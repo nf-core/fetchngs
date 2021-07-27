@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
-* Updated pipeline template to [nf-core/tools 2.0.1](https://github.com/nf-core/tools/releases/tag/2.0.1)
-* [[#26](https://github.com/nf-core/fetchngs/pull/26)] - Update ebi api url in fetch_sra_runinfo
+* Updated pipeline template to [nf-core/tools 2.1](https://github.com/nf-core/tools/releases/tag/2.1)
+* [[#26](https://github.com/nf-core/fetchngs/pull/26)] - Update broken EBI API URL
 
 ## [[1.1](https://github.com/nf-core/fetchngs/releases/tag/1.1)] - 2021-06-22
 
