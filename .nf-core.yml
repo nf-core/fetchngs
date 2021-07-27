@@ -1,0 +1,6 @@
+lint:
+  files_unchanged:
+    - .github/CONTRIBUTING.md
+    - assets/sendmail_template.txt
+    - bin/scrape_software_versions.py
+    - lib/NfcoreTemplate.groovy
