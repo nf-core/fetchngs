@@ -18,7 +18,7 @@
                     "type": "string",
                     "format": "file-path",
                     "mimetype": "text/plain",
-                    "pattern": "\\.txt$",
+                    "pattern": "^\\S+\\.txt$",
                     "schema": "assets/schema_input.json",
                     "fa_icon": "fas fa-file-excel",
                     "description": "File containing SRA/ENA/GEO identifiers one per line to download their associated metadata and FastQ files."
