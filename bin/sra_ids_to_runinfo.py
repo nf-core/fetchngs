@@ -5,8 +5,9 @@ import re
 import sys
 import csv
 import errno
-import requests
 import argparse
+from urllib.request import urlopen
+from urllib.error import URLError, HTTPError
 
 ## Example ids supported by this script
 SRA_IDS = ['PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814']
@@ -61,13 +62,17 @@ def make_dir(path):
 
 def fetch_url(url, encoding='utf-8'):
     try:
-        r = requests.get(url)
-    except requests.exceptions.RequestException as e:
-        raise SystemExit(e)
-    if r.status_code != 200:
-        print("ERROR: Connection failed\nError code '{}'".format(r.status_code))
+        with urlopen(url) as f:
+            r = f.read().decode(encoding).splitlines()
+    except HTTPError as e:
+        print('The server couldn\'t fulfill the request.')
+        print('Error code: {}'.format(e.code))
         sys.exit(1)
-    return r.content.decode(encoding).splitlines()
+    except URLError as e:
+        print('We failed to reach a server.')
+        print('Reason: {}'.format(e.reason))
+        sys.exit(1)
+    return r
 
 def id_to_srx(db_id):
     ids = []
