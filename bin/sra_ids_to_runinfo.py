@@ -14,15 +14,15 @@ from urllib.error import URLError, HTTPError
 logger = logging.getLogger()
 
 ## Example ids supported by this script
-SRA_IDS = ['PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814']
-ENA_IDS = ['ERA2421642', 'ERP120836', 'ERR674736', 'ERS4399631', 'ERX629702', 'PRJEB7743', 'SAMEA3121481']
-GEO_IDS = ['GSE18729', 'GSM465244']
+SRA_IDS = ('PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814')
+ENA_IDS = ('ERA2421642', 'ERP120836', 'ERR674736', 'ERS4399631', 'ERX629702', 'PRJEB7743', 'SAMEA3121481')
+GEO_IDS = ('GSE18729', 'GSM465244')
 ID_REGEX = r'^[A-Z]+'
 PREFIX_LIST = sorted(list(set([re.search(ID_REGEX,x).group() for x in SRA_IDS + ENA_IDS + GEO_IDS])))
 
 ## List of meta fields fetched from the ENA API - can be overriden by --ena_metadata_fields
 ## Full list of accepted fields can be obtained here: https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run
-ENA_METADATA_FIELDS = [
+ENA_METADATA_FIELDS = (
     'accession', 'run_accession', 'experiment_accession', 'sample_accession', 'secondary_sample_accession', 'study_accession', 'secondary_study_accession', 'parent_study', 'submission_accession',
     'run_alias', 'experiment_alias', 'sample_alias', 'study_alias',
     'library_layout', 'library_selection', 'library_source', 'library_strategy', 'library_name',
@@ -32,7 +32,7 @@ ENA_METADATA_FIELDS = [
     'sample_title', 'experiment_title', 'study_title',
     'description', 'sample_description',
     'fastq_md5', 'fastq_bytes', 'fastq_ftp', 'fastq_galaxy', 'fastq_aspera'
-]
+ )
 
 def parse_args(args=None):
     Description = 'Download and create a run information metadata file from SRA/ENA/GEO identifiers.'
