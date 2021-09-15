@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 
+import argparse
+import cgi
+import csv
+import errno
+import gzip
+import logging
 import os
 import re
 import sys
-import csv
-import errno
-import argparse
-import logging
-import gzip
 import zlib
-import cgi
-from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
-
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 logger = logging.getLogger()
 
@@ -155,34 +155,53 @@ def fetch_url(url):
     return result
 
 def id_to_srx(db_id):
-    ids = []
-    url = 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&db=sra&rettype=runinfo&term={}'.format(db_id)
-    for row in csv.DictReader(fetch_url(url), delimiter=','):
-        ids.append(row['Experiment'])
-    return ids
+    params = {
+        "save": "efetch",
+        "db": "sra",
+        "rettype": "runinfo",
+        "term": db_id
+    }
+    url = f'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?{urlencode(params)}'
+    return [
+        row['Experiment'] for row in csv.DictReader(fetch_url(url), delimiter=',')
+    ]
 
 def id_to_erx(db_id):
-    ids = []
     fields = ['run_accession', 'experiment_accession']
-    url = 'https://www.ebi.ac.uk/ena/portal/api/filereport?accession={}&result=read_run&fields={}'.format(db_id,','.join(fields))
-    for row in csv.DictReader(fetch_url(url), delimiter='\t'):
-        ids.append(row['experiment_accession'])
-    return ids
+    params = {
+        "accession": db_id,
+        "result": "read_run",
+        "fields": ",".join(fields)
+    }
+    url = f'https://www.ebi.ac.uk/ena/portal/api/filereport?{urlencode(params)}'
+    return [
+        row['experiment_accession'] for row in csv.DictReader(fetch_url(url), delimiter='\t')
+    ]
 
 def gse_to_srx(db_id):
     ids = []
-    url = 'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={}&targ=gsm&view=data&form=text'.format(db_id)
-    gsm_ids = [x.split('=')[1].strip() for x in fetch_url(url) if x.find('GSM') != -1]
+    params = {
+        "acc": db_id,
+        "targ": "gsm",
+        "view": "data",
+        "form": "text"
+    }
+    url = f'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?{urlencode(params)}'
+    gsm_ids = [x.split('=')[1].strip() for x in fetch_url(url) if x.startswith('GSM')]
     for gsm_id in gsm_ids:
         ids += id_to_srx(gsm_id)
     return ids
 
 def get_ena_fields():
-    fields = []
-    url = 'https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run'
-    for row in csv.DictReader(fetch_url(url), delimiter='\t'):
-        fields.append(row['columnId'])
-    return fields
+    params = {
+        "dataPortal": "ena",
+        "format": "tsv",
+        "result": "read_run"
+    }
+    url = f'https://www.ebi.ac.uk/ena/portal/api/returnFields?{urlencode(params)}'
+    return [
+        row['columnId'] for row in csv.DictReader(fetch_url(url), delimiter='\t')
+    ]
 
 def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS):
     total_out = 0
@@ -190,6 +209,10 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
     run_ids = set()
     header = []
     make_dir(os.path.dirname(file_out))
+    params = {
+        "result": "read_run",
+        "fields": ','.join(ena_metadata_fields)
+    }
     with open(file_in,"r") as fin, open(file_out,"w") as fout:
         for line in fin:
             db_id = line.strip()
@@ -214,9 +237,9 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
 
                         ## Resolve/expand to get run identifier from ENA and write to file
                         for id in ids:
-                            url = 'https://www.ebi.ac.uk/ena/portal/api/filereport?accession={}&result=read_run&fields={}'.format(id,','.join(ena_metadata_fields))
-                            csv_dict = csv.DictReader(fetch_url(url), delimiter='\t')
-                            for row in csv_dict:
+                            params["accession"] = id
+                            url = f'https://www.ebi.ac.uk/ena/portal/api/filereport?{urlencode(params)}'
+                            for row in csv.DictReader(fetch_url(url), delimiter='\t'):
                                 run_id = row['run_accession']
                                 if run_id not in run_ids:
                                     if total_out == 0:
