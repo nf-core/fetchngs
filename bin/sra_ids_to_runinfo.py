@@ -6,8 +6,12 @@ import sys
 import csv
 import errno
 import argparse
+import logging
 from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
+
+
+logger = logging.getLogger()
 
 ## Example ids supported by this script
 SRA_IDS = ['PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814']
@@ -48,7 +52,7 @@ def validate_csv_param(param, valid_vals, param_desc):
         if len(intersect) == len(user_vals):
             valid_list = intersect
         else:
-            print("ERROR: Please provide a valid value for {}!\nProvided values = {}\nAccepted values = {}".format(param_desc,param,','.join(valid_vals)))
+            logger.error(f"Please provide a valid value for {param_desc}!\nProvided values = {param}\nAccepted values = {','.join(valid_vals)}")
             sys.exit(1)
     return valid_list
 
@@ -65,12 +69,12 @@ def fetch_url(url, encoding='utf-8'):
         with urlopen(url) as f:
             r = f.read().decode(encoding).splitlines()
     except HTTPError as e:
-        print('The server couldn\'t fulfill the request.')
-        print('Error code: {}'.format(e.code))
+        logger.error("The server couldn't fulfill the request.")
+        logger.error(f"Status: {e.code} {e.reason}")
         sys.exit(1)
     except URLError as e:
-        print('We failed to reach a server.')
-        print('Reason: {}'.format(e.reason))
+        logger.error('We failed to reach a server.')
+        logger.error(f"Reason: {e.reason}")
         sys.exit(1)
     return r
 
@@ -143,7 +147,7 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                                         fout.write('{}\n'.format('\t'.join(header)))
                                     else:
                                         if header != row.keys():
-                                            print("ERROR: Metadata columns do not match for id {}!\nLine: '{}'".format(run_id,line.strip()))
+                                            logger.error(f"Metadata columns do not match for id {run_id}!\nLine: '{line.strip()}'")
                                             sys.exit(1)
                                     fout.write('{}\n'.format('\t'.join([row[x] for x in header])))
                                     total_out += 1
@@ -151,16 +155,16 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                         seen_ids.append(db_id)
 
                         if not ids:
-                            print("ERROR: No matches found for database id {}!\nLine: '{}'".format(db_id,line.strip()))
+                            logger.error(f"No matches found for database id {db_id}!\nLine: '{line.strip()}'")
                             sys.exit(1)
 
                 else:
                     id_str = ', '.join([x + "*" for x in PREFIX_LIST])
-                    print("ERROR: Please provide a valid database id starting with {}!\nLine: '{}'".format(id_str,line.strip()))
+                    logger.error(f"Please provide a valid database id starting with {id_str}!\nLine: '{line.strip()}'")
                     sys.exit(1)
             else:
                 id_str = ', '.join([x + "*" for x in PREFIX_LIST])
-                print("ERROR: Please provide a valid database id starting with {}!\nLine: '{}'".format(id_str,line.strip()))
+                logger.error(f"Please provide a valid database id starting with {id_str}!\nLine: '{line.strip()}'")
                 sys.exit(1)
 
 def main(args=None):
@@ -172,4 +176,5 @@ def main(args=None):
     fetch_sra_runinfo(args.FILE_IN, args.FILE_OUT, ena_metadata_fields)
 
 if __name__ == '__main__':
+    logging.basicConfig(level='INFO', format='[%(levelname)s] %(message)s')
     sys.exit(main())
