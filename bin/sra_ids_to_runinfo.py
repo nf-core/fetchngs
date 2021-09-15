@@ -7,6 +7,9 @@ import csv
 import errno
 import argparse
 import logging
+import gzip
+import zlib
+import cgi
 from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
 
@@ -33,6 +36,79 @@ ENA_METADATA_FIELDS = (
     'description', 'sample_description',
     'fastq_md5', 'fastq_bytes', 'fastq_ftp', 'fastq_galaxy', 'fastq_aspera'
  )
+
+
+class Response:
+    """
+    Define an HTTP response class.
+
+    This class should not have to be instantiated directly.
+
+    Attributes:
+        status (int): The numeric HTTP status code of the response.
+        reason (str): The response's reason phrase.
+        body (bytes): The response's decompressed body content as bytes.
+
+    Methods:
+        text: The response's body as a decoded string.
+
+    """
+
+    def __init__(self, *, response, **kwargs) -> None:
+        """
+        Initialize an HTTP response object.
+
+        Args:
+            response (http.client.HTTPResponse): A standard library response object
+                that is wrapped by this class.
+            **kwargs: Passed to parent classes.
+
+        """
+        super().__init__(**kwargs)
+        self._response = response
+        # Immediately read the body while the response context is still available.
+        self._raw = self._response.read()
+        self._content = None
+
+    def _decompress(self):
+        """Decompress the response body if necessary."""
+        method = self._response.getheader("Content-Encoding", "")
+        if not method:
+            self._content = self._raw
+            return
+        if method == "gzip":
+            self._content = gzip.decompress(self._raw)
+        elif method == "deflate":
+            self._content = zlib.decompress(self._raw)
+        else:
+            raise ValueError(f"Unsupported compression: {method}")
+
+    @property
+    def status(self):
+        """Get the response's HTTP status code."""
+        return self._response.status
+
+    @property
+    def reason(self):
+        """Get the response's reason phrase."""
+        return self._response.reason
+
+    @property
+    def body(self):
+        """Get the response's decompressed body content as bytes."""
+        if self._content is None:
+            self._decompress()
+        return self._content
+
+    def text(self, encoding=None):
+        """Return the response's body as a decoded string."""
+        if encoding is not None:
+            return self._content.decode(encoding)
+
+        _, params = cgi.parse_header(self._response.getheader("Content-Type", ""))
+        encoding = params.get("charset", "utf-8")
+        return self._content.decode(encoding)
+
 
 def parse_args(args=None):
     Description = 'Download and create a run information metadata file from SRA/ENA/GEO identifiers.'
@@ -64,10 +140,10 @@ def make_dir(path):
             if exception.errno != errno.EEXIST:
                 raise
 
-def fetch_url(url, encoding='utf-8'):
+def fetch_url(url):
     try:
-        with urlopen(url) as f:
-            r = f.read().decode(encoding).splitlines()
+        with urlopen(url) as response:
+            result = Response(response=response).text().splitlines()
     except HTTPError as e:
         logger.error("The server couldn't fulfill the request.")
         logger.error(f"Status: {e.code} {e.reason}")
@@ -76,7 +152,7 @@ def fetch_url(url, encoding='utf-8'):
         logger.error('We failed to reach a server.')
         logger.error(f"Reason: {e.reason}")
         sys.exit(1)
-    return r
+    return result
 
 def id_to_srx(db_id):
     ids = []
