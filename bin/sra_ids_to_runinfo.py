@@ -110,7 +110,8 @@ def get_ena_fields():
 
 def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS):
     total_out = 0
-    seen_ids = []; run_ids = []
+    seen_ids = set()
+    run_ids = set()
     header = []
     make_dir(os.path.dirname(file_out))
     with open(file_in,"r") as fin, open(file_out,"w") as fout:
@@ -120,7 +121,7 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
             if match:
                 prefix = match.group()
                 if prefix in PREFIX_LIST:
-                    if not db_id in seen_ids:
+                    if db_id not in seen_ids:
 
                         ids = [db_id]
                         ## Resolve/expand these ids against GEO URL
@@ -141,7 +142,7 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                             csv_dict = csv.DictReader(fetch_url(url), delimiter='\t')
                             for row in csv_dict:
                                 run_id = row['run_accession']
-                                if not run_id in run_ids:
+                                if run_id not in run_ids:
                                     if total_out == 0:
                                         header = row.keys()
                                         fout.write('{}\n'.format('\t'.join(header)))
@@ -151,8 +152,8 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                                             sys.exit(1)
                                     fout.write('{}\n'.format('\t'.join([row[x] for x in header])))
                                     total_out += 1
-                                    run_ids.append(run_id)
-                        seen_ids.append(db_id)
+                                    run_ids.add(run_id)
+                        seen_ids.add(db_id)
 
                         if not ids:
                             logger.error(f"No matches found for database id {db_id}!\nLine: '{line.strip()}'")
