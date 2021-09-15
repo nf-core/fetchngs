@@ -54,7 +54,7 @@ class Response:
 
     """
 
-    def __init__(self, *, response, **kwargs) -> None:
+    def __init__(self, *, response, **kwargs):
         """
         Initialize an HTTP response object.
 
