@@ -103,11 +103,11 @@ class Response:
     def text(self, encoding=None):
         """Return the response's body as a decoded string."""
         if encoding is not None:
-            return self._content.decode(encoding)
+            return self.body.decode(encoding)
 
         _, params = cgi.parse_header(self._response.getheader("Content-Type", ""))
         encoding = params.get("charset", "utf-8")
-        return self._content.decode(encoding)
+        return self.body.decode(encoding)
 
 
 def parse_args(args=None):
@@ -243,8 +243,9 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                                 run_id = row['run_accession']
                                 if run_id not in run_ids:
                                     if total_out == 0:
-                                        header = '\t'.join(row.keys())
-                                        fout.write(f"{header}\n")
+                                        header = row.keys()
+                                        header_line = '\t'.join(header)
+                                        fout.write(f"{header_line}\n")
                                     else:
                                         if header != row.keys():
                                             logger.error(f"Metadata columns do not match for id {run_id}!\nLine: '{line.strip()}'")
