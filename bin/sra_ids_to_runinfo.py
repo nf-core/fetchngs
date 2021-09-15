@@ -117,7 +117,7 @@ def parse_args(args=None):
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
     parser.add_argument('FILE_IN', help="File containing database identifiers, one per line.")
     parser.add_argument('FILE_OUT', help="Output file in tab-delimited format.")
-    parser.add_argument('-ef', '--ena_metadata_fields', type=str, dest="ENA_METADATA_FIELDS", default='', help="Comma-separated list of ENA metadata fields to fetch. (default: {}).".format(','.join(ENA_METADATA_FIELDS)))
+    parser.add_argument('-ef', '--ena_metadata_fields', type=str, dest="ENA_METADATA_FIELDS", default='', help=f"Comma-separated list of ENA metadata fields to fetch. (default: {','.join(ENA_METADATA_FIELDS)}).")
     return parser.parse_args(args)
 
 def validate_csv_param(param, valid_vals, param_desc):
@@ -220,13 +220,15 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                                 run_id = row['run_accession']
                                 if run_id not in run_ids:
                                     if total_out == 0:
-                                        header = row.keys()
-                                        fout.write('{}\n'.format('\t'.join(header)))
+                                        header = '\t'.join(row.keys())
+                                        fout.write(f"{header}\n")
                                     else:
                                         if header != row.keys():
                                             logger.error(f"Metadata columns do not match for id {run_id}!\nLine: '{line.strip()}'")
                                             sys.exit(1)
-                                    fout.write('{}\n'.format('\t'.join([row[x] for x in header])))
+
+                                    ordered_row = '\t'.join([row[x] for x in header])
+                                    fout.write(f'{ordered_row}\n')
                                     total_out += 1
                                     run_ids.add(run_id)
                         seen_ids.add(db_id)
