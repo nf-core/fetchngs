@@ -17,8 +17,8 @@ logger = logging.getLogger()
 SRA_IDS = ('PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814')
 ENA_IDS = ('ERA2421642', 'ERP120836', 'ERR674736', 'ERS4399631', 'ERX629702', 'PRJEB7743', 'SAMEA3121481')
 GEO_IDS = ('GSE18729', 'GSM465244')
-ID_REGEX = r'^[A-Z]+'
-PREFIX_LIST = sorted(list(set([re.search(ID_REGEX,x).group() for x in SRA_IDS + ENA_IDS + GEO_IDS])))
+ID_REGEX = re.compile(r'[A-Z]+')
+PREFIX_LIST = sorted({ID_REGEX.match(x).group() for x in SRA_IDS + ENA_IDS + GEO_IDS})
 
 ## List of meta fields fetched from the ENA API - can be overriden by --ena_metadata_fields
 ## Full list of accepted fields can be obtained here: https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run
@@ -116,7 +116,7 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
     with open(file_in,"r") as fin, open(file_out,"w") as fout:
         for line in fin:
             db_id = line.strip()
-            match = re.search(ID_REGEX, db_id)
+            match = ID_REGEX.match(db_id)
             if match:
                 prefix = match.group()
                 if prefix in PREFIX_LIST:
