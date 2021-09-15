@@ -35,7 +35,7 @@ ENA_METADATA_FIELDS = (
     'sample_title', 'experiment_title', 'study_title',
     'description', 'sample_description',
     'fastq_md5', 'fastq_bytes', 'fastq_ftp', 'fastq_galaxy', 'fastq_aspera'
- )
+)
 
 
 class Response:
