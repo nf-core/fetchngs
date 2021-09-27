@@ -134,11 +134,7 @@ def validate_csv_param(param, valid_vals, param_desc):
 
 def make_dir(path):
     if not len(path) == 0:
-        try:
-            os.makedirs(path)
-        except OSError as exception:
-            if exception.errno != errno.EEXIST:
-                raise
+        os.makedirs(path, exist_ok=True)
 
 def fetch_url(url):
     try:
