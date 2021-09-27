@@ -104,11 +104,9 @@ class Response:
 
     def text(self, encoding=None):
         """Return the response's body as a decoded string."""
-        if encoding is not None:
-            return self.body.decode(encoding)
-
-        _, params = cgi.parse_header(self._response.getheader("Content-Type", ""))
-        encoding = params.get("charset", "utf-8")
+        if encoding is None:
+            _, params = cgi.parse_header(self._response.getheader("Content-Type", ""))
+            encoding = params.get("charset", "utf-8")
         return self.body.decode(encoding)
 
 
