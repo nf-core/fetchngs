@@ -8,17 +8,17 @@
 
 The pipeline has been set-up to automatically download and process the raw FastQ files from public repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
-| `SRA`        | `ENA`        | `GEO`      |
-|--------------|--------------|------------|
-| SRR11605097  | ERR4007730   | GSM4432381 |
-| SRX8171613   | ERX4009132   | GSE147507  |
-| SRS6531847   | ERS4399630   |            |
-| SAMN14689442 | SAMEA6638373 |            |
-| SRP256957    | ERP120836    |            |
-| SRA1068758   | ERA2420837   |            |
-| PRJNA625551  | PRJEB37513   |            |
+| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      |
+|--------------|--------------|--------------|------------|
+| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 |
+| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |
+| SRS6531847   | ERS4399630   | DRS090921    |            |
+| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |
+| SRP256957    | ERP120836    | DRP004793    |            |
+| SRA1068758   | ERA2420837   | DRA008156    |            |
+| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |
 
-If `SRR`/`ERR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
+If `SRR`/`ERR`/`DRR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX`/`DRX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
 
 The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP otherwise they will NOT be downloaded. This is intentional because tools such as `parallel-fastq-dump`, `fasterq-dump`, `prefetch` etc require pre-existing configuration files in the users home directory which makes automation tricky across different platforms and containerisation. We may add this functionality in later releases.
 

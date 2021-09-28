@@ -8,7 +8,7 @@ This document describes the output produced by the pipeline. The directories lis
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-* [FastQ download](#fastq-download) - Download FastQ files via SRA / ENA / GEO ids
+* [FastQ download](#fastq-download) - Download FastQ files via SRA / ENA / DDBJ / GEO ids
 * [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
 ### FastQ download
@@ -17,9 +17,9 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 <summary>Output files</summary>
 
 * `fastq/`
-    * `*.fastq.gz`: Paired-end/single-end reads downloaded from the ENA / SRA.
+    * `*.fastq.gz`: Paired-end/single-end reads downloaded from the SRA / ENA / DDBJ / GEO.
 * `fastq/md5/`
-    * `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA / SRA.
+    * `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA.
 * `samplesheet/`
     * `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
     * `id_mappings.csv`: File with selected fields that can be used to rename samples to more informative names; see [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.

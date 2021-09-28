@@ -21,7 +21,7 @@
                     "pattern": "^\\S+\\.txt$",
                     "schema": "assets/schema_input.json",
                     "fa_icon": "fas fa-file-excel",
-                    "description": "File containing SRA/ENA/GEO identifiers one per line to download their associated metadata and FastQ files."
+                    "description": "File containing SRA/ENA/DDBJ/GEO identifiers one per line to download their associated metadata and FastQ files."
                 },
                 "ena_metadata_fields": {
                     "type": "string",

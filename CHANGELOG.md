@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+* Added support for [DDBJ ids](https://www.ddbj.nig.ac.jp/index-e.html). See examples below:
+
+! `DDBJ`        |
+|---------------|
+| PRJDB4176     |
+| SAMD00114846  |
+| DRA008156     |
+| DRP004793     |
+| DRR171822     |
+| DRS090921     |
+| DRX162434     |
+
 ## [[1.3](https://github.com/nf-core/fetchngs/releases/tag/1.3)] - 2021-09-15
 
 ### Enhancements & fixes
