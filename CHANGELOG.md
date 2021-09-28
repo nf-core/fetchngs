@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added support for [DDBJ ids](https://www.ddbj.nig.ac.jp/index-e.html). See examples below:
 
-! `DDBJ`        |
+| `DDBJ`        |
 |---------------|
 | PRJDB4176     |
 | SAMD00114846  |
