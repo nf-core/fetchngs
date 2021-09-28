@@ -17,7 +17,7 @@ from urllib.request import urlopen
 logger = logging.getLogger()
 
 ## Example ids supported by this script
-SRA_IDS = ('PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814')
+SRA_IDS = ('PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814', 'PRJDB4176', 'DRR173017')
 ENA_IDS = ('ERA2421642', 'ERP120836', 'ERR674736', 'ERS4399631', 'ERX629702', 'PRJEB7743', 'SAMEA3121481')
 GEO_IDS = ('GSE18729', 'GSM465244')
 ID_REGEX = re.compile(r'[A-Z]+')
@@ -228,7 +228,7 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                             ids = gse_to_srx(db_id)
 
                         ## Resolve/expand these ids against SRA URL
-                        elif prefix in ['GSM', 'PRJNA', 'SAMN', 'SRR']:
+                        elif prefix in ['GSM', 'PRJNA', 'SAMN', 'SRR', 'DRR', 'PRJDB']:
                             ids = id_to_srx(db_id)
 
                         ## Resolve/expand these ids against ENA URL
