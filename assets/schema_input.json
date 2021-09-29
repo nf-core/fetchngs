@@ -9,7 +9,7 @@
         "items": {
             "type": "string",
             "pattern": "^[SEPG][RAS][RXSMPAJXE][EN]?[AB]?\\d{4,9}$",
-            "errorMessage": "Please provide a valid SRA, GEO or ENA identifier"
+            "errorMessage": "Please provide a valid SRA, ENA, DDBJ or GEO identifier"
         }
     }
 }

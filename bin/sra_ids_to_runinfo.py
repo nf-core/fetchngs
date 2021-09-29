@@ -18,10 +18,12 @@ logger = logging.getLogger()
 
 ## Example ids supported by this script
 SRA_IDS = ('PRJNA63463', 'SAMN00765663', 'SRA023522', 'SRP003255', 'SRR390278', 'SRS282569', 'SRX111814')
-ENA_IDS = ('ERA2421642', 'ERP120836', 'ERR674736', 'ERS4399631', 'ERX629702', 'PRJEB7743', 'SAMEA3121481')
+ENA_IDS = ('PRJEB7743', 'SAMEA3121481', 'ERA2421642', 'ERP120836', 'ERR674736', 'ERS4399631', 'ERX629702')
+DDBJ_IDS = ('PRJDB4176', 'SAMD00114846', 'DRA008156', 'DRP004793', 'DRR171822', 'DRS090921', 'DRX162434')
 GEO_IDS = ('GSE18729', 'GSM465244')
 ID_REGEX = re.compile(r'[A-Z]+')
-PREFIX_LIST = sorted({ID_REGEX.match(x).group() for x in SRA_IDS + ENA_IDS + GEO_IDS})
+PREFIX_LIST = sorted({ID_REGEX.match(x).group() for x in SRA_IDS + ENA_IDS + DDBJ_IDS + GEO_IDS})
+
 
 ## List of meta fields fetched from the ENA API - can be overriden by --ena_metadata_fields
 ## Full list of accepted fields can be obtained here: https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run
@@ -111,7 +113,7 @@ class Response:
 
 
 def parse_args(args=None):
-    Description = 'Download and create a run information metadata file from SRA/ENA/GEO identifiers.'
+    Description = 'Download and create a run information metadata file from SRA / ENA / DDBJ / GEO identifiers.'
     Epilog = 'Example usage: python fetch_sra_runinfo.py <FILE_IN> <FILE_OUT>'
 
     parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
@@ -228,7 +230,7 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
                             ids = gse_to_srx(db_id)
 
                         ## Resolve/expand these ids against SRA URL
-                        elif prefix in ['GSM', 'PRJNA', 'SAMN', 'SRR']:
+                        elif prefix in ['GSM', 'PRJNA', 'SAMN', 'SRR', 'DRA', 'DRP', 'DRR', 'DRS', 'DRX', 'PRJDB', 'SAMD']:
                             ids = id_to_srx(db_id)
 
                         ## Resolve/expand these ids against ENA URL

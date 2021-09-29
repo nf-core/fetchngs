@@ -16,7 +16,7 @@
 
 ## Introduction
 
-**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases. At present, the pipeline supports SRA / ENA / GEO ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
+**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
 
