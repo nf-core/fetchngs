@@ -402,11 +402,6 @@ def validate_fields_parameter(param, valid_vals, param_desc):
         sys.exit(1)
 
 
-def make_dir(path):
-    if not len(path) == 0:
-        os.makedirs(path, exist_ok=True)
-
-
 def fetch_url(url):
     """Return a response object for the given URL and handle errors appropriately."""
     try:
