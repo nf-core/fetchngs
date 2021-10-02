@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+* Handle identifiers that do **not** return metadata, for example, due to being private.
+
 * Added support for [DDBJ ids](https://www.ddbj.nig.ac.jp/index-e.html). See examples below:
 
 | `DDBJ`        |
