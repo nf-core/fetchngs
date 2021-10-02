@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import zlib
+from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
@@ -357,36 +358,48 @@ def parse_args(args=None):
         epilog="Example usage: python fetch_sra_runinfo.py <FILE_IN> <FILE_OUT>",
     )
     parser.add_argument(
-        "FILE_IN", help="File containing database identifiers, one per line."
+        "file_in",
+        metavar="FILE_IN",
+        type=Path,
+        help="File containing database identifiers, one per line.",
     )
-    parser.add_argument("FILE_OUT", help="Output file in tab-delimited format.")
+    parser.add_argument(
+        "file_out",
+        metavar="FILE_OUT",
+        type=Path,
+        help="Output file in tab-delimited format.",
+    )
     parser.add_argument(
         "-ef",
         "--ena_metadata_fields",
         type=str,
-        dest="ENA_METADATA_FIELDS",
-        default="",
-        help=f"Comma-separated list of ENA metadata fields to fetch. "
+        default=",".join(ENA_METADATA_FIELDS),
+        help=f"Comma-separated list of ENA metadata fields to fetch "
         f"(default: {','.join(ENA_METADATA_FIELDS)}).",
+    )
+    parser.add_argument(
+        "-l",
+        "--log-level",
+        help="The desired log level (default WARNING).",
+        choices=("CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"),
+        default="WARNING",
     )
     return parser.parse_args(args)
 
 
-def validate_csv_param(param, valid_vals, param_desc):
-    valid_list = []
-    if param:
-        user_vals = param.split(",")
-        intersect = [i for i in user_vals if i in valid_vals]
-        if len(intersect) == len(user_vals):
-            valid_list = intersect
-        else:
-            logger.error(
-                f"Please provide a valid value for {param_desc}!\n"
-                f"Provided values = {param}\n"
-                f"Accepted values = {','.join(valid_vals)}"
-            )
-            sys.exit(1)
-    return valid_list
+def validate_fields_parameter(param, valid_vals, param_desc):
+    if not param:
+        return []
+    user_vals = param.split(",")
+    if len(set(user_vals) & set(valid_vals)) == len(user_vals):
+        return user_vals
+    else:
+        logger.error(
+            f"Please provide a valid value for {param_desc}!\n"
+            f"Provided values = {param}\n"
+            f"Accepted values = {','.join(valid_vals)}"
+        )
+        sys.exit(1)
 
 
 def make_dir(path):
@@ -422,10 +435,9 @@ def get_ena_fields():
     ]
 
 
-def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS):
+def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields):
     seen_ids = set()
     run_ids = set()
-    make_dir(os.path.dirname(file_out))
     ena_fetcher = ENAMetadataFetcher(ena_metadata_fields)
     with open(file_in, "r") as fin, open(file_out, "w") as fout:
         writer = csv.DictWriter(fout, fieldnames=ena_metadata_fields, delimiter="\t")
@@ -458,17 +470,18 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
 
 def main(args=None):
     args = parse_args(args)
-    ena_metadata_fields = args.ENA_METADATA_FIELDS
-    if not args.ENA_METADATA_FIELDS:
-        ena_metadata_fields = ",".join(ENA_METADATA_FIELDS)
-    ena_metadata_fields = validate_csv_param(
-        ena_metadata_fields,
+    logging.basicConfig(level=args.log_level, format="[%(levelname)s] %(message)s")
+    if not args.file_in.is_file():
+        logger.error(f"The given input file {args.file_in} was not found!")
+        sys.exit(1)
+    args.file_out.parent.mkdir(parents=True, exist_ok=True)
+    ena_metadata_fields = validate_fields_parameter(
+        args.ena_metadata_fields,
         valid_vals=get_ena_fields(),
         param_desc="--ena_metadata_fields",
     )
-    fetch_sra_runinfo(args.FILE_IN, args.FILE_OUT, ena_metadata_fields)
+    fetch_sra_runinfo(args.file_in, args.file_out, ena_metadata_fields)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level="INFO", format="[%(levelname)s] %(message)s")
     sys.exit(main())
