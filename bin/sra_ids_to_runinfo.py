@@ -22,7 +22,8 @@ ENA_IDS = ('PRJEB7743', 'SAMEA3121481', 'ERA2421642', 'ERP120836', 'ERR674736', 
 DDBJ_IDS = ('PRJDB4176', 'SAMD00114846', 'DRA008156', 'DRP004793', 'DRR171822', 'DRS090921', 'DRX162434')
 GEO_IDS = ('GSE18729', 'GSM465244')
 ID_REGEX = re.compile(r'[A-Z]+')
-PREFIX_LIST = sorted({ID_REGEX.match(x).group() for x in SRA_IDS + ENA_IDS + DDBJ_IDS + GEO_IDS})
+PREFIX_LIST = sorted({ID_REGEX.match(id).group() for id in SRA_IDS + ENA_IDS + DDBJ_IDS + GEO_IDS})
+VALID_PREFIX = frozenset(PREFIX_LIST)
 
 
 ## List of meta fields fetched from the ENA API - can be overriden by --ena_metadata_fields
@@ -215,7 +216,7 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields=ENA_METADATA_FIELDS
             match = ID_REGEX.match(db_id)
             if match:
                 prefix = match.group()
-                if prefix in PREFIX_LIST:
+                if prefix in VALID_PREFIX:
                     if db_id not in seen_ids:
 
                         ids = [db_id]
