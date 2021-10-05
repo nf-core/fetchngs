@@ -11,7 +11,8 @@
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
             "required": [
-                "input"
+                "input",
+                "synapse_input"
             ],
             "properties": {
                 "input": {
@@ -22,6 +23,17 @@
                     "schema": "assets/schema_input.json",
                     "fa_icon": "fas fa-file-excel",
                     "description": "File containing SRA/ENA/GEO identifiers one per line to download their associated metadata and FastQ files."
+                },
+                "input_type": {
+                    "type": "string",
+                    "description": "Type of Sample Identifiers Provided (SRA/ENA/GE/Synapse)",
+                    "enum": [
+                        "SRA",
+                        "ENA",
+                        "GEO",
+                        "Synapse"
+                    ],
+                    "fa_icon": "fas fa-copy"
                 },
                 "ena_metadata_fields": {
                     "type": "string",
@@ -110,6 +122,11 @@
                     "type": "string",
                     "description": "Institutional config URL link.",
                     "hidden": true,
+                    "fa_icon": "fas fa-users-cog"
+                },
+                "synapse_config": {
+                    "type": "string",
+                    "description": "Path to Synapse configuration file",
                     "fa_icon": "fas fa-users-cog"
                 }
             }
@@ -250,4 +267,3 @@
         }
     ]
 }
-
