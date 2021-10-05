@@ -44,10 +44,11 @@ include { GET_SOFTWARE_VERSIONS      } from '../modules/local/get_software_versi
 ========================================================================================
 */
 
-workflow FETCHNGS_SYNAPSE {
+workflow SYNAPSE {
 
     ch_software_versions = Channel.empty()
 
+    // CHANNEL: Stage Synapse Config File
     Channel
         .fromPath(params.synapseconfig)
         .set { ch_synapseConfig }
@@ -93,7 +94,7 @@ workflow FETCHNGS_SYNAPSE {
     )
     ch_software_versions = ch_software_versions.mix(SYNAPSE_SHOW.out.version.first().ifEmpty(null))
 
-    // Clean Metadata
+    // CHANNEL: Clean Metadata
     SYNAPSE_SHOW
         .out
         .metadata
@@ -102,7 +103,7 @@ workflow FETCHNGS_SYNAPSE {
         .collate( 6 )
         .set { ch_meta }
 
-    // Compile Metadata
+    // MODULE: Compile Metadata
     SYNAPSE_METADATA_MAPPING (
         ch_meta
     )
@@ -128,6 +129,7 @@ workflow FETCHNGS_SYNAPSE {
         .collect()
         .set { ch_software_versions }
 
+    // MODULE: Get Software Versions
     GET_SOFTWARE_VERSIONS (
         ch_software_versions.map { it }.collect()
     )
