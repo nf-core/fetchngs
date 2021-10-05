@@ -4,7 +4,7 @@ include { initOptions; saveFiles; getSoftwareName } from './functions'
 params.options = [:]
 options        = initOptions(params.options)
 
-process SYNAPSEMETADATAMAPPING {
+process SYNAPSE_METADATA_MAPPING {
     tag "${data[3]}"
     label 'process_low'
     publishDir "${params.outdir}",

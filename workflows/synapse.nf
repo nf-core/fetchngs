@@ -116,8 +116,8 @@ workflow SYNAPSE {
 
     // MODULE: Merge Samplesheets
     SYNAPSE_MERGE_SAMPLESHEET (
-        READ_PAIRS_TO_SAMPLESHEET.out.samplesheet.collect(),
-        METADATA_TO_METAMAP.out.metasheet.collect()
+        SYNAPSE_TO_SAMPLESHEET.out.samplesheet.collect(),
+        SYNAPSE_METADATA_MAPPING.out.metasheet.collect()
     )
 
     // MODULE: Pipeline reporting
