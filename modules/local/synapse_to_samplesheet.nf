@@ -13,7 +13,6 @@ process SYNAPSE_TO_SAMPLESHEET {
 
     input:
     tuple val(id), val(files)
-    val strandedness
 
     output:
     path("*samplesheet.csv"), emit: samplesheet
@@ -27,7 +26,7 @@ process SYNAPSE_TO_SAMPLESHEET {
         fastq_2 : "${params.outdir}/${params.results_dir}/${files[1].getBaseName()}"
     ]
     // Add Strandedness
-    pipeline_map << [ strandedness: "${strandedness}" ]
+    pipeline_map << [ strandedness: "unstranded" ]
 
     // Create Samplesheet
     samplesheet  = pipeline_map.keySet().collect{ '"' + it + '"'}.join(",") + '\n'

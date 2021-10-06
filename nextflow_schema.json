@@ -11,8 +11,7 @@
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
             "required": [
-                "input",
-                "synapse_input"
+                "input"
             ],
             "properties": {
                 "input": {
@@ -33,7 +32,8 @@
                         "GEO",
                         "Synapse"
                     ],
-                    "fa_icon": "fas fa-copy"
+                    "fa_icon": "fas fa-copy",
+                    "default": "SRA"
                 },
                 "ena_metadata_fields": {
                     "type": "string",
@@ -127,7 +127,8 @@
                 "synapse_config": {
                     "type": "string",
                     "description": "Path to Synapse configuration file",
-                    "fa_icon": "fas fa-users-cog"
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
                 }
             }
         },

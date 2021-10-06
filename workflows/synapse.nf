@@ -4,10 +4,14 @@
 ========================================================================================
 */
 
+def valid_params = [
+    ena_metadata_fields : ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
+]
+
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
 // Validate input parameters
-WorkflowFetchngs.initialise(params, log)
+WorkflowFetchngs.initialise(params, log, valid_params)
 
 // Check mandatory parameters
 if (params.input) {
@@ -50,7 +54,7 @@ workflow SYNAPSE {
 
     // CHANNEL: Stage Synapse Config File
     Channel
-        .fromPath(params.synapseconfig)
+        .fromPath(params.synapse_config)
         .set { ch_synapseConfig }
 
     // MODULE: Get individual FastQ SynapseIDs from Directory SynapseID(s)
@@ -80,7 +84,7 @@ workflow SYNAPSE {
         .fastq
         .collect().flatten()
         .toSortedList().flatten()
-        .map { meta -> 
+        .map { meta ->
             def sampleId = meta.name.toString().tokenize('_').get(0)
             [sampleId, meta]
         }
@@ -111,7 +115,6 @@ workflow SYNAPSE {
     // MODULE: Create Samplesheet
     SYNAPSE_TO_SAMPLESHEET (
         ch_read_pairs,
-        params.strandedness
     )
 
     // MODULE: Merge Samplesheets
