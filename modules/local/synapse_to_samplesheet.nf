@@ -28,7 +28,7 @@ process SYNAPSE_TO_SAMPLESHEET {
     ]
     // Add Strandedness
     pipeline_map << [ strandedness: "${strandedness}" ]
-    
+
     // Create Samplesheet
     samplesheet  = pipeline_map.keySet().collect{ '"' + it + '"'}.join(",") + '\n'
     samplesheet += pipeline_map.values().collect{ '"' + it + '"'}.join(",")

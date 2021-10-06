@@ -28,9 +28,9 @@ process SYNAPSE_GET {
 
     script:
     def software = getSoftwareName(task.process)
-    
+
     """
-    synapse -c $synapseconfig get $synid 
+    synapse -c $synapseconfig get $synid
     echo \$(synapse --version) > ${software}.version.txt
     """
 }

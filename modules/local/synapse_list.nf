@@ -30,7 +30,7 @@ process SYNAPSE_LIST {
     def software = getSoftwareName(task.process)
 
     """
-    synapse -c $synapseconfig list -l $synid | cut -c-11 > ${synid}.synlist.csv 
+    synapse -c $synapseconfig list -l $synid | cut -c-11 > ${synid}.synlist.csv
     echo \$(synapse --version) > ${software}.version.txt
     """
 }

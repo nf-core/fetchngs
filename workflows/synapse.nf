@@ -73,14 +73,14 @@ workflow SYNAPSE {
         ch_synapseConfig
     )
     ch_software_versions = ch_software_versions.mix(SYNAPSE_GET.out.version.first().ifEmpty(null))
-    
+
     // CHANNEL: Create Read Pairs Channel - Creates format [sampleId, [fastq_1, fastq_2]]
     SYNAPSE_GET
         .out
         .fastq
         .collect().flatten()
         .toSortedList().flatten()
-        .map { meta ->  
+        .map { meta -> 
             def sampleId = meta.name.toString().tokenize('_').get(0)
             [sampleId, meta]
         }
@@ -107,7 +107,7 @@ workflow SYNAPSE {
     SYNAPSE_METADATA_MAPPING (
         ch_meta
     )
-    
+
     // MODULE: Create Samplesheet
     SYNAPSE_TO_SAMPLESHEET (
         ch_read_pairs,
