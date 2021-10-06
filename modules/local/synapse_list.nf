@@ -5,7 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process SYNAPSE_LIST {
-    tag '$synid'
+    tag "$synid"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,

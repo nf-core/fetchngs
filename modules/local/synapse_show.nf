@@ -5,7 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process SYNAPSE_SHOW {
-    tag '$synid'
+    tag "$synid"
     label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -20,17 +20,14 @@ process SYNAPSE_SHOW {
 
     input:
     val synid                   // synapse ID for individual FastQ files
-    path synapseconfig          // path to synapse.Config file
 
     output:
     path "*.metadata.txt", emit: metadata
-    path "*.version.txt", emit: version
 
     script:
     def software = getSoftwareName(task.process)
 
     """
-    synapse -c $synapseconfig show $synid | sed -n '1,3p;15,16p;20p;23p' > ${synid}.metadata.txt
-    echo \$(synapse --version) > ${software}.version.txt
+    synapse show $synid | sed -n '1,3p;15,16p;20p;23p' > ${synid}.metadata.txt
     """
 }

@@ -68,15 +68,13 @@ workflow SYNAPSE {
     SYNAPSE_LIST
         .out
         .synlist_csv
-        .splitCsv(header:false, strip:true).flatten()
+        .splitCsv(header:false).flatten()
         .set { ch_samples }
 
     // MODULE: Download FastQ Files by SynapseID
     SYNAPSE_GET (
         ch_samples,
-        ch_synapseConfig
     )
-    ch_software_versions = ch_software_versions.mix(SYNAPSE_GET.out.version.first().ifEmpty(null))
 
     // CHANNEL: Create Read Pairs Channel - Creates format [sampleId, [fastq_1, fastq_2]]
     SYNAPSE_GET
@@ -94,9 +92,7 @@ workflow SYNAPSE {
     // MODULE: Download FQ Metadata by SynapseID
     SYNAPSE_SHOW (
         ch_samples,
-        ch_synapseConfig
     )
-    ch_software_versions = ch_software_versions.mix(SYNAPSE_SHOW.out.version.first().ifEmpty(null))
 
     // CHANNEL: Clean Metadata
     SYNAPSE_SHOW

@@ -5,8 +5,8 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process SYNAPSE_GET {
-    tag '$synid'
-    label 'process_high'
+    tag "$synid"
+    label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
@@ -20,17 +20,14 @@ process SYNAPSE_GET {
 
     input:
     val synid                   // synapse ID for individual FastQ files
-    path synapseconfig          // path to synapse.Config file
 
     output:
-    path "*.fastq*"               , emit: fastq
-    path "*.version.txt"          , emit: version
+    path "*"               , emit: fastq
 
     script:
     def software = getSoftwareName(task.process)
 
     """
-    synapse -c $synapseconfig get $synid
-    echo \$(synapse --version) > ${software}.version.txt
+    synapse get $synid
     """
 }
