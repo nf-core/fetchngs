@@ -23,18 +23,6 @@
                     "fa_icon": "fas fa-file-excel",
                     "description": "File containing SRA/ENA/GEO identifiers one per line to download their associated metadata and FastQ files."
                 },
-                "input_type": {
-                    "type": "string",
-                    "description": "Type of Sample Identifiers Provided (SRA/ENA/GE/Synapse)",
-                    "enum": [
-                        "SRA",
-                        "ENA",
-                        "GEO",
-                        "Synapse"
-                    ],
-                    "fa_icon": "fas fa-copy",
-                    "default": "SRA"
-                },
                 "ena_metadata_fields": {
                     "type": "string",
                     "fa_icon": "fas fa-columns",
