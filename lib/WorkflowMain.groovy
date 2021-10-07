@@ -77,7 +77,7 @@ class WorkflowMain {
             System.exit(1)
         }
     }
-    
+
     // Check input type
     public static String getIdentifierType(workflow, params, log) {
         def input_type = ""
