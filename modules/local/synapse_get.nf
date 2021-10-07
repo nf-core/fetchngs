@@ -20,6 +20,7 @@ process SYNAPSE_GET {
 
     input:
     val synid                   // synapse ID for individual FastQ files
+    path synapseconfig          // path to synapse.Config file
 
     output:
     path "*"               , emit: fastq
@@ -28,6 +29,6 @@ process SYNAPSE_GET {
     def software = getSoftwareName(task.process)
 
     """
-    synapse get $synid
+    synapse -c $synapseconfig get $synid
     """
 }

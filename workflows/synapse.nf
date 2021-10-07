@@ -53,9 +53,7 @@ workflow SYNAPSE {
     ch_software_versions = Channel.empty()
 
     // CHANNEL: Stage Synapse Config File
-    Channel
-        .fromPath(params.synapse_config)
-        .set { ch_synapseConfig }
+    ch_synapseConfig        = file( params.synapse_config )
 
     // MODULE: Get individual FastQ SynapseIDs from Directory SynapseID(s)
     SYNAPSE_LIST (
@@ -74,6 +72,7 @@ workflow SYNAPSE {
     // MODULE: Download FastQ Files by SynapseID
     SYNAPSE_GET (
         ch_samples,
+        ch_synapseConfig
     )
 
     // CHANNEL: Create Read Pairs Channel - Creates format [sampleId, [fastq_1, fastq_2]]
@@ -92,6 +91,7 @@ workflow SYNAPSE {
     // MODULE: Download FQ Metadata by SynapseID
     SYNAPSE_SHOW (
         ch_samples,
+        ch_synapseConfig
     )
 
     // CHANNEL: Clean Metadata

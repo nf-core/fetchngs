@@ -20,6 +20,7 @@ process SYNAPSE_SHOW {
 
     input:
     val synid                   // synapse ID for individual FastQ files
+    path synapseconfig          // path to synapse.Config file
 
     output:
     path "*.metadata.txt", emit: metadata
@@ -28,6 +29,6 @@ process SYNAPSE_SHOW {
     def software = getSoftwareName(task.process)
 
     """
-    synapse show $synid | sed -n '1,3p;15,16p;20p;23p' > ${synid}.metadata.txt
+    synapse -c $synapseconfig show $synid | sed -n '1,3p;15,16p;20p;23p' > ${synid}.metadata.txt
     """
 }
