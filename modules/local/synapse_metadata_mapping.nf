@@ -15,7 +15,7 @@ process SYNAPSE_METADATA_MAPPING {
     val data
 
     output:
-    path("*metasheet.csv"), emit: metasheet
+    path "*.csv", emit: metasheet
 
     exec:
     meta_map = [

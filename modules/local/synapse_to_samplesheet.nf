@@ -15,7 +15,7 @@ process SYNAPSE_TO_SAMPLESHEET {
     tuple val(id), val(files)
 
     output:
-    path("*samplesheet.csv"), emit: samplesheet
+    path "*.csv", emit: samplesheet
 
     exec:
 

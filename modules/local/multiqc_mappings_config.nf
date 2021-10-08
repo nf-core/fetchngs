@@ -1,5 +1,5 @@
 // Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
+include { saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 
@@ -19,8 +19,8 @@ process MULTIQC_MAPPINGS_CONFIG {
     path csv
 
     output:
-    path "*yml"         , emit: yml
-    path "*.version.txt", emit: version
+    path "*yml"        , emit: yml
+    path "versions.yml", emit: versions
 
     script:
     """
@@ -28,6 +28,9 @@ process MULTIQC_MAPPINGS_CONFIG {
         $csv \\
         multiqc_config.yml
 
-    python --version | sed -e "s/Python //g" > python.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        python: \$(python --version | sed 's/Python //g')
+    END_VERSIONS
     """
 }

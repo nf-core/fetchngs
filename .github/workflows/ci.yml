@@ -35,9 +35,31 @@ jobs:
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
 
-      - name: Run pipeline with test data
+      - name: Run pipeline with SRA test data
         run: |
           nextflow run ${GITHUB_WORKSPACE} -profile test,docker
+
+  test_synapse:
+    name: Test Synapse workflow
+    if: ${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}
+    runs-on: ubuntu-latest
+    env:
+      NXF_VER: ${{ matrix.nxf_ver }}
+      NXF_ANSI_LOG: false
+    steps:
+      - name: Check out pipeline code
+        uses: actions/checkout@v2
+
+      - name: Install Nextflow
+        env:
+          CAPSULE_LOG: none
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+
+      - name: Run pipeline with synapse test data
+        run: |
+          nextflow run ${GITHUB_WORKSPACE} -profile test_synapse,docker
 
   parameters:
     name: Test workflow parameters

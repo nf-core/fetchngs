@@ -1,5 +1,5 @@
 // Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
+include { saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 
@@ -21,7 +21,8 @@ process SRA_MERGE_SAMPLESHEET {
 
     output:
     path "samplesheet.csv", emit: samplesheet
-    path "id_mappings.csv"   , emit: mappings
+    path "id_mappings.csv", emit: mappings
+    path "versions.yml"   , emit: versions
 
     script:
     """
@@ -34,5 +35,10 @@ process SRA_MERGE_SAMPLESHEET {
     for fileid in `ls ./mappings/*`; do
         awk 'NR>1' \$fileid >> id_mappings.csv
     done
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
+    END_VERSIONS
     """
 }

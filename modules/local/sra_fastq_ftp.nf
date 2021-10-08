@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -25,6 +25,7 @@ process SRA_FASTQ_FTP {
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
     tuple val(meta), path("*md5")     , emit: md5
+    path "versions.yml"               , emit: versions
 
     script:
     if (meta.single_end) {
@@ -33,6 +34,11 @@ process SRA_FASTQ_FTP {
 
         echo "${meta.md5_1} ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
+
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
+        END_VERSIONS
         """
     } else {
         """
@@ -45,6 +51,11 @@ process SRA_FASTQ_FTP {
 
         echo "${meta.md5_2} ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5
+
+        cat <<-END_VERSIONS > versions.yml
+        ${getProcessName(task.process)}:
+            sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
+        END_VERSIONS
         """
     }
 }

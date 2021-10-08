@@ -57,6 +57,12 @@
                     "fa_icon": "fas fa-envelope",
                     "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+                },
+                "synapse_config": {
+                    "type": "string",
+                    "description": "Path to Synapse configuration file",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
                 }
             }
         },
@@ -111,12 +117,6 @@
                     "description": "Institutional config URL link.",
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
-                },
-                "synapse_config": {
-                    "type": "string",
-                    "description": "Path to Synapse configuration file",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
                 }
             }
         },

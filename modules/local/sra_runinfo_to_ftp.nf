@@ -1,5 +1,5 @@
 // Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
+include { saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 
@@ -19,8 +19,8 @@ process SRA_RUNINFO_TO_FTP {
     path runinfo
 
     output:
-    path "*.tsv"         , emit: tsv
-    path  "*.version.txt", emit: version
+    path "*.tsv"       , emit: tsv
+    path "versions.yml", emit: versions
 
     script:
     """
@@ -28,6 +28,9 @@ process SRA_RUNINFO_TO_FTP {
         ${runinfo.join(',')} \\
         ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
 
-    python --version | sed -e "s/Python //g" > python.version.txt
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        python: \$(python --version | sed 's/Python //g')
+    END_VERSIONS
     """
 }

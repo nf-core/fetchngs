@@ -1,5 +1,5 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
@@ -24,7 +24,8 @@ process SYNAPSE_MERGE_SAMPLESHEET {
 
     output:
     path "samplesheet.csv", emit: samplesheet
-    path "metasheet.csv", emit: metasheet
+    path "metasheet.csv"  , emit: metasheet
+    path "versions.yml"   , emit: versions
 
     script:
     """
@@ -37,5 +38,10 @@ process SYNAPSE_MERGE_SAMPLESHEET {
     for fileid in `ls ./metasheet/*`; do
         awk 'NR>1' \$fileid >> metasheet.csv
     done
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
+    END_VERSIONS
     """
 }
