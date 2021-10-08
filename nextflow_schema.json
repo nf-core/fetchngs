@@ -111,6 +111,12 @@
                     "description": "Institutional config URL link.",
                     "hidden": true,
                     "fa_icon": "fas fa-users-cog"
+                },
+                "synapse_config": {
+                    "type": "string",
+                    "description": "Path to Synapse configuration file",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
                 }
             }
         },
@@ -250,4 +256,3 @@
         }
     ]
 }
-

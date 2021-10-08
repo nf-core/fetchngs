@@ -18,6 +18,7 @@ nextflow.enable.dsl = 2
 */
 
 WorkflowMain.initialise(workflow, params, log)
+input_type = WorkflowMain.getIdentifierType(workflow, params, log)
 
 /*
 ========================================================================================
@@ -25,13 +26,25 @@ WorkflowMain.initialise(workflow, params, log)
 ========================================================================================
 */
 
-include { FETCHNGS } from './workflows/fetchngs'
+if (input_type == 'Synapse') {
+    include { SYNAPSE } from './workflows/synapse'
+} else {
+    include { FETCHNGS } from './workflows/fetchngs'
+}
 
 //
-// WORKFLOW: Run main nf-core/fetchngs analysis pipeline
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline, depending on Identifier Type provided
 //
 workflow NFCORE_FETCHNGS {
-    FETCHNGS ()
+
+    // Workflow for SynapseIDs
+    if (input_type == 'Synapse') {
+        SYNAPSE ()
+    } else {
+    // Workflow for SRA/ENA/GEO IDs
+        FETCHNGS ()
+    }
+
 }
 
 /*

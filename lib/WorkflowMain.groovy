@@ -77,4 +77,16 @@ class WorkflowMain {
             System.exit(1)
         }
     }
+
+    // Check input type
+    public static String getIdentifierType(workflow, params, log) {
+        def input_type = ""
+        params.input.eachLine { line ->
+        if (line.contains("syn")) {
+            input_type = "Synapse"
+        } else {
+            input_type = "SRA"
+        }}
+        return input_type
+    }
 }
