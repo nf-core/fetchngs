@@ -1,8 +1,8 @@
 //
-// This file holds several functions specific to the workflow/fetchngs.nf in the nf-core/fetchngs pipeline
+// This file holds several functions specific to the workflow/sra.nf in the nf-core/fetchngs pipeline
 //
 
-class WorkflowFetchngs {
+class WorkflowSra {
 
     //
     // Check and validate parameters
