@@ -31,11 +31,12 @@ process SYNAPSE_GET {
     synapse \\
         -c $config \\
         get \\
-        $synid
+        $options.args \\
+        $id \\
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo \$(synapse --version) )
+        ${getSoftwareName(task.process)}: \$(synapse --version | sed -e "s/Synapse Client //g")
     END_VERSIONS
     """
 }

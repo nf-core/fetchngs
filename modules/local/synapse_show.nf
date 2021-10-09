@@ -31,12 +31,13 @@ process SYNAPSE_SHOW {
     synapse \\
         -c $config \\
         show \\
+        $options.args \\
         $id \\
         | sed -n '1,3p;15,16p;20p;23p' > ${id}.metadata.txt
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
-        ${getSoftwareName(task.process)}: \$( echo \$(synapse --version) )
+        ${getSoftwareName(task.process)}: \$(synapse --version | sed -e "s/Synapse Client //g")
     END_VERSIONS
     """
 }

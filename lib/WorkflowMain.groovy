@@ -73,7 +73,7 @@ class WorkflowMain {
 
         // Check input has been provided
         if (!params.input) {
-            log.error "Please provide an input samplesheet to the pipeline e.g. '--input ids.txt'"
+            log.error "Please provide an input file containing ids to the pipeline - one per line e.g. '--input ids.txt'"
             System.exit(1)
         }
     }

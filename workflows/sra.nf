@@ -13,17 +13,13 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 // Validate input parameters
 WorkflowSra.initialise(params, log, valid_params)
 
-// Check mandatory parameters
-if (params.input) {
-    Channel
-        .from(file(params.input, checkIfExists: true))
-        .splitCsv(header:false, sep:'', strip:true)
-        .map { it[0] }
-        .unique()
-        .set { ch_ids }
-} else {
-    exit 1, 'Input file with public database ids not specified!'
-}
+// Read in ids from --input file
+Channel
+    .from(file(params.input, checkIfExists: true))
+    .splitCsv(header:false, sep:'', strip:true)
+    .map { it[0] }
+    .unique()
+    .set { ch_ids }
 
 /*
 ========================================================================================
@@ -137,7 +133,7 @@ workflow SRA {
     }
 
     //
-    // MODULE: Pipeline reporting
+    // MODULE: Dump software versions for all tools used in the workflow
     //
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
