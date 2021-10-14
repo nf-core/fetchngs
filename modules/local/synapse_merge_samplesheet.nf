@@ -1,12 +1,9 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
+include { saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
-options        = initOptions(params.options)
 
 process SYNAPSE_MERGE_SAMPLESHEET {
-    tag 'merge_samplesheet'
-    label 'process_low'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
@@ -20,11 +17,9 @@ process SYNAPSE_MERGE_SAMPLESHEET {
 
     input:
     path ('samplesheets/*')
-    path ('metasheet/*')
 
     output:
     path "samplesheet.csv", emit: samplesheet
-    path "metasheet.csv"  , emit: metasheet
     path "versions.yml"   , emit: versions
 
     script:
@@ -32,11 +27,6 @@ process SYNAPSE_MERGE_SAMPLESHEET {
     head -n 1 `ls ./samplesheets/* | head -n 1` > samplesheet.csv
     for fileid in `ls ./samplesheets/*`; do
         awk 'NR>1' \$fileid >> samplesheet.csv
-    done
-
-    head -n 1 `ls ./metasheet/* | head -n 1` > metasheet.csv
-    for fileid in `ls ./metasheet/*`; do
-        awk 'NR>1' \$fileid >> metasheet.csv
     done
 
     cat <<-END_VERSIONS > versions.yml

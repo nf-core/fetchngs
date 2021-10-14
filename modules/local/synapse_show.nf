@@ -33,7 +33,8 @@ process SYNAPSE_SHOW {
         show \\
         $options.args \\
         $id \\
-        | sed -n '1,3p;15,16p;20p;23p' > ${id}.metadata.txt
+        $options.args2 \\
+        > ${id}.metadata.txt
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

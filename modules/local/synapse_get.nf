@@ -5,8 +5,9 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process SYNAPSE_GET {
-    tag "$id"
+    tag "$meta.id"
     label 'process_low'
+    label 'error_retry'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
         saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
@@ -19,12 +20,13 @@ process SYNAPSE_GET {
     }
 
     input:
-    val id
+    val meta
     path config
 
     output:
-    path "*.fastq.gz"  , emit: fastq
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*md5")      , emit: md5
+    path "versions.yml"                , emit: versions
 
     script:
     """
@@ -32,7 +34,10 @@ process SYNAPSE_GET {
         -c $config \\
         get \\
         $options.args \\
-        $id \\
+        $meta.id
+
+    find ./ -type f -name "*.fastq.gz" -exec echo "${meta.md5} " {} \\; > ${meta.id}.md5
+    md5sum -c ${meta.id}.md5
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:

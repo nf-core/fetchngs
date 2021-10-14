@@ -23,7 +23,7 @@ process SYNAPSE_LIST {
     path config
 
     output:
-    path "*.csv"       , emit: csv
+    path "*.txt"       , emit: txt
     path "versions.yml", emit: versions
 
     script:
@@ -32,8 +32,9 @@ process SYNAPSE_LIST {
         -c $config \\
         list \\
         $options.args \\
-        -l $id \\
-        | cut -c-11 > ${id}.synlist.csv
+        $id \\
+        $options.args2 \\
+        > ${id}.list.txt
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
