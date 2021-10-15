@@ -29,11 +29,11 @@ input_type = WorkflowMain.getIdentifierType(workflow, params, log)
 if (input_type == 'Synapse') {
     include { SYNAPSE } from './workflows/synapse'
 } else {
-    include { FETCHNGS } from './workflows/fetchngs'
+    include { SRA } from './workflows/sra'
 }
 
 //
-// WORKFLOW: Run main nf-core/fetchngs analysis pipeline, depending on Identifier Type provided
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline, depending on type of dentifier provided
 //
 workflow NFCORE_FETCHNGS {
 
@@ -42,7 +42,7 @@ workflow NFCORE_FETCHNGS {
         SYNAPSE ()
     } else {
     // Workflow for SRA/ENA/GEO IDs
-        FETCHNGS ()
+        SRA ()
     }
 
 }

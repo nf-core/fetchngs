@@ -3,3 +3,6 @@ lint:
     - .github/CONTRIBUTING.md
     - assets/sendmail_template.txt
     - lib/NfcoreTemplate.groovy
+  files_exist:
+    - bin/scrape_software_versions.py
+    - modules/local/get_software_versions.nf

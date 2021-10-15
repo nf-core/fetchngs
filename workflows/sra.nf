@@ -11,19 +11,15 @@ def valid_params = [
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
 // Validate input parameters
-WorkflowFetchngs.initialise(params, log, valid_params)
+WorkflowSra.initialise(params, log, valid_params)
 
-// Check mandatory parameters
-if (params.input) {
-    Channel
-        .from(file(params.input, checkIfExists: true))
-        .splitCsv(header:false, sep:'', strip:true)
-        .map { it[0] }
-        .unique()
-        .set { ch_ids }
-} else {
-    exit 1, 'Input file with public database ids not specified!'
-}
+// Read in ids from --input file
+Channel
+    .from(file(params.input, checkIfExists: true))
+    .splitCsv(header:false, sep:'', strip:true)
+    .map { it[0] }
+    .unique()
+    .set { ch_ids }
 
 /*
 ========================================================================================
@@ -40,7 +36,14 @@ include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'       
 include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'      addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'   addParams( options: modules['sra_merge_samplesheet']   )
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config' addParams( options: modules['multiqc_mappings_config'] )
-include { GET_SOFTWARE_VERSIONS   } from '../modules/local/get_software_versions'   addParams( options: [publish_files : ['tsv':'']]       )
+
+/*
+========================================================================================
+    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+========================================================================================
+*/
+
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/dumpsoftwareversions/main' addParams( options: [publish_files : ['_versions.yml':'']] )
 
 /*
 ========================================================================================
@@ -48,9 +51,9 @@ include { GET_SOFTWARE_VERSIONS   } from '../modules/local/get_software_versions
 ========================================================================================
 */
 
-workflow FETCHNGS {
+workflow SRA {
 
-    ch_software_versions = Channel.empty()
+    ch_versions = Channel.empty()
 
     //
     // MODULE: Get SRA run information for public database ids
@@ -59,6 +62,7 @@ workflow FETCHNGS {
         ch_ids,
         params.ena_metadata_fields ?: ''
     )
+    ch_versions = ch_versions.mix(SRA_IDS_TO_RUNINFO.out.versions.first())
 
     //
     // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
@@ -66,6 +70,7 @@ workflow FETCHNGS {
     SRA_RUNINFO_TO_FTP (
         SRA_IDS_TO_RUNINFO.out.tsv
     )
+    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     SRA_RUNINFO_TO_FTP
         .out
@@ -78,7 +83,7 @@ workflow FETCHNGS {
         }
         .unique()
         .set { ch_sra_reads }
-    ch_software_versions = ch_software_versions.mix(SRA_RUNINFO_TO_FTP.out.version.first().ifEmpty(null))
+    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     if (!params.skip_fastq_download) {
         //
@@ -87,6 +92,7 @@ workflow FETCHNGS {
         SRA_FASTQ_FTP (
             ch_sra_reads.map { meta, reads -> if (meta.fastq_1)  [ meta, reads ] }
         )
+        ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
         //
         // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
@@ -104,6 +110,7 @@ workflow FETCHNGS {
             SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
             SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
         )
+        ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
         //
         // MODULE: Create a MutiQC config file with sample name mappings
@@ -112,6 +119,7 @@ workflow FETCHNGS {
             MULTIQC_MAPPINGS_CONFIG (
                 SRA_MERGE_SAMPLESHEET.out.mappings
             )
+            ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         }
 
         //
@@ -125,18 +133,10 @@ workflow FETCHNGS {
     }
 
     //
-    // MODULE: Pipeline reporting
+    // MODULE: Dump software versions for all tools used in the workflow
     //
-    ch_software_versions
-        .map { it -> if (it) [ it.baseName, it ] }
-        .groupTuple()
-        .map { it[1][0] }
-        .flatten()
-        .collect()
-        .set { ch_software_versions }
-
-    GET_SOFTWARE_VERSIONS (
-        ch_software_versions.map { it }.collect()
+    CUSTOM_DUMPSOFTWAREVERSIONS (
+        ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
 }
 
@@ -151,7 +151,7 @@ workflow.onComplete {
         NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
     }
     NfcoreTemplate.summary(workflow, params, log)
-    WorkflowFetchngs.curateSamplesheetWarn(log)
+    WorkflowSra.curateSamplesheetWarn(log)
 }
 
 /*

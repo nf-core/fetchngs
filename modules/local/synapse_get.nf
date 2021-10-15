@@ -1,34 +1,47 @@
 // Import generic module functions
-include { initOptions; saveFiles; getSoftwareName } from './functions'
+include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 options        = initOptions(params.options)
 
 process SYNAPSE_GET {
-    tag "$synid"
+    tag "$meta.id"
     label 'process_low'
+    label 'error_retry'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:[:], publish_by_meta:[]) }
+        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
-    conda (params.enable_conda ? "bioconda::synapseclient=2.2.2" : null)
+    conda (params.enable_conda ? "bioconda::synapseclient=2.4.0" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE" // TODO: Add Singularity
+        container "https://depot.galaxyproject.org/singularity/synapseclient:2.4.0--pyh5e36f6f_0"
     } else {
-        container "sagebionetworks/synapsepythonclient:v2.4.0"
+        container "quay.io/biocontainers/synapseclient:2.4.0--pyh5e36f6f_0"
     }
 
     input:
-    val synid                   // synapse ID for individual FastQ files
-    path synapseconfig          // path to synapse.Config file
+    val meta
+    path config
 
     output:
-    path "*"               , emit: fastq
+    tuple val(meta), path("*.fastq.gz"), emit: fastq
+    tuple val(meta), path("*md5")      , emit: md5
+    path "versions.yml"                , emit: versions
 
     script:
-    def software = getSoftwareName(task.process)
-
     """
-    synapse -c $synapseconfig get $synid
+    synapse \\
+        -c $config \\
+        get \\
+        $options.args \\
+        $meta.id
+
+    find ./ -type f -name "*.fastq.gz" -exec echo "${meta.md5} " {} \\; > ${meta.id}.md5
+    md5sum -c ${meta.id}.md5
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        ${getSoftwareName(task.process)}: \$(synapse --version | sed -e "s/Synapse Client //g")
+    END_VERSIONS
     """
 }

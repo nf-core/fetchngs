@@ -1,5 +1,5 @@
 // Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
+include { saveFiles; getSoftwareName; getProcessName } from './functions'
 
 params.options = [:]
 
@@ -22,7 +22,8 @@ process SRA_IDS_TO_RUNINFO {
     val fields
 
     output:
-    path "*.tsv", emit: tsv
+    path "*.tsv"       , emit: tsv
+    path "versions.yml", emit: versions
 
     script:
     def metadata_fields = fields ? "--ena_metadata_fields ${fields}" : ''
@@ -32,5 +33,10 @@ process SRA_IDS_TO_RUNINFO {
         id.txt \\
         ${id}.runinfo.tsv \\
         $metadata_fields
+
+    cat <<-END_VERSIONS > versions.yml
+    ${getProcessName(task.process)}:
+        python: \$(python --version | sed 's/Python //g')
+    END_VERSIONS
     """
 }
