@@ -8,19 +8,21 @@
 
 The pipeline has been set-up to automatically download and process the raw FastQ files from public repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
-| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      |
-|--------------|--------------|--------------|------------|
-| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 |
-| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |
-| SRS6531847   | ERS4399630   | DRS090921    |            |
-| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |
-| SRP256957    | ERP120836    | DRP004793    |            |
-| SRA1068758   | ERA2420837   | DRA008156    |            |
-| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |
+| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      | `Synapse`   |
+|--------------|--------------|--------------|------------|-------------|
+| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 | syn26240435 |
+| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |             |
+| SRS6531847   | ERS4399630   | DRS090921    |            |             |
+| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |             |
+| SRP256957    | ERP120836    | DRP004793    |            |             |
+| SRA1068758   | ERA2420837   | DRA008156    |            |             |
+| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |             |
 
 If `SRR`/`ERR`/`DRR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX`/`DRX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
 
 The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP otherwise they will NOT be downloaded. This is intentional because tools such as `parallel-fastq-dump`, `fasterq-dump`, `prefetch` etc require pre-existing configuration files in the users home directory which makes automation tricky across different platforms and containerisation. We may add this functionality in later releases.
+
+To download data from `Synapse`, the SynapseID of the directory containing all files to be downloaded should be provided. The directory ID will then be resolved to the SynapseIDs of the corresponding FastQ files, which are then downloaded in parellel using the `synapse get` command. In order to download data from Synapse, an account must be created and a user configuration file provided via the parameter `--synapse_config`. All Synapse metadata, annotations and provenance are also downloaded using the `synapse show` command, and are outputted to a separate metadata file. By default, only the md5sums, file sizes, etags, Synapse IDs, file names, and file versions are shown.
 
 As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input) and the Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format). You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too if for example your samplesheet was created by providing `--nf_core_pipeline rnaseq`.
 

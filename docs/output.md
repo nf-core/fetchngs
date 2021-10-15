@@ -8,7 +8,7 @@ This document describes the output produced by the pipeline. The directories lis
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
 
-* [FastQ download](#fastq-download) - Download FastQ files via SRA / ENA / DDBJ / GEO ids
+* [FastQ download](#fastq-download) - Download FastQ files via SRA / ENA / DDBJ / GEO / Synapse ids
 * [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
 ### FastQ download
@@ -19,18 +19,18 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 * `fastq/`
     * `*.fastq.gz`: Paired-end/single-end reads downloaded from the SRA / ENA / DDBJ / GEO.
 * `fastq/md5/`
-    * `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA.
+    * `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA or appropriate database.
 * `samplesheet/`
     * `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
     * `id_mappings.csv`: File with selected fields that can be used to rename samples to more informative names; see [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
     * `multiqc_config.yml`: [MultiQC](https://multiqc.info/docs/#bulk-sample-renaming) config file that can be passed to most nf-core pipelines via the `--multiqc_config` parameter for bulk renaming of sample names from database ids; [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
 * `metadata/`
-    * `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA.
-    * `*.runinfo.tsv`: Original metadata file downloaded from the ENA.
+    * `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA or appropriate database.
+    * `*.runinfo.tsv`: Original metadata file downloaded from the ENA or appropriate database.
 
 </details>
 
-Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline. The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5sums. If download links exist, the files will be downloaded in parallel by FTP otherwise they will NOT be downloaded. This is intentional because the tools such as `parallel-fastq-dump`, `fasterq-dump`, `prefetch` etc require pre-existing configuration files in the users home directory which makes automation tricky across different platforms and containerisation.
+Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline. The final sample information for `SRA`, `GEO`, `DDBJ`, and `ENA` identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5sums. If download links exist, the files will be downloaded in parallel by FTP otherwise they will NOT be downloaded. This is intentional because the tools such as `parallel-fastq-dump`, `fasterq-dump`, `prefetch` etc require pre-existing configuration files in the users home directory which makes automation tricky across different platforms and containerisation. Sample information for `Synapse` identifiers are downloaded in parallel directly from the [Synapse](https://www.synapse.org/#) platform. A [configuration file](http://python-docs.synapse.org/build/html/Credentials.html#use-synapseconfig) containing valid login credentials is required for Synapse downloads.
 
 ### Pipeline information
 
