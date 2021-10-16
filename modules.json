@@ -6,6 +6,9 @@
             "custom/dumpsoftwareversions": {
                 "git_sha": "84f2302920078b0cf7716b2a2e5fcc0be5c4531d"
             },
+            "sratools/fasterqdump": {
+                "git_sha": "de997825de788fe2210db16d9426f10342a1ba1d"
+            },
             "sratools/prefetch": {
                 "git_sha": "07c0830057cc655de113d84499c7c1499460bb55"
             }
