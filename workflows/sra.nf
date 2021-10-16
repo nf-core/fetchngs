@@ -25,6 +25,7 @@ def modules = params.modules.clone()
 include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'      addParams( options: modules['sra_ids_to_runinfo']      )
 include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'      addParams( options: modules['sra_runinfo_to_ftp']      )
 include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'           addParams( options: modules['sra_fastq_ftp']           )
+include { SRA_FASTQ               } from '../subworkflows/local/sra_fastq/main'     addParams( prefetch_options: modules['sratools/prefetch'], fasterqdump_options: modules['sratools/fasterqdump'] )
 include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'      addParams( options: modules['sra_to_samplesheet'], results_dir: modules['sra_fastq_ftp'].publish_dir )
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'   addParams( options: modules['sra_merge_samplesheet']   )
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config' addParams( options: modules['multiqc_mappings_config'] )
@@ -90,11 +91,17 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
+        // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
+        SRA_FASTQ (
+            ch_sra_reads.map { meta, reads -> if (!meta.fastq_1) [meta, meta.run_accession] }
+        )
+        ch_versions = ch_versions.mix(SRA_FASTQ.out.versions.first())
+
         //
         // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
         //
         SRA_TO_SAMPLESHEET (
-            SRA_FASTQ_FTP.out.fastq,
+            SRA_FASTQ_FTP.out.fastq.mix(SRA_FASTQ.out.reads),
             params.nf_core_pipeline ?: '',
             params.sample_mapping_fields
         )
@@ -117,15 +124,6 @@ workflow SRA {
             )
             ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         }
-
-        //
-        // If ids don't have a direct FTP download link write them to file for download outside of the pipeline
-        //
-        def no_ids_file = ["${params.outdir}", "${modules['sra_fastq_ftp'].publish_dir}", "IDS_NOT_DOWNLOADED.txt" ].join(File.separator)
-        ch_sra_reads
-            .map { meta, reads -> if (!meta.fastq_1) "${meta.id.split('_')[0..-2].join('_')}" }
-            .unique()
-            .collectFile(name: no_ids_file, sort: true, newLine: true)
     }
 
     //
