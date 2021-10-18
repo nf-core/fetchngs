@@ -101,14 +101,14 @@ workflow SYNAPSE {
     SYNAPSE_GET
         .out
         .fastq
-        .map { meta, fastq -> [ WorkflowSynapse.getSampleID( fastq , "*{1,2}*"), fastq ] }
+        .map { meta, fastq -> [ WorkflowSynapse.sampleNameFromFastQ( fastq , "*{1,2}*"), fastq ] }
         .groupTuple(sort: { it -> it.baseName })
         .set { ch_fastq }
 
     SYNAPSE_GET
         .out
         .fastq
-        .map { meta, fastq -> [ WorkflowSynapse.getSampleID( fastq , "*{1,2}*"), meta.id ] }
+        .map { meta, fastq -> [ WorkflowSynapse.sampleNameFromFastQ( fastq , "*{1,2}*"), meta.id ] }
         .groupTuple()
         .join(ch_fastq)
         .map { id, synids, fastq ->

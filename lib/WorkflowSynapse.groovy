@@ -39,7 +39,7 @@ class WorkflowSynapse {
     //
     // Obtain Sample ID from File Name
     //
-    public static String getSampleID(input_file, pattern) {
+    public static String sampleNameFromFastQ(input_file, pattern) {
 
         def sampleids = ""
 
