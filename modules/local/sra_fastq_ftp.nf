@@ -40,7 +40,7 @@ process SRA_FASTQ_FTP {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
+            curl: \$(echo \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//'))
         END_VERSIONS
         """
     } else {
@@ -63,7 +63,7 @@ process SRA_FASTQ_FTP {
 
         cat <<-END_VERSIONS > versions.yml
         ${getProcessName(task.process)}:
-            sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
+            curl: \$(echo \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//'))
         END_VERSIONS
         """
     }
