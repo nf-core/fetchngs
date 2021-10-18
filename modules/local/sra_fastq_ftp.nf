@@ -30,7 +30,10 @@ process SRA_FASTQ_FTP {
     script:
     if (meta.single_end) {
         """
-        bash -c 'until curl $options.args -L ${fastq[0]} -o ${meta.id}.fastq.gz; do sleep 1; done';
+        curl $options.args \\
+            --retry 5 \\
+            -L ${fastq[0]} \\
+            -o ${meta.id}.fastq.gz
 
         echo "${meta.md5_1} ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
@@ -42,12 +45,18 @@ process SRA_FASTQ_FTP {
         """
     } else {
         """
-        bash -c 'until curl $options.args -L ${fastq[0]} -o ${meta.id}_1.fastq.gz; do sleep 1; done';
+        curl $options.args \\
+            --retry 5 \\
+            -L ${fastq[0]} \\
+            -o ${meta.id}_1.fastq.gz
 
         echo "${meta.md5_1} ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
         md5sum -c ${meta.id}_1.fastq.gz.md5
 
-        bash -c 'until curl $options.args -L ${fastq[1]} -o ${meta.id}_2.fastq.gz; do sleep 1; done';
+        curl $options.args \\
+            --retry 5 \\
+            -L ${fastq[1]} \\
+            -o ${meta.id}_2.fastq.gz
 
         echo "${meta.md5_2} ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5
