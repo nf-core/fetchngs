@@ -16,7 +16,7 @@
 
 ## Introduction
 
-**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public and private databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO / Synapse ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)). 
+**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public and private databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO / Synapse ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
 
@@ -26,19 +26,21 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/rnaseq/samplesheet/public_database_ids.txt)) the pipeline performs the following steps:
 
-**SRA / ENA / DDBJ / GEO Identifiers**
+### SRA / ENA / DDBJ / GEO Identifiers
+
 1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the [ENA API](https://ena-docs.readthedocs.io/en/latest/retrieval/programmatic-access.html)
 2. Fetch extensive id metadata including direct download links to FastQ files via ENA API
 3. Download FastQ files in parallel via `curl` and perform `md5sum` check
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
-**Synapse Identifiers**
+### Synapse Identifiers
+
 1. Resolve Synapse directory SynapseIDs to the SynapseIDs of the FastQ files contained, using the `synapse list` command.
 2. Retrieve FastQ file metadata including FastQ file names, md5sums, etags, annotations, and data provenance via the `synapse show` command.
 3. Download FastQ files in parallel via `synapse get` and perform `md5sum` check
 4. Collate paths to FastQ files in a single samplesheet
 
-**Samplesheet Generation**
+### Samplesheet Generation
 The columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input) and the Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format). You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core.
 
 ## Quick Start
