@@ -18,7 +18,7 @@ The pipeline has been set-up to automatically download and process the raw FastQ
 | SRA1068758   | ERA2420837   | DRA008156    |            |             |
 | PRJNA625551  | PRJEB37513   | PRJDB4176    |            |             |
 
-### SRR / ERR / DRR Sample Identifiers
+### SRR / ERR / DRR Sample ids
 
 If `SRR`/`ERR`/`DRR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX`/`DRX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
 
@@ -34,11 +34,11 @@ If you have a GEO accession (found in the data availability section of published
 
 This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
 
-### Synapse Sample Identifiers
+### Synapse ids
 
-[Synapse](https://www.synapse.org/#) is a collaborative research platform created by [Sage Bionetworks](https://sagebionetworks.org/). Its aim is to promote reproducible research and responsible data sharing throughout the biomedical community. To download data from `Synapse`, the SynapseID of the _directory_ containing all files to be downloaded should be provided. The SynapseID should be an eleven-character identifier, beginning with `syn`.
+[Synapse](https://www.synapse.org/#) is a collaborative research platform created by [Sage Bionetworks](https://sagebionetworks.org/). Its aim is to promote reproducible research and responsible data sharing throughout the biomedical community. To download data from `Synapse`, the Synapse id of the _directory_ containing all files to be downloaded should be provided. The Synapse id should be an eleven-characters beginning with `syn`.
 
-This SynapseID will then be resolved to the SynapseIDs of the corresponding FastQ files contained within the directory. The individual FastQ files are then downloaded in parellel using the `synapse get` command. All Synapse metadata, annotations and provenance are also downloaded using the `synapse show` command, and are outputted to a separate metadata file. By default, only the md5sums, file sizes, etags, Synapse IDs, file names, and file versions are shown.
+This Synapse id will then be resolved to the Synapse id of the corresponding FastQ files contained within the directory. The individual FastQ files are then downloaded in parellel using the `synapse get` command. All Synapse metadata, annotations and data provenance are also downloaded using the `synapse show` command, and are outputted to a separate metadata file. By default, only the md5sums, file sizes, etags, Synapse ids, file names, and file versions are shown.
 
 In order to download data from Synapse, an account must be created and a user configuration file provided via the parameter `--synapse_config`. For more information about Synapse configuration, please see the [Synapse client configuration](https://help.synapse.org/docs/Client-Configuration.1985446156.html) documentation.
 
@@ -53,7 +53,7 @@ The final sample information for the FastQ files used for samplesheet generation
 
 </details>
 
-### Samplesheet Generation
+### Samplesheet format
 
 As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input) and the Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format). You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too if for example your samplesheet was created by providing `--nf_core_pipeline rnaseq`.
 
