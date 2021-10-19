@@ -20,6 +20,7 @@ class WorkflowSynapse {
             meta["${category}|${entries[0]}"] = entries[1]
         }
         meta.id = meta['properties|id']
+        meta.name = meta['properties|name']
         meta.md5 = meta['File|md5']
         return meta.findAll{ it.value != null }
     }
