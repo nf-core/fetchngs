@@ -57,7 +57,7 @@ FastQ files and corresponding sample information for `Synapse` identifiers are d
 
 The final sample information for the FastQ files downloaded from `Synapse` is obtained from the file name itself. The file names are parsed according to the glob pattern `*{1,2}*`. This returns the sample name, presumed to be the longest possible string matching the glob pattern, with the fewest number of wildcard insertions. Further information on sample name parsing can be found in the [usage documentation](https://nf-co.re/fetchngs/usage#introduction).
 
-### Pipeline Information
+### Pipeline information
 
 <details markdown="1">
 <summary>Output files</summary>
