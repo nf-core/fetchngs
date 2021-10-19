@@ -18,7 +18,7 @@ The pipeline has been set-up to automatically download and process the raw FastQ
 | SRA1068758   | ERA2420837   | DRA008156    |            |             |
 | PRJNA625551  | PRJEB37513   | PRJDB4176    |            |             |
 
-### SRR / ERR / DRR Sample ids
+### SRR / ERR / DRR ids
 
 If `SRR`/`ERR`/`DRR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX`/`DRX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
 
