@@ -4,14 +4,16 @@
 
 This document describes the output produced by the pipeline. The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
-## Pipeline Overview
+## Pipeline overview
 
-The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using one of the following workflows:
+The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data depending on the type of ids provided:
 
 * Download FastQ files and create samplesheet from:
-  1. [SRA / ENA / DDBJ / GEO ids](#sra-ena-ddbj-geo-ids)
+  1. [SRA / ENA / DDBJ / GEO ids](#sra--ena--ddbj--geo-ids)
   2. [Synapse ids](#synapse-ids)
 * [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
+
+Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline.
 
 ### SRA / ENA / DDBJ / GEO ids
 
@@ -32,7 +34,7 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 </details>
 
-Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline. The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5sums. If download links exist, the files will be downloaded in parallel by FTP otherwise they will NOT be downloaded. This is intentional because the tools such as `parallel-fastq-dump`, `fasterq-dump`, `prefetch` etc require pre-existing configuration files in the users home directory which makes automation tricky across different platforms and containerisation.
+The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5sums. If download links exist, the files will be downloaded in parallel by FTP otherwise they will NOT be downloaded. This is intentional because the tools such as `parallel-fastq-dump`, `fasterq-dump`, `prefetch` etc require pre-existing configuration files in the users home directory which makes automation tricky across different platforms and containerisation.
 
 ### Synapse ids
 
@@ -51,7 +53,7 @@ Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introductio
 
 </details>
 
-Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for detailed instructions on how to correctly provide Synapse IDs to the pipeline. FastQ files and corresponding sample information for `Synapse` identifiers are downloaded in parallel directly from the [Synapse](https://www.synapse.org/#) platform. A [configuration file](http://python-docs.synapse.org/build/html/Credentials.html#use-synapseconfig) containing valid login credentials is required for Synapse downloads.
+FastQ files and corresponding sample information for `Synapse` identifiers are downloaded in parallel directly from the [Synapse](https://www.synapse.org/#) platform. A [configuration file](http://python-docs.synapse.org/build/html/Credentials.html#use-synapseconfig) containing valid login credentials is required for Synapse downloads.
 
 The final sample information for the FastQ files downloaded from `Synapse` is obtained from the file name itself. The file names are parsed according to the glob pattern `*{1,2}*`. This returns the sample name, presumed to be the longest possible string matching the glob pattern, with the fewest number of wildcard insertions. Further information on sample name parsing can be found in the [usage documentation](https://nf-co.re/fetchngs/usage#introduction).
 
