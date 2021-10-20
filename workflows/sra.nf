@@ -13,14 +13,6 @@ def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 // Validate input parameters
 WorkflowSra.initialise(params, log, valid_params)
 
-// Read in ids from --input file
-Channel
-    .from(file(params.input, checkIfExists: true))
-    .splitCsv(header:false, sep:'', strip:true)
-    .map { it[0] }
-    .unique()
-    .set { ch_ids }
-
 /*
 ========================================================================================
     IMPORT LOCAL MODULES/SUBWORKFLOWS
@@ -53,13 +45,17 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/
 
 workflow SRA {
 
+    take:
+    ids // channel: [ ids ]
+
+    main:
     ch_versions = Channel.empty()
 
     //
     // MODULE: Get SRA run information for public database ids
     //
     SRA_IDS_TO_RUNINFO (
-        ch_ids,
+        ids,
         params.ena_metadata_fields ?: ''
     )
     ch_versions = ch_versions.mix(SRA_IDS_TO_RUNINFO.out.versions.first())
