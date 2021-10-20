@@ -28,6 +28,9 @@
 * [GEO](https://pubmed.ncbi.nlm.nih.gov/23193258/)
     > Barrett T, Wilhite SE, Ledoux P, Evangelista C, Kim IF, Tomashevsky M, Marshall KA, Phillippy KH, Sherman PM, Holko M, Yefanov A, Lee H, Zhang N, Robertson CL, Serova N, Davis S, Soboleva A. NCBI GEO: archive for functional genomics data sets--update. Nucleic Acids Res. 2013 Jan;41(Database issue):D991-5. doi: 10.1093/nar/gks1193. Epub 2012 Nov 27. PubMed PMID: 23193258; PubMed Central PMCID: PMC3531084.
 
+* [Synapse](https://pubmed.ncbi.nlm.nih.gov/24071850/)
+    > Omberg L, Ellrott K, Yuan Y, Kandoth C, Wong C, Kellen MR, Friend SH, Stuart J, Liang H, Margolin AA. Enabling transparent and collaborative computational analysis of 12 tumor types within The Cancer Genome Atlas. Nat Genet. 2013 Oct;45(10):1121-6. doi: 10.1038/ng.2761. PMID: 24071850; PMCID: PMC3950337.
+
 ## Software packaging/containerisation tools
 
 * [Anaconda](https://anaconda.com)

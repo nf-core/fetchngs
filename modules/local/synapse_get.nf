@@ -36,8 +36,7 @@ process SYNAPSE_GET {
         $options.args \\
         $meta.id
 
-    find ./ -type f -name "*.fastq.gz" -exec echo "${meta.md5} " {} \\; > ${meta.id}.md5
-    md5sum -c ${meta.id}.md5
+    echo "${meta.md5} \t ${meta.name}" > ${meta.id}.md5
 
     cat <<-END_VERSIONS > versions.yml
     ${getProcessName(task.process)}:
