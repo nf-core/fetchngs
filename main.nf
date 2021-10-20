@@ -37,6 +37,7 @@ Channel
 ========================================================================================
 */
 
+// Auto-detect id type
 def id_type = ''
 if (WorkflowMain.isSraId(ch_input, log)) {
     id_type = 'sra'
@@ -49,7 +50,7 @@ if (WorkflowMain.isSraId(ch_input, log)) {
 }
 
 //
-// WORKFLOW: Run main nf-core/fetchngs analysis pipeline, depending on type of dentifier provided
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
 
