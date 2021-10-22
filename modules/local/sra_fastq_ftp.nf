@@ -31,7 +31,6 @@ process SRA_FASTQ_FTP {
     if (meta.single_end) {
         """
         curl $options.args \\
-            --retry 5 \\
             -L ${fastq[0]} \\
             -o ${meta.id}.fastq.gz
 
@@ -46,7 +45,6 @@ process SRA_FASTQ_FTP {
     } else {
         """
         curl $options.args \\
-            --retry 5 \\
             -L ${fastq[0]} \\
             -o ${meta.id}_1.fastq.gz
 
@@ -54,7 +52,6 @@ process SRA_FASTQ_FTP {
         md5sum -c ${meta.id}_1.fastq.gz.md5
 
         curl $options.args \\
-            --retry 5 \\
             -L ${fastq[1]} \\
             -o ${meta.id}_2.fastq.gz
 
