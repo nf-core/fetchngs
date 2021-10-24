@@ -86,8 +86,7 @@ class WorkflowMain {
         def pattern = /^[SEPGD][RAS][RXSMPAJXE][END]?[AB]?\d{4,9}$/
         input.eachLine { line ->
             total_ids += 1
-            def matcher = line =~ pattern
-            if (!matcher) {
+            if (!(line =~ pattern)) {
                 no_match_ids << line
             }
         }
@@ -112,8 +111,7 @@ class WorkflowMain {
         def pattern = /^syn\d{8}$/
         input.eachLine { line ->
             total_ids += 1
-            def matcher = line =~ pattern
-            if (!matcher) {
+            if (!(line =~ pattern)) {
                 no_match_ids << line
             }
         }
