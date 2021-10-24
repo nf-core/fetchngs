@@ -83,7 +83,7 @@ class WorkflowMain {
         def is_sra = false
         def total_ids = 0
         def no_match_ids = []
-        def pattern = /^[SEPGD][RAS][RXSMPAJXE][END]?[AB]?\d{4,9}$/
+        def pattern = /^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM]))(\d+)$/
         input.eachLine { line ->
             total_ids += 1
             if (!(line =~ pattern)) {
