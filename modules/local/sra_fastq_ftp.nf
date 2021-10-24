@@ -30,7 +30,8 @@ process SRA_FASTQ_FTP {
     script:
     if (meta.single_end) {
         """
-        curl $options.args \\
+        curl \\
+            $options.args \\
             -L ${fastq[0]} \\
             -o ${meta.id}.fastq.gz
 
@@ -44,14 +45,16 @@ process SRA_FASTQ_FTP {
         """
     } else {
         """
-        curl $options.args \\
+        curl \\
+            $options.args \\
             -L ${fastq[0]} \\
             -o ${meta.id}_1.fastq.gz
 
         echo "${meta.md5_1} ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
         md5sum -c ${meta.id}_1.fastq.gz.md5
 
-        curl $options.args \\
+        curl \\
+            $options.args \\
             -L ${fastq[1]} \\
             -o ${meta.id}_2.fastq.gz
 
