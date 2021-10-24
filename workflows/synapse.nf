@@ -6,14 +6,6 @@
 
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
-// Read in ids from --input file
-Channel
-    .from(file(params.input, checkIfExists: true))
-    .splitCsv(header:false, sep:'', strip:true)
-    .map { it[0] }
-    .unique()
-    .set { ch_ids }
-
 // Create channel for synapse config
 if (params.synapse_config) {
     ch_synapse_config = file(params.synapse_config, checkIfExists: true)
@@ -52,13 +44,17 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/
 
 workflow SYNAPSE {
 
+    take:
+    ids // channel: [ ids ]
+
+    main:
     ch_versions = Channel.empty()
 
     //
     // MODULE: Expand synapse ids for individual FastQ files
     //
     SYNAPSE_LIST (
-        ch_ids,
+        ids,
         ch_synapse_config
     )
     ch_versions = ch_versions.mix(SYNAPSE_LIST.out.versions.first())

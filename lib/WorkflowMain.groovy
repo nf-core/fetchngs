@@ -78,15 +78,53 @@ class WorkflowMain {
         }
     }
 
-    // Check input type
-    public static String getIdentifierType(workflow, params, log) {
-        def input_type = ""
-        params.input.eachLine { line ->
-        if (line.contains("syn")) {
-            input_type = "Synapse"
-        } else {
-            input_type = "SRA"
-        }}
-        return input_type
+    // Check if input ids are from the SRA
+    public static Boolean isSraId(input, log) {
+        def is_sra = false
+        def total_ids = 0
+        def no_match_ids = []
+        def pattern = /^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM]))(\d+)$/
+        input.eachLine { line ->
+            total_ids += 1
+            if (!(line =~ pattern)) {
+                no_match_ids << line
+            }
+        }
+
+        def num_match = total_ids - no_match_ids.size()
+        if (num_match > 0) {
+            if (num_match == total_ids) {
+                is_sra = true
+            } else {
+                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ / GEO or Synapse ids!"
+                System.exit(1)
+            }
+        }
+        return is_sra
+    }
+
+    // Check if input ids are from the Synapse platform
+    public static Boolean isSynapseId(input, log) {
+        def is_synapse = false
+        def total_ids = 0
+        def no_match_ids = []
+        def pattern = /^syn\d{8}$/
+        input.eachLine { line ->
+            total_ids += 1
+            if (!(line =~ pattern)) {
+                no_match_ids << line
+            }
+        }
+
+        def num_match = total_ids - no_match_ids.size()
+        if (num_match > 0) {
+            if (num_match == total_ids) {
+                is_synapse = true
+            } else {
+                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ / GEO or Synapse ids!"
+                System.exit(1)
+            }
+        }
+        return is_synapse
     }
 }
