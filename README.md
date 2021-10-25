@@ -31,8 +31,8 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the [ENA API](https://ena-docs.readthedocs.io/en/latest/retrieval/programmatic-access.html)
 2. Fetch extensive id metadata via ENA API
 3. Download FastQ files:
-  - If direct download links are available from the ENA API, fetch in parallel via `curl` and perform `md5sum` check
-  - Otherwise use `sra-tools` to download `.sra` files and convert them to FastQ
+    - If direct download links are available from the ENA API, fetch in parallel via `curl` and perform `md5sum` check
+    - Otherwise use `sra-tools` to download `.sra` files and convert them to FastQ
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ### Synapse ids
