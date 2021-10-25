@@ -269,7 +269,7 @@ class DatabaseResolver:
         gsm_ids = [
             line.split("=")[1].strip()
             for line in response.text().splitlines()
-            if line.startswith("GSM")
+            if line.split('=')[1].strip().startswith('GSM')
         ]
         for gsm_id in gsm_ids:
             ids += cls._id_to_srx(gsm_id)
