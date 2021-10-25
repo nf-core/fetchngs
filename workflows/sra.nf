@@ -69,8 +69,6 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-
-
     SRA_RUNINFO_TO_FTP
         .out
         .tsv
@@ -83,7 +81,7 @@ workflow SRA {
         .unique()
         .branch {
             ftp: it[0].fastq_1
-            raw: !it[0].fastq_1
+            sra: !it[0].fastq_1
         }
         .set { ch_sra_reads }
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
@@ -99,7 +97,7 @@ workflow SRA {
 
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         SRA_FASTQ (
-            ch_sra_reads.raw.map { meta, reads -> [ meta, meta.run_accession ] }
+            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
         )
         ch_versions = ch_versions.mix(SRA_FASTQ.out.versions.first())
 
