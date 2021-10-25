@@ -30,7 +30,7 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 
 1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the [ENA API](https://ena-docs.readthedocs.io/en/latest/retrieval/programmatic-access.html)
 2. Fetch extensive id metadata including direct download links to FastQ files via ENA API
-3. Download FastQ files in parallel via `curl` and perform `md5sum` check
+3. Download FastQ files in parallel via `curl` if available from FTP and perform `md5sum` check. Otherwise use sra-tools to download SRAs and convert them to FastQ.
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ### Synapse ids
@@ -72,7 +72,7 @@ The nf-core/fetchngs pipeline comes with documentation about the pipeline [usage
 
 ## Credits
 
-nf-core/fetchngs was originally written by Harshil Patel ([@drpatelh](https://github.com/drpatelh)) from [Seqera Labs, Spain](https://seqera.io/) and Jose Espinosa-Carrasco ([@JoseEspinosa](https://github.com/JoseEspinosa)) from [The Comparative Bioinformatics Group](https://www.crg.eu/en/cedric_notredame) at [The Centre for Genomic Regulation, Spain](https://www.crg.eu/).
+nf-core/fetchngs was originally written by Harshil Patel ([@drpatelh](https://github.com/drpatelh)) from [Seqera Labs, Spain](https://seqera.io/) and Jose Espinosa-Carrasco ([@JoseEspinosa](https://github.com/JoseEspinosa)) from [The Comparative Bioinformatics Group](https://www.crg.eu/en/cedric_notredame) at [The Centre for Genomic Regulation, Spain](https://www.crg.eu/). Support for download of sequencing reads without FTP links via sra-tools was added by Moritz E. Beber ([@Midnighter](https://github.com/Midnighter)) from [Unseen Bio ApS, Denmark](https://unseenbio.com).
 
 ## Contributions and Support
 
