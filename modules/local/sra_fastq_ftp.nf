@@ -6,7 +6,7 @@ options        = initOptions(params.options)
 
 process SRA_FASTQ_FTP {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_low'
     label 'error_retry'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
