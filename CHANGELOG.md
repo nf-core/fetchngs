@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unpublished Version / DEV]
 
 * Add support for run accessions not available on FTP via sra-tools.
-* Resume interrupted downloads with prefetch.
+* Retry an error in prefetch via bash script in order to allow it to resume interrupted downloads.
 
 ### Enhancements & fixes
 
