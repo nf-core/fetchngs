@@ -35,7 +35,7 @@ process SRATOOLS_PREFETCH {
         printf '${config}' > "\${NCBI_SETTINGS}"
     fi
 
-    prefetch \\
+    retry_with_backoff.sh prefetch \\
         $options.args \\
         --progress \\
         $id
