@@ -1,14 +1,7 @@
-// Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
-
-params.options     = [:]
 params.results_dir = ''
 
 process SYNAPSE_TO_SAMPLESHEET {
     tag "$meta.id"
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     memory 100.MB
 
