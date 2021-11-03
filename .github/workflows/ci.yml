@@ -18,12 +18,11 @@ jobs:
     if: ${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}
     runs-on: ubuntu-latest
     env:
-      NXF_VER: ${{ matrix.nxf_ver }}
       NXF_ANSI_LOG: false
     strategy:
       matrix:
-        # Nextflow versions: check pipeline minimum and current latest
-        nxf_ver: ["21.04.0", ""]
+        # Nextflow versions: check pipeline minimum and latest edge version
+        nxf_ver: ["NXF_VER=21.04.0", "NXF_EDGE=1"]
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v2
@@ -34,6 +33,8 @@ jobs:
         run: |
           wget -qO- get.nextflow.io | bash
           sudo mv nextflow /usr/local/bin/
+          export ${{ matrix.nxf_ver }}
+          nextflow self-update
 
       - name: Run pipeline with SRA test data
         run: |
