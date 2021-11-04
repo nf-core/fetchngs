@@ -16,8 +16,8 @@ process SRATOOLS_FASTERQDUMP {
     path "versions.yml"          , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
+    def args   = task.ext.args  ?: ''
+    def args2  = task.ext.args2 ?: ''
     def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     // Paired-end data extracted by fasterq-dump (--split-3 the default) always creates
     // *_1.fastq *_2.fastq files but sometimes also an additional *.fastq file

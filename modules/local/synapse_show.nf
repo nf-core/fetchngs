@@ -17,7 +17,7 @@ process SYNAPSE_SHOW {
     path "versions.yml", emit: versions
 
     script:
-    def args = task.ext.args ?: ''
+    def args  = task.ext.args  ?: ''
     def args2 = task.ext.args2 ?: ''
     """
     synapse \\
