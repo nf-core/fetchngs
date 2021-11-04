@@ -19,13 +19,10 @@ if (params.synapse_config) {
 ========================================================================================
 */
 
-// Don't overwrite global params.modules, create a copy instead and use that within the main script.
-//def modules = params.modules.clone()
-
 include { SYNAPSE_LIST              } from '../modules/local/synapse_list'
 include { SYNAPSE_SHOW              } from '../modules/local/synapse_show'
 include { SYNAPSE_GET               } from '../modules/local/synapse_get'
-include { SYNAPSE_TO_SAMPLESHEET    } from '../modules/local/synapse_to_samplesheet'    // addParams( results_dir: modules['synapse_get'].publish_dir )
+include { SYNAPSE_TO_SAMPLESHEET    } from '../modules/local/synapse_to_samplesheet'
 include { SYNAPSE_MERGE_SAMPLESHEET } from '../modules/local/synapse_merge_samplesheet'
 include { DUMPSOFTWAREVERSIONS      } from '../modules/local/dumpsoftwareversions'
 

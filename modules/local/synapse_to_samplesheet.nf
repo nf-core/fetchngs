@@ -1,4 +1,3 @@
-params.results_dir = ''
 
 process SYNAPSE_TO_SAMPLESHEET {
     tag "$meta.id"
@@ -18,11 +17,11 @@ process SYNAPSE_TO_SAMPLESHEET {
     def meta_map = meta.clone()
     meta_map.remove("id")
 
-    def fastq_1 = "${params.outdir}/${params.results_dir}/${fastq}"
+    def fastq_1 = "${params.outdir}/fastq/${fastq}"
     def fastq_2 = ''
     if (fastq instanceof List && fastq.size() == 2) {
-        fastq_1 = "${params.outdir}/${params.results_dir}/${fastq[0]}"
-        fastq_2 = "${params.outdir}/${params.results_dir}/${fastq[1]}"
+        fastq_1 = "${params.outdir}/fastq/${fastq[0]}"
+        fastq_2 = "${params.outdir}/fastq/${fastq[1]}"
     }
 
     // Add relevant fields to the beginning of the map

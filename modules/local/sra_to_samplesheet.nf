@@ -1,6 +1,4 @@
 
-params.results_dir = ''
-
 process SRA_TO_SAMPLESHEET {
     tag "$meta.id"
 
@@ -32,8 +30,8 @@ process SRA_TO_SAMPLESHEET {
     // Add relevant fields to the beginning of the map
     pipeline_map = [
         sample  : "${meta.id.split('_')[0..-2].join('_')}",
-        fastq_1 : "${params.outdir}/${params.results_dir}/${fastq[0]}",
-        fastq_2 : meta.single_end ? '' : "${params.outdir}/${params.results_dir}/${fastq[1]}"
+        fastq_1 : "${params.outdir}/fastq/${fastq[0]}",
+        fastq_2 : meta.single_end ? '' : "${params.outdir}/fastq/${fastq[1]}"
     ]
 
     // Add nf-core pipeline specific entries
