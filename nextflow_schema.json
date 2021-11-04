@@ -23,6 +23,16 @@
                     "fa_icon": "fas fa-file-excel",
                     "description": "File containing SRA/ENA/DDBJ/GEO identifiers one per line to download their associated metadata and FastQ files."
                 },
+                "input_type": {
+                    "type": "string",
+                    "default": "sra",
+                    "description": "Specifies the type of identifier provided via `--input` - available options are 'sra' and 'synapse'.",
+                    "fa_icon": "fas fa-keyboard",
+                    "enum": [
+                        "sra",
+                        "synapse"
+                    ]
+                },
                 "ena_metadata_fields": {
                     "type": "string",
                     "fa_icon": "fas fa-columns",
