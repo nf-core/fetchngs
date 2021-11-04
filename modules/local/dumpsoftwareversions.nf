@@ -1,22 +1,12 @@
-// Import generic module functions
-include { initOptions; saveFiles; getSoftwareName; getProcessName } from './functions'
 
-params.options = [:]
-options        = initOptions(params.options)
-
-process CUSTOM_DUMPSOFTWAREVERSIONS {
+process DUMPSOFTWAREVERSIONS {
     label 'process_low'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:'pipeline_info', meta:[:], publish_by_meta:[]) }
 
     // Requires `pyyaml` which does not have a dedicated container but is in the MultiQC container
     conda (params.enable_conda ? "bioconda::multiqc=1.11" : null)
-    if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "https://depot.galaxyproject.org/singularity/multiqc:1.11--pyhdfd78af_0"
-    } else {
-        container "quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0"
-    }
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/multiqc:1.11--pyhdfd78af_0' :
+        'quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0' }"
 
     input:
     path versions
@@ -73,7 +63,7 @@ process CUSTOM_DUMPSOFTWAREVERSIONS {
         return "\\n".join(html)
 
     module_versions = {}
-    module_versions["${getProcessName(task.process)}"] = {
+    module_versions["${task.process.tokenize(':').last()}"] = {
         'python': platform.python_version(),
         'yaml': yaml.__version__
     }

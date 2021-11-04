@@ -37,16 +37,24 @@ Channel
 ========================================================================================
 */
 
-// Auto-detect id type
-def id_type = ''
+// Auto-detect input id type
+def input_type = ''
 if (WorkflowMain.isSraId(ch_input, log)) {
-    id_type = 'sra'
-    include { SRA } from './workflows/sra'
+    input_type = 'sra'
 } else if (WorkflowMain.isSynapseId(ch_input, log)) {
-    id_type = 'synapse'
-    include { SYNAPSE } from './workflows/synapse'
+    input_type = 'synapse'
 } else {
     exit 1, 'Ids provided via --input not recognised please make sure they are either SRA / ENA / DDBJ / GEO or Synapse ids!'
+}
+
+if (params.input_type == input_type) {
+    if (params.input_type == 'sra') {
+        include { SRA } from './workflows/sra'
+    } else if (params.input_type == 'synapse') {
+        include { SYNAPSE } from './workflows/synapse'
+    }
+} else {
+    exit 1, "Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!"
 }
 
 //
@@ -57,13 +65,13 @@ workflow NFCORE_FETCHNGS {
     //
     // WORKFLOW: Download FastQ files for SRA / ENA / DDBJ / GEO ids
     //
-    if (id_type == 'sra') {
+    if (params.input_type == 'sra') {
         SRA ( ch_ids )
 
     //
     // WORKFLOW: Download FastQ files for Synapse ids
     //
-    } else if (id_type == 'synapse') {
+    } else if (params.input_type == 'synapse') {
         SYNAPSE ( ch_ids )
     }
 }

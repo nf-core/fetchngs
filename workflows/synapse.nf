@@ -19,22 +19,12 @@ if (params.synapse_config) {
 ========================================================================================
 */
 
-// Don't overwrite global params.modules, create a copy instead and use that within the main script.
-def modules = params.modules.clone()
-
-include { SYNAPSE_LIST              } from '../modules/local/synapse_list'              addParams( options: modules['synapse_list']              )
-include { SYNAPSE_SHOW              } from '../modules/local/synapse_show'              addParams( options: modules['synapse_show']              )
-include { SYNAPSE_GET               } from '../modules/local/synapse_get'               addParams( options: modules['synapse_get']               )
-include { SYNAPSE_TO_SAMPLESHEET    } from '../modules/local/synapse_to_samplesheet'    addParams( options: modules['synapse_to_samplesheet'], results_dir: modules['synapse_get'].publish_dir )
-include { SYNAPSE_MERGE_SAMPLESHEET } from '../modules/local/synapse_merge_samplesheet' addParams( options: modules['synapse_merge_samplesheet'] )
-
-/*
-========================================================================================
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
-========================================================================================
-*/
-
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/dumpsoftwareversions/main' addParams( options: [publish_files : ['_versions.yml':'']] )
+include { SYNAPSE_LIST              } from '../modules/local/synapse_list'
+include { SYNAPSE_SHOW              } from '../modules/local/synapse_show'
+include { SYNAPSE_GET               } from '../modules/local/synapse_get'
+include { SYNAPSE_TO_SAMPLESHEET    } from '../modules/local/synapse_to_samplesheet'
+include { SYNAPSE_MERGE_SAMPLESHEET } from '../modules/local/synapse_merge_samplesheet'
+include { DUMPSOFTWAREVERSIONS      } from '../modules/local/dumpsoftwareversions'
 
 /*
 ========================================================================================
@@ -132,7 +122,7 @@ workflow SYNAPSE {
     //
     // MODULE: Dump software versions for all tools used in the workflow
     //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
+    DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
 }
