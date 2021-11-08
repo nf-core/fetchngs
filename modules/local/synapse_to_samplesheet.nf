@@ -1,14 +1,6 @@
-// Import generic module functions
-include { saveFiles; getSoftwareName } from './functions'
-
-params.options     = [:]
-params.results_dir = ''
 
 process SYNAPSE_TO_SAMPLESHEET {
     tag "$meta.id"
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
 
     memory 100.MB
 
@@ -25,11 +17,11 @@ process SYNAPSE_TO_SAMPLESHEET {
     def meta_map = meta.clone()
     meta_map.remove("id")
 
-    def fastq_1 = "${params.outdir}/${params.results_dir}/${fastq}"
+    def fastq_1 = "${params.outdir}/fastq/${fastq}"
     def fastq_2 = ''
     if (fastq instanceof List && fastq.size() == 2) {
-        fastq_1 = "${params.outdir}/${params.results_dir}/${fastq[0]}"
-        fastq_2 = "${params.outdir}/${params.results_dir}/${fastq[1]}"
+        fastq_1 = "${params.outdir}/fastq/${fastq[0]}"
+        fastq_2 = "${params.outdir}/fastq/${fastq[1]}"
     }
 
     // Add relevant fields to the beginning of the map

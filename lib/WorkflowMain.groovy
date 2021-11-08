@@ -46,6 +46,7 @@ class WorkflowMain {
     // Validate parameters and print summary to screen
     //
     public static void initialise(workflow, params, log) {
+
         // Print help to screen if required
         if (params.help) {
             log.info help(workflow, params, log)
@@ -60,6 +61,9 @@ class WorkflowMain {
         // Print parameter summary log to screen
         log.info paramsSummaryLog(workflow, params, log)
 
+        // Check that a -profile or Nextflow config has been provided to run the pipeline
+        NfcoreTemplate.checkConfigProvided(workflow, log)
+
         // Check that conda channels are set-up correctly
         if (params.enable_conda) {
             Utils.checkCondaChannels(log)
@@ -68,12 +72,16 @@ class WorkflowMain {
         // Check AWS batch settings
         NfcoreTemplate.awsBatch(workflow, params)
 
-        // Check the hostnames against configured profiles
-        NfcoreTemplate.hostName(workflow, params, log)
-
         // Check input has been provided
         if (!params.input) {
             log.error "Please provide an input file containing ids to the pipeline - one per line e.g. '--input ids.txt'"
+            System.exit(1)
+        }
+
+        // Check valid input_type has been provided
+        def input_types = ['sra', 'synapse']
+        if (!input_types.contains(params.input_type)) {
+            log.error "Invalid option: '${params.input_type}'. Valid options for '--input_type': ${input_types.join(', ')}."
             System.exit(1)
         }
     }
