@@ -14,6 +14,8 @@
 
 * [Requests](https://docs.python-requests.org/)
 
+* [sra-tools](https://github.com/ncbi/sra-tools)
+
 ## Pipeline resources
 
 * [ENA](https://pubmed.ncbi.nlm.nih.gov/33175160/)

@@ -26,7 +26,7 @@ process SRA_FASTQ_FTP {
             -L ${fastq[0]} \\
             -o ${meta.id}.fastq.gz
 
-        echo "${meta.md5_1} ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
+        echo "${meta.md5_1}  ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
 
         cat <<-END_VERSIONS > versions.yml
@@ -41,7 +41,7 @@ process SRA_FASTQ_FTP {
             -L ${fastq[0]} \\
             -o ${meta.id}_1.fastq.gz
 
-        echo "${meta.md5_1} ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
+        echo "${meta.md5_1}  ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
         md5sum -c ${meta.id}_1.fastq.gz.md5
 
         curl \\
@@ -49,7 +49,7 @@ process SRA_FASTQ_FTP {
             -L ${fastq[1]} \\
             -o ${meta.id}_2.fastq.gz
 
-        echo "${meta.md5_2} ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
+        echo "${meta.md5_2}  ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5
 
         cat <<-END_VERSIONS > versions.yml

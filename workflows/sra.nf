@@ -22,7 +22,7 @@ WorkflowSra.initialise(params, log, valid_params)
 include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'
 include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'
-include { SRA_FASTQ               } from '../subworkflows/local/sra_fastq'
+include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
 include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
@@ -70,13 +70,14 @@ workflow SRA {
         }
         .unique()
         .branch {
-            ftp: it[0].fastq_1
-            sra: !it[0].fastq_1
+            ftp: it[0].fastq_1  && !params.force_sratools_download
+            sra: !it[0].fastq_1 || params.force_sratools_download
         }
         .set { ch_sra_reads }
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     if (!params.skip_fastq_download) {
+
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
         //
@@ -85,17 +86,19 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
+        //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
-        SRA_FASTQ (
+        //
+        SRA_FASTQ_SRATOOLS (
             ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
         )
-        ch_versions = ch_versions.mix(SRA_FASTQ.out.versions.first())
+        ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
 
         //
         // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
         //
         SRA_TO_SAMPLESHEET (
-            SRA_FASTQ_FTP.out.fastq.mix(SRA_FASTQ.out.reads),
+            SRA_FASTQ_FTP.out.fastq.mix(SRA_FASTQ_SRATOOLS.out.reads),
             params.nf_core_pipeline ?: '',
             params.sample_mapping_fields
         )

@@ -112,7 +112,6 @@ def parse_sra_runinfo(file_in):
             else:
                 # In some instances, FTP links don't exist for FastQ files.
                 # These have to be downloaded with the run accession using sra-tools.
-                db_id = row["run_accession"]
                 sample = dict.fromkeys(extensions, None)
                 if row["library_layout"] == "SINGLE":
                     sample["single_end"] = "true"
@@ -159,7 +158,9 @@ def sra_runinfo_to_ftp(files_in, file_out):
             writer.writeheader()
             for db_id in sorted(samplesheet):
                 for idx, row in enumerate(samplesheet[db_id], start=1):
-                    row["id"] = f"{db_id}_T{idx}"
+                    row["id"] = f"{db_id}"
+                    if 'run_accession' in row:
+                        row["id"] = f"{db_id}_{row['run_accession']}"
                     writer.writerow(row)
 
 

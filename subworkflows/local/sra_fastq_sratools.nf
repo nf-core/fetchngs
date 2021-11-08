@@ -5,7 +5,7 @@
 include { SRATOOLS_PREFETCH    } from '../../modules/local/sratools_prefetch.nf'
 include { SRATOOLS_FASTERQDUMP } from '../../modules/local/sratools_fasterqdump.nf'
 
-workflow SRA_FASTQ {
+workflow SRA_FASTQ_SRATOOLS {
     take:
     sra_ids  // channel: [ val(meta), val(id) ]
 

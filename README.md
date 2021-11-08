@@ -24,7 +24,7 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 ## Pipeline summary
 
-Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/rnaseq/samplesheet/public_database_ids.txt)) the pipeline performs the following steps:
+Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/fetchngs/sra_ids_test.txt)) the pipeline performs the following steps:
 
 ### SRA / ENA / DDBJ / GEO ids
 
@@ -32,7 +32,7 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 2. Fetch extensive id metadata via ENA API
 3. Download FastQ files:
     - If direct download links are available from the ENA API, fetch in parallel via `curl` and perform `md5sum` check
-    - Otherwise use `sra-tools` to download `.sra` files and convert them to FastQ
+    - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ### Synapse ids
