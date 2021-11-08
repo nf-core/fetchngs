@@ -92,13 +92,13 @@ workflow SRA {
         SRA_FASTQ_SRATOOLS (
             ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
         )
-        ch_versions = ch_versions.mix(SRA_FASTQ.out.versions.first())
+        ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
 
         //
         // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
         //
         SRA_TO_SAMPLESHEET (
-            SRA_FASTQ_FTP.out.fastq.mix(SRA_FASTQ.out.reads),
+            SRA_FASTQ_FTP.out.fastq.mix(SRA_FASTQ_SRATOOLS.out.reads),
             params.nf_core_pipeline ?: '',
             params.sample_mapping_fields
         )
