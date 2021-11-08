@@ -158,9 +158,9 @@ def sra_runinfo_to_ftp(files_in, file_out):
             writer.writeheader()
             for db_id in sorted(samplesheet):
                 for idx, row in enumerate(samplesheet[db_id], start=1):
-                    row["id"] = f"{db_id}_T{idx}"
+                    row["id"] = f"{db_id}"
                     if 'run_accession' in row:
-                        row["id"] = f"{db_id}_{row['run_accession']}_T{idx}"
+                        row["id"] = f"{db_id}_{row['run_accession']}"
                     writer.writerow(row)
 
 
