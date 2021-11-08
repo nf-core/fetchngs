@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * SRA identifiers not available for direct download via the ENA FTP will now be downloaded via [`sra-tools`](https://github.com/ncbi/sra-tools).
 * Correctly handle errors from SRA identifiers that do **not** return metadata, for example, due to being private.
 * Retry an error in prefetch via bash script in order to allow it to resume interrupted downloads.
-* Rename output FastQ files using `{EXP_ACC}_{RUN_ACC}_T1*fastq.gz` convention for run id provenance
+* Name output FastQ files by `{EXP_ACC}_{RUN_ACC}*fastq.gz` instead of `{EXP_ACC}_{T*}*fastq.gz` for run id provenance
 * [[#46](https://github.com/nf-core/fetchngs/issues/46)] - Bug in sra_ids_to_runinfo.py
 * Added support for [DDBJ ids](https://www.ddbj.nig.ac.jp/index-e.html). See examples below:
 
