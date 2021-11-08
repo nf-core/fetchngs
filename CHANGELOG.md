@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added a workflow to download FastQ files and to create samplesheets for ids from the [Synapse platform](https://www.synapse.org/) hosted by [Sage Bionetworks](https://sagebionetworks.org/).
 * SRA identifiers not available for direct download via the ENA FTP will now be downloaded via sra-tools.
 * Correctly handle errors from SRA identifiers that do **not** return metadata, for example, due to being private.
+* Retry an error in prefetch via bash script in order to allow it to resume interrupted downloads.
 * [[#46](https://github.com/nf-core/fetchngs/issues/46)] - Bug in sra_ids_to_runinfo.py
 * Added support for [DDBJ ids](https://www.ddbj.nig.ac.jp/index-e.html). See examples below:
 
