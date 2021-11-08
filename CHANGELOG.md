@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Convert pipeline to updated Nextflow DSL2 syntax for future adoption across nf-core
 * Added a workflow to download FastQ files and to create samplesheets for ids from the [Synapse platform](https://www.synapse.org/) hosted by [Sage Bionetworks](https://sagebionetworks.org/).
-* SRA identifiers not available for direct download via the ENA FTP will now be downloaded via sra-tools.
+* SRA identifiers not available for direct download via the ENA FTP will now be downloaded via [`sra-tools`](https://github.com/ncbi/sra-tools).
 * Correctly handle errors from SRA identifiers that do **not** return metadata, for example, due to being private.
 * Retry an error in prefetch via bash script in order to allow it to resume interrupted downloads.
 * [[#46](https://github.com/nf-core/fetchngs/issues/46)] - Bug in sra_ids_to_runinfo.py
