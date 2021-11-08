@@ -24,7 +24,7 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 ## Pipeline summary
 
-Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/rnaseq/samplesheet/public_database_ids.txt)) the pipeline performs the following steps:
+Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/fetchngs/sra_ids_test.txt)) the pipeline performs the following steps:
 
 ### SRA / ENA / DDBJ / GEO ids
 
