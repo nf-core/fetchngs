@@ -50,6 +50,11 @@
                     "fa_icon": "fab fa-apple",
                     "description": "Name of supported nf-core pipeline e.g.  'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns."
                 },
+                "force_sratools_download": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-tools",
+                    "description": "Force download FastQ files via sra-tools instead of via the ENA FTP."
+                },
                 "skip_fastq_download": {
                     "type": "boolean",
                     "fa_icon": "fas fa-fast-forward",

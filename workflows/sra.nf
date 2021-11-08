@@ -70,13 +70,14 @@ workflow SRA {
         }
         .unique()
         .branch {
-            ftp: it[0].fastq_1
-            sra: !it[0].fastq_1
+            ftp: it[0].fastq_1  && !params.force_sratools_download
+            sra: !it[0].fastq_1 || params.force_sratools_download
         }
         .set { ch_sra_reads }
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     if (!params.skip_fastq_download) {
+
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
         //
@@ -85,7 +86,9 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
+        //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
+        //
         SRA_FASTQ (
             ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
         )
