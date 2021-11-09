@@ -21,7 +21,17 @@
                     "pattern": "^\\S+\\.txt$",
                     "schema": "assets/schema_input.json",
                     "fa_icon": "fas fa-file-excel",
-                    "description": "File containing SRA/ENA/GEO identifiers one per line to download their associated metadata and FastQ files."
+                    "description": "File containing SRA/ENA/DDBJ/GEO identifiers one per line to download their associated metadata and FastQ files."
+                },
+                "input_type": {
+                    "type": "string",
+                    "default": "sra",
+                    "description": "Specifies the type of identifier provided via `--input` - available options are 'sra' and 'synapse'.",
+                    "fa_icon": "fas fa-keyboard",
+                    "enum": [
+                        "sra",
+                        "synapse"
+                    ]
                 },
                 "ena_metadata_fields": {
                     "type": "string",
@@ -33,12 +43,17 @@
                     "type": "string",
                     "fa_icon": "fas fa-globe-americas",
                     "description": "Comma-separated list of ENA metadata fields used to create a separate 'id_mappings.csv' and 'multiqc_config.yml' with selected fields that can be used to rename samples in general and in MultiQC.",
-                    "default": "run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description,description"
+                    "default": "experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description,description"
                 },
                 "nf_core_pipeline": {
                     "type": "string",
                     "fa_icon": "fab fa-apple",
                     "description": "Name of supported nf-core pipeline e.g.  'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns."
+                },
+                "force_sratools_download": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-tools",
+                    "description": "Force download FastQ files via sra-tools instead of via the ENA FTP."
                 },
                 "skip_fastq_download": {
                     "type": "boolean",
@@ -57,6 +72,12 @@
                     "fa_icon": "fas fa-envelope",
                     "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
+                },
+                "synapse_config": {
+                    "type": "string",
+                    "description": "Path to Synapse configuration file",
+                    "fa_icon": "fas fa-users-cog",
+                    "hidden": true
                 }
             }
         },
@@ -80,12 +101,6 @@
                     "default": "https://raw.githubusercontent.com/nf-core/configs/master",
                     "hidden": true,
                     "help_text": "If you're running offline, Nextflow will not be able to fetch the institutional config files from the internet. If you don't need them, then this is not a problem. If you do need them, you should download the files from the repo and tell Nextflow where to find them with this parameter.",
-                    "fa_icon": "fas fa-users-cog"
-                },
-                "hostnames": {
-                    "type": "string",
-                    "description": "Institutional configs hostname.",
-                    "hidden": true,
                     "fa_icon": "fas fa-users-cog"
                 },
                 "config_profile_name": {
@@ -224,13 +239,6 @@
                     "description": "Run this workflow with Conda. You can also use '-profile conda' instead of providing this parameter.",
                     "hidden": true,
                     "fa_icon": "fas fa-bacon"
-                },
-                "singularity_pull_docker_container": {
-                    "type": "boolean",
-                    "description": "Instead of directly downloading Singularity images for use with Singularity, force the workflow to pull and convert Docker containers instead.",
-                    "hidden": true,
-                    "fa_icon": "fas fa-toolbox",
-                    "help_text": "This may be useful for example if you are unable to directly pull Singularity containers to run the pipeline due to http/https proxy issues."
                 }
             }
         }
@@ -250,4 +258,3 @@
         }
     ]
 }
-

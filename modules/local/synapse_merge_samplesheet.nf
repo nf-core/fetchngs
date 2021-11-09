@@ -1,5 +1,5 @@
 
-process SRA_MERGE_SAMPLESHEET {
+process SYNAPSE_MERGE_SAMPLESHEET {
 
     conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -8,11 +8,9 @@ process SRA_MERGE_SAMPLESHEET {
 
     input:
     path ('samplesheets/*')
-    path ('mappings/*')
 
     output:
     path "samplesheet.csv", emit: samplesheet
-    path "id_mappings.csv", emit: mappings
     path "versions.yml"   , emit: versions
 
     script:
@@ -20,11 +18,6 @@ process SRA_MERGE_SAMPLESHEET {
     head -n 1 `ls ./samplesheets/* | head -n 1` > samplesheet.csv
     for fileid in `ls ./samplesheets/*`; do
         awk 'NR>1' \$fileid >> samplesheet.csv
-    done
-
-    head -n 1 `ls ./mappings/* | head -n 1` > id_mappings.csv
-    for fileid in `ls ./mappings/*`; do
-        awk 'NR>1' \$fileid >> id_mappings.csv
     done
 
     cat <<-END_VERSIONS > versions.yml
