@@ -1,4 +1,3 @@
-
 process SRATOOLS_PREFETCH {
     tag "$id"
     label 'process_low'
@@ -17,7 +16,7 @@ process SRATOOLS_PREFETCH {
     path "versions.yml"         , emit: versions
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
@@ -26,7 +25,7 @@ process SRATOOLS_PREFETCH {
         printf '${config}' > "\${NCBI_SETTINGS}"
     fi
 
-    retry_with_backoff.sh prefetch \\
+    prefetch \\
         $args \\
         --progress \\
         $id
@@ -34,7 +33,7 @@ process SRATOOLS_PREFETCH {
     vdb-validate $id
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         sratools: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
     END_VERSIONS
     """
