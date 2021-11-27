@@ -22,11 +22,19 @@ WorkflowSra.initialise(params, log, valid_params)
 include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'
 include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'
-include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
 include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
-include { DUMPSOFTWAREVERSIONS    } from '../modules/local/dumpsoftwareversions'
+
+include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
+
+/*
+========================================================================================
+    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+========================================================================================
+*/
+
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/dumpsoftwareversions/main'
 
 /*
 ========================================================================================
@@ -126,7 +134,7 @@ workflow SRA {
     //
     // MODULE: Dump software versions for all tools used in the workflow
     //
-    DUMPSOFTWAREVERSIONS (
+    CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
 }
