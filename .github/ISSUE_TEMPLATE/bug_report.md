@@ -51,7 +51,7 @@ Have you provided the following extra information/files:
 
 ## Nextflow Installation
 
-- Version: <!-- [e.g. 21.04.0] -->
+- Version: <!-- [e.g. 21.10.3] -->
 
 ## Container engine
 
