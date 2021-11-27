@@ -3,7 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unpublished Version / DEV]
+## [[1.5](https://github.com/nf-core/fetchngs/releases/tag/1.5] - 2021-11-29
+
+* Finish porting the pipeline to the updated Nextflow DSL2 syntax adopted on nf-core/modules
+    * Bump minimum Nextflow version from `21.04.0` -> `21.10.3`
+    * Removed `--publish_dir_mode` as it is no longer required for the new syntax
 
 ### Enhancements & fixes
 
