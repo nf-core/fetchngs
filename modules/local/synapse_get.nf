@@ -30,7 +30,7 @@ process SYNAPSE_GET {
     echo "${meta.md5} \t ${meta.name}" > ${meta.id}.md5
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         synapse: \$(synapse --version | sed -e "s/Synapse Client //g")
     END_VERSIONS
     """

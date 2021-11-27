@@ -28,7 +28,7 @@ process SRA_MERGE_SAMPLESHEET {
     done
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
     END_VERSIONS
     """

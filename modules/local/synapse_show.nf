@@ -29,7 +29,7 @@ process SYNAPSE_SHOW {
         > ${id}.metadata.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         synapse: \$(synapse --version | sed -e "s/Synapse Client //g")
     END_VERSIONS
     """
