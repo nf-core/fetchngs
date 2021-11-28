@@ -1,6 +1,8 @@
 lint:
   files_unchanged:
     - .github/CONTRIBUTING.md
+    - .github/ISSUE_TEMPLATE/bug_report.md
+    - .github/workflows/linting_comment.yml
     - assets/sendmail_template.txt
     - lib/NfcoreSchema.groovy
     - lib/NfcoreTemplate.groovy
