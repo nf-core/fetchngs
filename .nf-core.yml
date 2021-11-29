@@ -1,10 +1,15 @@
 lint:
   files_unchanged:
+    - .gitattributes
+    - .github/ISSUE_TEMPLATE/config.yml
+    - .github/workflows/linting_comment.yml
     - .github/CONTRIBUTING.md
     - assets/sendmail_template.txt
     - lib/NfcoreSchema.groovy
     - lib/NfcoreTemplate.groovy
   files_exist:
+    - .github/ISSUE_TEMPLATE/bug_report.md
+    - .github/ISSUE_TEMPLATE/feature_request.md
     - bin/scrape_software_versions.py
     - modules/local/get_software_versions.nf
   actions_ci: False

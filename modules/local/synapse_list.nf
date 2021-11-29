@@ -29,7 +29,7 @@ process SYNAPSE_LIST {
         > ${id}.list.txt
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         syanpse: \$(synapse --version | sed -e "s/Synapse Client //g")
     END_VERSIONS
     """

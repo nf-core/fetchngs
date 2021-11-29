@@ -1,5 +1,11 @@
 {
     "name": "nf-core/fetchngs",
     "homePage": "https://github.com/nf-core/fetchngs",
-    "repos": {}
+    "repos": {
+        "nf-core/modules": {
+            "custom/dumpsoftwareversions": {
+                "git_sha": "20d8250d9f39ddb05dfb437603aaf99b5c0b2b41"
+            }
+        }
+    }
 }

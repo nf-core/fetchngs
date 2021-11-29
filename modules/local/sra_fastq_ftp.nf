@@ -30,7 +30,7 @@ process SRA_FASTQ_FTP {
         md5sum -c ${meta.id}.fastq.gz.md5
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        "${task.process}":
             curl: \$(echo \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//'))
         END_VERSIONS
         """
@@ -53,7 +53,7 @@ process SRA_FASTQ_FTP {
         md5sum -c ${meta.id}_2.fastq.gz.md5
 
         cat <<-END_VERSIONS > versions.yml
-        ${task.process.tokenize(':').last()}:
+        "${task.process}":
             curl: \$(echo \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//'))
         END_VERSIONS
         """

@@ -61,16 +61,22 @@ For further information/help, please consult the [nf-core/fetchngs documentation
 
 To make the nf-core/fetchngs code and processing logic more understandable for new contributors and to ensure quality, we semi-standardise the way the code and other contributions are written.
 
-### Adding a new step or module
+### Adding a new step
 
-If you wish to contribute a new step or module please see the [official guidelines](https://nf-co.re/developers/adding_modules#new-module-guidelines-and-pr-review-checklist) and use the following coding standards:
+If you wish to contribute a new step, please use the following coding standards:
 
-1. Add any new flags/options to `nextflow.config` with a default (see section below).
-2. Add any new flags/options to `nextflow_schema.json` with help text via `nf-core schema build`.
-3. Add sanity checks for all relevant parameters.
-4. Perform local tests to validate that the new code works as expected.
-5. If applicable, add a new test command in `.github/workflow/ci.yml`.
-6. Add any descriptions of output files to `docs/output.md`.
+1. Define the corresponding input channel into your new process from the expected previous process channel
+2. Write the process block (see below).
+3. Define the output channel if needed (see below).
+4. Add any new flags/options to `nextflow.config` with a default (see below).
+5. Add any new flags/options to `nextflow_schema.json` with help text (with `nf-core schema build`).
+6. Add sanity checks for all relevant parameters.
+7. Add any new software to the `scrape_software_versions.py` script in `bin/` and the version command to the `scrape_software_versions` process in `main.nf`.
+8. Perform local tests to validate that the new code works as expected.
+9. Add a new test command in `.github/workflow/ci.yml`.
+10. If applicable add a [MultiQC](https://https://multiqc.info/) module.
+11. Update MultiQC config `assets/multiqc_config.yaml` so relevant suffixes, name clean up, General Statistics Table column order, and module figures are in the right order.
+12. Optional: Add any descriptions of MultiQC report sections and output files to `docs/output.md`.
 
 ### Default values
 
@@ -82,12 +88,14 @@ Once there, use `nf-core schema build` to add to `nextflow_schema.json`.
 
 Sensible defaults for process resource requirements (CPUs / memory / time) for a process should be defined in `conf/base.config`. These should generally be specified generic with `withLabel:` selectors so they can be shared across multiple processes/steps of the pipeline. A nf-core standard set of labels that should be followed where possible can be seen in the [nf-core pipeline template](https://github.com/nf-core/tools/blob/master/nf_core/pipeline-template/conf/base.config), which has the default process as a single core-process, and then different levels of multi-core configurations for increasingly large memory requirements defined with standardised labels.
 
-### Channel naming convention
+The process resources can be passed on to the tool dynamically within the process with the `${task.cpu}` and `${task.memory}` variables in the `script:` block.
+
+### Naming schemes
 
 Please use the following naming schemes, to make it easy to understand what is going where.
 
-* Initial process channel: `ch_output_from_<process>`
-* Intermediate and terminal channels: `ch_<previousprocess>_for_<nextprocess>`
+* initial process channel: `ch_output_from_<process>`
+* intermediate and terminal channels: `ch_<previousprocess>_for_<nextprocess>`
 
 ### Nextflow version bumping
 

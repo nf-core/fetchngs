@@ -20,7 +20,7 @@ process MULTIQC_MAPPINGS_CONFIG {
         multiqc_config.yml
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """
