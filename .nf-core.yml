@@ -3,6 +3,7 @@ lint:
     - .gitattributes
     - .github/ISSUE_TEMPLATE/config.yml
     - .github/workflows/linting_comment.yml
+    - .github/CONTRIBUTING.md
     - assets/sendmail_template.txt
     - lib/NfcoreSchema.groovy
     - lib/NfcoreTemplate.groovy
