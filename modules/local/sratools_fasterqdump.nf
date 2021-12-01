@@ -17,14 +17,14 @@ process SRATOOLS_FASTERQDUMP {
     path "versions.yml"                , emit: versions
 
     script:
-    def args   = task.ext.args  ?: ''
-    def args2  = task.ext.args2 ?: ''
+    def args = task.ext.args  ?: ''
+    def args2 = task.ext.args2 ?: ''
     def config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"
     // Paired-end data extracted by fasterq-dump (--split-3 the default) always creates
     // *_1.fastq *_2.fastq files but sometimes also an additional *.fastq file
     // for unpaired reads which we ignore here.
     fastq_output = meta.single_end ? '*.fastq.gz'     : '*_{1,2}.fastq.gz'
-    md5_output   = meta.single_end ? '*.fastq.gz.md5' : '*_{1,2}.fastq.gz.md5'
+    md5_output = meta.single_end ? '*.fastq.gz.md5' : '*_{1,2}.fastq.gz.md5'
     """
     eval "\$(vdb-config -o n NCBI_SETTINGS | sed 's/[" ]//g')"
     if [[ ! -f "\${NCBI_SETTINGS}" ]]; then
@@ -60,7 +60,7 @@ process SRATOOLS_FASTERQDUMP {
     fi
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
         pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
     END_VERSIONS

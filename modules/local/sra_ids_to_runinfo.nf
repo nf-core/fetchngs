@@ -26,7 +26,7 @@ process SRA_IDS_TO_RUNINFO {
         $metadata_fields
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """

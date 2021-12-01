@@ -24,7 +24,14 @@ include { SYNAPSE_SHOW              } from '../modules/local/synapse_show'
 include { SYNAPSE_GET               } from '../modules/local/synapse_get'
 include { SYNAPSE_TO_SAMPLESHEET    } from '../modules/local/synapse_to_samplesheet'
 include { SYNAPSE_MERGE_SAMPLESHEET } from '../modules/local/synapse_merge_samplesheet'
-include { DUMPSOFTWAREVERSIONS      } from '../modules/local/dumpsoftwareversions'
+
+/*
+========================================================================================
+    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+========================================================================================
+*/
+
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/dumpsoftwareversions/main'
 
 /*
 ========================================================================================
@@ -122,7 +129,7 @@ workflow SYNAPSE {
     //
     // MODULE: Dump software versions for all tools used in the workflow
     //
-    DUMPSOFTWAREVERSIONS (
+    CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
 }

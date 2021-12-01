@@ -2,8 +2,8 @@
 // Download FASTQ sequencing reads from the NCBI's Sequence Read Archive (SRA).
 //
 
-include { SRATOOLS_PREFETCH    } from '../../modules/local/sratools_prefetch.nf'
-include { SRATOOLS_FASTERQDUMP } from '../../modules/local/sratools_fasterqdump.nf'
+include { SRATOOLS_PREFETCH    } from '../../modules/local/sratools_prefetch'
+include { SRATOOLS_FASTERQDUMP } from '../../modules/local/sratools_fasterqdump'
 
 workflow SRA_FASTQ_SRATOOLS {
     take:

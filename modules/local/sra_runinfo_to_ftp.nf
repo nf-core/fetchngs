@@ -20,7 +20,7 @@ process SRA_RUNINFO_TO_FTP {
         ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
 
     cat <<-END_VERSIONS > versions.yml
-    ${task.process.tokenize(':').last()}:
+    "${task.process}":
         python: \$(python --version | sed 's/Python //g')
     END_VERSIONS
     """
