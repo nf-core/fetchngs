@@ -69,6 +69,7 @@ workflow SRA {
 
     metadata_file = "metadata_${params.run_name}.tsv"
     SRA_RUNINFO_TO_FTP.out.tsv
+        .view()
         .collectFile (
             name:       "${metadata_file}",
             storeDir:   "${params.outdir}",
