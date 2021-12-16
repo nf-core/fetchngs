@@ -67,22 +67,32 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-    SRA_RUNINFO_TO_FTP
-        .out
-        .tsv
-        .splitCsv(header:true, sep:'\t')
-        .map {
-            meta ->
-                meta.single_end = meta.single_end.toBoolean()
-                [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+    metadata_file = "metadata_${params.run_name}.tsv"
+    SRA_RUNINFO_TO_FTP.out.tsv
+        .collectFile (
+            name:       "${metadata_file}",
+            storeDir:   "${params.outdir}",
+            keepHeader: true
+        ) { file ->
+            file.collect{ it.text }.join('\n') + '\n'
         }
-        .unique()
-        .branch {
-            ftp: it[0].fastq_1  && !params.force_sratools_download
-            sra: !it[0].fastq_1 || params.force_sratools_download
-        }
-        .set { ch_sra_reads }
-    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
+
+    // SRA_RUNINFO_TO_FTP
+    //     .out
+    //     .tsv
+    //     .splitCsv(header:true, sep:'\t')
+    //     .map {
+    //         meta ->
+    //             meta.single_end = meta.single_end.toBoolean()
+    //             [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+    //     }
+    //     .unique()
+    //     .branch {
+    //         ftp: it[0].fastq_1  && !params.force_sratools_download
+    //         sra: !it[0].fastq_1 || params.force_sratools_download
+    //     }
+    //     .set { ch_sra_reads }
+    // ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     if (!params.skip_fastq_download) {
 
