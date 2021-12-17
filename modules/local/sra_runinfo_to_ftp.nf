@@ -17,7 +17,7 @@ process SRA_RUNINFO_TO_FTP {
     """
     sra_runinfo_to_ftp.py \\
         ${runinfo.join(',')} \\
-        ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
+        ${runinfo.toString().tokenize(".")[0]}.metadata.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
