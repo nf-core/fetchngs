@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+* Updated pipeline template to [nf-core/tools 2.2](https://github.com/nf-core/tools/releases/tag/2.2)
+
 ## [[1.5](https://github.com/nf-core/fetchngs/releases/tag/1.5)] - 2021-12-01
 
 * Finish porting the pipeline to the updated Nextflow DSL2 syntax adopted on nf-core/modules

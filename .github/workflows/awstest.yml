@@ -22,8 +22,6 @@ jobs:
           workdir: s3://${{ secrets.AWS_S3_BUCKET }}/work/fetchngs/work-${{ github.sha }}
           parameters: |
             {
-              "outdir": "s3://${{ secrets.AWS_S3_BUCKET }}/fetchngs/results-${{ github.sha }}"
+              "outdir": "s3://${{ secrets.AWS_S3_BUCKET }}/fetchngs/results-test-${{ github.sha }}"
             }
           profiles: test,aws_tower
-          pre_run_script: 'export NXF_VER=21.10.3'
-
