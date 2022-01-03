@@ -9,3 +9,5 @@ testing*
 metadata/
 pipeline_info/
 test*
+.nextflow*
+job_output/
