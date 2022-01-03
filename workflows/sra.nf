@@ -69,6 +69,8 @@ workflow SRA {
 
     SRA_RUNINFO_TO_FTP.out.tsv
         .view()
+
+    SRA_RUNINFO_TO_FTP.out.tsv
         .collectFile (
             name:       "test.txt",
             storeDir:   "${params.outdir}",
