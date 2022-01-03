@@ -1,21 +1,10 @@
-# ![nf-core/fetchngs](docs/images/nf-core-fetchngs_logo.png)
 
-[![GitHub Actions CI Status](https://github.com/nf-core/fetchngs/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/fetchngs/actions?query=workflow%3A%22nf-core+CI%22)
-[![GitHub Actions Linting Status](https://github.com/nf-core/fetchngs/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/fetchngs/actions?query=workflow%3A%22nf-core+linting%22)
-[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/fetchngs/results)
-[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.5070524-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.5070524)
+This pipeline forks nf-core/fetchngs and incorporates the [dmgfinder](https://github.com/jordiabante/dgmfinder) pipeline.
 
-[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.10.3-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
-[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
-[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
-[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-
-[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23fetchngs-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/fetchngs)
-[![Follow on Twitter](http://img.shields.io/badge/twitter-%40nf__core-1DA1F2?labelColor=000000&logo=twitter)](https://twitter.com/nf_core)
-[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)
+---
 
 ## Introduction
-test
+
 **nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public and private databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO / Synapse ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
 The pipeline is built using [Nextflow](https://www.nextflow.io), a workflow tool to run tasks across multiple compute infrastructures in a very portable manner. It uses Docker/Singularity containers making installation trivial and results highly reproducible. The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementation of this pipeline uses one container per process which makes it much easier to maintain and update software dependencies.
