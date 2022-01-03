@@ -70,8 +70,7 @@ workflow SRA {
     metadata_file = "metadata_${params.run_name}.tsv"
     SRA_RUNINFO_TO_FTP.out.tsv
         .collectFile (
-            name:       "${metadata_file}",
-            storeDir:   "${params.outdir}",
+            name:       "metadata_${params.run_name}.tsv",
             keepHeader: true
         ) { file ->
             file.collect{ it.text }.join('\n') + '\n'
