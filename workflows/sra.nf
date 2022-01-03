@@ -67,13 +67,9 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-    metadata_file = "metadata_${params.run_name}.tsv"
     SRA_RUNINFO_TO_FTP.out.tsv
-        .collectFile (
-            name:       "metadata_${params.run_name}.tsv",
-            keepHeader: true
-        ) { file ->
-            file.collect{ it.text }.join('\n') + '\n'
+        .collectFile (keepHeader: true) { file ->
+            file.collect{ it.text }.join('\n')
         }
 
     SRA_RUNINFO_TO_FTP
