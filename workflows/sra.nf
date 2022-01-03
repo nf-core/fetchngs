@@ -68,8 +68,16 @@ workflow SRA {
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     SRA_RUNINFO_TO_FTP.out.tsv
-        .collectFile (keepHeader: true) { file ->
-            file.collect{ it.text }.join('\n')
+        .view()
+        .collectFile (
+            name:       "test.txt",
+            storeDir:   "${params.outdir}",
+            keepHeader: true,
+            skip:       1
+        ) { file ->
+            file
+                .collect{ it.text }
+                .join('\n')
         }
 
     SRA_RUNINFO_TO_FTP
