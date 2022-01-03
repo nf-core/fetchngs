@@ -67,16 +67,15 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-    // metadata_file = "metadata_${params.run_name}.tsv"
-    // SRA_RUNINFO_TO_FTP.out.tsv
-    //     .view()
-    //     .collectFile (
-    //         name:       "${metadata_file}",
-    //         storeDir:   "${params.outdir}",
-    //         keepHeader: true
-    //     ) { file ->
-    //         file.collect{ it.text }.join('\n') + '\n'
-    //     }
+    metadata_file = "metadata_${params.run_name}.tsv"
+    SRA_RUNINFO_TO_FTP.out.tsv
+        .collectFile (
+            name:       "${metadata_file}",
+            storeDir:   "${params.outdir}",
+            keepHeader: true
+        ) { file ->
+            file.collect{ it.text }.join('\n') + '\n'
+        }
 
     SRA_RUNINFO_TO_FTP
         .out
