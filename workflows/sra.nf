@@ -143,6 +143,7 @@ workflow SRA {
         .map { file -> file[1]}
         .flatten()
         .view()
+        .set {ch_fastqs_only}
 
     DGMFINDER (
         ch_fastqs_only,
