@@ -134,22 +134,13 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
-        //
-        // MODULE: Create a MutiQC config file with sample name mappings
-        //
-        if (params.sample_mapping_fields) {
-            MULTIQC_MAPPINGS_CONFIG (
-                SRA_MERGE_SAMPLESHEET.out.mappings
-            )
-            ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
-        }
     } // TODO the else case
 
     //
     // MODULE: Run dgmfinder on fastqs
     //
     DGMFINDER (
-        ch_fastqs,
+        ch_fastqs.flatten(),
         params.ann_file,
         params.kmer_size
     )
