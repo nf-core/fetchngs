@@ -70,7 +70,7 @@ workflow SRA {
             .map { it[0] }
             .unique()
             .set { ch_ids }
-
+    }
 
     //
     // MODULE: Get SRA run information for public database ids
