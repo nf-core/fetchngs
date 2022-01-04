@@ -78,7 +78,7 @@ workflow SRA {
     // MODULE: Get SRA run information for public database ids
     //
     SRA_IDS_TO_RUNINFO (
-        ids,
+        ch_ids,
         params.ena_metadata_fields ?: ''
     )
     ch_versions = ch_versions.mix(SRA_IDS_TO_RUNINFO.out.versions.first())
