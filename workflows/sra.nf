@@ -108,8 +108,6 @@ workflow SRA {
         ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
         ch_fastqs = SRA_FASTQ_FTP.out.fastq
 
-        ch_fastqs.first().view()
-
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         //
@@ -141,8 +139,13 @@ workflow SRA {
     //
     // MODULE: Run dgmfinder on fastqs
     //
+    ch_fastqs
+        .map { file -> file[1]}
+        .flatten()
+        .view()
+
     DGMFINDER (
-        ch_fastqs,
+        ch_fastqs_only,
         params.ann_file,
         params.kmer_size
     )
