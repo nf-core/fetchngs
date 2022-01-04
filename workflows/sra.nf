@@ -25,6 +25,7 @@ include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'
 include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
+include { DGMFINDER               } from '../modules/local/dgmfinder'
 
 include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
 
@@ -105,6 +106,7 @@ workflow SRA {
             ch_sra_reads.ftp
         )
         ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
+        ch_fastqs = SRA_FASTQ_FTP.out.fastq
 
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
@@ -118,7 +120,7 @@ workflow SRA {
         // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
         //
         SRA_TO_SAMPLESHEET (
-            SRA_FASTQ_FTP.out.fastq.mix(SRA_FASTQ_SRATOOLS.out.reads),
+            ch_fastqs.mix(SRA_FASTQ_SRATOOLS.out.reads),
             params.nf_core_pipeline ?: '',
             params.sample_mapping_fields
         )
@@ -141,7 +143,16 @@ workflow SRA {
             )
             ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         }
-    }
+    } // TODO the else case
+
+    //
+    // MODULE: Run dgmfinder on fastqs
+    //
+    DGMFINDER (
+        ch_fastqs,
+        params.ann_file,
+        params.kmer_size
+    )
 
     //
     // MODULE: Dump software versions for all tools used in the workflow
