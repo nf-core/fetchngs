@@ -13,6 +13,7 @@ import mystats
 import jaccard
 import utils
 from Bio.Blast.Applications import NcbiblastnCommandline
+import logging
 
 # constants
 COMPLEMENT = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
