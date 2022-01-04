@@ -9,7 +9,7 @@ process DGMFINDER {
     //     'quay.io/biocontainers/python:3.9--1' }"
 
     input:
-    path fastq
+    tuple val(meta), path(fastq)
     path ann_file
     val kmer_size
 

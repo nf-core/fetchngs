@@ -142,7 +142,7 @@ workflow SRA {
     // MODULE: Run dgmfinder on fastqs
     //
     DGMFINDER (
-        ch_fastqs.flatten(),
+        ch_fastqs,
         params.ann_file,
         params.kmer_size
     )
