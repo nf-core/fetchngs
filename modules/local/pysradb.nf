@@ -11,7 +11,7 @@ process PYSRADB {
     val srp
 
     output:
-    path "ids_*"  , emit: ids
+    path "ids_*txt"  , emit: ids
 
     script:
     """
