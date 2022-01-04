@@ -22,7 +22,7 @@ process DGMFINDER {
     path "versions.yml"             , emit: versions
 
     script:
-    fastq_id = fastq.baseName
+    fastq_id = fastq.simpleName
     """
     dmgfinder.py \\
         --fastq_id ${fastq_id} \\
