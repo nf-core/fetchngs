@@ -1,6 +1,6 @@
 
 process DGMFINDER {
-    tag "$id"
+    tag "$fastq_id"
     label 'error_retry'
 
     // conda (params.enable_conda ? "conda-forge::python=3.9.5" : null)
@@ -22,7 +22,7 @@ process DGMFINDER {
     path "versions.yml"             , emit: versions
 
     script:
-    fastq_id = "${fastq}.baseName"
+    fastq_id = fastq.baseName
     """
     dmgfinder.py \\
         --fastq_id ${fastq_id} \\
