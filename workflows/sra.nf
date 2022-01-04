@@ -55,23 +55,24 @@ workflow SRA {
         PYSRADB (
             params.SRP
         )
-        ch_input = PYSRADB.out.ids
+        ids_list = file(PYSRADB.out.ids.first()).readLines()
+        Channel
+            .fromList(ids_list)
+            .set { ch_ids }
 
     } else {
-        // Check if --input file is empty
-        ch_input = params.input
-    }
-    // Read in ids
-    Channel
-        .fromPath(ch_input)
-        .splitCsv(
-            header: false,
-            sep:'',
-            strip: true
-        )
-        .map { it[0] }
-        .unique()
-        .set { ch_ids }
+        // Read in ids
+        Channel
+            .fromPath(params.input)
+            .splitCsv(
+                header: false,
+                sep:'',
+                strip: true
+            )
+            .map { it[0] }
+            .unique()
+            .set { ch_ids }
+
 
     //
     // MODULE: Get SRA run information for public database ids
