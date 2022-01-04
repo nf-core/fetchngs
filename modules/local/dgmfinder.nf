@@ -14,12 +14,14 @@ process DGMFINDER {
     val kmer_size
 
     output:
-    path "*_anchors.txt.gz"         , emit: anchors
-    path "*_assemb_anchors.fasta"   , emit: assemb_anchors
-    path "*_max_anchor_up.fasta"    , emit: max_anchor_up
-    path "*_max_anchor_dn.fasta"    , emit: max_anchor_dn
-    path "*_anchors_annot.txt.gz"   , emit: anchors_annot
-    path "versions.yml"             , emit: versions
+    tuple val(fastq_id), path(fastq)    , emit: fastq
+    path "*_anchors.txt.gz"             , emit: anchors
+    path "*_assemb_anchors.fasta"       , emit: assemb_anchors
+    path "*_max_anchor_up.fasta"        , emit: max_anchor_up
+    path "*_max_anchor_dn.fasta"        , emit: max_anchor_dn
+    path "*_anchors_annot.txt.gz"       , emit: anchors_annot
+    path "*.log"                        , emit: log
+    path "versions.yml"                 , emit: versions
 
     script:
     fastq_id = fastq.simpleName

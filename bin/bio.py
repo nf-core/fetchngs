@@ -10,7 +10,7 @@ from AnchorKmer import AnchorKmer
 from os import path, makedirs, remove
 from multiprocessing import cpu_count
 import mystats
-import jaccard 
+import jaccard
 import utils
 from Bio.Blast.Applications import NcbiblastnCommandline
 
@@ -44,7 +44,7 @@ def count_nreads_fastq(fqfile):
     Count total number of records in FASTQ file.
     """
 
-    utils.print_mess("Counting total number of reads...")
+    logging.info("Counting total number of reads...")
 
     # Count reads
     tot_lines = tot_reads = 0
@@ -54,7 +54,7 @@ def count_nreads_fastq(fqfile):
             if (tot_lines%4)==1:
                 tot_reads += 1
 
-    utils.print_mess("Found " + str(tot_reads) + " reads...")
+    logging.info("Found " + str(tot_reads) + " reads...")
 
     # Return total
     return tot_reads
@@ -156,7 +156,7 @@ def process_fastq_record(no_new_kmers, read_seq, data_dict, config):
 # processes a fastq file
 def process_fastq(data_dict, min_p, n_tot, fqfile, config):
 
-    utils.print_mess("Generating anchor k-mer dictionary...")
+    logging.info("Generating anchor k-mer dictionary...")
 
     # init aux
     n_so_far = 0
@@ -187,12 +187,12 @@ def process_fastq(data_dict, min_p, n_tot, fqfile, config):
 
             # report another 100k
             if n_so_far%10000==0:
-                utils.print_mess(f"Another 10k reads processed (total: {n_so_far}). Found {n_achors-n_achors_p} new anchors (total: {n_achors})...")
+                logging.info(f"Another 10k reads processed (total: {n_so_far}). Found {n_achors-n_achors_p} new anchors (total: {n_achors})...")
                 n_achors_p = n_achors
 
             # check if we hit the maximum number of fastq records
             if config.max_fastq_reads>0 and n_so_far>config.max_fastq_reads:
-                utils.print_mess(f"Hit the maximum number of FASTQ records... Total of {n_so_far}")
+                logging.info(f"Hit the maximum number of FASTQ records... Total of {n_so_far}")
                 break
 
             # check if it is worth introducing new k-mers at all every 100,000 reads
@@ -208,7 +208,7 @@ def process_fastq(data_dict, min_p, n_tot, fqfile, config):
                     if no_new_kmers:
 
                         # print the first time it becomes true
-                        utils.print_mess("No new k-mers from now on...")
+                        logging.info("No new k-mers from now on...")
 
                         # check with oracle and create message
                         mystats.check_w_oracle(data_dict, n_so_far, n_tot, config)
@@ -242,8 +242,8 @@ def annot_fa(stats_file, kmer_fa, annot_fa, evalue=1):
 
     ## blast
 
-    utils.print_mess(f"Blasting anchor k-mers in: {kmer_fa}")
-    utils.print_mess(f"Using subject list: {annot_fa}")
+    logging.info(f"Blasting anchor k-mers in: {kmer_fa}")
+    logging.info(f"Using subject list: {annot_fa}")
 
     # temporary xml file
     outdir = path.dirname(stats_file)
@@ -253,7 +253,7 @@ def annot_fa(stats_file, kmer_fa, annot_fa, evalue=1):
 
     # count threads
     nthreads = cpu_count()-1
-    utils.print_mess(f"Running blastn with {nthreads} cpus...")
+    logging.info(f"Running blastn with {nthreads} cpus...")
 
     # blast
     blastx_cline = NcbiblastnCommandline(query=kmer_fa, subject=annot_fa, evalue=evalue, outfmt=5, out=tmpxml, strand="both", task="blastn-short", num_threads=nthreads)
@@ -261,7 +261,7 @@ def annot_fa(stats_file, kmer_fa, annot_fa, evalue=1):
 
     ## parse xml
 
-    utils.print_mess("Parsing blast output...")
+    logging.info("Parsing blast output...")
 
     # get hits
     hits = []
@@ -297,7 +297,7 @@ def annot_fa(stats_file, kmer_fa, annot_fa, evalue=1):
 
     ## consolidate
 
-    utils.print_mess("Consolidating results...")
+    logging.info("Consolidating results...")
 
     # output file name
     out_file = stats_file.split(".", 1)[0] + "_annot.txt.gz"
@@ -368,7 +368,7 @@ def annot_all(stats_file, kmer_fa, config, evalue=1):
 #     """
 
 #     if not path.exists(config.outdir):
-#         utils.print_mess(f"Creating output directory: {config.outdir}")
+#         logging.info(f"Creating output directory: {config.outdir}")
 #         makedirs(config.outdir, exist_ok = True)
 
 #     return config.outdir + "/" + path.basename(fqfile).split('.fastq')[0]
@@ -430,9 +430,9 @@ def dgmfinder_single_sample_analysis(fqfile, fq_id, config=Config()):
     """
 
     # print name of file
-    utils.print_mess(f"*********************** INPUT ***********************")
+    logging.info(f"*********************** INPUT ***********************")
     print('yes')
-    utils.print_mess(f"FASTQ file: {fqfile}")
+    logging.info(f"FASTQ file: {fqfile}")
 
     # report configuration to logfile
     config.report()
@@ -448,14 +448,14 @@ def dgmfinder_single_sample_analysis(fqfile, fq_id, config=Config()):
 
     # get minimum p of success for which we expect to see the min sample size allowed
     min_p = config.min_smp_sz/n_tot
-    utils.print_mess("Minimum success probability is " + str(min_p) + "...")
+    logging.info("Minimum success probability is " + str(min_p) + "...")
     # generate dictutilsnary of k-mers
     process_fastq(data_dict, min_p, n_tot, fqfile, config)
 
     # run poisson testing
     test_success = mystats.poibin_test(data_dict, config)
     if not test_success:
-        utils.print_mess("dgmfinder finished without positives")
+        logging.info("dgmfinder finished without positives")
 
     # store target sequences
     utils.write_target_seqs(data_dict, fq_id + "_targets.txt.gz")
@@ -478,7 +478,7 @@ def dgmfinder_single_sample_analysis(fqfile, fq_id, config=Config()):
     # add header to output file
     len(config.annot_fasta)>0 and dmgfinder_header(fq_id + "_anchors_annot.txt.gz", ",".join(config.annot_fasta))
 
-    utils.print_mess("dgmfinder finished successfully.")
+    logging.info("dgmfinder finished successfully.")
 
 # adds annotation to processed file
 def dgmfinder_single_sample_analysis_annotation(anchorFile, fq_id, config=Config()):
@@ -488,9 +488,9 @@ def dgmfinder_single_sample_analysis_annotation(anchorFile, fq_id, config=Config
     """
 
     # print name of file
-    utils.print_mess(f"*********************** INPUT ***********************")
-    utils.print_mess(f"Anchor file: {anchorFile}")
-    utils.print_mess(f"*****************************************************")
+    logging.info(f"*********************** INPUT ***********************")
+    logging.info(f"Anchor file: {anchorFile}")
+    logging.info(f"*****************************************************")
 
     # get output prefix
     # outprefix = anchorFile.split("_anchors.txt.gz")[0]
@@ -506,4 +506,4 @@ def dgmfinder_single_sample_analysis_annotation(anchorFile, fq_id, config=Config
     # add header to output file
     len(config.annot_fasta)>0 and dmgfinder_header(fq_id + "_anchors_annot.txt.gz", ",".join(config.annot_fasta))
 
-    utils.print_mess("dgmfinder finished successfully.")
+    logging.info("dgmfinder finished successfully.")

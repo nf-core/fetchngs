@@ -150,6 +150,12 @@ workflow SRA {
         params.kmer_size
     )
 
+    STRING_STATS (
+        DGMFINDER.out.fastq,
+        DGMFINDER.out.anchors_annot,
+        params.looklength
+    )
+
     //
     // MODULE: Dump software versions for all tools used in the workflow
     //

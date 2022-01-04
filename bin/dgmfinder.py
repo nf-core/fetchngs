@@ -4,20 +4,49 @@ import argparse
 import gzip
 import bio
 from Config import Config
-
+import logging
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--fastq_id")
-    parser.add_argument("--fastq_file")
-    parser.add_argument("--ann_file")
-    parser.add_argument("--kmer_size", type=int)
+    parser.add_argument(
+        "--ann_file",
+        type=str,
+        help='list of annotation fastq files'
+    )
+    parser.add_argument("--fastq_file",
+        type=str,
+        help='input fasta file'
+    )
+    parser.add_argument("--fastq_id",
+        type=str,
+        help='fastq id name'
+    )
+    parser.add_argument("--kmer_size",
+        type=int,
+        help='size of kmer'
+    )
     args = parser.parse_args()
     return args
 
 
 def main():
     args = get_args()
+
+    logging.basicConfig(
+        filename = f'{args.fastq_id}.log',
+        format='%(asctime)s %(levelname)-8s %(message)s',
+        level=logging.INFO,
+        filemode='w',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+
+    logging.info(f'============INPUTS============')
+    logging.info(f'fastq_id     : {args.fastq_id}')
+    logging.info(f'fastq_file   : {args.fastq_file}')
+    logging.info(f'ann_file     : {args.ann_file}')
+    logging.info(f'kmer_size    : {args.kmer_size}')
+    logging.info(f'==============================')
+    logging.info('')
 
     with open(args.ann_file) as file:
         fasta_list = file.readlines()
@@ -42,6 +71,8 @@ def main():
 
     # run analysis
     bio.dgmfinder_single_sample_analysis(args.fastq_file, args.fastq_id, config)
+
+    logging.info('Completed!')
 
 
 main()

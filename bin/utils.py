@@ -5,6 +5,7 @@ import gzip
 import json
 from sys import stdout
 from datetime import datetime
+import logging
 
 # print message
 def print_mess(mess):
@@ -27,7 +28,7 @@ def write_fasta_array_seq(x, outfile):
     Writes FASTA file from list of sequences `x`.
     """
 
-    print_mess(f"Storing FASTA file with interesting sequences in: {outfile}")
+    logging.info(f"Storing FASTA file with interesting sequences in: {outfile}")
 
     # Init
     i = 1
@@ -49,7 +50,7 @@ def write_2d_array_tsv(x, outfile):
     Writes each row in `x` in tsv `outfile`.
     """
 
-    print_mess("Storing output table results...")
+    logging.info("Storing output table results...")
 
     # Dump table into target file
     with gzip.open(outfile, 'wb') as f:
@@ -82,7 +83,7 @@ def write_fastq(rds, outfile):
 # print target sequences
 def write_target_seqs(data_dict, targetFile):
 
-    print_mess("Storing target k-mers for interesting anchors...")
+    logging.info("Storing target k-mers for interesting anchors...")
 
     # open output file to write
     with gzip.open(targetFile, "wb") as outHandle:

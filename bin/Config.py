@@ -2,6 +2,7 @@
 
 import utils
 import pandas as pd
+import logging
 
 # class for configuration
 class Config:
@@ -27,17 +28,17 @@ class Config:
 
     def report(self):
 
-        utils.print_mess("******************* CONFIGURATION *******************")
-        utils.print_mess(f"Maximum reads to be processed (0 means no limit): {self.max_fastq_reads}")
-        utils.print_mess(f"Lookahead distance: {self.dist}")
-        utils.print_mess(f"k-mer size: {self.kmer_size}")
-        utils.print_mess(f"l-mer size: {self.lmer_size}")
-        utils.print_mess(f"Minimum sample size: {self.min_smp_sz}")
-        utils.print_mess(f"Maximum sample size: {self.max_smp_sz}")
-        utils.print_mess(f"Jaccard similarity threshold: {self.jsthrsh}")
-        utils.print_mess(f"Batch size Poisson binomial null: {self.batch_sz_poibin}")
-        utils.print_mess(f"Q-value threshold: {self.q_thresh}")
-        utils.print_mess("********************* ANALYSIS **********************")
+        logging.info("******************* CONFIGURATION *******************")
+        logging.info(f"Maximum reads to be processed (0 means no limit): {self.max_fastq_reads}")
+        logging.info(f"Lookahead distance: {self.dist}")
+        logging.info(f"k-mer size: {self.kmer_size}")
+        logging.info(f"l-mer size: {self.lmer_size}")
+        logging.info(f"Minimum sample size: {self.min_smp_sz}")
+        logging.info(f"Maximum sample size: {self.max_smp_sz}")
+        logging.info(f"Jaccard similarity threshold: {self.jsthrsh}")
+        logging.info(f"Batch size Poisson binomial null: {self.batch_sz_poibin}")
+        logging.info(f"Q-value threshold: {self.q_thresh}")
+        logging.info("********************* ANALYSIS **********************")
 
         # outfile = f"{self.outdir}/{self.name}"
 
