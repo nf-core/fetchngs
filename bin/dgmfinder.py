@@ -19,7 +19,7 @@ def main():
 
     with open(args.ann_file) as file:
         fasta_list = file.readlines()
-        fasta_list = [line.rstrip() for line in lines]
+        fasta_list = [line.rstrip() for line in fasta_list]
 
     with gzip.open(args.fastq_file, 'rt') as handle:
         head = [next(handle) for x in range(2)]
