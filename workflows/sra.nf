@@ -55,10 +55,8 @@ workflow SRA {
         PYSRADB (
             params.SRP
         )
-        ids_list = file(PYSRADB.out.ids.first()).readLines()
-        Channel
-            .fromList(ids_list)
-            .set { ch_ids }
+        ids_list = file(PYSRADB.out.ids).readLines()
+        ch_ids = Channel.fromList(ids_list)
 
     } else {
         // Read in ids
