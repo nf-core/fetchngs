@@ -2,11 +2,10 @@
 
 import gzip
 
-import dgmfinder
 import numpy as np
 from Bio.Blast import NCBIXML
 from shutil import move, copyfile
-from dgmfinder.Config import Config
+from Config import Config
 from os import path, makedirs, remove
 from multiprocessing import cpu_count
 import mystats, jaccard, io

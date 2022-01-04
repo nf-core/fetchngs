@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import gzip
-import io
+import utils
 import matplotlib.pyplot as plt
 
 """
@@ -37,7 +37,7 @@ Plots histogram downstream vs upstream.
 def plt_histo_up_vs_down(infile,outfile):
 
     # Get dictionaries
-    up,down = io.read_table(infile)
+    up,down = utils.read_table(infile)
 
     # Concatenate all
     x = []

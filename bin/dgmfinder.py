@@ -3,6 +3,8 @@
 import argparse
 import gzip
 import bio
+from Config import Config
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -27,7 +29,7 @@ def main():
         distance = read_len - 10 - (2 * args.kmer_size)
 
     # configure run
-    config = bio.Config(
+    config = Config(
         dist = distance,                # lookahead distance as a function of read length
         kmer_size=args.kmer_size,       # k-mer size used in the analysis
         min_smp_sz=5,                   # minimum sample size to compute p-value

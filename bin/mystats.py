@@ -2,7 +2,8 @@
 
 import numpy as np
 import editdistance
-import io, debruijn
+import utils
+import debruijn
 from sklearn.cluster import DBSCAN
 from scipy.stats import binom, norm
 from statsmodels.stats.multitest import multipletests
@@ -140,7 +141,7 @@ def cllps_anchors(seq_dict):
     Collpases anchor k-mers.
     """
 
-    io.print_mess("Clustering and assembling anchors...")
+    utils.print_mess("Clustering and assembling anchors...")
 
     # Get k-mers
     kmers = list(seq_dict.keys())
@@ -158,7 +159,7 @@ def poibin_train_data(x, y):
     Randomly chooses a set of y indices from a list of size x.
     """
 
-    io.print_mess("Randomly choosing training data for null model...")
+    utils.print_mess("Randomly choosing training data for null model...")
     # print(f'x: {x}, y: {y}')
 
     null_ind = np.random.uniform(low=0, high=x, size=y)
@@ -173,7 +174,7 @@ def fit_poibin_model(seq_dct, n_max, null_ind):
     Fits Poisson binomial model to `null_ind`.
     """
 
-    io.print_mess("Fitting Poisson binomial null model...")
+    utils.print_mess("Fitting Poisson binomial null model...")
 
     # init
     n_range = range(n_max+1)
@@ -216,7 +217,7 @@ def comp_poibin_pval(seq_dct, pnvec, n_min):
     Computes log-fold change and p-value under Poisson binomial null.
     """
 
-    io.print_mess("Computing log-fold change and p-value under Poisson binomial ...")
+    utils.print_mess("Computing log-fold change and p-value under Poisson binomial ...")
 
     # test counter
     m = 0
@@ -236,7 +237,7 @@ def check_w_oracle(data_dict, n_so_far, n_tot, config):
     Checks with oracle. Keeps only keys for which we anticipate will have enough data.
     """
 
-    io.print_mess("Checking with oracle...")
+    utils.print_mess("Checking with oracle...")
 
     # init counter
     balance = [0,0]
@@ -260,12 +261,12 @@ def check_w_oracle(data_dict, n_so_far, n_tot, config):
     for key in remove_list:
         del data_dict[key]
 
-    io.print_mess("Discarded " + str(balance[0]) + " k-mers. Left " + str(balance[1]))
+    utils.print_mess("Discarded " + str(balance[0]) + " k-mers. Left " + str(balance[1]))
 
 # drops non-significant anchors
 def drop_p_nonsig_anchors(data_dict, q_thresh):
 
-    io.print_mess("Dropping non-significant anchors (p>q_thresh)...")
+    utils.print_mess("Dropping non-significant anchors (p>q_thresh)...")
 
     # init
     n_sig = 0
@@ -293,7 +294,7 @@ def drop_p_nonsig_anchors(data_dict, q_thresh):
 # drops non-significant anchors
 def drop_q_nonsig_anchors(data_dict, q_thresh):
 
-    io.print_mess("Dropping non-significant anchors (q>q_thresh)...")
+    utils.print_mess("Dropping non-significant anchors (q>q_thresh)...")
 
     # init
     n_sig = 0
@@ -325,7 +326,7 @@ def poibin_mult_hyp_corr(seq_dct, n_tests):
     Corrects for multiple hypothesis in p-values computed under Poisson binomial null model.
     """
 
-    io.print_mess("Correcting for multiple hypothesis...")
+    utils.print_mess("Correcting for multiple hypothesis...")
 
     # get raw p-values
     i_vec = []
@@ -352,7 +353,7 @@ def poibin_mult_hyp_corr(seq_dct, n_tests):
 
     # return if no p-values
     if len(pval_vec)==0:
-        io.print_mess("Zero p-values were computed")
+        utils.print_mess("Zero p-values were computed")
         return seq_dct
 
     # get ranks
@@ -384,7 +385,7 @@ def poibin_test(seq_dct, config):
     Fits Poisson binomial model to subsample and records p-value and statistic.
     """
 
-    io.print_mess("Doing statistical test based on Poisson binomial null...")
+    utils.print_mess("Doing statistical test based on Poisson binomial null...")
 
     # get training data
     null_ind = poibin_train_data(len(seq_dct), config.batch_sz_poibin)
@@ -397,20 +398,20 @@ def poibin_test(seq_dct, config):
 
     # return false if no tests
     if n_tests == 0:
-        io.print_mess("No statistical tests were performed due to lack of samples")
+        utils.print_mess("No statistical tests were performed due to lack of samples")
         return False
     else:
-        io.print_mess(f"Performed {n_tests} statistical tests...")
+        utils.print_mess(f"Performed {n_tests} statistical tests...")
 
     # drop ones that are clearly non-significant
     n_sig = drop_p_nonsig_anchors(seq_dct, config.q_thresh)
 
     # return false if no significant left
     if n_sig == 0:
-        io.print_mess("No significant results found after computing p-value")
+        utils.print_mess("No significant results found after computing p-value")
         return False
     else:
-        io.print_mess(f"Number of p-values<=qthresh: {n_sig}")
+        utils.print_mess(f"Number of p-values<=qthresh: {n_sig}")
 
     # correct for mh
     poibin_mult_hyp_corr(seq_dct, n_tests)
@@ -420,10 +421,10 @@ def poibin_test(seq_dct, config):
 
     # return false if no significant left
     if n_sig == 0:
-        io.print_mess("No significant results found after computing q-value")
+        utils.print_mess("No significant results found after computing q-value")
         return False
     else:
-        io.print_mess(f"Number of q-values<=qthresh: {n_sig}")
+        utils.print_mess(f"Number of q-values<=qthresh: {n_sig}")
 
     # return true if some positives
     return True
