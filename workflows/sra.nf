@@ -48,21 +48,10 @@ workflow SRA {
 
     ch_versions = Channel.empty()
 
-    if (params.input_type == 'srp') {
-        //
-        // MODULE: Get SRR numbers from SRP project
-        //
-        PYSRADB (
-            params.SRP
-        )
-        ch_input = PYSRADB.out.ids.first()
-        ch_input.view()
+    // Check if --input file is empty
+    ch_input = file(params.input, checkIfExists: true)
+    if (ch_input.isEmpty()) {exit 1, "File provided with --input is empty: ${ch_input.getName()}!"}
 
-    } else {
-        // Check if --input file is empty
-        ch_input = file(params.input, checkIfExists: true)
-        if (ch_input.isEmpty()) {exit 1, "File provided with --input is empty: ${ch_input.getName()}!"}
-    }
     // Read in ids from --input file
     Channel
         .from(ch_input)
