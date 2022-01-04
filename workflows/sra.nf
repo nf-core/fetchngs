@@ -55,8 +55,17 @@ workflow SRA {
         PYSRADB (
             params.SRP
         )
-        ids_list = file(PYSRADB.out.ids).readLines()
-        ch_ids = Channel.fromList(ids_list)
+        // Read in ids
+        Channel
+            .fromPath(PYSRADB.out.ids.first())
+            .splitCsv(
+                header: false,
+                sep:'',
+                strip: true
+            )
+            .map { it[0] }
+            .unique()
+            .set { ch_ids }
 
     } else {
         // Read in ids
