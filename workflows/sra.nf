@@ -56,6 +56,7 @@ workflow SRA {
             params.SRP
         )
         ch_input = PYSRADB.out.ids.first()
+        ch_input.view()
 
     } else {
         // Check if --input file is empty
