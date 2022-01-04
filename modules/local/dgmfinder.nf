@@ -24,7 +24,7 @@ process DGMFINDER {
     script:
     fastq_id = fastq.simpleName
     """
-    dmgfinder.py \\
+    dgmfinder.py \\
         --fastq_id ${fastq_id} \\
         --fastq_file ${fastq} \\
         --ann_file ${ann_file} \\
