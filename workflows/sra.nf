@@ -53,7 +53,7 @@ workflow SRA {
         // MODULE: Get SRR numbers from SRP project
         //
         PYSRADB (
-            params.input
+            params.SRP
         )
         ch_input = PYSRADB.out.ids
 
