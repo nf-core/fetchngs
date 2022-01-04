@@ -8,7 +8,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--fastq_id")
     parser.add_argument("--fastq_file")
-    parser.add_argument("--annfile")
+    parser.add_argument("--ann_file")
     parser.add_argument("--kmer_size", type=int)
     args = parser.parse_args()
     return args
@@ -17,11 +17,11 @@ def get_args():
 def main():
     args = get_args()
 
-    with open(args.annfile) as file:
+    with open(args.ann_file) as file:
         fasta_list = file.readlines()
         fasta_list = [line.rstrip() for line in lines]
 
-    with gzip.open(args.fqfile, 'rt') as handle:
+    with gzip.open(args.fastq_file, 'rt') as handle:
         head = [next(handle) for x in range(2)]
         read_len = len(head[1].strip())
         distance = read_len - 10 - (2 * args.kmer_size)
