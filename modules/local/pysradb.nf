@@ -11,10 +11,11 @@ process PYSRADB {
     val srp
 
     output:
-    path "ids_*txt"  , emit: ids
+    path outputFile  , emit: ids
 
     script:
+    outputFile = "ids_${srp}.txt"
     """
-    pysradb srp-to-srr ${srp} | cut -f2 -d' ' | tail -n +2 > ids_${srp}.txt
+    pysradb srp-to-srr ${srp} | cut -f2 -d' ' | tail -n +2 > ${outputFile}
     """
 }
