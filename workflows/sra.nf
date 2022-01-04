@@ -26,6 +26,7 @@ include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
 include { DGMFINDER               } from '../modules/local/dgmfinder'
+include { STRING_STATS            } from '../modules/local/string_stats'
 
 include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
 
