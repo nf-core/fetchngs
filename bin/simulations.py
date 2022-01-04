@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import numpy as np
-import Config
-from dgmfinder import bio, jaccard, poibin
+from Config import Config
+import bio, jaccard, poibin
 
 # class reference only for these simulations
 class AnchorKmerSims:

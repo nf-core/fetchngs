@@ -3,6 +3,8 @@
 import argparse
 import gzip
 import bio
+from Config import Config
+
 
 def get_args():
     parser = argparse.ArgumentParser()
