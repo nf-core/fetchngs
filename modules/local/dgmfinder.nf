@@ -2,6 +2,7 @@
 process DGMFINDER {
     tag "$fastq_id"
     label 'error_retry'
+    validExitStatus 0
 
     conda (params.enable_conda ? "conda-forge::python=3.9.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
