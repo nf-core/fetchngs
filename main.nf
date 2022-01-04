@@ -17,7 +17,7 @@ nextflow.enable.dsl = 2
 ========================================================================================
 */
 
-WorkflowMain.initialise(workflow, params, log)
+//WorkflowMain.initialise(workflow, params, log)
 
 //
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
