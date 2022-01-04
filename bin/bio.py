@@ -422,7 +422,7 @@ def dmgfinder_header(infile, fastas):
     move(tmpfile, infile)
 
 # performs a single-sample analysis on fastq file
-def dgmfinder_single_sample_analysis(fqfile, config=Config(), fq_id):
+def dgmfinder_single_sample_analysis(fqfile, fq_id, config=Config()):
 
     """
     Performs a single-sample analysis on `fqfile` file.
@@ -480,7 +480,7 @@ def dgmfinder_single_sample_analysis(fqfile, config=Config(), fq_id):
     io.print_mess("dgmfinder finished successfully.")
 
 # adds annotation to processed file
-def dgmfinder_single_sample_analysis_annotation(anchorFile, config=Config(), fq_id):
+def dgmfinder_single_sample_analysis_annotation(anchorFile, fq_id, config=Config()):
 
     """
     Adds anotation to processed file `anchorFile`.

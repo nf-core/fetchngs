@@ -41,8 +41,8 @@ def main():
     # run analysis
     bio.dgmfinder_single_sample_analysis(
         args.fastq_file,
-        config,
-        args.fastq_id
+        args.fastq_id,åå
+        config
     )
 
 
