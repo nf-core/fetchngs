@@ -16,10 +16,10 @@ from Bio.Blast.Applications import NcbiblastnCommandline
 import logging
 
 # Import SearchIO and suppress experimental warning
-from Bio import BiopythonExperimentalWarning
+from Bio import BiopythonWarning
+import warnings
 with warnings.catch_warnings():
-    warnings.simplefilter('ignore', BiopythonExperimentalWarning)
-    from Bio import SearchIO
+    warnings.simplefilter('ignore', BiopythonWarning)
 
 # constants
 COMPLEMENT = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}

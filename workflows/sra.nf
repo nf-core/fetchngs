@@ -48,29 +48,119 @@ workflow SRA {
 
     ch_versions = Channel.empty()
 
-    if (params.input_type == 'srp') {
+    if (!params.fastq_samplesheet) {
+        if (params.input_type == 'srp') {
+            //
+            // MODULE: Get SRR numbers from SRP project
+            //
+            PYSRADB (
+                params.SRP
+            )
+            // Read in ids
+            Channel
+                .fromPath(PYSRADB.out.ids.first())
+                .splitCsv(
+                    header: false,
+                    sep:'',
+                    strip: true
+                )
+                .map { it[0] }
+                .unique()
+                .set { ch_ids }
+        } else {
+            // Read in ids
+            Channel
+                .fromPath(params.input)
+                .splitCsv(
+                    header: false,
+                    sep:'',
+                    strip: true
+                )
+                .map { it[0] }
+                .unique()
+                .set { ch_ids }
+        }
+
         //
-        // MODULE: Get SRR numbers from SRP project
+        // MODULE: Get SRA run information for public database ids
         //
-        PYSRADB (
-            params.SRP
+        SRA_IDS_TO_RUNINFO (
+            ch_ids,
+            params.ena_metadata_fields ?: ''
         )
-        // Read in ids
-        Channel
-            .fromPath(PYSRADB.out.ids.first())
-            .splitCsv(
-                header: false,
-                sep:'',
-                strip: true
-            )
-            .map { it[0] }
-            .unique()
-            .set { ch_ids }
+        ch_versions = ch_versions.mix(SRA_IDS_TO_RUNINFO.out.versions.first())
 
+        //
+        // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
+        //
+        SRA_RUNINFO_TO_FTP (
+            SRA_IDS_TO_RUNINFO.out.tsv
+        )
+        ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
+
+        SRA_RUNINFO_TO_FTP
+            .out
+            .tsv
+            .splitCsv(header:true, sep:'\t')
+            .map {
+                meta ->
+                    meta.single_end = meta.single_end.toBoolean()
+                    [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+            }
+            .unique()
+            .branch {
+                ftp: it[0].fastq_1  && !params.force_sratools_download
+                sra: !it[0].fastq_1 || params.force_sratools_download
+            }
+            .set { ch_sra_reads }
+        ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
+
+        //
+        // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
+        //
+        SRA_FASTQ_FTP (
+            ch_sra_reads.ftp
+        )
+        ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
+
+        //
+        // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
+        //
+        SRA_FASTQ_SRATOOLS (
+            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
+        )
+        ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
+
+        SRA_FASTQ_FTP.out.fastq
+            .mix(SRA_FASTQ_SRATOOLS.out.reads)
+            .set{ ch_fastqs }
+
+        //
+        // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
+        //
+        SRA_TO_SAMPLESHEET (
+            ch_fastqs,
+            params.nf_core_pipeline ?: '',
+            params.sample_mapping_fields
+        )
+
+        //
+        // MODULE: Create a merged samplesheet across all samples for the pipeline
+        //
+        SRA_MERGE_SAMPLESHEET (
+            SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
+            SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
+        )
+        ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
+
+        ch_fastqs
+            .map { file -> file[1]}
+            .flatten()
+            .set { ch_fastqs_only }
     } else {
-        // Read in ids
+        // Read in fastqs from samplesheet
         Channel
-            .fromPath(params.input)
+            .fromPath(params.fastq_samplesheet)
             .splitCsv(
                 header: false,
                 sep:'',
@@ -78,97 +168,9 @@ workflow SRA {
             )
             .map { it[0] }
             .unique()
-            .set { ch_ids }
+            .set { ch_fastqs_only }
+
     }
-
-    //
-    // MODULE: Get SRA run information for public database ids
-    //
-    SRA_IDS_TO_RUNINFO (
-        ch_ids,
-        params.ena_metadata_fields ?: ''
-    )
-    ch_versions = ch_versions.mix(SRA_IDS_TO_RUNINFO.out.versions.first())
-
-    //
-    // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
-    //
-    SRA_RUNINFO_TO_FTP (
-        SRA_IDS_TO_RUNINFO.out.tsv
-    )
-    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
-
-    // SRA_RUNINFO_TO_FTP.out.tsv
-    //     .collectFile (
-    //         name:       "test.txt",
-    //         storeDir:   "${params.outdir}",
-    //         keepHeader: true,
-    //         skip:       1
-    //     ) { file ->
-    //         file
-    //             .collect{ it.text }
-    //             .join('\n')
-    //     }
-
-    SRA_RUNINFO_TO_FTP
-        .out
-        .tsv
-        .splitCsv(header:true, sep:'\t')
-        .map {
-            meta ->
-                meta.single_end = meta.single_end.toBoolean()
-                [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
-        }
-        .unique()
-        .branch {
-            ftp: it[0].fastq_1  && !params.force_sratools_download
-            sra: !it[0].fastq_1 || params.force_sratools_download
-        }
-        .set { ch_sra_reads }
-    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
-
-    //
-    // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
-    //
-    SRA_FASTQ_FTP (
-        ch_sra_reads.ftp
-    )
-    ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
-
-    //
-    // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
-    //
-    SRA_FASTQ_SRATOOLS (
-        ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
-    )
-    ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
-
-    SRA_FASTQ_FTP.out.fastq
-        .mix(SRA_FASTQ_SRATOOLS.out.reads)
-        .set{ ch_fastqs }
-
-    //
-    // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
-    //
-    SRA_TO_SAMPLESHEET (
-        ch_fastqs,
-        params.nf_core_pipeline ?: '',
-        params.sample_mapping_fields
-    )
-
-    //
-    // MODULE: Create a merged samplesheet across all samples for the pipeline
-    //
-    SRA_MERGE_SAMPLESHEET (
-        SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
-        SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
-    )
-    ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
-
-    ch_fastqs
-        .map { file -> file[1]}
-        .flatten()
-        .set {ch_fastqs_only}
 
     //
     // MODULE: Run dgmfinder on fastqs
