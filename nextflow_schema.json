@@ -10,7 +10,19 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
+            "required": [
+                "input"
+            ],
             "properties": {
+                "input": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "text/plain",
+                    "pattern": "^\\S+\\.txt$",
+                    "schema": "assets/schema_input.json",
+                    "fa_icon": "fas fa-file-excel",
+                    "description": "File containing SRA/ENA/DDBJ/GEO identifiers one per line to download their associated metadata and FastQ files."
+                },
                 "input_type": {
                     "type": "string",
                     "default": "sra",
@@ -228,15 +240,5 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ],
-    "properties": {
-        "kmer_size": {
-            "type": "integer",
-            "default": 27
-        },
-        "looklength": {
-            "type": "integer",
-            "default": 200
-        }
-    }
+    ]
 }
