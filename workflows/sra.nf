@@ -48,7 +48,7 @@ workflow SRA {
 
     ch_versions = Channel.empty()
 
-    if (parms.input_type == 'srp') {
+    if (params.input_type == 'srp') {
         //
         // MODULE: Get SRR numbers from SRP project
         //
