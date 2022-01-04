@@ -15,6 +15,12 @@ import utils
 from Bio.Blast.Applications import NcbiblastnCommandline
 import logging
 
+# Import SearchIO and suppress experimental warning
+from Bio import BiopythonExperimentalWarning
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', BiopythonExperimentalWarning)
+    from Bio import SearchIO
+
 # constants
 COMPLEMENT = {'A': 'T', 'C': 'G', 'G': 'C', 'T': 'A'}
 BASE_HEADER = "SEQ_ID\tASSEMBLY\tC_UP\tN_UP\tES_UP\tQVAL_UP\tMAX_ANCHOR_UP\tC_DN\tN_DN\tES_DN\tQVAL_DN\tMAX_ANCHOR_DN\tA%\tC%\tG%\tT%\tANCHORS"

@@ -5,6 +5,12 @@ from Bio.Seq import Seq
 from random import random
 from scipy.stats import binom, hypergeom
 
+# Import SearchIO and suppress experimental warning
+from Bio import BiopythonExperimentalWarning
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', BiopythonExperimentalWarning)
+    from Bio import SearchIO
+
 # returns list of l-mers in k-mer
 def get_lmers(kmer, l):
 

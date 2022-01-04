@@ -134,7 +134,6 @@ workflow SRA {
         ch_sra_reads.ftp
     )
     ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
-    ch_fastqs = SRA_FASTQ_FTP.out.fastq
 
     //
     // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
@@ -144,11 +143,15 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
 
+    SRA_FASTQ_FTP.out.fastq
+        .mix(SRA_FASTQ_SRATOOLS.out.reads)
+        .set{ ch_fastqs }
+
     //
     // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
     //
     SRA_TO_SAMPLESHEET (
-        ch_fastqs.mix(SRA_FASTQ_SRATOOLS.out.reads),
+        ch_fastqs,
         params.nf_core_pipeline ?: '',
         params.sample_mapping_fields
     )
@@ -161,7 +164,6 @@ workflow SRA {
         SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
     )
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
-
 
     ch_fastqs
         .map { file -> file[1]}
