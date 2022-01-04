@@ -19,6 +19,7 @@ WorkflowSra.initialise(params, log, valid_params)
 ========================================================================================
 */
 
+include { PYSRADB                 } from '../modules/local/pysradb'
 include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'
 include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'
@@ -46,11 +47,34 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/
 
 workflow SRA {
 
-    take:
-    ids // channel: [ ids ]
-
-    main:
     ch_versions = Channel.empty()
+
+    if (params.input_type == 'SRP') {
+        //
+        // MODULE: Get SRR numbers from SRP project
+        //
+        PYSRADB (
+            params.srp
+        )
+
+        ch_input = PYSRADB.out.ids
+
+    } else {
+        // Check if --input file is empty
+        ch_input = file(params.input, checkIfExists: true)
+        if (ch_input.isEmpty()) {exit 1, "File provided with --input is empty: ${ch_input.getName()}!"}
+    }
+    // Read in ids from --input file
+    Channel
+        .from(ch_input)
+        .splitCsv(
+            header: false,
+            sep:'',
+            strip: true
+        )
+        .map { it[0] }
+        .unique()
+        .set { ch_ids }
 
     //
     // MODULE: Get SRA run information for public database ids
@@ -98,59 +122,59 @@ workflow SRA {
         .set { ch_sra_reads }
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-    if (!params.skip_fastq_download) {
-
-        //
-        // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
-        //
-        SRA_FASTQ_FTP (
-            ch_sra_reads.ftp
-        )
-        ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
-        ch_fastqs = SRA_FASTQ_FTP.out.fastq
-
-        //
-        // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
-        //
-        SRA_FASTQ_SRATOOLS (
-            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
-        )
-        ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
-
-        //
-        // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
-        //
-        SRA_TO_SAMPLESHEET (
-            ch_fastqs.mix(SRA_FASTQ_SRATOOLS.out.reads),
-            params.nf_core_pipeline ?: '',
-            params.sample_mapping_fields
-        )
-
-        //
-        // MODULE: Create a merged samplesheet across all samples for the pipeline
-        //
-        SRA_MERGE_SAMPLESHEET (
-            SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
-            SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
-        )
-        ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
-
-    } // TODO the else case
+    //
+    // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
+    //
+    SRA_FASTQ_FTP (
+        ch_sra_reads.ftp
+    )
+    ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
+    ch_fastqs = SRA_FASTQ_FTP.out.fastq
 
     //
-    // MODULE: Run dgmfinder on fastqs
+    // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
     //
+    SRA_FASTQ_SRATOOLS (
+        ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
+    )
+    ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
+
+    //
+    // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
+    //
+    SRA_TO_SAMPLESHEET (
+        ch_fastqs.mix(SRA_FASTQ_SRATOOLS.out.reads),
+        params.nf_core_pipeline ?: '',
+        params.sample_mapping_fields
+    )
+
+    //
+    // MODULE: Create a merged samplesheet across all samples for the pipeline
+    //
+    SRA_MERGE_SAMPLESHEET (
+        SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
+        SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
+    )
+    ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
+
+
     ch_fastqs
         .map { file -> file[1]}
         .flatten()
         .set {ch_fastqs_only}
 
+    //
+    // MODULE: Run dgmfinder on fastqs
+    //
     DGMFINDER (
         ch_fastqs_only,
         params.ann_file,
         params.kmer_size
     )
 
+    //
+    // MODULE: Run post processing on dgmfinder output
+    //
     STRING_STATS (
         DGMFINDER.out.fastq,
         DGMFINDER.out.anchors_annot,

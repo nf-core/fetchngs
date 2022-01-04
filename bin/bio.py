@@ -430,11 +430,6 @@ def dgmfinder_single_sample_analysis(fqfile, fq_id, config=Config()):
     Performs a single-sample analysis on `fqfile` file.
     """
 
-    # print name of file
-    logging.info(f"*********************** INPUT ***********************")
-    print('yes')
-    logging.info(f"FASTQ file: {fqfile}")
-
     # report configuration to logfile
     config.report()
 

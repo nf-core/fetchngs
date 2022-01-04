@@ -40,14 +40,6 @@ def main():
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-    logging.info(f'============INPUTS============')
-    logging.info(f'fastq_id     : {args.fastq_id}')
-    logging.info(f'fastq_file   : {args.fastq_file}')
-    logging.info(f'ann_file     : {args.ann_file}')
-    logging.info(f'kmer_size    : {args.kmer_size}')
-    logging.info(f'==============================')
-    logging.info('')
-
     with open(args.ann_file) as file:
         fasta_list = file.readlines()
         fasta_list = [line.rstrip() for line in fasta_list]
@@ -56,6 +48,15 @@ def main():
         head = [next(handle) for x in range(2)]
         read_len = len(head[1].strip())
         distance = read_len - 10 - (2 * args.kmer_size)
+
+    logging.info(f'============INPUTS============')
+    logging.info(f'fastq_id         : {args.fastq_id}')
+    logging.info(f'fastq_file       : {args.fastq_file}')
+    logging.info(f'ann_file         : {args.ann_file}')
+    logging.info(f'kmer_size        : {args.kmer_size}')
+    logging.info(f'lookahead_dist   : {distance}')
+    logging.info(f'==============================')
+    logging.info('')
 
     # configure run
     config = Config(

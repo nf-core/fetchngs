@@ -136,7 +136,7 @@ def returnAnchors(infile):
     return list(set(anchors))
 
 
-def writeSeqInfoFiles(fastq_id, anchors_annot, fastq_file looklength):
+def writeSeqInfoFiles(fastq_id, anchors_annot, fastq_file, looklength):
     myseqs = returnSeqs(
         fastq_file,
         maxlines=1000000
