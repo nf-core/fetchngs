@@ -21,7 +21,6 @@ process DGMFINDER {
     path "*_max_anchor_dn.fasta"        , emit: max_anchor_dn
     path "*_anchors_annot.txt.gz"       , emit: anchors_annot
     path "*.log"                        , emit: log
-    path "versions.yml"                 , emit: versions
 
     script:
     fastq_id = fastq.simpleName
