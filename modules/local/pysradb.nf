@@ -11,7 +11,7 @@ process PYSRADB {
     val srp
 
     output:
-    path outputFile  , emit: ids
+    path outputFile, emit: ids
 
     script:
     outputFile = "ids_${srp}.txt"

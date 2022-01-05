@@ -56,17 +56,11 @@ workflow SRA {
             PYSRADB (
                 params.SRP
             )
-            // Read in ids
-            Channel
-                .fromPath(PYSRADB.out.ids.first())
-                .splitCsv(
-                    header: false,
-                    sep:'',
-                    strip: true
-                )
+            PYSRADB.out.ids
+                .splitCsv(header:false, sep:'', strip:true)
                 .map { it[0] }
-                .unique()
                 .set { ch_ids }
+
         } else {
             // Read in ids
             Channel
@@ -157,6 +151,7 @@ workflow SRA {
             .map { file -> file[1]}
             .flatten()
             .set { ch_fastqs_only }
+
     } else {
         // Read in fastqs from samplesheet
         Channel
