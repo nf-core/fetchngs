@@ -21,8 +21,6 @@ def buildConcensus(kmers, looklength):
     logging.info("Called.")
 
     for j in range(1, (looklength-1)): #loop through each base ahead
-        logging.info(f'j = {j}')
-
         mycounter = []                              # initialize dummy var
         for eachseq in kmers:                       # loop through each sequence;
             if len(eachseq) > (j-1):                # test if the sequence is bigger than jth
@@ -34,8 +32,6 @@ def buildConcensus(kmers, looklength):
         vG = mycounter.count("G")
 
         n = vA + vT + vC + vG
-
-        logging.info(f'n = {n}')
 
         # add n to counter position j
         if n > 0 :
@@ -166,8 +162,8 @@ def writeSeqInfoFiles(fastq_id, anchors_annot, fastq_file, looklength):
         DNAdict     # should be a list
     )
     external_file1 = open(f'{fastq_id}_consensus.fasta', "w")
-    external_file2 = open(f'{fastq_id}_counts.tab', "w")
-    external_file3 = open(f'{fastq_id}_fractions.tab' , "w")
+    external_file2 = open(f'{fastq_id}_fractions.tab', "w")
+    external_file3 = open(f'{fastq_id}_counts.tab' , "w")
 
     for kk in nextseqs.keys():
     # gets the value as an array?

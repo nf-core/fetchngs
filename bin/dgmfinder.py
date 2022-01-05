@@ -48,7 +48,8 @@ def main():
         head = [next(handle) for x in range(2)]
 
     read_len = len(head[1].strip())
-    distance = (read_len - 2 * args.kmer_size) / 2
+    # distance = (read_len - 2 * args.kmer_size) / 2
+    distance = read_len - 10 - (2 * args.kmer_size)
 
     logging.info(f'============INPUTS============')
     logging.info(f'fastq_id         : {args.fastq_id}')
