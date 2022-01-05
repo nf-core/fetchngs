@@ -79,7 +79,7 @@ def recordNextKmers(anchorlist, looklength, myseqs, anchorlength, DNAdict):
 
                 # test if the stringlength is long enough to get the string
                 go = min(len(myseq), (e+looklength))
-                ## nextkmer = myseq [e:e+looklength]
+                nextkmer = myseq [e:e+looklength]
                 # keep dict small so less than 100 seqs:
                 if len(DNAdict[mystring]) < 100:
                     DNAdict[mystring].append(nextkmer)
