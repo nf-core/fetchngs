@@ -48,6 +48,7 @@ workflow SRA {
 
     ch_versions = Channel.empty()
 
+    // Read in fastqs from samplesheet or download via SRA
     if (!params.fastq_samplesheet) {
         if (params.input_type == 'srp') {
             //
