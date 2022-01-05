@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import gzip
 import os
 import re
