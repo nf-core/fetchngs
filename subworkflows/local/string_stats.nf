@@ -36,6 +36,8 @@ workflow STRING_STATS {
         params.looklength
     )
 
+    CONSENSUS_ANCHORS.out.fastq_anchors.view()
+
     //
     // MODULE: Extract adjacent anchors
     //
@@ -47,7 +49,7 @@ workflow STRING_STATS {
         params.adj_dist,
         params.adj_len
     )
-
+    ADJACENT_KMERS.out.tsv.view()
     // Concatenate all adjacent anchors
     ADJACENT_KMERS.out.tsv
         .map { file ->
