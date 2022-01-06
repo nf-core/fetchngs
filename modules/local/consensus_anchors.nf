@@ -13,13 +13,14 @@ process CONSENSUS_ANCHORS {
     val looklength
 
     output:
-    path "*_consensus.fasta"    , emit: consensus_fasta
-    path "*.tab"                , emit: stats
-    path "*.log"                , emit: log
+    tuple val(fastq_id), path(fastq), path("*_anchors_annot.txt.gz")    , emit: fastq_anchors
+    path "*_consensus.fasta"                                            , emit: consensus_fasta
+    path "*.tab"                                                        , emit: stats
+    path "*.log"                                                        , emit: log
 
     script:
     """
-    string_stats.py \\
+    consensus_anchors.py \\
         --anchors_annot ${anchors_annot} \\
         --fastq_file ${fastq} \\
         --fastq_id ${fastq_id} \\

@@ -41,7 +41,7 @@ workflow STRING_STATS {
     //
     ADJACENT_KMERS (
         ch_signif_anchors,
-        ch_fastq_anchors,
+        CONSENSUS_ANCHORS.out.fastq_anchors,
         params.direction,
         params.kmer_size,
         params.adj_dist,
