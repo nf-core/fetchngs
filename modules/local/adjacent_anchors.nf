@@ -22,7 +22,7 @@ process ADJACENT_ANCHORS {
 
     script:
     signif_anchors_reads_file = "${fastq_id}_signif_anchors.fasta"
-    adjacent_anchors_file = "${fasta_id}_adjacent_anchors.tsv"
+    adjacent_anchors_file = "${fastq_id}_adjacent_anchors.tsv"
     """
     extract_adjacent_anchors.py \\
         --signif_anchors_file ${signif_anchors} \\
