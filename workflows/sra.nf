@@ -71,44 +71,40 @@ workflow SRA {
 
     }
 
-    if (params.dgmfinder_samplesheet) {
-        println('here')
-        // Read in from dgmfinder_samplesheet
-        Channel.fromPath(params.dgmfinder_samplesheet)
-            .splitCSV(
-                header: false
-            )
-            .map { row ->
-                tuple(
-                    row[0],         // fastq_id
-                    file(row[1]),   // fastq_file
-                    file(row[2])    // anchors_annot
-                )
-            }
-            .set{ ch_fastq_anchors }
+    // if (params.dgmfinder_samplesheet) {
+    //     // Read in from dgmfinder_samplesheet
+    //     Channel.fromPath(params.dgmfinder_samplesheet)
+    //         .splitCSV(
+    //             header: false
+    //         )
+    //         .map { row ->
+    //             tuple(
+    //                 row[0],         // fastq_id
+    //                 file(row[1]),   // fastq_file
+    //                 file(row[2])    // anchors_annot
+    //             )
+    //         }
+    //         .set{ ch_fastq_anchors }
 
-    } else {
-        println('here2')
-        //
-        // MODULE: Run dgmfinder on fastqs
-        //
-        DGMFINDER_ANALYSIS (
-            ch_fastqs,
-            params.ann_file,
-            params.kmer_size
-        )
+    // } else {
+    // }
 
-        ch_fastq_anchors = DGMFINDER_ANALYSIS.out.fastq_anchors
+    //
+    // MODULE: Run dgmfinder on fastqs
+    //
+    DGMFINDER_ANALYSIS (
+        ch_fastqs,
+        params.ann_file,
+        params.kmer_size
+    )
 
-    }
-
-    ch_fastq_anchors.view()
+    // ch_fastq_anchors = DGMFINDER_ANALYSIS.out.fastq_anchors
 
     //
     // SUBWORKFLOW: Run dgmfinder analysis
     //
     STRING_STATS (
-        ch_fastq_anchors
+        DGMFINDER_ANALYSIS.out.fastq_anchors
     )
 
 }
