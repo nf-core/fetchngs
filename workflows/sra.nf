@@ -69,41 +69,39 @@ workflow SRA {
 
     }
 
-    DGMFINDER (
-        ch_fastqs
-    )
+    if (params.dgmfinder_samplesheet) {
+        // Read in from dgmfinder_samplesheet
+        Channel.fromPath(params.dgmfinder_samplesheet)
+            .splitCSV(
+                header: false
+            )
+            .map { row ->
+                tuple(
+                    row[0],         // fastq_id
+                    file(row[1]),   // fastq_file
+                    file(row[2])    // anchors_annot
+                )
+            }
+            .set{ ch_dgmfinder }
+
+    } else {
+        //
+        // SUBWORKFLOW: Run dgmfinder
+        //
+        DGMFINDER (
+            ch_fastqs
+        )
+
+        ch_dgmfinder = DGMFINDER.out.fastq_anchors
+
+    }
 
     //
-    // SUBWORKFLOW: Run dgmfinder analysis
+    // SUBWORKFLOW: Run string_stats
     //
     STRING_STATS (
-        DGMFINDER.out.fastq_anchors
+        ch_dgmfinder
     )
-
-
-    // if (params.dgmfinder_samplesheet) {
-    //     // Read in from dgmfinder_samplesheet
-    //     Channel.fromPath(params.dgmfinder_samplesheet)
-    //         .splitCSV(
-    //             header: false
-    //         )
-    //         .map { row ->
-    //             tuple(
-    //                 row[0],         // fastq_id
-    //                 file(row[1]),   // fastq_file
-    //                 file(row[2])    // anchors_annot
-    //             )
-    //         }
-    //         .set{ ch_fastq_anchors }
-
-    // } else {
-    // }
-
-    //
-    // MODULE: Run dgmfinder on fastqs
-    //
-
-    // DGMFINDER_ANALYSIS.out.fastq_anchors.view()
 
 }
 
