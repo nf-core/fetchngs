@@ -70,6 +70,8 @@ workflow SRA {
 
         ch_fastqs = DOWNLOAD_FASTQS.out.ch_fastqs
 
+        println('nofastqs')
+
     }
 
     ch_fastqs.view()
