@@ -105,9 +105,6 @@ workflow DOWNLOAD_FASTQS {
     SRA_FASTQ_FTP.out.fastq
         .mix(SRA_FASTQ_SRATOOLS.out.reads)
         .set{ ch_fastqs }
-    SRA_FASTQ_FTP.out.fastq.view()
-    SRA_FASTQ_SRATOOLS.out.reads.view()
-    ch_fastqs.view()
 
     //
     // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet

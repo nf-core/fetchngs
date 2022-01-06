@@ -67,23 +67,23 @@ workflow SRA {
         //
         DOWNLOAD_FASTQS ()
 
-        // ch_fastqs = DOWNLOAD_FASTQS.out.ch_fastqs_flat
+        ch_fastqs = DOWNLOAD_FASTQS.out.ch_out
 
     }
-    // ch_fastqs.view()
+    ch_fastqs.view()
 
-    // DGMFINDER_ANALYSIS (
-    //     ch_fastqs,
-    //     params.ann_file,
-    //     params.kmer_size
-    // )
+    DGMFINDER_ANALYSIS (
+        ch_fastqs,
+        params.ann_file,
+        params.kmer_size
+    )
 
-    // //
-    // // SUBWORKFLOW: Run dgmfinder analysis
-    // //
-    // STRING_STATS (
-    //     DGMFINDER_ANALYSIS.out.fastq_anchors
-    // )
+    //
+    // SUBWORKFLOW: Run dgmfinder analysis
+    //
+    STRING_STATS (
+        DGMFINDER_ANALYSIS.out.fastq_anchors
+    )
 
 
     // if (params.dgmfinder_samplesheet) {
