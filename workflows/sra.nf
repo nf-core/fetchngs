@@ -83,7 +83,6 @@ workflow SRA {
             ch_ids,
             params.ena_metadata_fields ?: ''
         )
-        ch_versions = ch_versions.mix(SRA_IDS_TO_RUNINFO.out.versions.first())
 
         //
         // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
@@ -91,12 +90,23 @@ workflow SRA {
         SRA_RUNINFO_TO_FTP (
             SRA_IDS_TO_RUNINFO.out.tsv
         )
-        ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-        SRA_RUNINFO_TO_FTP
-            .out
-            .tsv
-            .splitCsv(header:true, sep:'\t')
+        ch_metadata =  SRA_RUNINFO_TO_FTP.out.tsv
+
+        ch_metadata
+            .collectFile (
+                name:       "metadata.tsv",
+                storeDir:   "${params.outdir}",
+                keepHeader: true
+            ) { file ->
+                file.collect{ it.text }.join('\n')
+            }
+
+        ch_metadata
+            .splitCsv(
+                header: true,
+                sep:'\t'
+            )
             .map {
                 meta ->
                     meta.single_end = meta.single_end.toBoolean()
@@ -108,7 +118,6 @@ workflow SRA {
                 sra: !it[0].fastq_1 || params.force_sratools_download
             }
             .set { ch_sra_reads }
-        ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
@@ -116,7 +125,6 @@ workflow SRA {
         SRA_FASTQ_FTP (
             ch_sra_reads.ftp
         )
-        ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
@@ -124,7 +132,6 @@ workflow SRA {
         SRA_FASTQ_SRATOOLS (
             ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
         )
-        ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
 
         SRA_FASTQ_FTP.out.fastq
             .mix(SRA_FASTQ_SRATOOLS.out.reads)
@@ -146,7 +153,6 @@ workflow SRA {
             SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
             SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
         )
-        ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
         ch_fastqs
             .map { file -> file[1]}
@@ -165,7 +171,6 @@ workflow SRA {
             .map { it[0] }
             .unique()
             .set { ch_fastqs_only }
-
     }
 
     //
@@ -186,12 +191,7 @@ workflow SRA {
         params.looklength
     )
 
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
+
 }
 
 /*

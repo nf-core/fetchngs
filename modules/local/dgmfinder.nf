@@ -15,11 +15,13 @@ process DGMFINDER {
 
     output:
     tuple val(fastq_id), path(fastq)    , emit: fastq
+    path "*_targets.txt.gz"             , emit: targets
     path "*_anchors.txt.gz"             , emit: anchors
+    path "*_anchors_annot.txt.gz"       , emit: anchors_annot
     path "*_assemb_anchors.fasta"       , emit: assemb_anchors
     path "*_max_anchor_up.fasta"        , emit: max_anchor_up
     path "*_max_anchor_dn.fasta"        , emit: max_anchor_dn
-    path "*_anchors_annot.txt.gz"       , emit: anchors_annot
+    path "*.xml"                        , emit: xml
     path "*.log"                        , emit: log
 
     script:
