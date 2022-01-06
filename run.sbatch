@@ -9,5 +9,6 @@
 #SBATCH --mem=60Gb
 #SBATCH --requeue
 
-nextflow run main.nf -profile sherlock -latest --input test_ids.txt --outdir test_results/ -resume
+nextflow run main.nf -profile sherlock -latest --id_list test_ids.txt --outdir test_results/ -resume -r dev-refactor
+
 

@@ -58,6 +58,4 @@ workflow STRING_STATS {
             storeDir:   "${params.outdir}/string_stats"
         )
 
-    emit:
-
 }

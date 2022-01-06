@@ -92,7 +92,7 @@ workflow SRA {
             ch_fastqs
         )
 
-        ch_fastq_anchors = DGMFINDER.out.fastq_anchors
+        ch_fastq_anchors = DGMFINDER.out.ch_fastq_anchors
 
     }
 
