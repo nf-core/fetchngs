@@ -98,8 +98,6 @@ workflow SRA {
         params.kmer_size
     )
 
-    // ch_fastq_anchors = DGMFINDER_ANALYSIS.out.fastq_anchors
-
     //
     // SUBWORKFLOW: Run dgmfinder analysis
     //

@@ -4,7 +4,7 @@ include { ADJACENT_ANCHORS      } from '../../modules/local/adjacent_anchors'
 
 workflow STRING_STATS {
     take:
-    ch_fastq_anchors
+    ch_test
 
     main:
 
@@ -12,7 +12,7 @@ workflow STRING_STATS {
     // MODULE: Get consensus anchors and stats
     //
     CONSENSUS_ANCHORS (
-        ch_fastq_anchors
+        ch_test
         params.looklength
     )
 
@@ -20,7 +20,7 @@ workflow STRING_STATS {
     // MODULE: Extract significant anchors
     //
     SIGNIF_ANCHORS (
-        ch_fastq_anchors,
+        ch_test,
         params.direction,
         params.q_val
     )
@@ -41,7 +41,7 @@ workflow STRING_STATS {
     //
     ADJACENT_ANCHORS (
         ch_signif_anchors,
-        ch_fastq_anchors,
+        ch_test,
         params.direction,
         params.kmer_size,
         params.adj_dist,
