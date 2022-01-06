@@ -122,12 +122,15 @@ workflow DOWNLOAD_FASTQS {
         SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
         SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
     )
-    ch_fastqs_only.view()
+
     println('here1')
+
     ch_fastqs
         .map { file -> file[1]}
         .flatten()
         .set { ch_fastqs_flat }
+    ch_fastqs.view()
+    ch_fastqs_flat.view()
     println('here2')
 
     emit:
