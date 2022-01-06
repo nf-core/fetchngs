@@ -91,18 +91,19 @@ workflow SRA {
             SRA_IDS_TO_RUNINFO.out.tsv
         )
 
-        ch_metadata =  SRA_RUNINFO_TO_FTP.out.tsv
-
-        ch_metadata
+        // Concatenate all metadata files into 1 mega file
+        SRA_RUNINFO_TO_FTP.out.tsv
+            .map { file ->
+                file.text + '\n'
+            }
             .collectFile (
                 name:       "metadata.tsv",
                 storeDir:   "${params.outdir}",
-                keepHeader: true
-            ) { file ->
-                file.collect{ it.text }.join('\n')
-            }
+                keepHeader: true,
+                skip:       1
+            )
 
-        ch_metadata
+        SRA_RUNINFO_TO_FTP.out.tsv
             .splitCsv(
                 header: true,
                 sep:'\t'
