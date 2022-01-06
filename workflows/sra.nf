@@ -60,6 +60,7 @@ workflow SRA {
             .map { it[0] }
             .unique()
             .set { ch_fastqs }
+        println('fastq')
 
     } else {
         //
