@@ -81,9 +81,9 @@ workflow SRA {
     //
     // SUBWORKFLOW: Run dgmfinder analysis
     //
-    STRING_STATS (
-        DGMFINDER_ANALYSIS.out.fastq_anchors
-    )
+    // STRING_STATS (
+    //     DGMFINDER_ANALYSIS.out.fastq_anchors
+    // )
 
 
     // if (params.dgmfinder_samplesheet) {
