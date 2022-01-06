@@ -1,5 +1,5 @@
 
-process STRING_STATS {
+process SIGNIF_ANCHORS {
     tag "$fastq_id"
     label 'error_retry'
 
@@ -10,19 +10,19 @@ process STRING_STATS {
 
     input:
     tuple val(fastq_id), path(fastq), path(anchors_annot)
-    val looklength
+    val direction
+    val q_val
 
     output:
-    path "*_consensus.fasta"    , emit: consensus_fasta
-    path "*.tab"                , emit: stats
-    path "*.log"                , emit: log
+    path "*tsv" , emit: tsv
 
     script:
+    signif_anchors_file = "${fastq_id}_signif_anchors.tsv"
     """
-    string_stats.py \\
+    extract_signif_anchors.py \\
         --anchors_annot ${anchors_annot} \\
-        --fastq_file ${fastq} \\
-        --fastq_id ${fastq_id} \\
-        --looklength ${looklength}
+        --signif_anchors_file ${signif_anchors_file} \\
+        --direction ${direction} \\
+        --q_val ${q_val}
     """
 }

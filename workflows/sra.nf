@@ -28,6 +28,9 @@ include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
 include { DGMFINDER               } from '../modules/local/dgmfinder'
 include { STRING_STATS            } from '../modules/local/string_stats'
+include { SIGNIF_ANCHORS          } from '../modules/local/signif_anchors'
+include { ADJACENT_ANCHOR         } from '../modules/local/adjacent_anchors'
+
 include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
 
 /*
@@ -91,18 +94,19 @@ workflow SRA {
             SRA_IDS_TO_RUNINFO.out.tsv
         )
 
-        ch_metadata =  SRA_RUNINFO_TO_FTP.out.tsv
-
-        ch_metadata
+        // Concatenate all metadata files into 1 mega file
+        SRA_RUNINFO_TO_FTP.out.tsv
+            .map { file ->
+                file.text + '\n'
+            }
             .collectFile (
                 name:       "metadata.tsv",
                 storeDir:   "${params.outdir}",
-                keepHeader: true
-            ) { file ->
-                file.collect{ it.text }.join('\n')
-            }
+                keepHeader: true,
+                skip:       1
+            )
 
-        ch_metadata
+        SRA_RUNINFO_TO_FTP.out.tsv
             .splitCsv(
                 header: true,
                 sep:'\t'
@@ -182,15 +186,58 @@ workflow SRA {
         params.kmer_size
     )
 
+    ch_fastq_anchors = DGMFINDER.out.fastq_anchors
+
     //
     // MODULE: Run post processing on dgmfinder output
     //
     STRING_STATS (
-        DGMFINDER.out.fastq,
-        DGMFINDER.out.anchors_annot,
+        ch_fastq_anchors
         params.looklength
     )
 
+    //
+    // MODULE: Extract significant anchors
+    //
+    SIGNIF_ANCHORS (
+        ch_fastq_anchors,
+        params.direction,
+        params.q_val
+    )
+
+    // Concatenate all significant anchors
+    SIGNIF_ANCHORS.out.tsv
+        .map { file ->
+            file.text + '\n'
+        }
+        .collectFile (
+            name:       "signif_anchors_${params.direction}_qval_${params.q_val}.tsv",
+            storeDir:   "${params.outdir}/string_stats"
+        )
+        .set { ch_signif_anchors }
+
+    //
+    // MODULE: Extract adjacent anchors
+    //
+    ADJACENT_ANCHORS (
+        ch_signif_anchors,
+        ch_fastq_anchors,
+        params.direction,
+        params.kmer_size,
+        params.adj_dist,
+        params.adj_len
+    )
+
+    // Concatenate all adjacent anchors
+    ADJACENT_ANCHORS.out.tsv
+        .map { file ->
+            file.text + '\n'
+        }
+        .collectFile (
+            name:       "adjacent_anchors_${params.direction}_qval_${params.q_val}.tsv",
+
+            storeDir:   "${params.outdir}/string_stats"
+        )
 
 }
 
