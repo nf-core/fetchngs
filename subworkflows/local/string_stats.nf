@@ -16,4 +16,13 @@ workflow STRING_STATS {
         params.looklength
     )
 
+    //
+    // MODULE: Extract significant anchors
+    //
+    SIGNIF_ANCHORS (
+        ch_fastq_anchors,
+        params.direction,
+        params.q_val
+    )
+
 }
