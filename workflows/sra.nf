@@ -29,7 +29,7 @@ include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_conf
 include { DGMFINDER               } from '../modules/local/dgmfinder'
 include { STRING_STATS            } from '../modules/local/string_stats'
 include { SIGNIF_ANCHORS          } from '../modules/local/signif_anchors'
-include { ADJACENT_ANCHOR         } from '../modules/local/adjacent_anchors'
+include { ADJACENT_ANCHORS        } from '../modules/local/adjacent_anchors'
 
 include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
 
