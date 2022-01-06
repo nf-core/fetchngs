@@ -1,5 +1,5 @@
 
-process ADJACENT_ANCHORS {
+process ADJACENT_KMERS {
     tag "$fastq_id"
     label 'error_retry'
 
@@ -24,7 +24,7 @@ process ADJACENT_ANCHORS {
     signif_anchors_reads_file = "${fastq_id}_signif_anchors.fasta"
     adjacent_anchors_file = "${fastq_id}_adjacent_anchors.tsv"
     """
-    extract_adjacent_anchors.py \\
+    extract_adjacent_kmers.py \\
         --signif_anchors_file ${signif_anchors} \\
         --fastq_file ${fastq} \\
         --signif_anchors_reads_file ${signif_anchors_reads_file} \\

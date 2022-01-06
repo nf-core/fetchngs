@@ -1,6 +1,6 @@
 include { CONSENSUS_ANCHORS     } from '../../modules/local/consensus_anchors'
 include { SIGNIF_ANCHORS        } from '../../modules/local/signif_anchors'
-include { ADJACENT_ANCHORS      } from '../../modules/local/adjacent_anchors'
+include { ADJACENT_KMERS        } from '../../modules/local/adjacent_kmers'
 
 workflow STRING_STATS {
     take:
@@ -39,7 +39,7 @@ workflow STRING_STATS {
     //
     // MODULE: Extract adjacent anchors
     //
-    ADJACENT_ANCHORS (
+    ADJACENT_KMERS (
         ch_signif_anchors,
         ch_fastq_anchors,
         params.direction,
@@ -49,12 +49,12 @@ workflow STRING_STATS {
     )
 
     // Concatenate all adjacent anchors
-    ADJACENT_ANCHORS.out.tsv
+    ADJACENT_KMERS.out.tsv
         .map { file ->
             file.text + '\n'
         }
         .collectFile (
-            name:       "adjacent_anchors_${params.direction}_qval_${params.q_val}.tsv",
+            name:       "adjacent_kmers_${params.direction}_qval_${params.q_val}.tsv",
             storeDir:   "${params.outdir}/string_stats"
         )
 }
