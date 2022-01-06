@@ -91,20 +91,14 @@ workflow SRA {
     //     DGMFINDER (
     //         ch_fastqs
     //     )
-<<<<<<< HEAD
 
-=======
     //     println('here')
->>>>>>> 4187980f49d942ae32c0cf9ae3dc04cc21c501a2
     //     ch_fastq_anchors = DGMFINDER.out.ch_fastq_anchors
 
     // }
 
-<<<<<<< HEAD
-=======
     // ch_fastq_anchors.view()
 
->>>>>>> 4187980f49d942ae32c0cf9ae3dc04cc21c501a2
     // //
     // // SUBWORKFLOW: Run dgmfinder analysis
     // //
