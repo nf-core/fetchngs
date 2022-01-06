@@ -60,7 +60,6 @@ workflow SRA {
             .map { it[0] }
             .unique()
             .set { ch_fastqs }
-        println('fastq')
 
     } else {
         //
@@ -70,9 +69,9 @@ workflow SRA {
 
         ch_fastqs = DOWNLOAD_FASTQS.out.ch_fastqs
 
-        println('nofastqs')
-
     }
+
+    ch_fastqs.view()
 
     // if (params.dgmfinder_samplesheet) {
     //     // Read in from dgmfinder_samplesheet
