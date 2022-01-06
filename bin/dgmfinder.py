@@ -13,18 +13,15 @@ def get_args():
         type=str,
         help='list of annotation fastq files'
     )
-    parser.add_argument(
-        "--fastq_file",
+    parser.add_argument("--fastq_file",
         type=str,
         help='input fasta file'
     )
-    parser.add_argument(
-        "--fastq_id",
+    parser.add_argument("--fastq_id",
         type=str,
         help='fastq id name'
     )
-    parser.add_argument(
-        "--kmer_size",
+    parser.add_argument("--kmer_size",
         type=int,
         help='size of kmer'
     )

@@ -201,18 +201,15 @@ def get_args():
         type=str,
         help='input anchor file from dgmfinder'
     )
-    parser.add_argument(
-        "--fastq_file",
+    parser.add_argument("--fastq_file",
         type=str,
         help='input fasta file'
     )
-    parser.add_argument(
-        "--fastq_id",
+    parser.add_argument("--fastq_id",
         type=str,
         help='fastq id name'
     )
-    parser.add_argument(
-        "--looklength",
+    parser.add_argument("--looklength",
         type=int,
         help='lookahead length'
     )
