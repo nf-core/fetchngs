@@ -104,13 +104,13 @@ workflow DOWNLOAD_FASTQS {
 
     SRA_FASTQ_FTP.out.fastq
         .mix(SRA_FASTQ_SRATOOLS.out.reads)
-        .set{ ch_fastqs_info }
+        .set{ ch_fastqs }
 
     //
     // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
     //
     SRA_TO_SAMPLESHEET (
-        ch_fastqs_info,
+        ch_fastqs,
         params.nf_core_pipeline ?: '',
         params.sample_mapping_fields
     )
@@ -122,15 +122,15 @@ workflow DOWNLOAD_FASTQS {
         SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
         SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
     )
-    ch_fastqs_info.view()
+    ch_fastqs_only.view()
     println('here1')
-    ch_fastqs_info
+    ch_fastqs
         .map { file -> file[1]}
         .flatten()
-        .set { ch_fastqs }
+        .set { ch_fastqs_flat }
     println('here2')
 
     emit:
-    ch_fastqs = ch_fastqs
+    ch_out= ch_fastqs_flat
 
 }
