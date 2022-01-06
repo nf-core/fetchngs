@@ -1,5 +1,5 @@
 
-process STRING_STATS {
+process CONSENSUS_ANCHORS {
     tag "$fastq_id"
     label 'error_retry'
 
