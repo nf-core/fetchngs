@@ -72,6 +72,7 @@ workflow SRA {
     }
 
     if (params.dgmfinder_samplesheet) {
+        println('here')
         // Read in from dgmfinder_samplesheet
         Channel.fromPath(params.dgmfinder_samplesheet)
             .splitCSV(
@@ -87,6 +88,7 @@ workflow SRA {
             .set{ ch_fastq_anchors }
 
     } else {
+        println('here2')
         //
         // MODULE: Run dgmfinder on fastqs
         //
