@@ -67,10 +67,9 @@ workflow SRA {
         //
         DOWNLOAD_FASTQS ()
 
-        ch_fastqs = DOWNLOAD_FASTQS.out.ch_out
+        ch_fastqs = DOWNLOAD_FASTQS.out.fastqs
 
     }
-    ch_fastqs.view()
 
     DGMFINDER_ANALYSIS (
         ch_fastqs,
@@ -78,6 +77,7 @@ workflow SRA {
         params.kmer_size
     )
 
+    DGMFINDER_ANALYSIS.fastq_anchors.view()
     //
     // SUBWORKFLOW: Run dgmfinder analysis
     //
