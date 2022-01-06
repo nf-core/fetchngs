@@ -21,8 +21,6 @@ WorkflowSra.initialise(params, log, valid_params)
 
 // Modules
 include { PYSRADB           } from '../modules/local/pysradb'
-include { DGMFINDER_ANALYSIS} from '../modules/local/dgmfinder_analysis'
-
 
 // Subworkflows
 include { DOWNLOAD_FASTQS   } from '../subworkflows/local/download_fastqs'
@@ -71,21 +69,15 @@ workflow SRA {
 
     }
 
-    DGMFINDER_ANALYSIS (
-        ch_fastqs,
-        params.ann_file,
-        params.kmer_size
+    DGMFINDER (
+        ch_fastqs
     )
-
-    DGMFINDER_ANALYSIS.out.fastq_anchors.view()
-
-    ch_fastq_anchors = DGMFINDER_ANALYSIS.out.fastq_anchors
 
     //
     // SUBWORKFLOW: Run dgmfinder analysis
     //
     STRING_STATS (
-        ch_fastq_anchors
+        DGMFINDER.out.fastq_anchors
     )
 
 

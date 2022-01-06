@@ -16,6 +16,6 @@ workflow DGMFINDER {
     )
 
     emit:
-    ch_fastq_anchors = DGMFINDER_ANALYSIS.out.fastq_anchors
+    fastq_anchors = DGMFINDER_ANALYSIS.out.fastq_anchors
 
 }
