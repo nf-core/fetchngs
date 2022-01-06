@@ -70,8 +70,13 @@ workflow SRA {
         ch_fastqs = DOWNLOAD_FASTQS.out.ch_fastqs
 
     }
-
     ch_fastqs.view()
+
+    DGMFINDER_ANALYSIS (
+        ch_fastqs,
+        params.ann_file,
+        params.kmer_size
+    )
 
     // if (params.dgmfinder_samplesheet) {
     //     // Read in from dgmfinder_samplesheet
@@ -94,11 +99,7 @@ workflow SRA {
     //
     // MODULE: Run dgmfinder on fastqs
     //
-    // DGMFINDER_ANALYSIS (
-    //     ch_fastqs,
-    //     params.ann_file,
-    //     params.kmer_size
-    // )
+
     // DGMFINDER_ANALYSIS.out.fastq_anchors.view()
     // //
     // // SUBWORKFLOW: Run dgmfinder analysis
