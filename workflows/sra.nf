@@ -71,6 +71,8 @@ workflow SRA {
 
     }
 
+    ch_fastqs.view()
+    println('here')
     // if (params.dgmfinder_samplesheet) {
     //     // Read in from dgmfinder_samplesheet
     //     Channel.fromPath(params.dgmfinder_samplesheet)
@@ -97,7 +99,7 @@ workflow SRA {
         params.ann_file,
         params.kmer_size
     )
-
+    DGMFINDER_ANALYSIS.out.fastq_anchors.view()
     //
     // SUBWORKFLOW: Run dgmfinder analysis
     //
