@@ -78,12 +78,15 @@ workflow SRA {
     )
 
     DGMFINDER_ANALYSIS.out.fastq_anchors.view()
+
+    ch_fastq_anchors = DGMFINDER_ANALYSIS.out.fastq_anchors
+
     //
     // SUBWORKFLOW: Run dgmfinder analysis
     //
-    // STRING_STATS (
-    //     DGMFINDER_ANALYSIS.out.fastq_anchors
-    // )
+    STRING_STATS (
+        ch_fastq_anchors
+    )
 
 
     // if (params.dgmfinder_samplesheet) {
