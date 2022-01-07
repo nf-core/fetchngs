@@ -37,8 +37,6 @@ workflow STRING_STATS {
         ch_signif_anchors,
         params.looklength,
         params.kmer_size,
-        params.adj_dist,
-        params.adj_len,
         ch_fastq_anchors
     )
 
@@ -59,8 +57,6 @@ workflow STRING_STATS {
     ADJACENT_KMERS (
         ch_adj_kmers,
         params.kmer_size,
-        params.adj_dist,
-        params.adj_len,
         ch_fastq_anchors
     )
 

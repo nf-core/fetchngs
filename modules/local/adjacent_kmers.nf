@@ -11,8 +11,6 @@ process ADJACENT_KMERS {
     input:
     path adj_kmers
     val kmer_size
-    val adj_dist
-    val adj_len
     each fastq_tuple
 
     output:
@@ -32,8 +30,6 @@ process ADJACENT_KMERS {
         --fastq_id ${fastq_id} \\
         --out_signif_anchors_fasta ${out_signif_anchors_fasta} \\
         --out_adj_kmer_counts_file ${out_adj_kmer_counts_file} \\
-        --kmer_size ${kmer_size}\\
-        --adj_dist ${adj_dist} \\
-        --adj_len ${adj_len}
+        --kmer_size ${kmer_size}
     """
 }
