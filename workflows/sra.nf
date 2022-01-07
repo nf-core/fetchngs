@@ -100,7 +100,8 @@ workflow SRA {
     // SUBWORKFLOW: Run string_stats
     //
     STRING_STATS (
-        ch_dgmfinder
+        ch_dgmfinder,
+        ch_fastqs
     )
 
 }

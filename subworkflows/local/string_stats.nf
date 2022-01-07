@@ -5,6 +5,7 @@ include { ADJACENT_KMERS        } from '../../modules/local/adjacent_kmers'
 workflow STRING_STATS {
     take:
     ch_fastq_anchors
+    ch_fastqs
 
     main:
 
@@ -45,8 +46,9 @@ workflow STRING_STATS {
         params.kmer_size,
         params.adj_dist,
         params.adj_len,
-        ch_fastq_anchors
+        ch_fastqs
     )
+
     // Concatenate all adjacent anchors
     ADJACENT_KMERS.out.tsv
         .view()

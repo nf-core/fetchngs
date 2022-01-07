@@ -14,7 +14,7 @@ process ADJACENT_KMERS {
     val kmer_size
     val adj_dist
     val adj_len
-    each tuple val(fastq_id), path(fastq), path(anchors_annot)
+    each fastq
 
     output:
     path "*.tsv"    , emit: tsv
