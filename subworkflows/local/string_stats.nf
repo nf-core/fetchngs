@@ -5,7 +5,6 @@ include { ADJACENT_KMERS        } from '../../modules/local/adjacent_kmers'
 workflow STRING_STATS {
     take:
     ch_fastq_anchors
-    ch_fastqs
 
     main:
 
