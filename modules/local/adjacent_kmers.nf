@@ -14,14 +14,16 @@ process ADJACENT_KMERS {
     val kmer_size
     val adj_dist
     val adj_len
-    each fastq
+    each fastq_tuple
 
     output:
     path "*.tsv"    , emit: tsv
     path "*.fasta"  , emit: fasta
 
     script:
-    fastq_id = fastq.baseName
+    fastq_id = fastq_tuple[0]
+    fastq = fastq_tuple[1]
+
     signif_anchors_reads_file = "${fastq_id}_signif_anchors.fasta"
     adjacent_anchors_file = "${fastq_id}_adjacent_anchors.tsv"
     """

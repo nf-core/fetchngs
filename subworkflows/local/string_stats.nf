@@ -46,7 +46,7 @@ workflow STRING_STATS {
         params.kmer_size,
         params.adj_dist,
         params.adj_len,
-        ch_fastqs
+        ch_fastq_anchors
     )
 
     // Concatenate all adjacent anchors
