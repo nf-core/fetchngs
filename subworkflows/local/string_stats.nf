@@ -50,7 +50,6 @@ workflow STRING_STATS {
 
     // Concatenate all adjacent anchors
     ADJACENT_KMERS.out.tsv
-        .view()
         .map { file ->
             file.text + '\n'
         }
