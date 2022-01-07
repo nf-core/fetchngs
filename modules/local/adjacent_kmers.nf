@@ -21,6 +21,7 @@ process ADJACENT_KMERS {
     path "*.fasta"  , emit: fasta
 
     script:
+    fastq_id = fastq.baseName
     signif_anchors_reads_file = "${fastq_id}_signif_anchors.fasta"
     adjacent_anchors_file = "${fastq_id}_adjacent_anchors.tsv"
     """
