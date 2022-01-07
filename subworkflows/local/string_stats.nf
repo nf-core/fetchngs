@@ -33,7 +33,7 @@ workflow STRING_STATS {
     //
     CONSENSUS_ANCHORS (
         ch_fastq_anchors,
-        params.looklengthconsensus_anchors
+        params.looklength
     )
 
     //

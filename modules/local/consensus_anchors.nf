@@ -9,8 +9,7 @@ process CONSENSUS_ANCHORS {
         'quay.io/biocontainers/python:3.9--1' }"
 
     input:
-    tuple val(fastq_id), path(fastq)
-    path anchors_annot
+    tuple val(fastq_id), path(fastq), path(anchors_annot)
     val looklength
 
     output:
