@@ -1,5 +1,5 @@
 
-process STRING_STATS {
+process CONSENSUS_ANCHORS {
     tag "$fastq_id"
     label 'error_retry'
 
@@ -14,13 +14,13 @@ process STRING_STATS {
     val looklength
 
     output:
-    path "*_consensus.fasta"    , emit: consensus_fasta
-    path "*.tab"                , emit: stats
-    path "*.log"                , emit: log
+    path "*_consensus.fasta"                                 , emit: consensus_fasta
+    path "*.tab"                                             , emit: stats
+    path "*.log"                                             , emit: log
 
     script:
     """
-    string_stats.py \\
+    consensus_anchors.py \\
         --anchors_annot ${anchors_annot} \\
         --fastq_file ${fastq} \\
         --fastq_id ${fastq_id} \\

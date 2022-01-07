@@ -1,5 +1,5 @@
 
-process DGMFINDER {
+process DGMFINDER_ANALYSIS {
     tag "$fastq_id"
     label 'error_retry'
 
