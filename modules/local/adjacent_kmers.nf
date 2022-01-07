@@ -9,8 +9,7 @@ process ADJACENT_KMERS {
         'quay.io/biocontainers/python:3.9--1' }"
 
     input:
-    path signif_anchors
-    val direction
+    path adj_kmers
     val kmer_size
     val adj_dist
     val adj_len
@@ -24,15 +23,16 @@ process ADJACENT_KMERS {
     fastq_id = fastq_tuple[0]
     fastq = fastq_tuple[1]
 
-    signif_anchors_reads_file = "${fastq_id}_signif_anchors.fasta"
-    adjacent_anchors_file = "${fastq_id}_adjacent_anchors.tsv"
+    out_signif_anchors_fasta = "${fastq_id}_signif_anchors.fasta"
+    out_adj_kmer_counts_file = "${fastq_id}_adj_kmers_counts.tsv"
     """
-    extract_adjacent_kmers.py \\
-        --signif_anchors_file ${signif_anchors} \\
+    count_adjacent_kmers.py \\
+        --adj_kmers_file ${adj_kmers} \\
         --fastq_file ${fastq} \\
-        --signif_anchors_reads_file ${signif_anchors_reads_file} \\
-        --adjacent_anchors_file ${adjacent_anchors_file} \\
-        --kmer_size ${kmer_size} \\
+        --fastq_id ${fastq_id} \\
+        --out_signif_anchors_fasta ${out_signif_anchors_fasta} \\
+        --out_adj_kmer_counts_file ${out_adj_kmer_counts_file} \\
+        --kmer_size ${kmer_size}\\
         --adj_dist ${adj_dist} \\
         --adj_len ${adj_len}
     """

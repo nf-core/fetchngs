@@ -1,6 +1,8 @@
-include { CONSENSUS_ANCHORS     } from '../../modules/local/consensus_anchors'
-include { SIGNIF_ANCHORS        } from '../../modules/local/signif_anchors'
-include { ADJACENT_KMERS        } from '../../modules/local/adjacent_kmers'
+include { SIGNIF_ANCHORS                } from '../../modules/local/signif_anchors'
+include { CONSENSUS_ANCHORS             } from '../../modules/local/consensus_anchors'
+include { ADJACENT_KMERS                } from '../../modules/local/adjacent_kmers'
+include { MERGE_ADJACENT_KMER_COUNTS    } from '../../modules/local/merge_adjacent_kmer_counts'
+
 
 workflow STRING_STATS {
     take:
@@ -32,29 +34,49 @@ workflow STRING_STATS {
     // MODULE: Run dgmfinder on fastqs
     //
     CONSENSUS_ANCHORS (
-        ch_fastq_anchors,
-        params.looklength
-    )
-
-    //
-    // MODULE: Extract adjacent anchors
-    //
-    ADJACENT_KMERS (
         ch_signif_anchors,
-        params.direction,
+        params.looklength,
         params.kmer_size,
         params.adj_dist,
         params.adj_len,
         ch_fastq_anchors
     )
 
-    // Concatenate all adjacent anchors
-    ADJACENT_KMERS.out.tsv
+    // Concatenate all adjacent_kmer lists
+    CONSENSUS_ANCHORS.out.tsv
         .map { file ->
             file.text + '\n'
         }
         .collectFile (
-            name:       "adjacent_kmers_${params.direction}_qval_${params.q_val}.tsv",
-            storeDir:   "${params.outdir}/string_stats/adjacent_kmers"
+            keepHeader: true,
+            skip:       1
         )
+        .set { ch_adj_kmers }
+
+    //
+    // MODULE: Extract adjacent anchors
+    //
+    ADJACENT_KMERS (
+        ch_adj_kmers,
+        params.kmer_size,
+        params.adj_dist,
+        params.adj_len,
+        ch_fastq_anchors
+    )
+
+    // Make samplesheet of all adjacent_kmer_counts files
+    ADJACENT_KMERS.out.tsv
+        .collectFile() { file ->
+            file.toString() + '\n'
+        }
+        .set{ ch_adj_kmer_counts_samplesheet }
+
+    //
+    // MODULE: Merge all adjacent_kmer_counts into one mega table
+    //
+    MERGE_ADJACENT_KMER_COUNTS (
+        ch_adj_kmer_counts_samplesheet
+    )
+
+
 }
