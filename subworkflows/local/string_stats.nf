@@ -56,6 +56,6 @@ workflow STRING_STATS {
         }
         .collectFile (
             name:       "adjacent_kmers_${params.direction}_qval_${params.q_val}.tsv",
-            storeDir:   "${params.outdir}/string_stats"
+            storeDir:   "${params.outdir}/string_stats/adjacent_kmers"
         )
 }
