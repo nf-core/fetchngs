@@ -10,11 +10,11 @@ process ADJACENT_KMERS {
 
     input:
     path signif_anchors
-    tuple val(fastq_id), path(fastq), path(anchors_annot)
     val direction
     val kmer_size
     val adj_dist
     val adj_len
+    each tuple val(fastq_id), path(fastq), path(anchors_annot)
 
     output:
     path "*.tsv"    , emit: tsv

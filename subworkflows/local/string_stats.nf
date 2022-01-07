@@ -19,7 +19,6 @@ workflow STRING_STATS {
 
     // Concatenate all significant anchors
     SIGNIF_ANCHORS.out.tsv
-        .view()
         .map { file ->
             file.text
         }
@@ -33,7 +32,7 @@ workflow STRING_STATS {
     // MODULE: Run dgmfinder on fastqs
     //
     CONSENSUS_ANCHORS (
-        SIGNIF_ANCHORS.out.fastq_anchors,
+        ch_fastq_anchors,
         params.looklength
     )
 
@@ -42,11 +41,11 @@ workflow STRING_STATS {
     //
     ADJACENT_KMERS (
         ch_signif_anchors,
-        CONSENSUS_ANCHORS.out.fastq_anchors,
         params.direction,
         params.kmer_size,
         params.adj_dist,
-        params.adj_len
+        params.adj_len,
+        ch_fastq_anchors
     )
     // Concatenate all adjacent anchors
     ADJACENT_KMERS.out.tsv
