@@ -109,7 +109,7 @@ def main():
 
                     ## Write out reads with any anchor to fastq
                     # get string of matching anchors i.e. 'ACGT_ACGT_ACGT'
-                    matching_anchors_string = "_".join([a[0] for a in counts_dict.keys()])
+                    matching_anchors_string = "_".join([a[0] for a in matching_anchors])
                     # add matching anchors to fastq id
                     record.id = f'{str(record.id)} {matching_anchors_string}'
                     # write out read to adj_kmers file
