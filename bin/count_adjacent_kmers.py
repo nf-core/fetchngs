@@ -69,6 +69,16 @@ def main():
     )
 
     anchor_df.columns = ['anchor', 'adj_kmer']
+
+    # remove any anchors that contain more than 10 same consecutive bases
+    kmer_blacklist = [
+        'A' * 10,
+        'C' * 10,
+        'G' * 10,
+        'T' * 10
+    ]
+    anchor_df = anchor_df[~anchor_df['anchor'].str.contains('|'.join(kmer_blacklist))]
+
     anchor_df['seq_tuple'] = list(zip(anchor_df['anchor'], anchor_df['adj_kmer']))
 
     # create counts_dict for counting
