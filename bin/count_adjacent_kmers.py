@@ -66,7 +66,7 @@ def main():
         )
         .drop_duplicates()
         .sort_values(by='index')
-    )
+    ).head(1000)
 
     anchor_df.columns = ['anchor', 'adj_kmer']
     anchor_df['seq_tuple'] = list(zip(anchor_df['anchor'], anchor_df['adj_kmer']))
