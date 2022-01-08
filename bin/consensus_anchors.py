@@ -63,22 +63,22 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
     for myseq in myseqs:
     # loop through each kmer in the read;
     # if it is part of the old dictionary, which gets passed in, record all of the mkers
-        # for i in range(1, len(myseq)):
-        #     # get substr at the ith position of length anchorlength to compare to anchorlist
-        #     mystring = myseq[i:i+anchorlength]
-        #      # check if it exists
-        #     if mystring in anchorlist:
-        #         # find where the match is
-        #         match = myseq.find(mystring)
+        for i in range(1, len(myseq)):
+            # get substr at the ith position of length anchorlength to compare to anchorlist
+            mystring = myseq[i:i+anchorlength]
+             # check if it exists
+            if mystring in anchorlist:
+                # find where the match is
+                match = myseq.find(mystring)
 
-        #         s = match
-        #         e = match + len(mystring)
+                s = match
+                e = match + len(mystring)
 
-        #         # test if the stringlength is long enough to get the string
-        #         nextkmer = myseq [e:e+looklength]
-        #         # keep dict small so less than 100 seqs:
-        #         if len(DNAdict[mystring]) < 100:
-        #             DNAdict[mystring].append(nextkmer)
+                # test if the stringlength is long enough to get the string
+                nextkmer = myseq [e:e+looklength]
+                # keep dict small so less than 100 seqs:
+                if len(DNAdict[mystring]) < 100:
+                    DNAdict[mystring].append(nextkmer)
 
         # search for signif_anchor and log its adjacent kmer
         if any(anchor in myseq for anchor in signif_anchors):
