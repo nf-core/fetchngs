@@ -69,14 +69,21 @@ workflow SRA {
 
     }
 
-    // Get the number of reads in the smallest fastq file
-    ch_fastqs
-        .map { file ->
-            file.countFastq()
-        }
-        .set{ ch_fastqs_numReads }
+    // Use the same fixed number of reads for string_stats
+    if (params.num_reads) {
+        num_input_lines = params.num_reads
 
-    num_input_lines = ch_fastqs_numReads.min()
+    } else {
+        // Get the number of reads in the smallest fastq file
+        ch_fastqs
+            .map { file ->
+                file.countFastq()
+            }
+            .set{ ch_fastqs_numReads }
+
+        num_input_lines = ch_fastqs_numReads.min()
+
+    }
 
     // dgmfinder step
     if (params.dgmfinder_samplesheet) {
