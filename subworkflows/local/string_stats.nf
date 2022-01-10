@@ -36,7 +36,6 @@ workflow STRING_STATS {
     //
     CONSENSUS_ANCHORS (
         ch_signif_anchors,
-        num_input_lines,
         params.looklength,
         params.kmer_size,
         ch_fastq_anchors
@@ -58,6 +57,7 @@ workflow STRING_STATS {
     //
     ADJACENT_KMERS (
         ch_adj_kmers,
+        num_input_lines,
         params.kmer_size,
         ch_fastq_anchors
     )

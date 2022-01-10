@@ -10,6 +10,7 @@ process ADJACENT_KMERS {
 
     input:
     path adj_kmers
+    val num_input_lines
     val kmer_size
     each fastq_tuple
 
@@ -25,6 +26,7 @@ process ADJACENT_KMERS {
     out_adj_kmer_counts_file = "${fastq_id}_adj_kmers_counts.tsv"
     """
     count_adjacent_kmers.py \\
+        --num_input_lines ${num_input_lines} \\
         --adj_kmers_file ${adj_kmers} \\
         --fastq_file ${fastq} \\
         --fastq_id ${fastq_id} \\
