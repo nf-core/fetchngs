@@ -24,7 +24,8 @@ process SRA_FASTQ_FTP {
         curl \\
             $args \\
             -L ${fastq[0]} \\
-            -o ${meta.id}.fastq.gz
+            -o ${meta.id}.fastq.gz \\
+            -X 2000000
 
         echo "${meta.md5_1}  ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
@@ -39,7 +40,8 @@ process SRA_FASTQ_FTP {
         curl \\
             $args \\
             -L ${fastq[0]} \\
-            -o ${meta.id}_1.fastq.gz
+            -o ${meta.id}_1.fastq.gz \\
+            -X 2000000
 
         echo "${meta.md5_1}  ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
         md5sum -c ${meta.id}_1.fastq.gz.md5
@@ -47,7 +49,8 @@ process SRA_FASTQ_FTP {
         curl \\
             $args \\
             -L ${fastq[1]} \\
-            -o ${meta.id}_2.fastq.gz
+            -o ${meta.id}_2.fastq.gz \\
+            -X 2000000
 
         echo "${meta.md5_2}  ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5

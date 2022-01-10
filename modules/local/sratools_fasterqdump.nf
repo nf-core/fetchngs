@@ -35,7 +35,9 @@ process SRATOOLS_FASTERQDUMP {
     fasterq-dump \\
         $args \\
         --threads $task.cpus \\
-        ${sra.name}
+        ${sra.name} \\
+        -X 2000000
+
 
     pigz \\
         $args2 \\
