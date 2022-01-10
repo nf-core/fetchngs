@@ -10,6 +10,7 @@ process CONSENSUS_ANCHORS {
 
     input:
     path signif_anchors_file
+    val num_input_lines
     val looklength
     val kmer_size
     each fastq_tuple
@@ -30,6 +31,7 @@ process CONSENSUS_ANCHORS {
     out_adj_kmer_file="${fastq_id}_adj_kmers.tsv "
     """
     consensus_anchors.py \\
+        --num_input_lines ${num_input_lines} \\
         --signif_anchors_file ${signif_anchors_file} \\
         --anchors_annot ${anchors_annot} \\
         --fastq_file ${fastq} \\

@@ -7,6 +7,7 @@ include { MERGE_ADJACENT_KMER_COUNTS    } from '../../modules/local/merge_adjace
 workflow STRING_STATS {
     take:
     ch_fastq_anchors
+    num_input_lines
 
     main:
 
@@ -35,6 +36,7 @@ workflow STRING_STATS {
     //
     CONSENSUS_ANCHORS (
         ch_signif_anchors,
+        num_input_lines,
         params.looklength,
         params.kmer_size,
         ch_fastq_anchors

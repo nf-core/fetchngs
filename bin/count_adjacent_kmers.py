@@ -10,6 +10,11 @@ import pandas as pd
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--num_input_lines",
+        type=str,
+        help='max number of fastq reads for input'
+    )
+    parser.add_argument(
         "--adj_kmers_file",
         type=str,
         help='input file of significant anchors'
@@ -107,40 +112,43 @@ def main():
     with open(args.out_signif_anchors_fasta, 'w') as out_reads:
         with gzip.open(args.fastq_file, 'rt') as fastq_reader:
 
-            # stream fastq file and output if necessary
-            for record in SeqIO.parse(fastq_reader, 'fastq'):
-                read = str(record.seq)
+            read_counter = 0
+                # stream fastq file and output if necessary
+                for record in SeqIO.parse(fastq_reader, 'fastq'):
+                    while read_counter < args.num_input_lines:
+                        read = str(record.seq)
 
-                # check if read contains any significant anchors
-                if any(anchor_tuple[0] in read for anchor_tuple in counts_dict.keys()):
+                        # check if read contains any significant anchors
+                        if any(anchor_tuple[0] in read for anchor_tuple in counts_dict.keys()):
 
-                    # if signif anchor found in read, get tuple of (signif_anchor, adj_kmer )
-                    matching_anchors = [anchor_tuple for anchor_tuple in counts_dict.keys() if anchor_tuple[0] in read]
+                            # if signif anchor found in read, get tuple of (signif_anchor, adj_kmer )
+                            matching_anchors = [anchor_tuple for anchor_tuple in counts_dict.keys() if anchor_tuple[0] in read]
 
-                    ## Write out reads with any anchor to fastq
-                    # get string of matching anchors i.e. 'ACGT_ACGT_ACGT'
-                    # matching_anchors_string = "_".join([a[0] for a in matching_anchors])
-                    # # add matching anchors to fastq id
-                    # record.id = f'{str(record.id)} {matching_anchors_string}'
-                    # write out read to adj_kmers file
-                    SeqIO.write(record, out_reads, 'fasta')
+                            ## Write out reads with any anchor to fastq
+                            # get string of matching anchors i.e. 'ACGT_ACGT_ACGT'
+                            # matching_anchors_string = "_".join([a[0] for a in matching_anchors])
+                            # # add matching anchors to fastq id
+                            # record.id = f'{str(record.id)} {matching_anchors_string}'
+                            # write out read to adj_kmers file
+                            SeqIO.write(record, out_reads, 'fasta')
 
-                    ## Count occurance of anchor, adj_kmer pairs
-                    # for every matching anchor, check for adj_kmer match
-                    for anchor_tuple in matching_anchors:
-                        # define
-                        anchor = anchor_tuple[0]
-                        adj_kmer = anchor_tuple[1]
+                            ## Count occurance of anchor, adj_kmer pairs
+                            # for every matching anchor, check for adj_kmer match
+                            for anchor_tuple in matching_anchors:
+                                # define
+                                anchor = anchor_tuple[0]
+                                adj_kmer = anchor_tuple[1]
 
-                        # get anchor position
-                        anchor_end = read.index(anchor) + len(anchor)
-                        # get adj_kmer position
-                        adj_kmer_start = anchor_end + adj_dist
-                        adj_kmer_end = adj_kmer_start + adj_len
-                        # check for adj_kmer match
-                        if adj_kmer == read[adj_kmer_start:adj_kmer_end]:
-                            # update counts
-                            counts_dict[anchor_tuple] += 1
+                                # get anchor position
+                                anchor_end = read.index(anchor) + len(anchor)
+                                # get adj_kmer position
+                                adj_kmer_start = anchor_end + adj_dist
+                                adj_kmer_end = adj_kmer_start + adj_len
+                                # check for adj_kmer match
+                                if adj_kmer == read[adj_kmer_start:adj_kmer_end]:
+                                    # update counts
+                                    counts_dict[anchor_tuple] += 1
+                        read_counter += 1
 
     # reformat and write out
     counts_df = (

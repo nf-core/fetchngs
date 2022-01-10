@@ -69,6 +69,16 @@ workflow SRA {
 
     }
 
+    // Get the number of reads in the smallest fastq file
+    ch_fastqs
+        .map { file ->
+            file.countFastq()
+        }
+        .set{ ch_fastqs_numReads }
+
+    num_input_lines = ch_fastqs_numReads.min()
+
+    // dgmfinder step
     if (params.dgmfinder_samplesheet) {
         // Read in from dgmfinder_samplesheet
         Channel.fromPath(params.dgmfinder_samplesheet)
@@ -100,7 +110,8 @@ workflow SRA {
     // SUBWORKFLOW: Run string_stats
     //
     STRING_STATS (
-        ch_dgmfinder
+        ch_dgmfinder,
+        num_input_lines
     )
 
 }
