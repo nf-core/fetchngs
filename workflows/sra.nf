@@ -55,7 +55,7 @@ workflow SRA {
                 sep:'',
                 strip: true
             )
-            .map { it[0] }
+            .map { file(it[0]) }
             .unique()
             .set { ch_fastqs }
 
