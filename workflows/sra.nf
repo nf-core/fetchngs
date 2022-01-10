@@ -45,41 +45,16 @@ workflow SRA {
 
     ch_versions = Channel.empty()
 
-    // Read in fastqs from samplesheet or download via SRA
-    if (params.fastq_samplesheet) {
-        // Read in fastqs from samplesheet
-        Channel
-            .fromPath(params.fastq_samplesheet)
-            .splitCsv(
-                header: false,
-                sep:'',
-                strip: true
-            )
-            .map { file(it[0]) }
-            .unique()
-            .set { ch_fastqs }
-
-    } else {
-        //
-        // SUBWORKFLOW: Download fastqs and associated files via SRA/ftp
-        //
-        DOWNLOAD_FASTQS ()
-
-        ch_fastqs = DOWNLOAD_FASTQS.out.fastqs
-
-    }
-
-    // Get the number of reads in the smallest fastq file
-    ch_fastqs
-        .map { file ->
-            file.countFastq()
-        }
-        .set{ ch_fastqs_numReads }
-
-    num_input_lines = ch_fastqs_numReads.min()
-
-    // dgmfinder step
+    // Only run string_stats
     if (params.dgmfinder_samplesheet) {
+        // Make channel of fastqs
+        Channel.fromPath(params.dgmfinder_samplesheet)
+            .splitCSV(
+                header: false
+            )
+            .map { file(it[1]) }
+            .set{ ch_fastqs }
+
         // Read in from dgmfinder_samplesheet
         Channel.fromPath(params.dgmfinder_samplesheet)
             .splitCSV(
@@ -95,6 +70,31 @@ workflow SRA {
             .set{ ch_dgmfinder }
 
     } else {
+
+        // Read in fastqs from samplesheet or download via SRA
+        if (params.fastq_samplesheet) {
+            // Read in fastqs from samplesheet
+            Channel
+                .fromPath(params.fastq_samplesheet)
+                .splitCsv(
+                    header: false,
+                    sep:'',
+                    strip: true
+                )
+                .map { file(it[0]) }
+                .unique()
+                .set { ch_fastqs }
+
+        } else {
+            //
+            // SUBWORKFLOW: Download fastqs and associated files via SRA/ftp
+            //
+            DOWNLOAD_FASTQS ()
+
+            ch_fastqs = DOWNLOAD_FASTQS.out.fastqs
+
+        }
+
         //
         // SUBWORKFLOW: Run dgmfinder
         //
@@ -106,6 +106,20 @@ workflow SRA {
 
     }
 
+    // Get min number of reads for string_stats
+    if (params.num_reads) {
+        num_input_lines = params.num_reads
+    } else {
+        // Get the number of reads in the smallest fastq file
+        ch_fastqs
+            .map { file ->
+                file.countFastq()
+            }
+            .set{ ch_fastqs_numReads }
+
+        num_input_lines = ch_fastqs_numReads.min()
+    }
+
     //
     // SUBWORKFLOW: Run string_stats
     //
@@ -113,7 +127,6 @@ workflow SRA {
         ch_dgmfinder,
         num_input_lines
     )
-
 }
 
 /*
