@@ -52,7 +52,9 @@ workflow SRA {
             .splitCsv(
                 header: false
             )
-            .map { file(it[1]) }
+            .map { row ->
+                file(row[1])
+            }
             .set{ ch_fastqs }
 
         // Read in from dgmfinder_samplesheet
