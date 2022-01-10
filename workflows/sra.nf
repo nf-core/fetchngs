@@ -49,7 +49,7 @@ workflow SRA {
     if (params.dgmfinder_samplesheet) {
         // Make channel of fastqs
         Channel.fromPath(params.dgmfinder_samplesheet)
-            .splitCSV(
+            .splitCsv(
                 header: false
             )
             .map { file(it[1]) }
@@ -57,7 +57,7 @@ workflow SRA {
 
         // Read in from dgmfinder_samplesheet
         Channel.fromPath(params.dgmfinder_samplesheet)
-            .splitCSV(
+            .splitCsv(
                 header: false
             )
             .map { row ->
