@@ -11,7 +11,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--num_input_lines",
-        type=str,
+        type=int,
         help='max number of fastq reads for input'
     )
     parser.add_argument(
