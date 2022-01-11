@@ -1,3 +1,4 @@
+include { SAMPLE_FASTQ                  } from '../../modules/local/sample_fastq'
 include { SIGNIF_ANCHORS                } from '../../modules/local/signif_anchors'
 include { CONSENSUS_ANCHORS             } from '../../modules/local/consensus_anchors'
 include { ADJACENT_KMERS                } from '../../modules/local/adjacent_kmers'
@@ -11,11 +12,17 @@ workflow STRING_STATS {
 
     main:
 
+    SAMPLE_FASTQ (
+        ch_fastq_anchors
+    )
+
+    ch_sub_fastq_anchors = SAMPLE_FASTQ.out.fastq_anchors
+
     //
     // MODULE: Extract significant anchors
     //
     SIGNIF_ANCHORS (
-        ch_fastq_anchors,
+        ch_sub_fastq_anchors,
         params.direction,
         params.q_val
     )
@@ -39,7 +46,7 @@ workflow STRING_STATS {
         num_input_lines,
         params.looklength,
         params.kmer_size,
-        ch_fastq_anchors
+        ch_sub_fastq_anchors
     )
 
     // Concatenate all adjacent_kmer lists
@@ -60,7 +67,7 @@ workflow STRING_STATS {
         ch_adj_kmers,
         num_input_lines,
         params.kmer_size,
-        ch_fastq_anchors
+        ch_sub_fastq_anchors
     )
 
     // Make samplesheet of all adjacent_kmer_counts files
