@@ -312,7 +312,7 @@ def main():
     # get anchors for all samples and append to dict
     with open(args.signif_anchors_file) as file:
         signif_anchors = file.readlines()
-        signif_anchors = [line.rstrip()[0] for line in signif_anchors]
+        signif_anchors = [line.strip().split('\t')[0] for line in signif_anchors]
     for anchor in signif_anchors:
         anchor_dict[anchor] = []
 
