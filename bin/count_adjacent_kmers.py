@@ -3,7 +3,6 @@
 import gzip
 import argparse
 import pandas as pd
-from Bio import SeqIO
 import pandas as pd
 
 
@@ -110,13 +109,19 @@ def main():
     ## Parse fastq file
     # open files for reading and writing
     with open(args.out_signif_anchors_fasta, 'w') as out_reads:
+        tot_lines = 0
         with gzip.open(args.fastq_file, 'rt') as fastq_reader:
 
             read_counter = 0
+
             # stream fastq file and output if necessary
-            for record in SeqIO.parse(fastq_reader, 'fastq'):
+            for read in fastq_reader:
+                tot_lines += 1
+                if tot_lines%4!=2:
+                    continue
+
                 while read_counter < args.num_input_lines:
-                    read = str(record.seq)
+                    read = read.strip('\n')
 
                     # check if read contains any significant anchors
                     if any(anchor_tuple[0] in read for anchor_tuple in counts_dict.keys()):
@@ -125,12 +130,7 @@ def main():
                         matching_anchors = [anchor_tuple for anchor_tuple in counts_dict.keys() if anchor_tuple[0] in read]
 
                         ## Write out reads with any anchor to fastq
-                        # get string of matching anchors i.e. 'ACGT_ACGT_ACGT'
-                        # matching_anchors_string = "_".join([a[0] for a in matching_anchors])
-                        # # add matching anchors to fastq id
-                        # record.id = f'{str(record.id)} {matching_anchors_string}'
-                        # write out read to adj_kmers file
-                        SeqIO.write(record, out_reads, 'fasta')
+                        out_reads.write(f'>{args.fastq_id}\n{read}\n')
 
                         ## Count occurance of anchor, adj_kmer pairs
                         # for every matching anchor, check for adj_kmer match

@@ -7,7 +7,6 @@ import re
 import sys
 import argparse
 import logging
-from Bio import SeqIO
 
 
 def buildConcensus(kmers, looklength):
@@ -109,14 +108,17 @@ def returnSeqs(fastq_file, maxlines):
     logging.info("Counting total number of reads in returnSeqs...")
 
     myseqs = []
+    tot_lines = 0
     with gzip.open(fastq_file, 'rt') as fastq_reader:
-        # stream fastq file and output if necessary
-        for record in SeqIO.parse(fastq_reader, 'fastq'):
-            read = str(record.seq)
-            if len(myseqs) < maxlines:
-                myseqs.append(read)
-            else:
-                break
+        for read_seq in handle:
+            # check we're in sequence line (remainder of 2)
+            tot_lines += 1
+            if tot_lines%4!=2:
+                continue
+            # strip of new line character
+            read_seq = read_seq.strip('\n')
+            if len(myseqs)< maxlines:
+                myseqs.append(read_seq)
 
     return myseqs
 
