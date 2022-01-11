@@ -12,18 +12,11 @@ workflow STRING_STATS {
 
     main:
 
-    SAMPLE_FASTQ (
-        ch_fastq_anchors,
-        num_input_lines
-    )
-
-    ch_sub_fastq_anchors = SAMPLE_FASTQ.out.fastq_anchors
-
     //
     // MODULE: Extract significant anchors
     //
     SIGNIF_ANCHORS (
-        ch_sub_fastq_anchors,
+        ch_fastq_anchors,
         params.direction,
         params.q_val
     )
@@ -47,7 +40,7 @@ workflow STRING_STATS {
         num_input_lines,
         params.looklength,
         params.kmer_size,
-        ch_sub_fastq_anchors
+        ch_fastq_anchors
     )
 
     // Concatenate all adjacent_kmer lists
@@ -68,7 +61,7 @@ workflow STRING_STATS {
         ch_adj_kmers,
         num_input_lines,
         params.kmer_size,
-        ch_sub_fastq_anchors
+        ch_fastq_anchors
     )
 
     // Make samplesheet of all adjacent_kmer_counts files
