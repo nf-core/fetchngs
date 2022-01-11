@@ -47,7 +47,7 @@ def main():
     # get cols of min evalue
     if args.direction == 'down':
         eval_string = 'evalue_dn'
-    elife args.direction == 'up':
+    elif args.direction == 'up':
         eval_string = 'evalue_up'
     cols = [col for col in df.columns if eval_string in col]
 
