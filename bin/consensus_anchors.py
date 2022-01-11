@@ -109,7 +109,7 @@ def returnSeqs(fastq_file, maxlines):
 
     myseqs = []
     tot_lines = 0
-    with gzip.open(fastq_file, 'rt') as fastq_reader:
+    with gzip.open(fastq_file, 'rt') as handle:
         for read_seq in handle:
             # check we're in sequence line (remainder of 2)
             tot_lines += 1

@@ -120,7 +120,7 @@ def main():
                 if tot_lines%4!=2:
                     continue
 
-                while read_counter < args.num_input_lines:
+                if read_counter < args.num_input_lines:
                     read = read.strip('\n')
 
                     # check if read contains any significant anchors
