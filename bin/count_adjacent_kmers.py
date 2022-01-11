@@ -161,18 +161,19 @@ def main():
         .sort_values(['index'])
     )
 
-    counts_df.columns = ['anchor_tuple', args.fastq_id]
+    if not counts_df.empty():
+        counts_df.columns = ['anchor_tuple', args.fastq_id]
 
-    counts_df[['anchor', 'adj_kmer']] = pd.DataFrame(
-        counts_df['anchor_tuple'].tolist(),
-        index=counts_df.index
-    )
+        counts_df[['anchor', 'adj_kmer']] = pd.DataFrame(
+            counts_df['anchor_tuple'].tolist(),
+            index=counts_df.index
+        )
 
-    counts_df[['anchor', 'adj_kmer', args.fastq_id]].to_csv(
-        args.out_adj_kmer_counts_file,
-        index=False,
-        sep='\t'
-    )
+        counts_df[['anchor', 'adj_kmer', args.fastq_id]].to_csv(
+            args.out_adj_kmer_counts_file,
+            index=False,
+            sep='\t'
+        )
 
 
 if __name__ == '__main__':
