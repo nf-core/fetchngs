@@ -12,6 +12,11 @@ def get_args():
     parser.add_argument(
         "--samplesheet",
         type=str,
+        help='input samplesheet'
+    )
+    parser.add_argument(
+        "--signif_anchors",
+        type=str,
         help='input file of significant anchors'
     )
     parser.add_argument(
@@ -41,6 +46,19 @@ def main():
             df,
             on=['anchor', 'adj_kmer']
         )
+
+    signif_anchors = pd.read_csv(
+        args.signif_anchors,
+        sep='\t'
+    )
+    signif_anchors.columns = ['anchor', 'ann_fasta', 'evalue']
+
+    out_df = out_df.merge(
+        signif_anchors,
+        on='anchor',
+        how='inner'
+
+    )
 
     out_df.to_csv(
         args.outfile,

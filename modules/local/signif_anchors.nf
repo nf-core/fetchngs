@@ -14,7 +14,8 @@ process SIGNIF_ANCHORS {
     val q_val
 
     output:
-    path "*tsv"                                             , emit: tsv
+    path "*tsv"         , emit: tsv
+    path anchors_annot  , emit: anchors_annot
 
     script:
     signif_anchors_file = "${fastq_id}_signif_anchors.tsv"

@@ -9,6 +9,7 @@ process MERGE_ADJACENT_KMER_COUNTS {
 
     input:
     path ch_adj_kmer_counts_samplesheet
+    path signif_anchors
 
     output:
     path "*.tsv", emit: tsv
@@ -18,6 +19,7 @@ process MERGE_ADJACENT_KMER_COUNTS {
     """
     merge_adj_kmer_counts.py \\
         --samplesheet ${ch_adj_kmer_counts_samplesheet} \\
+        --signif_anchors ${signif_anchors} \\
         --outfile ${outfile}
     """
 }

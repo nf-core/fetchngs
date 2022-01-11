@@ -75,7 +75,8 @@ workflow STRING_STATS {
     // MODULE: Merge all adjacent_kmer_counts into one mega table
     //
     MERGE_ADJACENT_KMER_COUNTS (
-        ch_adj_kmer_counts_samplesheet
+        ch_adj_kmer_counts_samplesheet,
+        ch_signif_anchors
     )
 
 
