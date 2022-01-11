@@ -53,10 +53,10 @@ def main():
     )
     signif_anchors.columns = ['anchor', 'ann_fasta', 'evalue']
 
-    out_df = out_df.merge(
-        signif_anchors,
+    out_df = signif_anchors.merge(
+        out_df,
         on='anchor',
-        how='inner'
+        how='right'
 
     )
 
