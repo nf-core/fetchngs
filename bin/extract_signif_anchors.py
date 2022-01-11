@@ -33,29 +33,30 @@ def get_args():
 def main():
     args = get_args()
 
-    # get q_val and anchor column, depending on what direction
-    q_val_col = f'QVAL_{args.direction.upper()}'
-    anchor_col = f'MAX_ANCHOR_{args.direction.upper()}'
+    # get column suffix
+    if args.direction == 'down':
+        suffix = 'dn'
+    elif args.direction == 'up':
+        suffix = 'up'
+
+    eval_string = f'evalue_{suffix}'
+    q_val_col = f'QVAL_{suffix.upper()}'
+    anchor_col = f'MAX_ANCHOR_{suffix.upper()}'
 
     # read in anchors_anot file
     df = pd.read_csv(
         args.anchors_annot,
-        sep='\t',
-        usecols=[q_val_col, anchor_col]
+        sep='\t'
     )
 
     # get cols of min evalue
-    if args.direction == 'down':
-        eval_string = 'evalue_dn'
-    elif args.direction == 'up':
-        eval_string = 'evalue_up'
     cols = [col for col in df.columns if eval_string in col]
 
     df['min_eval_hit'] = df[cols].idxmin(axis=1)
     df['min_eval'] = df[cols].min(axis=1)
 
     # only keep anchors with a required q_val
-    df = df[df[q_val_col] < args.q_val][anchor_col, 'min_eval_hit', 'min_eval']
+    df = df[df[q_val_col] < args.q_val][[anchor_col, 'min_eval_hit', 'min_eval']]
 
     # write out list of anchors with required q_val
     df.to_csv(
