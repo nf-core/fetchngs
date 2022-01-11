@@ -44,8 +44,18 @@ def main():
         usecols=[q_val_col, anchor_col]
     )
 
+    # get cols of min evalue
+    if args.direction == 'down':
+        eval_string = 'evalue_dn'
+    elife args.direction == 'up':
+        eval_string = 'evalue_up'
+    cols = [col for col in df.columns if eval_string in col]
+
+    df['min_eval_hit'] = df[cols].idxmin(axis=1)
+    df['min_eval'] = df[cols].min(axis=1)
+
     # only keep anchors with a required q_val
-    df = df[df[q_val_col] < args.q_val][anchor_col]
+    df = df[df[q_val_col] < args.q_val][anchor_col, 'min_eval_hit', 'min_eval']
 
     # write out list of anchors with required q_val
     df.to_csv(

@@ -161,7 +161,7 @@ def main():
         .sort_values(['index'])
     )
 
-    if not counts_df.empty():
+    if not counts_df.empty:
         counts_df.columns = ['anchor_tuple', args.fastq_id]
 
         counts_df[['anchor', 'adj_kmer']] = pd.DataFrame(
