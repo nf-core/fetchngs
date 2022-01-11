@@ -153,6 +153,11 @@ def returnAnchors(infile):
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--num_input_lines",
+        type=int,
+        help='max number of fastq reads for input'
+    )
+    parser.add_argument(
         "--signif_anchors_file",
         type=str,
         help='input list of all significant anchors'
@@ -287,7 +292,7 @@ def main():
     # get reads from fastq
     myseqs = returnSeqs(
         args.fastq_file,
-        maxlines=1000000
+        maxlines=args.num_input_lines
     )
 
     # get per-sample anchors
