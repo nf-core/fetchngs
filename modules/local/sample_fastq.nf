@@ -20,6 +20,6 @@ process SAMPLE_FASTQ {
     n_lines = num_input_lines * 4
     sub_fastq="sub_${n_lines}_${fastq_id}.fastq.gz"
     """
-    zcat ${fastq} | head -n ${n_lines} | gzip - > ${sub_fastq}
+    zcat ${fastq} | head -n ${n_lines} | gzip > ${sub_fastq}
     """
 }
