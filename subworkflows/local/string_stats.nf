@@ -13,7 +13,8 @@ workflow STRING_STATS {
     main:
 
     SAMPLE_FASTQ (
-        ch_fastq_anchors
+        ch_fastq_anchors,
+        num_input_lines
     )
 
     ch_sub_fastq_anchors = SAMPLE_FASTQ.out.fastq_anchors
