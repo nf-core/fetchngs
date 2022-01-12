@@ -57,8 +57,7 @@ def main():
         out_df,
         on='anchor',
         how='right'
-
-    )
+    ).drop_duplicates()
 
     out_df.to_csv(
         args.outfile,
