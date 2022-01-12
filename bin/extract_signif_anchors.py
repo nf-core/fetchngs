@@ -33,14 +33,13 @@ def get_args():
 def get_hits_col(row):
     hits_col = row['min_eval_name'].replace(
         'evalue',
-        'hits'
+        'hit'
     )
     return row[hits_col]
 
 
 def main():
     args = get_args()
-    print('t')
 
     # get column suffix
     if args.direction == 'down':
