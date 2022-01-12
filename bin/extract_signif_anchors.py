@@ -30,8 +30,17 @@ def get_args():
     return args
 
 
+def get_hits_col(row):
+    hits_col = row['min_eval_name'].replace(
+        'evalue',
+        'hits'
+    )
+    return row[hits_col]
+
+
 def main():
     args = get_args()
+    print('t')
 
     # get column suffix
     if args.direction == 'down':
@@ -55,8 +64,9 @@ def main():
     if len(cols) == 0:
         df = df[df[q_val_col] < args.q_val][[anchor_col]]
     else:
-        df['min_eval_hit'] = df[cols].idxmin(axis=1)
+        df['min_eval_name'] = df[cols].idxmin(axis=1)
         df['min_eval'] = df[cols].min(axis=1)
+        df['min_eval_hit'] = df.apply(get_hits_col, axis=1)
 
         # only keep anchors with a required q_val
         df = df[df[q_val_col] < args.q_val][[anchor_col, 'min_eval_hit', 'min_eval']]
