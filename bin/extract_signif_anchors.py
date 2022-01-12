@@ -3,6 +3,7 @@
 import gzip
 import argparse
 import pandas as pd
+import numpy as np
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -31,11 +32,14 @@ def get_args():
 
 
 def get_hits_col(row):
-    hits_col = row['min_eval_name'].replace(
-        'evalue',
-        'hit'
-    )
-    return row[hits_col]
+    if pd.isna(row['min_eval_name']):
+        return np.nan
+    else:
+        hits_col = row['min_eval_name'].replace(
+            'evalue',
+            'hit'
+        )
+        return row[hits_col]
 
 
 def main():
