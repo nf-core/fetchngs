@@ -1,5 +1,6 @@
 include { SAMPLE_FASTQ                  } from '../../modules/local/sample_fastq'
 include { SIGNIF_ANCHORS                } from '../../modules/local/signif_anchors'
+include { MERGE_SIGNIF_ANCHORS                } from '../../modules/local/merge_signif_anchors'
 include { PARSE_ANCHORS                 } from '../../modules/local/parse_anchors'
 include { ADJACENT_KMERS                } from '../../modules/local/adjacent_kmers'
 include { MERGE_ADJACENT_KMER_COUNTS    } from '../../modules/local/merge_adjacent_kmer_counts'
@@ -20,17 +21,23 @@ workflow STRING_STATS {
         params.direction,
         params.q_val
     )
-
-    // Concatenate all significant anchors
+    // Make samplesheet of all signif_anchors files
     SIGNIF_ANCHORS.out.tsv
-        .map { file ->
-            file.text
+        .collectFile() { file ->
+            file.toString() + '\n'
         }
-        .collectFile (
-            name:       "signif_anchors_${params.direction}_qval_${params.q_val}.tsv",
-            storeDir:   "${params.outdir}/string_stats"
-        )
-        .set { ch_signif_anchors }
+        .set{ ch_signif_anchors_samplesheet }
+
+    //
+    // MODULE: Merge all signif_anchors
+    //
+    MERGE_SIGNIF_ANCHORS (
+        ch_signif_anchors_samplesheet,
+        params.direction,
+        params.q_val
+    )
+
+    ch_signif_anchors = MERGE_SIGNIF_ANCHORS.out.tsv
 
     //
     // MODULE: Get consensus anchors and adj_anchors

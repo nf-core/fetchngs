@@ -329,19 +329,8 @@ def main():
             sep='\t'
         )
         .iloc[:, 0:2]
-        .drop_duplicates()
     )
 
-    signif_anchors_df.columns = ['anchor', 'cluster']
-
-    signif_anchors_df = (
-        signif_anchors_df
-            .sort_values(
-                'cluster',
-                ascending=False
-            )
-            .head(10000)
-    )
     signif_anchors = signif_anchors_df['anchor'].tolist()
 
     # get anchorlength
