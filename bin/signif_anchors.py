@@ -81,8 +81,7 @@ def main():
     df.to_csv(
         args.signif_anchors_file,
         sep='\t',
-        index=False,
-        header=None
+        index=False
     )
 
 

@@ -1,5 +1,5 @@
 
-process CONSENSUS_ANCHORS {
+process PARSE_ANCHORS {
     tag "$fastq_id"
     label 'error_retry'
 
@@ -26,21 +26,24 @@ process CONSENSUS_ANCHORS {
     fastq = fastq_tuple[1]
     anchors_annot = fastq_tuple[2]
 
-    out_fasta_file="${fastq_id}_consensus.fasta"
-    out_counts_file="${fastq_id}_counts.tab"
-    out_fractions_file="${fastq_id}_fractions.tab"
-    out_adj_kmer_file="${fastq_id}_adj_kmers.tsv "
+    out_consensus_fasta_file    = "${fastq_id}_consensus.fasta"
+    out_counts_file             = "${fastq_id}_counts.tab"
+    out_fractions_file          = "${fastq_id}_fractions.tab"
+    out_adj_kmer_file           = "${fastq_id}_adj_kmers.tsv"
+    out_signif_anchors_fasta    = "${fastq_id}_signif_anchors.fasta"
+
     """
-    consensus_anchors.py \\
+    parse_anchors.py \\
         --num_input_lines ${num_input_lines} \\
         --signif_anchors_file ${signif_anchors_file} \\
         --anchors_annot ${anchors_annot} \\
         --fastq_file ${fastq} \\
         --fastq_id ${fastq_id} \\
-        --out_fasta_file ${out_fasta_file} \\
+        --out_consensus_fasta_file ${out_consensus_fasta_file} \\
         --out_counts_file ${out_counts_file} \\
         --out_fractions_file ${out_fractions_file} \\
         --out_adj_kmer_file ${out_adj_kmer_file} \\
+        --out_signif_anchors_fasta ${out_signif_anchors_fasta} \\
         --looklength ${looklength} \\
         --kmer_size ${kmer_size}
     """
