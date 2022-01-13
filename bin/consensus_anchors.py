@@ -323,7 +323,7 @@ def main():
         )
         .head(10000)
     )
-    signif_anchors = signif_anchors_df['cluster']
+    signif_anchors = signif_anchors_df['cluster'].tolist()
 
     for anchor in signif_anchors:
         anchor_dict[anchor] = []
