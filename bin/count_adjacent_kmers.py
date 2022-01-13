@@ -121,6 +121,9 @@ def main():
                     continue
 
                 if read_counter < args.num_input_lines:
+                    if read_counter % 1000 == 0:
+                        print(read_counter)
+
                     read = read.strip('\n')
 
                     # check if read contains any significant anchors

@@ -311,10 +311,14 @@ def main():
     anchor_dict = {}
 
     # get anchors for all samples and append to dict
-    signif_anchors_df = pd.read_csv(
-        args.signif_anchors_file,
-        sep='\t'
-    ).iloc[:, 0:2]
+    signif_anchors_df = (
+        pd.read_csv(
+            args.signif_anchors_file,
+            sep='\t'
+        )
+        .iloc[:, 0:2]
+        .drop_duplicates()
+    )
 
     signif_anchors_df.columns = ['anchor', 'cluster']
 
