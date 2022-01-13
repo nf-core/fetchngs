@@ -309,10 +309,22 @@ def main():
 
     # dict for significant anchors and their downstream kmers
     anchor_dict = {}
+
     # get anchors for all samples and append to dict
-    with open(args.signif_anchors_file) as file:
-        signif_anchors = file.readlines()
-        signif_anchors = [line.strip().split('\t')[0] for line in signif_anchors]
+    signif_anchors_df = (
+        pd.read_csv(
+            args.signif_anchors_file,
+            sep='\t',
+            names=['anchor', 'cluster']
+        )
+        .sort_values(
+            'cluster',
+            ascending=False
+        )
+        .head(10000)
+    )
+    signif_anchors = signif_anchors_df['cluster']
+
     for anchor in signif_anchors:
         anchor_dict[anchor] = []
 
