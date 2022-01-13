@@ -315,7 +315,7 @@ def main():
         pd.read_csv(
             args.signif_anchors_file,
             sep='\t',
-            names=['anchor', 'cluster']
+            usecols=['anchor', 'cluster']
         )
         .sort_values(
             'cluster',

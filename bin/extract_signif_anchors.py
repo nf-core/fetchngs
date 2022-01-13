@@ -66,6 +66,7 @@ def main():
 
     if len(cols) == 0:
         df = df[df[q_val_col] < args.q_val][[anchor_col, anchor_col]]
+        df.columns = ['anchor', 'cluster']
     else:
         df['min_eval_name'] = df[cols].idxmin(axis=1)
         df['min_eval'] = df[cols].min(axis=1)
@@ -73,6 +74,7 @@ def main():
 
         # only keep anchors with a required q_val
         df = df[df[q_val_col] < args.q_val][[anchor_col, anchor_col, 'min_eval_hit', 'min_eval']]
+        df.columns = ['anchor', 'cluster', 'min_eval_hit', 'min_eval']
 
     # write out list of anchors with required q_val
     df.to_csv(
