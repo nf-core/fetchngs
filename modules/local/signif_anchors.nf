@@ -20,7 +20,7 @@ process SIGNIF_ANCHORS {
     script:
     signif_anchors_file = "${fastq_id}_signif_anchors.tsv"
     """
-    extract_signif_anchors.py \\
+    signif_anchors.py \\
         --anchors_annot ${anchors_annot} \\
         --signif_anchors_file ${signif_anchors_file} \\
         --direction ${direction} \\

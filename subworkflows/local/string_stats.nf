@@ -1,6 +1,7 @@
 include { SAMPLE_FASTQ                  } from '../../modules/local/sample_fastq'
 include { SIGNIF_ANCHORS                } from '../../modules/local/signif_anchors'
-include { CONSENSUS_ANCHORS             } from '../../modules/local/consensus_anchors'
+include { MERGE_SIGNIF_ANCHORS                } from '../../modules/local/merge_signif_anchors'
+include { PARSE_ANCHORS                 } from '../../modules/local/parse_anchors'
 include { ADJACENT_KMERS                } from '../../modules/local/adjacent_kmers'
 include { MERGE_ADJACENT_KMER_COUNTS    } from '../../modules/local/merge_adjacent_kmer_counts'
 
@@ -20,22 +21,28 @@ workflow STRING_STATS {
         params.direction,
         params.q_val
     )
-
-    // Concatenate all significant anchors
+    // Make samplesheet of all signif_anchors files
     SIGNIF_ANCHORS.out.tsv
-        .map { file ->
-            file.text
+        .collectFile() { file ->
+            file.toString() + '\n'
         }
-        .collectFile (
-            name:       "signif_anchors_${params.direction}_qval_${params.q_val}.tsv",
-            storeDir:   "${params.outdir}/string_stats"
-        )
-        .set { ch_signif_anchors }
+        .set{ ch_signif_anchors_samplesheet }
 
     //
-    // MODULE: Run dgmfinder on fastqs
+    // MODULE: Merge all signif_anchors
     //
-    CONSENSUS_ANCHORS (
+    MERGE_SIGNIF_ANCHORS (
+        ch_signif_anchors_samplesheet,
+        params.direction,
+        params.q_val
+    )
+
+    ch_signif_anchors = MERGE_SIGNIF_ANCHORS.out.tsv
+
+    //
+    // MODULE: Get consensus anchors and adj_anchors
+    //
+    PARSE_ANCHORS (
         ch_signif_anchors,
         num_input_lines,
         params.looklength,
@@ -43,29 +50,8 @@ workflow STRING_STATS {
         ch_fastq_anchors
     )
 
-    // Concatenate all adjacent_kmer lists
-    CONSENSUS_ANCHORS.out.tsv
-        .map { file ->
-            file.text + '\n'
-        }
-        .collectFile (
-            keepHeader: true,
-            skip:       1
-        )
-        .set { ch_adj_kmers }
-
-    //
-    // MODULE: Extract adjacent anchors
-    //
-    ADJACENT_KMERS (
-        ch_adj_kmers,
-        num_input_lines,
-        params.kmer_size,
-        ch_fastq_anchors
-    )
-
     // Make samplesheet of all adjacent_kmer_counts files
-    ADJACENT_KMERS.out.tsv
+    PARSE_ANCHORS.out.tsv
         .collectFile() { file ->
             file.toString() + '\n'
         }

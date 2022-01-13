@@ -15,11 +15,6 @@ def get_args():
         help='input samplesheet'
     )
     parser.add_argument(
-        "--signif_anchors",
-        type=str,
-        help='input file of significant anchors'
-    )
-    parser.add_argument(
         "--outfile",
         type=str,
         help='input file of significant anchors'
@@ -40,41 +35,21 @@ def main():
         df = pd.read_csv(df_path.strip(), sep='\t')
         dfs.append(df)
 
-    out_df = dfs[0]
+    signif_anchors_df = dfs[0]
     for df in dfs[1:]:
-        out_df = out_df.merge(
-            df,
-            on=['anchor', 'adj_kmer'],
-            how='outer'
-        )
+        signif_anchors_df = signif_anchors_df.append(df)
 
-    out_df = out_df.fillna(0)
-
-    signif_anchors = pd.read_csv(
-        args.signif_anchors,
-        sep='\t'
-    )
-
-    if len(signif_anchors.columns) == 4:
-        signif_anchors.columns = ['anchor', 'cluster', 'ann_fasta', 'evalue']
-    else:
-        signif_anchors.columns = ['anchor', 'cluster']
-
-    out_df = (
-        signif_anchors
-            .merge(
-                out_df,
-                on='anchor',
-                how='right'
-            )
+    signif_anchors_df = (
+        signif_anchors_df
             .drop_duplicates()
-            .drop(
+            .sort_values(
                 'cluster',
-                axis=1
+                ascending=False
             )
+            .head(10000)
     )
 
-    out_df.to_csv(
+    signif_anchors_df.to_csv(
         args.outfile,
         index=False,
         sep='\t'
