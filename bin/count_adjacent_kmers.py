@@ -126,11 +126,11 @@ def main():
 
                     read = read.strip('\n')
 
-                    # check if read contains any significant anchors
-                    if any(anchor_tuple[0] in read for anchor_tuple in counts_dict.keys()):
+                    # if signif anchor found in read, get tuple of (signif_anchor, adj_kmer )
+                    matching_anchors = [anchor_tuple for anchor_tuple in counts_dict.keys() if anchor_tuple[0] in read]
 
-                        # if signif anchor found in read, get tuple of (signif_anchor, adj_kmer )
-                        matching_anchors = [anchor_tuple for anchor_tuple in counts_dict.keys() if anchor_tuple[0] in read]
+                    # check if read contains any significant anchors
+                    if len(matching_anchors) > 0:
 
                         ## Write out reads with any anchor to fastq
                         out_reads.write(f'>{args.fastq_id}\n{read}\n')
