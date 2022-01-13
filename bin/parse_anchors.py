@@ -80,24 +80,25 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
                     DNAdict[mystring].append(nextkmer)
 
         # search for signif_anchor and log its adjacent kmer
-        if any(anchor in myseq for anchor in signif_anchors):
-            matching_anchors = [a for a in signif_anchors if a in myseq]
-
+        matching_anchors = [a for a in signif_anchors if a in myseq]
+        if matching_anchors:
             for anchor in matching_anchors:
                 # get anchor position
                 anchor_end = myseq.index(anchor) + len(anchor)
                 # get adjacent anchor position
                 adj_anchor_start = anchor_end + adj_dist
                 adj_anchor_end = adj_anchor_start + adj_len
+
                 adj_anchor = myseq[adj_anchor_start:adj_anchor_end]
 
                 # if adj anchor exists, add adj anchor to anchor_dict
                 if len(adj_anchor) == adj_len:
-                    adj_anchor_list = anchor_dict[anchor]
-                    if adj_anchor not in adj_anchor_list:
-                        adj_anchor_list.append(adj_anchor)
-                    anchor_dict[anchor] = adj_anchor_list
+                    anchor_tuple = (anchor, adj_anchor)
 
+                    if anchor_tuple not in anchor_dict.keys():
+                        anchor_dict[anchor_tuple] = 1
+                    else:
+                        anchor_dict[anchor_tuple] += 1
     return DNAdict, anchor_dict
 
 
@@ -157,6 +158,7 @@ def get_args():
     parser.add_argument(
         "--num_input_lines",
         type=int,
+        nargs='?',
         help='max number of fastq reads for input'
     )
     parser.add_argument(
@@ -310,7 +312,7 @@ def main():
     # dict for significant anchors and their downstream kmers
     anchor_dict = {}
 
-    # get anchors for all samples and append to dict
+    # create dict from signif anchors
     signif_anchors_df = (
         pd.read_csv(
             args.signif_anchors_file,
@@ -330,11 +332,7 @@ def main():
             )
             .head(10000)
     )
-
     signif_anchors = signif_anchors_df['anchor'].tolist()
-
-    for anchor in signif_anchors:
-        anchor_dict[anchor] = []
 
     # get anchorlength
     anchorlength = 1
@@ -361,10 +359,18 @@ def main():
             orient='index'
         )
         .reset_index()
-        .melt(id_vars='index')
         .dropna()
-        [['index', 'value']]
     )
+
+    anchor_df.columns = ['anchor_tuple', args.fastq_id]
+    anchor_df[['anchor', 'adj_kmer']] = (
+        pd.DataFrame(
+            anchor_df['anchor_tuple'].tolist(),
+            index=anchor_df.index
+        )
+    )
+
+    anchor_df = anchor_df[['anchor', 'adj_kmer', args.fastq_id]]
 
     anchor_df.to_csv(
         args.out_adj_kmer_file,

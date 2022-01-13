@@ -1,6 +1,6 @@
 include { SAMPLE_FASTQ                  } from '../../modules/local/sample_fastq'
 include { SIGNIF_ANCHORS                } from '../../modules/local/signif_anchors'
-include { CONSENSUS_ANCHORS             } from '../../modules/local/consensus_anchors'
+include { PARSE_ANCHORS                 } from '../../modules/local/parse_anchors'
 include { ADJACENT_KMERS                } from '../../modules/local/adjacent_kmers'
 include { MERGE_ADJACENT_KMER_COUNTS    } from '../../modules/local/merge_adjacent_kmer_counts'
 
@@ -33,7 +33,7 @@ workflow STRING_STATS {
         .set { ch_signif_anchors }
 
     //
-    // MODULE: Run dgmfinder on fastqs
+    // MODULE: Get consensus anchors and adj_anchors
     //
     CONSENSUS_ANCHORS (
         ch_signif_anchors,
@@ -43,29 +43,8 @@ workflow STRING_STATS {
         ch_fastq_anchors
     )
 
-    // Concatenate all adjacent_kmer lists
-    CONSENSUS_ANCHORS.out.tsv
-        .map { file ->
-            file.text + '\n'
-        }
-        .collectFile (
-            keepHeader: true,
-            skip:       1
-        )
-        .set { ch_adj_kmers }
-
-    //
-    // MODULE: Extract adjacent anchors
-    //
-    ADJACENT_KMERS (
-        ch_adj_kmers,
-        num_input_lines,
-        params.kmer_size,
-        ch_fastq_anchors
-    )
-
     // Make samplesheet of all adjacent_kmer_counts files
-    ADJACENT_KMERS.out.tsv
+    CONSENSUS_ANCHORS.out.tsv
         .collectFile() { file ->
             file.toString() + '\n'
         }

@@ -44,8 +44,11 @@ def main():
     for df in dfs[1:]:
         out_df = out_df.merge(
             df,
-            on=['anchor', 'adj_kmer']
+            on=['anchor', 'adj_kmer'],
+            how='outer'
         )
+
+    out_df = out_df.fillna(0)
 
     signif_anchors = pd.read_csv(
         args.signif_anchors,
@@ -55,13 +58,21 @@ def main():
     if len(signif_anchors.columns) == 4:
         signif_anchors.columns = ['anchor', 'cluster', 'ann_fasta', 'evalue']
     else:
-        signif_anchors.columns = ['anchor']
+        signif_anchors.columns = ['anchor', 'cluster']
 
-    out_df = signif_anchors.merge(
-        out_df,
-        on='anchor',
-        how='right'
-    ).drop_duplicates()
+    out_df = (
+        signif_anchors
+            .merge(
+                out_df,
+                on='anchor',
+                how='right'
+            )
+            .drop_duplicates()
+            .drop(
+                'cluster',
+                axis=1
+            )
+    )
 
     out_df.to_csv(
         args.outfile,
