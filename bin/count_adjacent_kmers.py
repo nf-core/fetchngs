@@ -120,7 +120,7 @@ def main():
                 if tot_lines%4!=2:
                     continue
 
-                while read_counter < args.num_input_lines:
+                if read_counter < args.num_input_lines:
                     if read_counter % 100 == 0:
                         print(read_counter)
 
@@ -151,7 +151,7 @@ def main():
                             if adj_kmer == read[adj_kmer_start:adj_kmer_end]:
                                 # update counts
                                 counts_dict[anchor_tuple] += 1
-                read_counter += 1
+                    read_counter += 1
 
     # reformat and write out
     counts_df = (
