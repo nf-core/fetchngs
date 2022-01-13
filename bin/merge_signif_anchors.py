@@ -49,7 +49,7 @@ def main():
             .head(10000)
     )
 
-    out_df.to_csv(
+    signif_anchors_df.to_csv(
         args.outfile,
         index=False,
         sep='\t'
