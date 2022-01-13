@@ -35,7 +35,7 @@ workflow STRING_STATS {
     //
     // MODULE: Get consensus anchors and adj_anchors
     //
-    CONSENSUS_ANCHORS (
+    PARSE_ANCHORS (
         ch_signif_anchors,
         num_input_lines,
         params.looklength,
@@ -44,7 +44,7 @@ workflow STRING_STATS {
     )
 
     // Make samplesheet of all adjacent_kmer_counts files
-    CONSENSUS_ANCHORS.out.tsv
+    PARSE_ANCHORS.out.tsv
         .collectFile() { file ->
             file.toString() + '\n'
         }
