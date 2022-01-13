@@ -54,6 +54,7 @@ def main():
     eval_string = f'evalue_{suffix}'
     q_val_col = f'QVAL_{suffix.upper()}'
     anchor_col = f'MAX_ANCHOR_{suffix.upper()}'
+    cluster_col = f'C_{suffix.upper()}'
 
     # read in anchors_anot file
     df = pd.read_csv(
@@ -65,7 +66,7 @@ def main():
     cols = [col for col in df.columns if eval_string in col]
 
     if len(cols) == 0:
-        df = df[df[q_val_col] < args.q_val][[anchor_col, anchor_col]]
+        df = df[df[q_val_col] < args.q_val][[anchor_col, cluster_col]]
         df.columns = ['anchor', 'cluster']
     else:
         df['min_eval_name'] = df[cols].idxmin(axis=1)
@@ -73,7 +74,7 @@ def main():
         df['min_eval_hit'] = df.apply(get_hits_col, axis=1)
 
         # only keep anchors with a required q_val
-        df = df[df[q_val_col] < args.q_val][[anchor_col, anchor_col, 'min_eval_hit', 'min_eval']]
+        df = df[df[q_val_col] < args.q_val][[anchor_col, cluster_col, 'min_eval_hit', 'min_eval']]
         df.columns = ['anchor', 'cluster', 'min_eval_hit', 'min_eval']
 
     # write out list of anchors with required q_val
