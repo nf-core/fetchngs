@@ -51,7 +51,11 @@ def main():
         args.signif_anchors,
         sep='\t'
     )
-    signif_anchors.columns = ['anchor', 'ann_fasta', 'evalue']
+
+    if len(signif_anchors.columns) == 3:
+        signif_anchors.columns = ['anchor', 'ann_fasta', 'evalue']
+    else:
+        signif_anchors.columns = ['anchor']
 
     out_df = signif_anchors.merge(
         out_df,
