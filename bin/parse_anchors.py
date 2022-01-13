@@ -230,12 +230,12 @@ def get_args():
     return args
 
 
-def write_out(nextseqs, looklength, out_fasta_file, out_counts_file, out_fractions_file):
+def write_out(nextseqs, looklength, out_consensus_fasta_file, out_counts_file, out_fractions_file):
     """
     write out files
     """
     # filse for writing
-    outfile_1 = open(out_fasta_file, "w")
+    outfile_1 = open(out_consensus_fasta_file, "w")
     outfile_2 = open(out_counts_file, "w")
     outfile_3 = open(out_fractions_file, "w")
 
@@ -393,7 +393,7 @@ def main():
     write_out(
         nextseqs,
         args.looklength,
-        args.out_fasta_file,
+        args.out_consensus_fasta_file,
         args.out_counts_file,
         args.out_fractions_file
     )
