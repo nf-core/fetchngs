@@ -43,7 +43,7 @@ process PARSE_ANCHORS {
         --out_counts_file ${out_counts_file} \\
         --out_fractions_file ${out_fractions_file} \\
         --out_adj_kmer_file ${out_adj_kmer_file} \\
-        --out_adj_kmer_fasta_file ${out_adj_kmer_fasta_file} \\
+        --out_signif_anchors_fasta ${out_signif_anchors_fasta} \\
         --looklength ${looklength} \\
         --kmer_size ${kmer_size}
     """
