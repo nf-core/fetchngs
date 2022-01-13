@@ -52,8 +52,8 @@ def main():
         sep='\t'
     )
 
-    if len(signif_anchors.columns) == 3:
-        signif_anchors.columns = ['anchor', 'ann_fasta', 'evalue']
+    if len(signif_anchors.columns) == 4:
+        signif_anchors.columns = ['anchor', 'cluster', 'ann_fasta', 'evalue']
     else:
         signif_anchors.columns = ['anchor']
 
