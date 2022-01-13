@@ -26,11 +26,11 @@ process PARSE_ANCHORS {
     fastq = fastq_tuple[1]
     anchors_annot = fastq_tuple[2]
 
-    out_consensus_fasta_file    =   "${fastq_id}_consensus.fasta"
-    out_counts_file             =   "${fastq_id}_counts.tab"
-    out_fractions_file          =   "${fastq_id}_fractions.tab"
-    out_adj_kmer_file           =   "${fastq_id}_adj_kmers.tsv"
-    out_signif_anchors_fasta    =   "${fastq_id}_signif_anchors.fasta"
+    out_consensus_fasta_file = "${fastq_id}_consensus.fasta"
+    out_counts_file = "${fastq_id}_counts.tab"
+    out_fractions_file = "${fastq_id}_fractions.tab"
+    out_adj_kmer_file = "${fastq_id}_adj_kmers.tsv"
+    out_signif_anchors_fasta = "${fastq_id}_signif_anchors.fasta"
 
     """
     parse_anchors.py \\
