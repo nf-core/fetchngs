@@ -53,52 +53,57 @@ def buildConcensus(kmers, looklength):
     return baseComp, baseFrac, baseCount
 
 
-def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlength, DNAdict, signif_anchors, anchor_dict):
+def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlength, DNAdict, signif_anchors, anchor_dict, fastq_id, out_signif_anchors_fasta):
     """
     anchorlist is a list -- we will loopthrough the sequence myseq and check if any of the anchorlist kmers are defined
     anchorlength is length of kmers in file
     LOOK AHEAD IN THE STRING
     """
-    for myseq in myseqs:
-    # loop through each kmer in the read;
-    # if it is part of the old dictionary, which gets passed in, record all of the mkers
-        for i in range(1, len(myseq)):
-            # get substr at the ith position of length anchorlength to compare to anchorlist
-            mystring = myseq[i:i+anchorlength]
-             # check if it exists
-            if mystring in anchorlist:
-                # find where the match is
-                match = myseq.find(mystring)
+    with open(out_signif_anchors_fasta, 'w') as out_reads:
+        for myseq in myseqs:
+        # loop through each kmer in the read;
+        # if it is part of the old dictionary, which gets passed in, record all of the mkers
+            for i in range(1, len(myseq)):
+                # get substr at the ith position of length anchorlength to compare to anchorlist
+                mystring = myseq[i:i+anchorlength]
+                # check if it exists
+                if mystring in anchorlist:
+                    # find where the match is
+                    match = myseq.find(mystring)
 
-                s = match
-                e = match + len(mystring)
+                    s = match
+                    e = match + len(mystring)
 
-                # test if the stringlength is long enough to get the string
-                nextkmer = myseq [e:e+looklength]
-                # keep dict small so less than 100 seqs:
-                if len(DNAdict[mystring]) < 100:
-                    DNAdict[mystring].append(nextkmer)
+                    # test if the stringlength is long enough to get the string
+                    nextkmer = myseq [e:e+looklength]
+                    # keep dict small so less than 100 seqs:
+                    if len(DNAdict[mystring]) < 100:
+                        DNAdict[mystring].append(nextkmer)
 
-        # search for signif_anchor and log its adjacent kmer
-        matching_anchors = [a for a in signif_anchors if a in myseq]
-        if matching_anchors:
-            for anchor in matching_anchors:
-                # get anchor position
-                anchor_end = myseq.index(anchor) + len(anchor)
-                # get adjacent anchor position
-                adj_anchor_start = anchor_end + adj_dist
-                adj_anchor_end = adj_anchor_start + adj_len
+            # search for signif_anchor and log its adjacent kmer
+            matching_anchors = [a for a in signif_anchors if a in myseq]
+            if matching_anchors:
+                # write out to fasta file
+                out_reads.write(f'>{fastq_id}\n{myseq}\n')
 
-                adj_anchor = myseq[adj_anchor_start:adj_anchor_end]
+                # check for adj_anchors
+                for anchor in matching_anchors:
+                    # get anchor position
+                    anchor_end = myseq.index(anchor) + len(anchor)
+                    # get adjacent anchor position
+                    adj_anchor_start = anchor_end + adj_dist
+                    adj_anchor_end = adj_anchor_start + adj_len
 
-                # if adj anchor exists, add adj anchor to anchor_dict
-                if len(adj_anchor) == adj_len:
-                    anchor_tuple = (anchor, adj_anchor)
+                    adj_anchor = myseq[adj_anchor_start:adj_anchor_end]
 
-                    if anchor_tuple not in anchor_dict.keys():
-                        anchor_dict[anchor_tuple] = 1
-                    else:
-                        anchor_dict[anchor_tuple] += 1
+                    # if adj anchor exists, add adj anchor to anchor_dict
+                    if len(adj_anchor) == adj_len:
+                        anchor_tuple = (anchor, adj_anchor)
+
+                        if anchor_tuple not in anchor_dict.keys():
+                            anchor_dict[anchor_tuple] = 1
+                        else:
+                            anchor_dict[anchor_tuple] += 1
     return DNAdict, anchor_dict
 
 
@@ -179,7 +184,7 @@ def get_args():
         type=str,
         help='fastq id name'
     )
-    parser.add_argument("--out_fasta_file",
+    parser.add_argument("--out_consensus_fasta_file",
         type=str,
         help='output fasta file'
     )
@@ -194,6 +199,11 @@ def get_args():
     parser.add_argument("--out_adj_kmer_file",
         type=str,
         help='output adj_kmer file'
+    )
+    parser.add_argument(
+        "--out_signif_anchors_fasta",
+        type=str,
+        help='output file of reads containing significant anchors'
     )
     parser.add_argument("--looklength",
         type=int,
@@ -349,7 +359,9 @@ def main():
         anchorlength,
         DNAdict,
         signif_anchors,
-        anchor_dict
+        anchor_dict,
+        args.fastq_id,
+        args.out_signif_anchors_fasta
     )
 
     # write out anchor dict for merging later
