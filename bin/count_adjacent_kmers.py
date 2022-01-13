@@ -113,15 +113,15 @@ def main():
         with gzip.open(args.fastq_file, 'rt') as fastq_reader:
 
             read_counter = 0
-
+            print('starting to read in fastq file ')
             # stream fastq file and output if necessary
             for read in fastq_reader:
                 tot_lines += 1
                 if tot_lines%4!=2:
                     continue
 
-                if read_counter < args.num_input_lines:
-                    if read_counter % 1000 == 0:
+                while read_counter < args.num_input_lines:
+                    if read_counter % 100 == 0:
                         print(read_counter)
 
                     read = read.strip('\n')
@@ -151,7 +151,7 @@ def main():
                             if adj_kmer == read[adj_kmer_start:adj_kmer_end]:
                                 # update counts
                                 counts_dict[anchor_tuple] += 1
-                    read_counter += 1
+                read_counter += 1
 
     # reformat and write out
     counts_df = (
