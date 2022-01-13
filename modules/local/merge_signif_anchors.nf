@@ -19,7 +19,7 @@ process MERGE_SIGNIF_ANCHORS {
     outfile = "signif_anchors_${params.direction}_qval_${params.q_val}.tsv"
     """
     merge_signif_anchors.py \\
-        --samplesheet ${ch_adj_kmer_counts_samplesheet} \\
+        --samplesheet ${signif_anchors_samplesheet} \\
         --outfile ${outfile}
     """
 }
