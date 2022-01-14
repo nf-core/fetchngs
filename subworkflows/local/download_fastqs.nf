@@ -15,6 +15,8 @@ workflow DOWNLOAD_FASTQS {
 
     main:
 
+    ch_fastqs_flat = Channel.empty()
+
     // Read in inputs to ch_ids
     if (params.srp) {
         //
