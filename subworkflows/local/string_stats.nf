@@ -21,6 +21,7 @@ workflow STRING_STATS {
         params.direction,
         params.q_val
     )
+
     // Make samplesheet of all signif_anchors files
     SIGNIF_ANCHORS.out.tsv
         .collectFile() { file ->

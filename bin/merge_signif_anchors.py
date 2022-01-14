@@ -16,8 +16,6 @@ def get_args():
     )
     parser.add_argument(
         "--num_anchors",
-        type=str,
-        nargs='?',
         help='number of anchors'
     )
     parser.add_argument(
@@ -54,8 +52,8 @@ def main():
             )
     )
 
-    if args.num_anchors:
-        signif_anchors_df = signif_anchors_df.head(args.num_anchors)
+    if args.num_anchors != "none":
+        signif_anchors_df = signif_anchors_df.head(int(args.num_anchors))
 
     signif_anchors_df.to_csv(
         args.outfile,
