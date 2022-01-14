@@ -4,7 +4,7 @@ import gzip
 import argparse
 import pandas as pd
 from Bio import SeqIO
-import pandas as pd
+import numpy as np
 
 
 def get_args():
@@ -59,6 +59,8 @@ def main():
         signif_anchors.columns = ['anchor', 'cluster', 'ann_fasta', 'evalue']
     else:
         signif_anchors.columns = ['anchor', 'cluster']
+        signif_anchors['ann_fasta'] = np.nan
+        signif_anchors['evalue'] = np.nan
 
     out_df = (
         signif_anchors
