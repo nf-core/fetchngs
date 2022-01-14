@@ -54,7 +54,8 @@ def main():
             )
     )
 
-    if args.num_anchors ==
+    if args.num_anchors:
+        signif_anchors_df = signif_anchors_df.head(args.num_anchors)
 
     signif_anchors_df.to_csv(
         args.outfile,

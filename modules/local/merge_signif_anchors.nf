@@ -17,7 +17,7 @@ process MERGE_SIGNIF_ANCHORS {
     path "*.tsv", emit: tsv
 
     script:
-    def num_anchors = num_anchors ? "--num_anchors params.num_anchors" : ""
+    def num_anchors = num_anchors ? "--num_anchors num_anchors" : ""
     outfile         = "signif_anchors_${params.direction}_qval_${params.q_val}.tsv"
     """
     merge_signif_anchors.py \\
