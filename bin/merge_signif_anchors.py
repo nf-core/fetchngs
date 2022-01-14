@@ -15,6 +15,12 @@ def get_args():
         help='input samplesheet'
     )
     parser.add_argument(
+        "--num_anchors",
+        type=str,
+        nargs='?',
+        help='number of anchors'
+    )
+    parser.add_argument(
         "--outfile",
         type=str,
         help='input file of significant anchors'
@@ -46,8 +52,9 @@ def main():
                 'cluster',
                 ascending=False
             )
-            .head(10000)
     )
+
+    if args.num_anchors ==
 
     signif_anchors_df.to_csv(
         args.outfile,

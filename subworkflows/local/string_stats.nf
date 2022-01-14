@@ -34,7 +34,8 @@ workflow STRING_STATS {
     MERGE_SIGNIF_ANCHORS (
         ch_signif_anchors_samplesheet,
         params.direction,
-        params.q_val
+        params.q_val,
+        params.num_anchors
     )
 
     ch_signif_anchors = MERGE_SIGNIF_ANCHORS.out.tsv
