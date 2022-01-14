@@ -71,62 +71,65 @@ workflow DOWNLOAD_FASTQS {
             skip:       1
         )
 
-    SRA_RUNINFO_TO_FTP.out.tsv
-        .splitCsv(
-            header: true,
-            sep:'\t'
+    if (!params.metadata_only) {
+
+        SRA_RUNINFO_TO_FTP.out.tsv
+            .splitCsv(
+                header: true,
+                sep:'\t'
+            )
+            .map {
+                meta ->
+                    meta.single_end = meta.single_end.toBoolean()
+                    [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+            }
+            .unique()
+            .branch {
+                ftp: it[0].fastq_1  && !params.force_sratools_download
+                sra: !it[0].fastq_1 || params.force_sratools_download
+            }
+            .set { ch_sra_reads }
+
+        //
+        // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
+        //
+        SRA_FASTQ_FTP (
+            ch_sra_reads.ftp
         )
-        .map {
-            meta ->
-                meta.single_end = meta.single_end.toBoolean()
-                [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
-        }
-        .unique()
-        .branch {
-            ftp: it[0].fastq_1  && !params.force_sratools_download
-            sra: !it[0].fastq_1 || params.force_sratools_download
-        }
-        .set { ch_sra_reads }
 
-    //
-    // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
-    //
-    SRA_FASTQ_FTP (
-        ch_sra_reads.ftp
-    )
+        //
+        // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
+        //
+        SRA_FASTQ_SRATOOLS (
+            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
+        )
 
-    //
-    // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
-    //
-    SRA_FASTQ_SRATOOLS (
-        ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
-    )
+        SRA_FASTQ_FTP.out.fastq
+            .mix(SRA_FASTQ_SRATOOLS.out.reads)
+            .set{ ch_fastqs }
 
-    SRA_FASTQ_FTP.out.fastq
-        .mix(SRA_FASTQ_SRATOOLS.out.reads)
-        .set{ ch_fastqs }
+        //
+        // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
+        //
+        SRA_TO_SAMPLESHEET (
+            ch_fastqs,
+            params.nf_core_pipeline ?: '',
+            params.sample_mapping_fields
+        )
 
-    //
-    // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
-    //
-    SRA_TO_SAMPLESHEET (
-        ch_fastqs,
-        params.nf_core_pipeline ?: '',
-        params.sample_mapping_fields
-    )
+        //
+        // MODULE: Create a merged samplesheet across all samples for the pipeline
+        //
+        SRA_MERGE_SAMPLESHEET (
+            SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
+            SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
+        )
 
-    //
-    // MODULE: Create a merged samplesheet across all samples for the pipeline
-    //
-    SRA_MERGE_SAMPLESHEET (
-        SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
-        SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
-    )
-
-    ch_fastqs
-        .map { file -> file[1]}
-        .flatten()
-        .set { ch_fastqs_flat }
+        ch_fastqs
+            .map { file -> file[1]}
+            .flatten()
+            .set { ch_fastqs_flat }
+    }
 
     emit:
     fastqs = ch_fastqs_flat
