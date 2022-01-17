@@ -358,25 +358,29 @@ def main():
         args.out_signif_anchors_fasta
     )
 
-    # write out anchor dict for merging later
-    anchor_df = (
-        pd.DataFrame.from_dict(
-            anchor_dict,
-            orient='index'
-        )
-        .reset_index()
-        .dropna()
-    )
 
-    anchor_df.columns = ['anchor_tuple', args.fastq_id]
-    anchor_df[['anchor', 'adj_kmer']] = (
-        pd.DataFrame(
-            anchor_df['anchor_tuple'].tolist(),
-            index=anchor_df.index
+    if anchor_dict:
+        # write out anchor dict for merging later
+        anchor_df = (
+            pd.DataFrame.from_dict(
+                anchor_dict,
+                orient='index'
+            )
+            .reset_index()
+            .dropna()
         )
-    )
 
-    anchor_df = anchor_df[['anchor', 'adj_kmer', args.fastq_id]]
+        anchor_df.columns = ['anchor_tuple', args.fastq_id]
+        anchor_df[['anchor', 'adj_kmer']] = (
+            pd.DataFrame(
+                anchor_df['anchor_tuple'].tolist(),
+                index=anchor_df.index
+            )
+        )
+
+        anchor_df = anchor_df[['anchor', 'adj_kmer', args.fastq_id]]
+    else:
+        anchor_df = pd.DataFrame.from_dict(anchor_dict)
 
     anchor_df.to_csv(
         args.out_adj_kmer_file,
