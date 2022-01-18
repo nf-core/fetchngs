@@ -37,8 +37,11 @@ def main():
 
     dfs = []
     for df_path in df_paths:
-        df = pd.read_csv(df_path.strip(), sep='\t')
-        dfs.append(df)
+        try:
+            df = pd.read_csv(df_path.strip(), sep='\t')
+            dfs.append(df)
+        except pd.errors.EmptyDataError:
+            print('empty')
 
     out_df = dfs[0]
     for df in dfs[1:]:
