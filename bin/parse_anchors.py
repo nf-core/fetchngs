@@ -241,8 +241,8 @@ def write_out(nextseqs, looklength, out_consensus_fasta_file, out_counts_file, o
     """
     # filse for writing
     outfile_1 = open(out_consensus_fasta_file, "w")
-    outfile_2 = open(out_counts_file, "w")
-    outfile_3 = open(out_fractions_file, "w")
+    outfile_2 = open(out_fractions_file, "w")
+    outfile_3 = open(out_counts_file, "w")
 
     for kk in nextseqs.keys():
     # gets the value as an array
