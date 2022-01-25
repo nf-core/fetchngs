@@ -51,34 +51,43 @@ def main():
             how='outer'
         )
 
+
     out_df = out_df.fillna(0)
 
-    signif_anchors = pd.read_csv(
-        args.signif_anchors,
-        sep='\t'
+    signif_anchors = (
+        pd.read_csv(
+            args.signif_anchors,
+            sep='\t'
+        )
+        .drop(
+            ['cluster'],
+            axis=1
+        )
+        .drop_duplicates()
     )
 
-    if len(signif_anchors.columns) == 4:
-        signif_anchors.columns = ['anchor', 'cluster', 'ann_fasta', 'evalue']
+
+    if len(signif_anchors.columns) == 3:
+        signif_anchors.columns = ['anchor', 'ann_fasta', 'evalue']
     else:
-        signif_anchors.columns = ['anchor', 'cluster']
+        signif_anchors.columns = ['anchor']
         signif_anchors['ann_fasta'] = np.nan
         signif_anchors['evalue'] = np.nan
+
+    out_df.to_csv(
+        'test_out.txt',
+        index=False,
+        sep='\t'
+    )
 
     out_df = (
         signif_anchors
             .merge(
                 out_df,
                 on='anchor',
-                how='right'
             )
             .drop_duplicates()
-            .drop(
-                'cluster',
-                axis=1
-            )
     )
-
     out_df.to_csv(
         args.outfile,
         index=False,
