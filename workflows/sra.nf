@@ -114,8 +114,8 @@ workflow SRA {
         }
 
         // Get min number of reads for string_stats
-        if (params.num_reads) {
-            num_input_lines = params.num_reads
+        if (params.max_string_stats_reads) {
+            num_input_lines = params.max_string_stats_reads
         } else {
             // Get the number of reads in the smallest fastq file
             ch_fastqs

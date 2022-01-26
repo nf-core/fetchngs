@@ -12,7 +12,8 @@ workflow DGMFINDER {
     DGMFINDER_ANALYSIS (
         ch_fastqs,
         params.ann_file,
-        params.kmer_size
+        params.kmer_size,
+        params.max_dgmfinder_reads
     )
 
     emit:

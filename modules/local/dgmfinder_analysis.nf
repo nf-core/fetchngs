@@ -12,6 +12,7 @@ process DGMFINDER_ANALYSIS {
     path fastq
     path ann_file
     val kmer_size
+    val max_dgmfinder_reads
 
     output:
     tuple val(fastq_id), path(fastq), path("*_anchors_annot.txt.gz")    , emit: fastq_anchors
@@ -30,6 +31,7 @@ process DGMFINDER_ANALYSIS {
         --fastq_id ${fastq_id} \\
         --fastq_file ${fastq} \\
         --ann_file ${ann_file} \\
-        --kmer_size ${kmer_size}
+        --kmer_size ${kmer_size} \\
+        --max_dgmfinder_reads ${max_dgmfinder_reads}
     """
 }
