@@ -13,17 +13,24 @@ def get_args():
         type=str,
         help='list of annotation fastq files'
     )
-    parser.add_argument("--fastq_file",
+    parser.add_argument(
+        "--fastq_file",
         type=str,
         help='input fasta file'
     )
-    parser.add_argument("--fastq_id",
+    parser.add_argument(
+        "--fastq_id",
         type=str,
         help='fastq id name'
     )
-    parser.add_argument("--kmer_size",
+    parser.add_argument(
+        "--kmer_size",
         type=int,
         help='size of kmer'
+    )
+    parser.add_argument(
+        "--max_dgmfinder_reads",
+        type=int
     )
     args = parser.parse_args()
     return args
@@ -62,14 +69,14 @@ def main():
 
     # configure run
     config = Config(
-        dist = distance,                # lookahead distance as a function of read length
-        kmer_size=args.kmer_size,       # k-mer size used in the analysis
-        min_smp_sz=5,                   # minimum sample size to compute p-value
-        max_smp_sz=50,                  # maximum number of sequences sampled per
-        lmer_size=7,                    # l-mer size used to compute jaccard similarity between k-mers
-        jsthrsh=0.25,                   # jaccard similarity threshold used to collapse the observed sequences
-        max_fastq_reads=5000000,        # maximum number of FASTQ reads to process
-        annot_fasta=fasta_list          # array containing fasta files to use with blast
+        dist = distance,                            # lookahead distance as a function of read length
+        kmer_size=args.kmer_size,                   # k-mer size used in the analysis
+        min_smp_sz=5,                               # minimum sample size to compute p-value
+        max_smp_sz=50,                              # maximum number of sequences sampled per
+        lmer_size=7,                                # l-mer size used to compute jaccard similarity between k-mers
+        jsthrsh=0.25,                               # jaccard similarity threshold used to collapse the observed sequences
+        max_fastq_reads=args.max_dgmfinder_reads,   # maximum number of FASTQ reads to process
+        annot_fasta=fasta_list                      # array containing fasta files to use with blast
     )
 
     # run analysis
