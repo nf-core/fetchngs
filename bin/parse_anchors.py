@@ -65,7 +65,7 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
         for myseq in myseqs:
             # simple logging
             if i % 100 == 0:
-                logging.info(f"...{i}")
+                logging.info(i)
             i += 1
 
             # loop through each kmer in the read;
