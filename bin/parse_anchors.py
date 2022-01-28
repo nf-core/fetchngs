@@ -107,7 +107,8 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
                         else:
                             anchor_dict[anchor_tuple] += 1
             # simple logging
-            logging.info(f'..iteration={j}')
+            if j % 1000 == 0:
+                logging.info(f'..iteration={j}')
             j += 1
 
     return DNAdict, anchor_dict
