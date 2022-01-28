@@ -66,7 +66,7 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
             # simple logging
             i += 1
             if i % 1000 == 0:
-                print(i)
+                logging.info(f"...{i}")
             # loop through each kmer in the read;
             # if it is part of the old dictionary, which gets passed in, record all of the mkers
             for i in range(1, len(myseq)):
