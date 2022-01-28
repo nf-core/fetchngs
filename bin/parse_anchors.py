@@ -61,10 +61,11 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
     """
     logging.info('Recording adjacent kmers')
     with open(out_signif_anchors_fasta, 'w') as out_reads:
-        i = 0
+        j = 0
         for myseq in myseqs:
             # simple logging
-            logging.info(f'..iteration={i}')
+            logging.info(f'..iteration={j}')
+            j += 1
 
             # loop through each kmer in the read;
             # if it is part of the old dictionary, which gets passed in, record all of the mkers
