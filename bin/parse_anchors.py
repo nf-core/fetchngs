@@ -59,6 +59,7 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
     anchorlength is length of kmers in file
     LOOK AHEAD IN THE STRING
     """
+    logging.info('Recording adjacent kmers')
     with open(out_signif_anchors_fasta, 'w') as out_reads:
         i = 0
         for myseq in myseqs:
@@ -239,6 +240,7 @@ def write_out(nextseqs, looklength, out_consensus_fasta_file, out_counts_file, o
     """
     write out files
     """
+    logging.info('Building consensus')
     # filse for writing
     outfile_1 = open(out_consensus_fasta_file, "w")
     outfile_2 = open(out_fractions_file, "w")
