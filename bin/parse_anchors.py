@@ -63,10 +63,6 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
     with open(out_signif_anchors_fasta, 'w') as out_reads:
         j = 0
         for myseq in myseqs:
-            # simple logging
-            logging.info(f'..iteration={j}')
-            j += 1
-
             # loop through each kmer in the read;
             # if it is part of the old dictionary, which gets passed in, record all of the mkers
             for i in range(1, len(myseq)):
@@ -110,6 +106,10 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
                             anchor_dict[anchor_tuple] = 1
                         else:
                             anchor_dict[anchor_tuple] += 1
+            # simple logging
+            logging.info(f'..iteration={j}')
+            j += 1
+
     return DNAdict, anchor_dict
 
 
