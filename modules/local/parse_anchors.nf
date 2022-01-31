@@ -1,7 +1,7 @@
 
 process PARSE_ANCHORS {
     tag "$fastq_id"
-    label 'process_high'
+    label 'process_medium'
 
     conda (params.enable_conda ? "conda-forge::python=3.9.5" : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
