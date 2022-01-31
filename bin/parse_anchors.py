@@ -339,7 +339,11 @@ def main():
         .iloc[:, 0:2]
     )
 
-    signif_anchors = signif_anchors_df['anchor'].tolist()
+    signif_anchors = (
+        signif_anchors_df['anchor']
+        .drop_duplicates()
+        .tolist()
+    )
 
     # get anchorlength
     anchorlength = 1
