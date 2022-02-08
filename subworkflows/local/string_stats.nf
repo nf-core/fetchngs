@@ -49,6 +49,7 @@ workflow STRING_STATS {
         num_input_lines,
         params.looklength,
         params.kmer_size,
+        params.direction,
         ch_fastq_anchors
     )
 

@@ -136,7 +136,7 @@ def returnSeqs(fastq_file, maxlines):
     return myseqs
 
 
-def returnAnchors(infile):
+def returnAnchors(infile, direction):
     """
     GETTING REAL SEQS
     """
@@ -145,6 +145,13 @@ def returnAnchors(infile):
     anchors=[]
     # Count reads
     tot_lines =  0
+
+    if args.direction == 'up':
+        ind_qval = 5
+        ind_seq = 6
+    elif args.direction == 'down':
+        ind_qval = 10
+        ind_seq = 11
 
     with gzip.open(infile, "rt") as handle:
 
@@ -155,9 +162,8 @@ def returnAnchors(infile):
             tot_lines += 1
             if tot_lines>1 :
                 # strip of new line character
-                qval = line.strip().split("\t")[5]
-                seq = line.strip().split("\t")[6]
-
+                qval = line.strip().split("\t")[ind_qval]
+                seq = line.strip().split("\t")[ind_seq]
 
                ### edit so that either qup or qdown is less than 0.01
                 if float(qval) < .01 : # lots of clusters
@@ -233,9 +239,18 @@ def get_args():
         nargs='?',
         help='length of adjacent anchor'
     )
+    parser.add_argument(
+        "--direction",
+        type=str,
+        help='up or down'
+    )
     args = parser.parse_args()
     return args
-
+    parser.add_argument(
+        "--direction",
+        type=str,
+        help='up or down'
+    )
 
 def write_out(nextseqs, looklength, out_consensus_fasta_file, out_counts_file, out_fractions_file):
     """
@@ -319,7 +334,8 @@ def main():
 
     # get per-sample anchors
     anchorlist = returnAnchors(
-        args.anchors_annot
+        args.anchors_annot,
+        args.direction
     )
 
     # DNA dictionary stores the set of reads after each anchor in the angorlist
