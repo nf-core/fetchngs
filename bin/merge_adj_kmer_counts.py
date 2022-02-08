@@ -35,21 +35,23 @@ def main():
     with open(args.samplesheet) as file:
         df_paths = file.readlines()
 
-    dfs = []
-    for df_path in df_paths:
+    i = 0
+    out_df = pd.read_csv(df_paths[0].strip(), sep='\t')
+    for df_path in df_paths[1:]:
         try:
             df = pd.read_csv(df_path.strip(), sep='\t')
-            dfs.append(df)
+            out_df = out_df.merge(
+                df,
+                on=['anchor', 'adj_kmer'],
+                how='outer'
+            )
+            del(df)
+            # if i % 100 == 0:
+            #     print(i)
+            print(i)
+            i += 1
         except pd.errors.EmptyDataError:
             print('empty')
-
-    out_df = dfs[0]
-    for df in dfs[1:]:
-        out_df = out_df.merge(
-            df,
-            on=['anchor', 'adj_kmer'],
-            how='outer'
-        )
 
 
     out_df = out_df.fillna(0)
