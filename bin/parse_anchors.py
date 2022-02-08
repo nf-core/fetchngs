@@ -338,6 +338,7 @@ def main():
         )
         .iloc[:, 0:2]
     )
+   errorStrategy 'ignore'
 
     signif_anchors = (
         signif_anchors_df['anchor']
@@ -399,8 +400,8 @@ def main():
         nextseqs,
         args.looklength,
         args.out_consensus_fasta_file,
-        args.out_counts_file,
-        args.out_fractions_file
+        args.out_fractions_file,
+        args.out_counts_file
     )
 
     logging.info(f'Completed!')
