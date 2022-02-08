@@ -354,8 +354,6 @@ def main():
         )
         .iloc[:, 0:2]
     )
-   errorStrategy 'ignore'
-
     signif_anchors = (
         signif_anchors_df['anchor']
         .drop_duplicates()
