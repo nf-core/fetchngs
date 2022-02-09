@@ -304,9 +304,11 @@ def main():
 
         read_len = len(head[1].strip())
         adj_dist = int((read_len - 2 * args.kmer_size) / 2)
+        looklength = 0
 
     else:
-        adj_dist = args.looklength
+        adj_dist = int(args.looklength)
+        looklength = int(args.looklength)
 
     # if adj_len is not provided, use kmer_size
     if args.adj_len is None:
@@ -319,7 +321,7 @@ def main():
     logging.info(f'anchors_annot    : {args.anchors_annot}')
     logging.info(f'fastq_file       : {args.fastq_file}')
     logging.info(f'direction        : {args.direction}')
-    logging.info(f'looklength       : {args.looklength}')
+    logging.info(f'looklength       : {looklength}')
     logging.info(f'adj_dist         : {adj_dist}')
     logging.info(f'adj_len          : {adj_len}')
     logging.info(f'kmer_size        : {args.kmer_size}')
@@ -369,7 +371,7 @@ def main():
     # get all of the next kmers for the anchors in PREPARATION FOR BUILDING CONCENSUS
     nextseqs, anchor_dict = recordNextKmers(
         anchorlist,
-        args.looklength,
+        looklength,
         adj_dist,
         adj_len,
         myseqs,
@@ -413,7 +415,7 @@ def main():
 
     write_out(
         nextseqs,
-        args.looklength,
+        looklength,
         args.out_consensus_fasta_file,
         args.out_fractions_file,
         args.out_counts_file
