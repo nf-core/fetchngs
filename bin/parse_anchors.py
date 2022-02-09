@@ -323,8 +323,7 @@ def main():
     if args.adj_len is None:
         adj_len = args.kmer_size
     else:
-        adj_len = args.adj_len
-
+        adj_len = args.looklength
 
     # get reads from fastq
     myseqs = returnSeqs(
