@@ -65,7 +65,7 @@ workflow STRING_STATS {
     //
     MERGE_ADJACENT_KMER_COUNTS (
         ch_adj_kmer_counts_samplesheet,
-        ch_signif_anchors
+        signif_anchors
     )
 
 
