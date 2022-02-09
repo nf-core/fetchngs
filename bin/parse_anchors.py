@@ -318,6 +318,7 @@ def main():
 
     else:
         adj_dist = args.looklength
+    print(adj_dist)
 
     # if adj_len is not provided, use kmer_size
     if args.adj_len is None:
