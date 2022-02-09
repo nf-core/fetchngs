@@ -219,7 +219,6 @@ def get_args():
         help='output file of reads containing significant anchors'
     )
     parser.add_argument("--looklength",
-        type=int,
         help='lookahead length'
     )
     parser.add_argument(
