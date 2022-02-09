@@ -13,6 +13,7 @@ process PARSE_ANCHORS {
     val num_input_lines
     val looklength
     val kmer_size
+    val direction
     each fastq_tuple
 
     output:
@@ -45,6 +46,7 @@ process PARSE_ANCHORS {
         --out_adj_kmer_file ${out_adj_kmer_file} \\
         --out_signif_anchors_fasta ${out_signif_anchors_fasta} \\
         --looklength ${looklength} \\
-        --kmer_size ${kmer_size}
+        --kmer_size ${kmer_size} \\
+        --direction ${direction}
     """
 }

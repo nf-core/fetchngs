@@ -136,7 +136,7 @@ def returnSeqs(fastq_file, maxlines):
     return myseqs
 
 
-def returnAnchors(infile):
+def returnAnchors(infile, direction):
     """
     GETTING REAL SEQS
     """
@@ -145,6 +145,13 @@ def returnAnchors(infile):
     anchors=[]
     # Count reads
     tot_lines =  0
+
+    if direction == 'up':
+        ind_qval = 5
+        ind_seq = 6
+    elif direction == 'down':
+        ind_qval = 10
+        ind_seq = 11
 
     with gzip.open(infile, "rt") as handle:
 
@@ -155,9 +162,8 @@ def returnAnchors(infile):
             tot_lines += 1
             if tot_lines>1 :
                 # strip of new line character
-                qval = line.strip().split("\t")[5]
-                seq = line.strip().split("\t")[6]
-
+                qval = line.strip().split("\t")[ind_qval]
+                seq = line.strip().split("\t")[ind_seq]
 
                ### edit so that either qup or qdown is less than 0.01
                 if float(qval) < .01 : # lots of clusters
@@ -233,6 +239,11 @@ def get_args():
         nargs='?',
         help='length of adjacent anchor'
     )
+    parser.add_argument(
+        "--direction",
+        type=str,
+        help='up or down'
+    )
     args = parser.parse_args()
     return args
 
@@ -286,15 +297,8 @@ def main():
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-    logging.info(f'============INPUTS============')
-    logging.info(f'anchors_annot    : {args.anchors_annot}')
-    logging.info(f'fastq_file       : {args.fastq_file}')
-    logging.info(f'looklength       : {args.looklength}')
-    logging.info(f'==============================')
-    logging.info('')
-
     # if adj_dist is not provided, use lookahead distance
-    if args.adj_dist is None:
+    if args.looklength == "none":
         with gzip.open(args.fastq_file, 'rt') as reader:
             head = [next(reader) for x in range(2)]
 
@@ -302,13 +306,25 @@ def main():
         adj_dist = int((read_len - 2 * args.kmer_size) / 2)
 
     else:
-        adj_dist = args.adj_dist
+        adj_dist = args.looklength
 
     # if adj_len is not provided, use kmer_size
     if args.adj_len is None:
         adj_len = args.kmer_size
     else:
         adj_len = args.adj_len
+
+
+    logging.info(f'============INPUTS============')
+    logging.info(f'anchors_annot    : {args.anchors_annot}')
+    logging.info(f'fastq_file       : {args.fastq_file}')
+    logging.info(f'direction        : {args.direction}')
+    logging.info(f'looklength       : {args.looklength}')
+    logging.info(f'adj_dist         : {adj_dist}')
+    logging.info(f'adj_len          : {adj_len}')
+    logging.info(f'kmer_size        : {args.kmer_size}')
+    logging.info(f'==============================')
+    logging.info('')
 
 
     # get reads from fastq
@@ -319,7 +335,8 @@ def main():
 
     # get per-sample anchors
     anchorlist = returnAnchors(
-        args.anchors_annot
+        args.anchors_annot,
+        args.direction
     )
 
     # DNA dictionary stores the set of reads after each anchor in the angorlist
@@ -338,8 +355,6 @@ def main():
         )
         .iloc[:, 0:2]
     )
-   errorStrategy 'ignore'
-
     signif_anchors = (
         signif_anchors_df['anchor']
         .drop_duplicates()
