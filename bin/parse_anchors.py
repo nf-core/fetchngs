@@ -304,7 +304,7 @@ def main():
 
         read_len = len(head[1].strip())
         adj_dist = int((read_len - 2 * args.kmer_size) / 2)
-        looklength = 0
+        looklength = adj_dist
 
     else:
         adj_dist = int(args.looklength)
