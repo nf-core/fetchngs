@@ -14,7 +14,7 @@ process PARSE_ANCHORS {
     val looklength
     val kmer_size
     val direction
-    each fastq_tuple
+    tuple val(fastq_id), path(fastq), path(anchors_annot)
 
     output:
     path "*_adj_kmers.tsv"      , emit: tsv
@@ -23,10 +23,6 @@ process PARSE_ANCHORS {
     path "*.log"                , emit: log
 
     script:
-    fastq_id = fastq_tuple[0]
-    fastq = fastq_tuple[1]
-    anchors_annot = fastq_tuple[2]
-
     out_consensus_fasta_file    = "${fastq_id}_consensus.fasta"
     out_counts_file             = "${fastq_id}_counts.tab"
     out_fractions_file          = "${fastq_id}_fractions.tab"
