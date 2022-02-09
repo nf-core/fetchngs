@@ -309,7 +309,7 @@ def main():
     logging.info('')
 
     # if adj_dist is not provided, use lookahead distance
-    if args.adj_dist is None:
+    if args.looklength == "none":
         with gzip.open(args.fastq_file, 'rt') as reader:
             head = [next(reader) for x in range(2)]
 
@@ -317,13 +317,14 @@ def main():
         adj_dist = int((read_len - 2 * args.kmer_size) / 2)
 
     else:
-        adj_dist = args.adj_dist
+        adj_dist = args.looklength
 
     # if adj_len is not provided, use kmer_size
     if args.adj_len is None:
         adj_len = args.kmer_size
     else:
-        adj_len = args.looklength
+        adj_len = args.adj_len
+
 
     # get reads from fastq
     myseqs = returnSeqs(
