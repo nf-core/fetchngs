@@ -301,13 +301,6 @@ def main():
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-    logging.info(f'============INPUTS============')
-    logging.info(f'anchors_annot    : {args.anchors_annot}')
-    logging.info(f'fastq_file       : {args.fastq_file}')
-    logging.info(f'looklength       : {args.looklength}')
-    logging.info(f'==============================')
-    logging.info('')
-
     # if adj_dist is not provided, use lookahead distance
     if args.looklength == "none":
         with gzip.open(args.fastq_file, 'rt') as reader:
@@ -318,13 +311,24 @@ def main():
 
     else:
         adj_dist = args.looklength
-    print(adj_dist)
 
     # if adj_len is not provided, use kmer_size
     if args.adj_len is None:
         adj_len = args.kmer_size
     else:
         adj_len = args.adj_len
+
+
+    logging.info(f'============INPUTS============')
+    logging.info(f'anchors_annot    : {args.anchors_annot}')
+    logging.info(f'fastq_file       : {args.fastq_file}')
+    logging.info(f'direction        : {args.direction}')
+    logging.info(f'looklength       : {args.looklength}')
+    logging.info(f'adj_dist         : {adj_dist}')
+    logging.info(f'adj_len          : {adj_len}')
+    logging.info(f'kmer_size        : {args.kmer_size}')
+    logging.info(f'==============================')
+    logging.info('')
 
 
     # get reads from fastq
