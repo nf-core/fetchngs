@@ -246,11 +246,7 @@ def get_args():
     )
     args = parser.parse_args()
     return args
-    parser.add_argument(
-        "--direction",
-        type=str,
-        help='up or down'
-    )
+
 
 def write_out(nextseqs, looklength, out_consensus_fasta_file, out_counts_file, out_fractions_file):
     """
