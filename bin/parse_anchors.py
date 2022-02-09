@@ -146,10 +146,10 @@ def returnAnchors(infile, direction):
     # Count reads
     tot_lines =  0
 
-    if args.direction == 'up':
+    if direction == 'up':
         ind_qval = 5
         ind_seq = 6
-    elif args.direction == 'down':
+    elif direction == 'down':
         ind_qval = 10
         ind_seq = 11
 
