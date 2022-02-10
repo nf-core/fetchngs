@@ -25,7 +25,7 @@ workflow STRING_STATS {
     // Make samplesheet of all signif_anchors files
     SIGNIF_ANCHORS.out.tsv
         .collectFile() { file ->
-            file.toString() + '\n'
+            def X=file; X.toString() + '\n'
         }
         .set{ ch_signif_anchors_samplesheet }
 
