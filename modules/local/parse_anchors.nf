@@ -11,10 +11,11 @@ process PARSE_ANCHORS {
     input:
     path signif_anchors_file
     val num_input_lines
-    val looklength
+    val consensus_length
     val kmer_size
     val direction
     tuple val(fastq_id), path(fastq), path(anchors_annot)
+    val read_length
 
     output:
     path "*_adj_kmers.tsv"      , emit: tsv
@@ -41,7 +42,8 @@ process PARSE_ANCHORS {
         --out_fractions_file ${out_fractions_file} \\
         --out_adj_kmer_file ${out_adj_kmer_file} \\
         --out_signif_anchors_fasta ${out_signif_anchors_fasta} \\
-        --looklength ${looklength} \\
+        --consensus_length ${consensus_length} \\
+        --read_length ${read_length} \\
         --kmer_size ${kmer_size} \\
         --direction ${direction}
     """
