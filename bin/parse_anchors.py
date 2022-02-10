@@ -299,7 +299,9 @@ def main():
     if args.adj_distance == "none":
         adj_dist = int((args.read_length - 2 * args.kmer_size) / 2)
 
-        ### if adj_dist < 0, set adj_dist to 0 and flag it in the log
+        if adj_dist < 0:
+            adj_dist = 0
+            logging.info(f'**** WARNING! Read lengths are less than kmer_size! ****')
     else:
         adj_dist = int(args.adj_distance)
 
