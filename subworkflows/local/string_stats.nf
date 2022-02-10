@@ -57,7 +57,8 @@ workflow STRING_STATS {
         params.kmer_size,
         params.direction,
         ch_fastq_anchors,
-        GET_READ_LENGTH.out.read_length
+        GET_READ_LENGTH.out.read_length,
+        params.adj_distance
     )
 
     // Make samplesheet of all adjacent_kmer_counts files
