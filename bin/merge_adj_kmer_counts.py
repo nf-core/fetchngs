@@ -3,7 +3,6 @@
 import gzip
 import argparse
 import pandas as pd
-from Bio import SeqIO
 import numpy as np
 
 
