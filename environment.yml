@@ -1,0 +1,21 @@
+name: fetchngs_dgmfinder
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+  - pytorch
+dependencies:
+  - conda-forge::python=3.9.7
+  - conda-forge::pandas
+  - conda-forge::numpy
+  - conda-forge::matplotlib
+  - conda-forge::biopython
+  - conda-forge::tqdm
+  - conda-forge::mmh3
+  - conda-forge::editdistance
+  - conda-forge::pyro-ppl
+  - pytorch::pytorch
+  - bioconda::pysradb
+  - scipy
+  - scikit-learn
+  - statsmodels
