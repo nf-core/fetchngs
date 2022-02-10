@@ -3,8 +3,6 @@
 import gzip
 import argparse
 import pandas as pd
-from Bio import SeqIO
-import pandas as pd
 
 
 def get_args():
