@@ -16,6 +16,7 @@ process PARSE_ANCHORS {
     val direction
     tuple val(fastq_id), path(fastq), path(anchors_annot)
     val read_length
+    val adj_distance
 
     output:
     path "*_adj_kmers.tsv"      , emit: tsv
@@ -45,6 +46,7 @@ process PARSE_ANCHORS {
         --consensus_length ${consensus_length} \\
         --read_length ${read_length} \\
         --kmer_size ${kmer_size} \\
-        --direction ${direction}
+        --direction ${direction} \\
+        --adj_distance ${adj_distance}
     """
 }

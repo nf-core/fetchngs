@@ -238,6 +238,10 @@ def get_args():
         type=str,
         help='up or down'
     )
+    parser.add_argument(
+        "--adj_distance",
+        help='up or down'
+    )
     args = parser.parse_args()
     return args
 
@@ -292,7 +296,13 @@ def main():
     )
 
     # Define adjacence distance and adjacence length
-    adj_dist = int((args.read_length - 2 * args.kmer_size) / 2)
+    if args.adj_distance == "none":
+        adj_dist = int((args.read_length - 2 * args.kmer_size) / 2)
+
+        ### if adj_dist < 0, set adj_dist to 0 and flag it in the log
+    else:
+        adj_dist = int(args.adj_distance)
+
     adj_len = args.kmer_size
 
     logging.info(f'============INPUTS============')
