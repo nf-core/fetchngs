@@ -1,6 +1,6 @@
-include { SAMPLE_FASTQ                  } from '../../modules/local/sample_fastq'
+include { GET_READ_LENGTH               } from '../../modules/local/get_read_length'
 include { SIGNIF_ANCHORS                } from '../../modules/local/signif_anchors'
-include { MERGE_SIGNIF_ANCHORS                } from '../../modules/local/merge_signif_anchors'
+include { MERGE_SIGNIF_ANCHORS          } from '../../modules/local/merge_signif_anchors'
 include { PARSE_ANCHORS                 } from '../../modules/local/parse_anchors'
 include { ADJACENT_KMERS                } from '../../modules/local/adjacent_kmers'
 include { MERGE_ADJACENT_KMER_COUNTS    } from '../../modules/local/merge_adjacent_kmer_counts'
@@ -41,16 +41,23 @@ workflow STRING_STATS {
 
     signif_anchors = MERGE_SIGNIF_ANCHORS.out.tsv.first()
 
+    GET_READ_LENGTH (
+        ch_fastq_anchors.first()
+    )
+
+    GET_READ_LENGTH.out.read_length.view()
+
     //
     // MODULE: Get consensus anchors and adj_anchors
     //
     PARSE_ANCHORS (
         signif_anchors,
         num_input_lines,
-        params.looklength,
+        params.consensus_length,
         params.kmer_size,
         params.direction,
-        ch_fastq_anchors
+        ch_fastq_anchors,
+        GET_READ_LENGTH.out.read_length
     )
 
     // Make samplesheet of all adjacent_kmer_counts files

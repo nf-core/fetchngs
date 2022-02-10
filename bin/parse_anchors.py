@@ -9,9 +9,9 @@ import argparse
 import logging
 
 
-def buildConcensus(kmers, looklength):
+def buildConcensus(kmers, consensus_length):
     """
-    Takes a list (for each keyed anchor), and a sequence of bases up to looklength;
+    Takes a list (for each keyed anchor), and a sequence of bases up to consensus_length;
     Computes base composition of the next seq of bases and outputs
     total num per base, and consensus fraction and base
     """
@@ -21,7 +21,7 @@ def buildConcensus(kmers, looklength):
 
     logging.info("Called.")
 
-    for j in range(1, (looklength-1)): #loop through each base ahead
+    for j in range(1, (consensus_length-1)): #loop through each base ahead
         mycounter = []                              # initialize dummy var
         for eachseq in kmers:                       # loop through each sequence;
             if len(eachseq) > (j-1):                # test if the sequence is bigger than jth
@@ -53,7 +53,7 @@ def buildConcensus(kmers, looklength):
     return baseComp, baseFrac, baseCount
 
 
-def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlength, DNAdict, signif_anchors, anchor_dict, fastq_id, out_signif_anchors_fasta):
+def recordNextKmers(anchorlist, consensus_length, adj_dist, adj_len, myseqs, anchorlength, DNAdict, signif_anchors, anchor_dict, fastq_id, out_signif_anchors_fasta):
     """
     anchorlist is a list -- we will loopthrough the sequence myseq and check if any of the anchorlist kmers are defined
     anchorlength is length of kmers in file
@@ -62,6 +62,8 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
     logging.info('Recording adjacent kmers')
     with open(out_signif_anchors_fasta, 'w') as out_reads:
         j = 0
+
+        ## Consensus anchor step ##
         for myseq in myseqs:
             # loop through each kmer in the read;
             # if it is part of the old dictionary, which gets passed in, record all of the mkers
@@ -77,30 +79,30 @@ def recordNextKmers(anchorlist, looklength, adj_dist, adj_len, myseqs, anchorlen
                     e = match + len(mystring)
 
                     # test if the stringlength is long enough to get the string
-                    nextkmer = myseq [e:e+looklength]
+                    nextkmer = myseq [e:e+consensus_length]
                     # keep dict small so less than 100 seqs:
                     if len(DNAdict[mystring]) < 100:
                         DNAdict[mystring].append(nextkmer)
 
-            # search for signif_anchor and log its adjacent kmer
+            ## Adjacent kmer step ##
             matching_anchors = [a for a in signif_anchors if a in myseq]
             if matching_anchors:
                 # write out to fasta file
                 out_reads.write(f'>{fastq_id}\n{myseq}\n')
 
-                # check for adj_anchors
+                # check for adj_kmers
                 for anchor in matching_anchors:
                     # get anchor position
                     anchor_end = myseq.index(anchor) + len(anchor)
                     # get adjacent anchor position
-                    adj_anchor_start = anchor_end + adj_dist
-                    adj_anchor_end = adj_anchor_start + adj_len
+                    adj_kmer_start = anchor_end + adj_dist
+                    adj_kmer_end = adj_kmer_start + adj_len
 
-                    adj_anchor = myseq[adj_anchor_start:adj_anchor_end]
+                    adj_kmer = myseq[adj_kmer_start:adj_kmer_end]
 
                     # if adj anchor exists, add adj anchor to anchor_dict
-                    if len(adj_anchor) == adj_len:
-                        anchor_tuple = (anchor, adj_anchor)
+                    if len(adj_kmer) == adj_len:
+                        anchor_tuple = (anchor, adj_kmer)
 
                         if anchor_tuple not in anchor_dict.keys():
                             anchor_dict[anchor_tuple] = 1
@@ -218,25 +220,18 @@ def get_args():
         type=str,
         help='output file of reads containing significant anchors'
     )
-    parser.add_argument("--looklength",
+    parser.add_argument("--consensus_length",
+        type=int,
+        help='lookahead length'
+    )
+    parser.add_argument("--read_length",
+        type=int,
         help='lookahead length'
     )
     parser.add_argument(
         "--kmer_size",
         type=int,
         help='kmer size'
-    )
-    parser.add_argument(
-        "--adj_dist",
-        type=int,
-        nargs='?',
-        help='distance of adjacent anchor'
-    )
-    parser.add_argument(
-        "--adj_len",
-        type=int,
-        nargs='?',
-        help='length of adjacent anchor'
     )
     parser.add_argument(
         "--direction",
@@ -247,7 +242,7 @@ def get_args():
     return args
 
 
-def write_out(nextseqs, looklength, out_consensus_fasta_file, out_counts_file, out_fractions_file):
+def write_out(nextseqs, consensus_length, out_consensus_fasta_file, out_counts_file, out_fractions_file):
     """
     write out files
     """
@@ -261,7 +256,7 @@ def write_out(nextseqs, looklength, out_consensus_fasta_file, out_counts_file, o
     # gets the value as an array
     # syntax for getting the values of a key
         if len(nextseqs.get(kk)) > 0 :  # build concensus
-            out = buildConcensus(nextseqs.get(kk), looklength)
+            out = buildConcensus(nextseqs.get(kk), consensus_length)
             if len(out[1])>0:
                 logging.info(kk+"--->"+out[0])
                 logging.info("PRINTING")
@@ -296,33 +291,18 @@ def main():
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-    # if adj_dist is not provided, use lookahead distance
-    if args.looklength == "none":
-        with gzip.open(args.fastq_file, 'rt') as reader:
-            head = [next(reader) for x in range(2)]
-
-        read_len = len(head[1].strip())
-        adj_dist = int((read_len - 2 * args.kmer_size) / 2)
-        looklength = adj_dist
-
-    else:
-        adj_dist = int(args.looklength)
-        looklength = int(args.looklength)
-
-    # if adj_len is not provided, use kmer_size
-    if args.adj_len is None:
-        adj_len = args.kmer_size
-    else:
-        adj_len = args.adj_len
-
+    # Define adjacence distance and adjacence length
+    adj_dist = int((args.read_length - 2 * args.kmer_size) / 2)
+    adj_len = args.kmer_size
 
     logging.info(f'============INPUTS============')
     logging.info(f'anchors_annot    : {args.anchors_annot}')
     logging.info(f'fastq_file       : {args.fastq_file}')
     logging.info(f'direction        : {args.direction}')
-    logging.info(f'looklength       : {looklength}')
-    logging.info(f'adj_dist         : {adj_dist}')
-    logging.info(f'adj_len          : {adj_len}')
+    logging.info(f'consensus_length : {args.consensus_length}')
+    logging.info(f'read_length      : {args.read_length}')
+    logging.info(f'adjacence_dist   : {adj_dist}')
+    logging.info(f'adjacence_length : {adj_len}')
     logging.info(f'kmer_size        : {args.kmer_size}')
     logging.info(f'==============================')
     logging.info('')
@@ -340,7 +320,7 @@ def main():
         args.direction
     )
 
-    # DNA dictionary stores the set of reads after each anchor in the angorlist
+    # DNA dictionary stores the set of reads after each anchor in the anchorlist
     DNAdict = {}
     for an in anchorlist:
         DNAdict[an] = []
@@ -362,26 +342,20 @@ def main():
         .tolist()
     )
 
-    # get anchorlength
-    anchorlength = 1
-    if len(anchorlist) > 0 :
-        anchorlength = len(anchorlist[0])
-
     # get all of the next kmers for the anchors in PREPARATION FOR BUILDING CONCENSUS
     nextseqs, anchor_dict = recordNextKmers(
         anchorlist,
-        looklength,
+        args.consensus_length,
         adj_dist,
         adj_len,
         myseqs,
-        anchorlength,
+        args.kmer_size,
         DNAdict,
         signif_anchors,
         anchor_dict,
         args.fastq_id,
         args.out_signif_anchors_fasta
     )
-
 
     if anchor_dict:
         # write out anchor dict for merging later
@@ -414,7 +388,7 @@ def main():
 
     write_out(
         nextseqs,
-        looklength,
+        args.consensus_length,
         args.out_consensus_fasta_file,
         args.out_fractions_file,
         args.out_counts_file
