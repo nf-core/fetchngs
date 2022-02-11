@@ -22,7 +22,10 @@ workflow SRA_FASTQ_SRATOOLS {
     //
     // Convert the SRA format into one or more compressed FASTQ files.
     //
-    SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra )
+    SRATOOLS_FASTERQDUMP (
+        SRATOOLS_PREFETCH.out.sra,
+        params.max_dgmfinder_reads
+    )
     ch_versions = ch_versions.mix( SRATOOLS_FASTERQDUMP.out.versions.first() )
 
     emit:

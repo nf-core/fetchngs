@@ -10,6 +10,7 @@ process SRATOOLS_FASTERQDUMP {
 
     input:
     tuple val(meta), path(sra)
+    val max_dgmfinder_reads
 
     output:
     tuple val(meta), path(fastq_output), emit: reads
@@ -36,7 +37,8 @@ process SRATOOLS_FASTERQDUMP {
         $args \\
         --threads $task.cpus \\
         ${sra.name} \\
-        -X 2000000
+        -X ${max_dgmfinder_reads} \\
+        --split-3
 
 
     pigz \\
