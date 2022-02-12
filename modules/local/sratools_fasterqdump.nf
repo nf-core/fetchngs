@@ -33,7 +33,7 @@ process SRATOOLS_FASTERQDUMP {
         printf '${config}' > "\${NCBI_SETTINGS}"
     fi
 
-    fasterq-dump \\
+    fastq-dump \\
         $args \\
         --threads $task.cpus \\
         ${sra.name} \\
