@@ -31,8 +31,8 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the [ENA API](https://ena-docs.readthedocs.io/en/latest/retrieval/programmatic-access.html)
 2. Fetch extensive id metadata via ENA API
 3. Download FastQ files:
-    - If direct download links are available from the ENA API, fetch in parallel via `curl` and perform `md5sum` check
-    - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ
+   - If direct download links are available from the ENA API, fetch in parallel via `curl` and perform `md5sum` check
+   - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ### Synapse ids
@@ -67,9 +67,9 @@ The columns in the auto-created samplesheet can be tailored to be accepted out-o
 
 4. Start running your own analysis!
 
-    ```bash
-    nextflow run nf-core/fetchngs --input ids.txt --outdir <OUTDIR> -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
-    ```
+   ```bash
+   nextflow run nf-core/fetchngs --input ids.txt --outdir <OUTDIR> -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
+   ```
 
 ## Documentation
 
@@ -87,7 +87,7 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 
 ## Citations
 
-If you use  nf-core/fetchngs for your analysis, please cite it using the following doi: [10.5281/zenodo.5070524](https://doi.org/10.5281/zenodo.5070524)
+If you use nf-core/fetchngs for your analysis, please cite it using the following doi: [10.5281/zenodo.5070524](https://doi.org/10.5281/zenodo.5070524)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 

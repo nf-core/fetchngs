@@ -26,10 +26,7 @@
                     "default": "sra",
                     "description": "Specifies the type of identifier provided via `--input` - available options are 'sra' and 'synapse'.",
                     "fa_icon": "fas fa-keyboard",
-                    "enum": [
-                        "sra",
-                        "synapse"
-                    ]
+                    "enum": ["sra", "synapse"]
                 },
                 "ena_metadata_fields": {
                     "type": "string",

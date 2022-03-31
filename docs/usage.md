@@ -9,7 +9,7 @@
 The pipeline has been set-up to automatically download and process the raw FastQ files from both public and private repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
 | `SRA`        | `ENA`        | `DDBJ`       | `GEO`      | `Synapse`   |
-|--------------|--------------|--------------|------------|-------------|
+| ------------ | ------------ | ------------ | ---------- | ----------- |
 | SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 | syn26240435 |
 | SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |             |
 | SRS6531847   | ERS4399630   | DRS090921    |            |             |
@@ -28,9 +28,9 @@ All of the sample metadata obtained from the ENA will be appended as additional 
 
 If you have a GEO accession (found in the data availability section of published papers) you can directly download a text file containing the appropriate SRA ids to pass to the pipeline:
 
-* Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
-* Click `SRA Run Selector` at the bottom of the GEO accession page
-* Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
+- Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
+- Click `SRA Run Selector` at the bottom of the GEO accession page
+- Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
 This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
 
@@ -47,9 +47,9 @@ The final sample information for the FastQ files used for samplesheet generation
 <details markdown="1">
 <summary>Supported File Names</summary>
 
-* Files named `SRR493366_1.fastq` and `SRR493366_2.fastq` will have a sample name of `SRR493366`
-* Files named `SRR_493_367_1.fastq` and `SRR_493_367_2.fastq` will have a sample name of `SRR_493_367`
-* Files named `filename12_1.fastq` and `filename12_2.fastq` will have a sample name of `filename12`
+- Files named `SRR493366_1.fastq` and `SRR493366_2.fastq` will have a sample name of `SRR493366`
+- Files named `SRR_493_367_1.fastq` and `SRR_493_367_2.fastq` will have a sample name of `SRR_493_367`
+- Files named `filename12_1.fastq` and `filename12_2.fastq` will have a sample name of `filename12`
 
 </details>
 
