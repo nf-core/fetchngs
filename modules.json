@@ -5,6 +5,15 @@
         "nf-core/modules": {
             "custom/dumpsoftwareversions": {
                 "git_sha": "e745e167c1020928ef20ea1397b6b4d230681b4d"
+            },
+            "custom/sratoolsncbisettings": {
+                "git_sha": "b2dbaa99309a2057efc32ef9d029ed91140068df"
+            },
+            "sratools/fasterqdump": {
+                "git_sha": "0cdf7767a79faf424645beeff83ecfa5528b6a7c"
+            },
+            "sratools/prefetch": {
+                "git_sha": "1b228835e9525990db99243cb4f0d07aa6e01bc3"
             }
         }
     }
