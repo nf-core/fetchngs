@@ -259,3 +259,9 @@ We recommend adding the following line to your environment to limit this (typica
 ```console
 NXF_OPTS='-Xms1g -Xmx4g'
 ```
+
+## Troubleshooting
+
+### `FTP` download is blocked at my workplace/institution, how can I still use _nf-core/fetchngs_ ?
+
+If downloading data with FTP is blocked on your network connection, you may want to use the [`--force_sratools_download`](https://nf-co.re/fetchngs/1.5/parameters#force_sratools_download) flag to force fetchngs download using [sra-tools](https://github.com/ncbi/sra-tools) instead of the ENA FTP.

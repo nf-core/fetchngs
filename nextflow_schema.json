@@ -48,7 +48,8 @@
                 "force_sratools_download": {
                     "type": "boolean",
                     "fa_icon": "fas fa-tools",
-                    "description": "Force download FastQ files via sra-tools instead of via the ENA FTP."
+                    "description": "Force download FASTQ files via sra-tools instead of via the ENA FTP.",
+                    "help_text": "If downloading data through FTP is blocked on your network connection, you may want to use this flag to force fetchngs to download using sra-tools instead of the ENA FTP.  "
                 },
                 "skip_fastq_download": {
                     "type": "boolean",
