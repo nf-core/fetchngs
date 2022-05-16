@@ -9,7 +9,7 @@
 The pipeline has been set-up to automatically download and process the raw FastQ files from both public and private repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
 | `SRA`        | `ENA`        | `DDBJ`       | `GEO`      | `Synapse`   |
-|--------------|--------------|--------------|------------|-------------|
+| ------------ | ------------ | ------------ | ---------- | ----------- |
 | SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 | syn26240435 |
 | SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |             |
 | SRS6531847   | ERS4399630   | DRS090921    |            |             |
@@ -28,9 +28,9 @@ All of the sample metadata obtained from the ENA will be appended as additional 
 
 If you have a GEO accession (found in the data availability section of published papers) you can directly download a text file containing the appropriate SRA ids to pass to the pipeline:
 
-* Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
-* Click `SRA Run Selector` at the bottom of the GEO accession page
-* Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
+- Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
+- Click `SRA Run Selector` at the bottom of the GEO accession page
+- Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
 This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
 
@@ -47,9 +47,9 @@ The final sample information for the FastQ files used for samplesheet generation
 <details markdown="1">
 <summary>Supported File Names</summary>
 
-* Files named `SRR493366_1.fastq` and `SRR493366_2.fastq` will have a sample name of `SRR493366`
-* Files named `SRR_493_367_1.fastq` and `SRR_493_367_2.fastq` will have a sample name of `SRR_493_367`
-* Files named `filename12_1.fastq` and `filename12_2.fastq` will have a sample name of `filename12`
+- Files named `SRR493366_1.fastq` and `SRR493366_2.fastq` will have a sample name of `SRR493366`
+- Files named `SRR_493_367_1.fastq` and `SRR_493_367_2.fastq` will have a sample name of `SRR_493_367`
+- Files named `filename12_1.fastq` and `filename12_2.fastq` will have a sample name of `filename12`
 
 </details>
 
@@ -62,7 +62,7 @@ As a bonus, the columns in the auto-created samplesheet can be tailored to be ac
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/fetchngs --input ids.txt -profile docker
+nextflow run nf-core/fetchngs --input ids.txt --outdir <OUTDIR> -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -70,9 +70,9 @@ This will launch the pipeline with the `docker` configuration profile. See below
 Note that the pipeline will create the following files in your working directory:
 
 ```console
-work            # Directory containing the nextflow working files
-results         # Finished results (configurable, see below)
-.nextflow_log   # Log file from Nextflow
+work                # Directory containing the nextflow working files
+<OUTIDR>            # Finished results in specified location (defined with --outdir)
+.nextflow_log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 
@@ -111,25 +111,25 @@ They are loaded in sequence, so later profiles can overwrite earlier profiles.
 
 If `-profile` is not specified, the pipeline will run locally and expect all software to be installed and available on the `PATH`. This is _not_ recommended.
 
-* `docker`
-    * A generic configuration profile to be used with [Docker](https://docker.com/)
-* `singularity`
-    * A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
-* `podman`
-    * A generic configuration profile to be used with [Podman](https://podman.io/)
-* `shifter`
-    * A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
-* `charliecloud`
-    * A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
-* `conda`
-    * A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter or Charliecloud.
-* `test`
-    * A profile with a complete configuration for automated testing
-    * Includes links to test data so needs no other parameters
+- `docker`
+  - A generic configuration profile to be used with [Docker](https://docker.com/)
+- `singularity`
+  - A generic configuration profile to be used with [Singularity](https://sylabs.io/docs/)
+- `podman`
+  - A generic configuration profile to be used with [Podman](https://podman.io/)
+- `shifter`
+  - A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
+- `charliecloud`
+  - A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
+- `conda`
+  - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter or Charliecloud.
+- `test`
+  - A profile with a complete configuration for automated testing
+  - Includes links to test data so needs no other parameters
 
 ### `-resume`
 
-Specify this when restarting a pipeline. Nextflow will used cached results from any pipeline steps where the inputs are the same, continuing from where it got to previously.
+Specify this when restarting a pipeline. Nextflow will use cached results from any pipeline steps where the inputs are the same, continuing from where it got to previously. For input to be considered the same, not only the names must be identical but the files' contents as well. For more info about this parameter, see [this blog post](https://www.nextflow.io/blog/2019/demystifying-nextflow-resume.html).
 
 You can also supply a run name to resume a specific run: `-resume [run-name]`. Use the `nextflow log` command to show previous run names.
 
@@ -146,11 +146,11 @@ Whilst the default requirements set within the pipeline will hopefully work for 
 For example, if the nf-core/rnaseq pipeline is failing after multiple re-submissions of the `STAR_ALIGN` process due to an exit code of `137` this would indicate that there is an out of memory issue:
 
 ```console
-[62/149eb0] NOTE: Process `RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)` terminated with an error exit status (137) -- Execution is retried (1)
-Error executing process > 'RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)'
+[62/149eb0] NOTE: Process `NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)` terminated with an error exit status (137) -- Execution is retried (1)
+Error executing process > 'NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)'
 
 Caused by:
-    Process `RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)` terminated with an error exit status (137)
+    Process `NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN (WT_REP1)` terminated with an error exit status (137)
 
 Command executed:
     STAR \
@@ -174,17 +174,25 @@ Work dir:
 Tip: you can replicate the issue by changing to the process work dir and entering the command `bash .command.run`
 ```
 
-To bypass this error you would need to find exactly which resources are set by the `STAR_ALIGN` process. The quickest way is to search for `process STAR_ALIGN` in the [nf-core/rnaseq Github repo](https://github.com/nf-core/rnaseq/search?q=process+STAR_ALIGN). We have standardised the structure of Nextflow DSL2 pipelines such that all module files will be present in the `modules/` directory and so based on the search results the file we want is `modules/nf-core/software/star/align/main.nf`. If you click on the link to that file you will notice that there is a `label` directive at the top of the module that is set to [`label process_high`](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/modules/nf-core/software/star/align/main.nf#L9). The [Nextflow `label`](https://www.nextflow.io/docs/latest/process.html#label) directive allows us to organise workflow processes in separate groups which can be referenced in a configuration file to select and configure subset of processes having similar computing requirements. The default values for the `process_high` label are set in the pipeline's [`base.config`](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L33-L37) which in this case is defined as 72GB. Providing you haven't set any other standard nf-core parameters to **cap** the [maximum resources](https://nf-co.re/usage/configuration#max-resources) used by the pipeline then we can try and bypass the `STAR_ALIGN` process failure by creating a custom config file that sets at least 72GB of memory, in this case increased to 100GB. The custom config below can then be provided to the pipeline via the [`-c`](#-c) parameter as highlighted in previous sections.
+To bypass this error you would need to find exactly which resources are set by the `STAR_ALIGN` process. The quickest way is to search for `process STAR_ALIGN` in the [nf-core/rnaseq Github repo](https://github.com/nf-core/rnaseq/search?q=process+STAR_ALIGN).
+We have standardised the structure of Nextflow DSL2 pipelines such that all module files will be present in the `modules/` directory and so, based on the search results, the file we want is `modules/nf-core/software/star/align/main.nf`.
+If you click on the link to that file you will notice that there is a `label` directive at the top of the module that is set to [`label process_high`](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/modules/nf-core/software/star/align/main.nf#L9).
+The [Nextflow `label`](https://www.nextflow.io/docs/latest/process.html#label) directive allows us to organise workflow processes in separate groups which can be referenced in a configuration file to select and configure subset of processes having similar computing requirements.
+The default values for the `process_high` label are set in the pipeline's [`base.config`](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L33-L37) which in this case is defined as 72GB.
+Providing you haven't set any other standard nf-core parameters to **cap** the [maximum resources](https://nf-co.re/usage/configuration#max-resources) used by the pipeline then we can try and bypass the `STAR_ALIGN` process failure by creating a custom config file that sets at least 72GB of memory, in this case increased to 100GB.
+The custom config below can then be provided to the pipeline via the [`-c`](#-c) parameter as highlighted in previous sections.
 
 ```nextflow
 process {
-    withName: STAR_ALIGN {
+    withName: 'NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN' {
         memory = 100.GB
     }
 }
 ```
 
-> **NB:** We specify just the process name i.e. `STAR_ALIGN` in the config file and not the full task name string that is printed to screen in the error message or on the terminal whilst the pipeline is running i.e. `RNASEQ:ALIGN_STAR:STAR_ALIGN`. You may get a warning suggesting that the process selector isn't recognised but you can ignore that if the process name has been specified correctly. This is something that needs to be fixed upstream in core Nextflow.
+> **NB:** We specify the full process name i.e. `NFCORE_RNASEQ:RNASEQ:ALIGN_STAR:STAR_ALIGN` in the config file because this takes priority over the short name (`STAR_ALIGN`) and allows existing configuration using the full process name to be correctly overridden.
+>
+> If you get a warning suggesting that the process selector isn't recognised check that the process name has been specified correctly.
 
 ### Updating containers
 
@@ -194,35 +202,35 @@ The [Nextflow DSL2](https://www.nextflow.io/docs/latest/dsl2.html) implementatio
 2. Find the latest version of the Biocontainer available on [Quay.io](https://quay.io/repository/biocontainers/pangolin?tag=latest&tab=tags)
 3. Create the custom config accordingly:
 
-    * For Docker:
+   - For Docker:
 
-        ```nextflow
-        process {
-            withName: PANGOLIN {
-                container = 'quay.io/biocontainers/pangolin:3.0.5--pyhdfd78af_0'
-            }
-        }
-        ```
+     ```nextflow
+     process {
+         withName: PANGOLIN {
+             container = 'quay.io/biocontainers/pangolin:3.0.5--pyhdfd78af_0'
+         }
+     }
+     ```
 
-    * For Singularity:
+   - For Singularity:
 
-        ```nextflow
-        process {
-            withName: PANGOLIN {
-                container = 'https://depot.galaxyproject.org/singularity/pangolin:3.0.5--pyhdfd78af_0'
-            }
-        }
-        ```
+     ```nextflow
+     process {
+         withName: PANGOLIN {
+             container = 'https://depot.galaxyproject.org/singularity/pangolin:3.0.5--pyhdfd78af_0'
+         }
+     }
+     ```
 
-    * For Conda:
+   - For Conda:
 
-        ```nextflow
-        process {
-            withName: PANGOLIN {
-                conda = 'bioconda::pangolin=3.0.5'
-            }
-        }
-        ```
+     ```nextflow
+     process {
+         withName: PANGOLIN {
+             conda = 'bioconda::pangolin=3.0.5'
+         }
+     }
+     ```
 
 > **NB:** If you wish to periodically update individual tool-specific results (e.g. Pangolin) generated by the pipeline then you must ensure to keep the `work/` directory otherwise the `-resume` ability of the pipeline will be compromised and it will restart from scratch.
 
