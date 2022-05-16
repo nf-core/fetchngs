@@ -57,6 +57,10 @@ The final sample information for the FastQ files used for samplesheet generation
 
 As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input) and the Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format). You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too if for example your samplesheet was created by providing `--nf_core_pipeline rnaseq`.
 
+### Bypass `FTP` data download
+
+If FTP connections are blocked on your network use the [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameter to force the pipeline to download data using sra-tools instead of the ENA FTP.
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
@@ -259,9 +263,3 @@ We recommend adding the following line to your environment to limit this (typica
 ```console
 NXF_OPTS='-Xms1g -Xmx4g'
 ```
-
-## Troubleshooting
-
-### `FTP` download is blocked at my workplace/institution, how can I still use _nf-core/fetchngs_ ?
-
-If downloading data with FTP is blocked on your network connection, you may want to use the [`--force_sratools_download`](https://nf-co.re/fetchngs/1.5/parameters#force_sratools_download) flag to force fetchngs download using [sra-tools](https://github.com/ncbi/sra-tools) instead of the ENA FTP.

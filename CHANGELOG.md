@@ -5,9 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [[1.6](https://github.com/nf-core/fetchngs/releases/tag/1.6)] - 2022-05-17
 
+- [#57](https://github.com/nf-core/fetchngs/pull/57) - fetchngs fails if FTP is blocked
 - [#89](https://github.com/nf-core/fetchngs/pull/89) - Improve detection and usage of the NCBI user settings by using the standardized sra-tools modules from nf-core.
 - [[nf-core/rnaseq#764](https://github.com/nf-core/rnaseq/issues/764)] - Test fails when using GCP due to missing tools in the basic biocontainer
 - Updated pipeline template to [nf-core/tools 2.4.1](https://github.com/nf-core/tools/releases/tag/2.4.1)
+
+### Software dependencies
+
+| Dependency      | Old version | New version |
+| --------------- | ----------- | ----------- |
+| `synapseclient` | 2.4.0       | 2.6.0       |
 
 ## [[1.5](https://github.com/nf-core/fetchngs/releases/tag/1.5)] - 2021-12-01
 
