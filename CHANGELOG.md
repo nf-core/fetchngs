@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [#57](https://github.com/nf-core/fetchngs/pull/57) - fetchngs fails if FTP is blocked
 - [#89](https://github.com/nf-core/fetchngs/pull/89) - Improve detection and usage of the NCBI user settings by using the standardized sra-tools modules from nf-core.
+- [#93](https://github.com/nf-core/fetchngs/pull/93) - Adjust modules configuration to respect the `publish_dir_mode` parameter.
 - [[nf-core/rnaseq#764](https://github.com/nf-core/rnaseq/issues/764)] - Test fails when using GCP due to missing tools in the basic biocontainer
 - Updated pipeline template to [nf-core/tools 2.4.1](https://github.com/nf-core/tools/releases/tag/2.4.1)
 
