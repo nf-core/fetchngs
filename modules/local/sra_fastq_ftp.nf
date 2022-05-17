@@ -4,10 +4,10 @@ process SRA_FASTQ_FTP {
     label 'process_low'
     label 'error_retry'
 
-    conda (params.enable_conda ? "conda-forge::sed=4.7" : null)
+    conda (params.enable_conda ? 'bioconda::sra-tools=2.11.0' : null)
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/biocontainers/v1.2.0_cv1/biocontainers_v1.2.0_cv1.img' :
-        'biocontainers/biocontainers:v1.2.0_cv1' }"
+        'https://depot.galaxyproject.org/singularity/sra-tools:2.11.0--pl5321ha49a11a_3' :
+        'quay.io/biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3' }"
 
     input:
     tuple val(meta), val(fastq)

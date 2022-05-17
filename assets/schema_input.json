@@ -8,7 +8,7 @@
         "type": "array",
         "items": {
             "type": "string",
-            "pattern":"^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM])|(syn))(\\d+)$",
+            "pattern": "^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM])|(syn))(\\d+)$",
             "errorMessage": "Please provide a valid SRA, ENA, DDBJ or GEO identifier"
         }
     }

@@ -1,9 +1,7 @@
-
 name: Bug report
 description: Report something that is broken or incorrect
 labels: bug
 body:
-
   - type: markdown
     attributes:
       value: |
@@ -36,7 +34,7 @@ body:
     attributes:
       label: Relevant files
       description: |
-        Please upload (drag and drop) and relevant files. Make into a `.zip` file if the extension is not allowed.
+        Please drag and drop the relevant files here. Create a `.zip` archive if the extension is not allowed.
         Your verbose log file `.nextflow.log` is often useful _(this is a hidden file in the directory where you launched the pipeline)_ as well as custom Nextflow configuration files.
 
   - type: textarea

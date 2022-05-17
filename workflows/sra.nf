@@ -26,7 +26,7 @@ include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
 
-include { SRA_FASTQ_SRATOOLS      } from '../subworkflows/local/sra_fastq_sratools'
+include { SRAFASTQ                } from '../subworkflows/nf-core/srafastq/main'
 
 /*
 ========================================================================================
@@ -97,16 +97,16 @@ workflow SRA {
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         //
-        SRA_FASTQ_SRATOOLS (
+        SRAFASTQ (
             ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
         )
-        ch_versions = ch_versions.mix(SRA_FASTQ_SRATOOLS.out.versions.first())
+        ch_versions = ch_versions.mix(SRAFASTQ.out.versions.first())
 
         //
         // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
         //
         SRA_TO_SAMPLESHEET (
-            SRA_FASTQ_FTP.out.fastq.mix(SRA_FASTQ_SRATOOLS.out.reads),
+            SRA_FASTQ_FTP.out.fastq.mix(SRAFASTQ.out.reads),
             params.nf_core_pipeline ?: '',
             params.sample_mapping_fields
         )
