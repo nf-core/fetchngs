@@ -59,8 +59,8 @@ As a bonus, the columns in the auto-created samplesheet can be tailored to be ac
 
 - [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
 - Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
-- [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler) 
- 
+- [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)
+
 You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too if for example your samplesheet was created by providing `--nf_core_pipeline rnaseq`.
 
 ### Bypass `FTP` data download
