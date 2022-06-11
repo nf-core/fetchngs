@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+- [#97](https://github.com/nf-core/fetchngs/pull/97) - Add support for generating nf-core/taxprofiler compatible samplesheets anda dded improved validation for the --nf_core_pipeline flag to only accept supported pipelines
+-
+
+### Enhancements & fixes
+
 ## [[1.6](https://github.com/nf-core/fetchngs/releases/tag/1.6)] - 2022-05-17
 
 - [#57](https://github.com/nf-core/fetchngs/pull/57) - fetchngs fails if FTP is blocked
