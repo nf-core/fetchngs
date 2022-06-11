@@ -39,6 +39,8 @@ process SRA_TO_SAMPLESHEET {
     if (pipeline) {
         if (pipeline == 'rnaseq') {
             pipeline_map << [ strandedness: 'unstranded' ]
+        } else if (pipeline == 'taxprofiler') {
+            pipeline_map << [ fasta: '' ]
         }
     }
     pipeline_map << meta_map
