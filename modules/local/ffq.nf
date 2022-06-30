@@ -1,5 +1,5 @@
 process FFQ {
-    tag "$id"
+    tag "${ids.size() == 1 ? ids[0] : "${ids[0]+'..'+ids[-1]}"}"
     label 'process_low'
 
     conda (params.enable_conda ? "bioconda::ffq=0.2.1" : null)
@@ -8,7 +8,7 @@ process FFQ {
         'quay.io/biocontainers/ffq:0.2.1--pyhdfd78af_0' }"
 
     input:
-    val id
+    val ids
 
     output:
     path "*.json"      , emit: json
@@ -19,10 +19,12 @@ process FFQ {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "$id"   
+    def id_list = ids.sort()
+    def name = id_list.size() == 1 ? ids[0] : 'metadata'
+    def prefix = task.ext.prefix ?: "${name}"
     """
     ffq \\
-        $id \\
+        ${id_list.join(' ')} \\
         $args \\
         > ${prefix}.json
 
