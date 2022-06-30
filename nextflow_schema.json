@@ -43,7 +43,8 @@
                 "nf_core_pipeline": {
                     "type": "string",
                     "fa_icon": "fab fa-apple",
-                    "description": "Name of supported nf-core pipeline e.g.  'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns."
+                    "description": "Name of supported nf-core pipeline e.g.  'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns.",
+                    "enum": ["rnaseq", "viralrecon", "taxprofiler"]
                 },
                 "force_sratools_download": {
                     "type": "boolean",
