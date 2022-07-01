@@ -60,6 +60,13 @@ workflow SRA {
     // ch_versions = ch_versions.mix(FFQ.out.versions.first())
 
     //
+    // Fail the pipeline if GEO ids detected
+    //
+    ids
+        .collect()
+        .map { WorkflowSra.isGeoFail(it, log) }
+
+    //
     // MODULE: Get SRA run information for public database ids
     //
     SRA_IDS_TO_RUNINFO (

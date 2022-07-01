@@ -104,7 +104,7 @@ class WorkflowMain {
             if (num_match == total_ids) {
                 is_sra = true
             } else {
-                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ / GEO or Synapse ids!"
+                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!"
                 System.exit(1)
             }
         }
@@ -129,7 +129,7 @@ class WorkflowMain {
             if (num_match == total_ids) {
                 is_synapse = true
             } else {
-                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ / GEO or Synapse ids!"
+                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!"
                 System.exit(1)
             }
         }
