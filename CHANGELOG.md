@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :warning: Major enhancements
 
-Support for GEO ids has been dropped in this release due to breaking changes introduced in the NCBI API. Please see [this PR](https://github.com/nf-core/fetchngs/pull/102).
+Support for GEO ids has been dropped in this release due to breaking changes introduced in the NCBI API. For more detailed information please see [this PR](https://github.com/nf-core/fetchngs/pull/102).
+
+As a workaround, if you have a GEO accession you can directly download a text file containing the appropriate SRA ids to pass to the pipeline:
+
+- Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
+- Click `SRA Run Selector` at the bottom of the GEO accession page
+- Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
+
+This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
 
 ### Enhancements & fixes
 
