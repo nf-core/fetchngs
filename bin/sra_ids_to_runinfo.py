@@ -193,9 +193,11 @@ class DatabaseIdentifierChecker:
 class DatabaseResolver:
     """Define a service class for resolving various identifiers to experiments."""
 
-    _GEO_PREFIXES = {"GSE"}
+    _GEO_PREFIXES = {
+        "GSE",
+        "GSM"
+    }
     _SRA_PREFIXES = {
-        "GSM",
         "PRJNA",
         "SAMN",
         "SRR",
@@ -207,7 +209,9 @@ class DatabaseResolver:
         "PRJDB",
         "SAMD",
     }
-    _ENA_PREFIXES = {"ERR"}
+    _ENA_PREFIXES = {
+        "ERR"
+    }
 
     @classmethod
     def expand_identifier(cls, identifier):
