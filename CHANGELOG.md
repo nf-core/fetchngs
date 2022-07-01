@@ -3,11 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unpublished Version / DEV]
+## [[1.7](https://github.com/nf-core/fetchngs/releases/tag/1.7)] - 2022-07-01
+
+### :warning: Major enhancements
+
+Support for GEO ids has been dropped in this release due to breaking changes introduced in the NCBI API. Please see [this PR](https://github.com/nf-core/fetchngs/pull/102).
 
 ### Enhancements & fixes
 
 - [#97](https://github.com/nf-core/fetchngs/pull/97) - Add support for generating nf-core/taxprofiler compatible samplesheets.
+- [#99](https://github.com/nf-core/fetchngs/issues/99) - SRA_IDS_TO_RUNINFO fails due to bad request
 - Add `enum` field for `--nf_core_pipeline` to parameter schema so only accept supported pipelines are accepted
 
 ## [[1.6](https://github.com/nf-core/fetchngs/releases/tag/1.6)] - 2022-05-17
