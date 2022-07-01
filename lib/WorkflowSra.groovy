@@ -29,4 +29,21 @@ class WorkflowSra {
             "  running nf-core/other pipelines.\n" +
             "==================================================================================="
     }
+
+    // Fail pipeline if input ids are from the GEO
+    public static void isGeoFail(ids, log) {
+        def pattern = /^(GS[EM])(\d+)$/
+        for (id in ids) {
+            if (id =~ pattern) {
+                log.error "===================================================================================\n" +
+                    "  GEO id detected: ${id}\n" +
+                    "  Support for GEO ids was dropped in v1.7 due to breaking changes in the NCBI API.\n" +
+                    "  Please remove any GEO ids from the input samplesheet.\n\n" +
+                    "  Please see:\n" +
+                    "  https://github.com/nf-core/fetchngs/pull/102\n" +
+                    "==================================================================================="
+                System.exit(1)
+            }
+        }
+    }
 }

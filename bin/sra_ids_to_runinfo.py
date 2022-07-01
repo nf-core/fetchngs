@@ -193,9 +193,11 @@ class DatabaseIdentifierChecker:
 class DatabaseResolver:
     """Define a service class for resolving various identifiers to experiments."""
 
-    _GEO_PREFIXES = {"GSE"}
+    _GEO_PREFIXES = {
+        "GSE",
+        "GSM"
+    }
     _SRA_PREFIXES = {
-        "GSM",
         "PRJNA",
         "SAMN",
         "SRR",
@@ -207,7 +209,9 @@ class DatabaseResolver:
         "PRJDB",
         "SAMD",
     }
-    _ENA_PREFIXES = {"ERR"}
+    _ENA_PREFIXES = {
+        "ERR"
+    }
 
     @classmethod
     def expand_identifier(cls, identifier):
@@ -246,13 +250,13 @@ class DatabaseResolver:
     def _id_to_srx(cls, identifier):
         """Resolve the identifier to SRA experiments."""
         params = {
-            "save": "efetch",
+            "id": identifier,
             "db": "sra",
             "rettype": "runinfo",
-            "term": identifier,
+            "retmode": "text"
         }
         response = fetch_url(
-            f"https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?{urlencode(params)}"
+            f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}"
         )
         cls._content_check(response, identifier)
         return [row["Experiment"] for row in open_table(response, delimiter=",")]
@@ -261,9 +265,14 @@ class DatabaseResolver:
     def _gse_to_srx(cls, identifier):
         """Resolve the identifier to SRA experiments."""
         ids = []
-        params = {"acc": identifier, "targ": "gsm", "view": "data", "form": "text"}
+        params = {
+            "id": identifier,
+            "db": "gds",
+            "rettype": "runinfo",
+            "retmode": "text"
+        }
         response = fetch_url(
-            f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?{urlencode(params)}"
+            f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}"
         )
         cls._content_check(response, identifier)
         gsm_ids = [
