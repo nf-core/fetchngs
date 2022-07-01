@@ -19,7 +19,6 @@ WorkflowSra.initialise(params, log, valid_params)
 ========================================================================================
 */
 
-include { FFQ                     } from '../modules/local/ffq'
 include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'
 include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'
@@ -35,6 +34,7 @@ include { SRAFASTQ                } from '../subworkflows/nf-core/srafastq/main'
 ========================================================================================
 */
 
+include { FFQ                         } from '../modules/nf-core/modules/ffq/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/dumpsoftwareversions/main'
 
 /*
@@ -55,7 +55,7 @@ workflow SRA {
     // // MODULE: Get id metadata from ffq
     // //
     // FFQ (
-    //     ids
+    //     ids.map { [it] }
     // )
     // ch_versions = ch_versions.mix(FFQ.out.versions.first())
 

@@ -9,6 +9,9 @@
             "custom/sratoolsncbisettings": {
                 "git_sha": "b2dbaa99309a2057efc32ef9d029ed91140068df"
             },
+            "ffq": {
+                "git_sha": "b96066565a52fdd42901f62e03c4ff5551980b43"
+            },
             "sratools/fasterqdump": {
                 "git_sha": "0cdf7767a79faf424645beeff83ecfa5528b6a7c"
             },
