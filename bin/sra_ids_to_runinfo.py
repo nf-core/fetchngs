@@ -246,13 +246,13 @@ class DatabaseResolver:
     def _id_to_srx(cls, identifier):
         """Resolve the identifier to SRA experiments."""
         params = {
-            "save": "efetch",
+            "id": identifier,
             "db": "sra",
             "rettype": "runinfo",
-            "term": identifier,
+            "retmode": "text"
         }
         response = fetch_url(
-            f"https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?{urlencode(params)}"
+            f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}"
         )
         cls._content_check(response, identifier)
         return [row["Experiment"] for row in open_table(response, delimiter=",")]
