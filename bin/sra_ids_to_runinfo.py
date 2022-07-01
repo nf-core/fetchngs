@@ -261,9 +261,14 @@ class DatabaseResolver:
     def _gse_to_srx(cls, identifier):
         """Resolve the identifier to SRA experiments."""
         ids = []
-        params = {"acc": identifier, "targ": "gsm", "view": "data", "form": "text"}
+        params = {
+            "id": identifier,
+            "db": "gds",
+            "rettype": "runinfo",
+            "retmode": "text"
+        }
         response = fetch_url(
-            f"https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?{urlencode(params)}"
+            f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}"
         )
         cls._content_check(response, identifier)
         gsm_ids = [
