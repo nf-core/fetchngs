@@ -10,6 +10,10 @@
 
 ## Pipeline tools
 
+- [ffq](https://www.biorxiv.org/content/10.1101/2022.05.18.492548v2)
+
+> Gálvez-Merchán A, Min, KHJ, Pachter L, Booeshaghi SA. Metadata retrieval from sequence databases with ffq. bioRxiv, 19 May 2022. doi: 10.1101/2022.05.18.492548.
+
 - [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
 
   > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.

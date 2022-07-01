@@ -34,6 +34,7 @@ include { SRAFASTQ                } from '../subworkflows/nf-core/srafastq/main'
 ========================================================================================
 */
 
+include { FFQ                         } from '../modules/nf-core/modules/ffq/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/dumpsoftwareversions/main'
 
 /*
@@ -49,6 +50,21 @@ workflow SRA {
 
     main:
     ch_versions = Channel.empty()
+
+    // //
+    // // MODULE: Get id metadata from ffq
+    // //
+    // FFQ (
+    //     ids.map { [it] }
+    // )
+    // ch_versions = ch_versions.mix(FFQ.out.versions.first())
+
+    //
+    // Fail the pipeline if GEO ids detected
+    //
+    ids
+        .collect()
+        .map { WorkflowSra.isGeoFail(it, log) }
 
     //
     // MODULE: Get SRA run information for public database ids
