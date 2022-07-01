@@ -8,15 +8,15 @@
 
 The pipeline has been set-up to automatically download and process the raw FastQ files from both public and private repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
-| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      | `Synapse`   |
-| ------------ | ------------ | ------------ | ---------- | ----------- |
-| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 | syn26240435 |
-| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |             |
-| SRS6531847   | ERS4399630   | DRS090921    |            |             |
-| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |             |
-| SRP256957    | ERP120836    | DRP004793    |            |             |
-| SRA1068758   | ERA2420837   | DRA008156    |            |             |
-| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |             |
+| `SRA`        | `ENA`        | `DDBJ`       | `Synapse`   |
+| ------------ | ------------ | ------------ | ----------- |
+| SRR11605097  | ERR4007730   | DRR171822    | syn26240435 |
+| SRX8171613   | ERX4009132   | DRX162434    |             |
+| SRS6531847   | ERS4399630   | DRS090921    |             |
+| SAMN14689442 | SAMEA6638373 | SAMD00114846 |             |
+| SRP256957    | ERP120836    | DRP004793    |             |
+| SRA1068758   | ERA2420837   | DRA008156    |             |
+| PRJNA625551  | PRJEB37513   | PRJDB4176    |             |
 
 ### SRR / ERR / DRR ids
 
@@ -55,7 +55,13 @@ The final sample information for the FastQ files used for samplesheet generation
 
 ### Samplesheet format
 
-As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input) and the Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format). You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too if for example your samplesheet was created by providing `--nf_core_pipeline rnaseq`.
+As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include:
+
+- [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
+- [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)
+
+You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too if for example your samplesheet was created by providing `--nf_core_pipeline rnaseq`.
 
 ### Bypass `FTP` data download
 

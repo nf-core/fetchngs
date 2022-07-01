@@ -3,6 +3,26 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.7](https://github.com/nf-core/fetchngs/releases/tag/1.7)] - 2022-07-01
+
+### :warning: Major enhancements
+
+Support for GEO ids has been dropped in this release due to breaking changes introduced in the NCBI API. For more detailed information please see [this PR](https://github.com/nf-core/fetchngs/pull/102).
+
+As a workaround, if you have a GEO accession you can directly download a text file containing the appropriate SRA ids to pass to the pipeline:
+
+- Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
+- Click `SRA Run Selector` at the bottom of the GEO accession page
+- Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
+
+This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
+
+### Enhancements & fixes
+
+- [#97](https://github.com/nf-core/fetchngs/pull/97) - Add support for generating nf-core/taxprofiler compatible samplesheets.
+- [#99](https://github.com/nf-core/fetchngs/issues/99) - SRA_IDS_TO_RUNINFO fails due to bad request
+- Add `enum` field for `--nf_core_pipeline` to parameter schema so only accept supported pipelines are accepted
+
 ## [[1.6](https://github.com/nf-core/fetchngs/releases/tag/1.6)] - 2022-05-17
 
 - [#57](https://github.com/nf-core/fetchngs/pull/57) - fetchngs fails if FTP is blocked
