@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+- Fetch `SRR` and `DRR` metadata from ENA API instead of NCBI API to bypass frequent breaking changes
+
 ## [[1.7](https://github.com/nf-core/fetchngs/releases/tag/1.7)] - 2022-07-01
 
 ### :warning: Major enhancements
