@@ -200,17 +200,17 @@ class DatabaseResolver:
     _SRA_PREFIXES = {
         "PRJNA",
         "SAMN",
-        "SRR",
         "DRA",
         "DRP",
-        "DRR",
         "DRS",
         "DRX",
         "PRJDB",
         "SAMD",
     }
     _ENA_PREFIXES = {
-        "ERR"
+        "ERR",
+        "SRR",
+        "DRR"
     }
 
     @classmethod
