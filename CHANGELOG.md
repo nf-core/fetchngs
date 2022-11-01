@@ -25,6 +25,7 @@ This downloads a text file called `SRR_Acc_List.txt` that can be directly provid
 
 ### Enhancements & fixes
 
+- [#121](https://github.com/nf-core/fetchngs/pull/123) - Add Tower reporting
 - [#97](https://github.com/nf-core/fetchngs/pull/97) - Add support for generating nf-core/taxprofiler compatible samplesheets.
 - [#99](https://github.com/nf-core/fetchngs/issues/99) - SRA_IDS_TO_RUNINFO fails due to bad request
 - Add `enum` field for `--nf_core_pipeline` to parameter schema so only accept supported pipelines are accepted
