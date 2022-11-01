@@ -1,0 +1,15 @@
+reports:
+  "samplesheet/samplesheet.csv":
+    display: "Auto-created samplesheet with collated metadata and FASTQ paths"
+  "samplesheet/id_mappings.csv":
+    display: "File with selected fields that can be used to rename samples"
+  "samplesheet/multiqc_config.yml":
+    display: "MultiQC config file that can be passed to most nf-core pipelines"
+  "metadata/*.runinfo_ftp.tsv":
+    display: "Re-formatted metadata file downloaded from the ENA"
+  "metadata/*.runinfo.tsv":
+    display: "Original metadata file downloaded from the ENA"
+  "metadata/*.metadata.txt":
+    display: "Original metadata file generated using the synapse show command"
+  "metadata/*.list.txt":
+    display: "Original output of the synapse list command"
