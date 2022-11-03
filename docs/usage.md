@@ -32,7 +32,7 @@ If you have a GEO accession (found in the data availability section of published
 - Click `SRA Run Selector` at the bottom of the GEO accession page
 - Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
-This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
+This downloads a text file called `SRR_Acc_List.csv` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
 
 ### Synapse ids
 
@@ -72,7 +72,7 @@ If FTP connections are blocked on your network use the [`--force_sratools_downlo
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/fetchngs --input ids.txt --outdir <OUTDIR> -profile docker
+nextflow run nf-core/fetchngs --input ids.csv --outdir <OUTDIR> -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
