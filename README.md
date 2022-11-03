@@ -46,7 +46,7 @@ As a workaround, if you have a GEO accession you can directly download a text fi
 - Click `SRA Run Selector` at the bottom of the GEO accession page
 - Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
-This downloads a text file called `SRR_Acc_List.csv` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
+This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
 
 ### Synapse ids
 
