@@ -31,7 +31,7 @@ include { SYNAPSE_MERGE_SAMPLESHEET } from '../modules/local/synapse_merge_sampl
 ========================================================================================
 */
 
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/modules/custom/dumpsoftwareversions/main'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 
 /*
 ========================================================================================
