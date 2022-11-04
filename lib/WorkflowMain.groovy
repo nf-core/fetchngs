@@ -21,7 +21,7 @@ class WorkflowMain {
     // Print help to screen if required
     //
     public static String help(workflow, params, log) {
-        def command = "nextflow run ${workflow.manifest.name} --input ids.txt -profile docker"
+        def command = "nextflow run ${workflow.manifest.name} --input ids.csv -profile docker"
         def help_string = ''
         help_string += NfcoreTemplate.logo(workflow, params.monochrome_logs)
         help_string += NfcoreSchema.paramsHelp(workflow, params, command)
@@ -75,7 +75,7 @@ class WorkflowMain {
 
         // Check input has been provided
         if (!params.input) {
-            log.error "Please provide an input file containing ids to the pipeline - one per line e.g. '--input ids.txt'"
+            log.error "Please provide an input file containing ids to the pipeline - one per line e.g. '--input ids.csv'"
             System.exit(1)
         }
 
