@@ -16,7 +16,7 @@
                     "type": "string",
                     "format": "file-path",
                     "mimetype": "text/csv",
-                    "pattern": "^\\S+\\.csv$",
+                    "pattern": "^\\S+\\.(csv|tsv|txt)$",
                     "schema": "assets/schema_input.json",
                     "fa_icon": "fas fa-file-excel",
                     "description": "File containing SRA/ENA/DDBJ identifiers one per line to download their associated metadata and FastQ files."
