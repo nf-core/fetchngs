@@ -25,7 +25,7 @@ On release, automated continuous integration tests run the pipeline on a full-si
 
 ## Pipeline summary
 
-Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/fetchngs/sra_ids_test.txt)) the pipeline performs the following steps:
+Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/fetchngs/sra_ids_test.csv)) the pipeline performs the following steps:
 
 ### SRA / ENA / DDBJ ids
 
@@ -46,7 +46,7 @@ As a workaround, if you have a GEO accession you can directly download a text fi
 - Click `SRA Run Selector` at the bottom of the GEO accession page
 - Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
-This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline e.g. `--input SRR_Acc_List.txt`.
+This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
 
 ### Synapse ids
 
@@ -87,7 +87,7 @@ You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. 
 4. Start running your own analysis!
 
    ```bash
-   nextflow run nf-core/fetchngs --input ids.txt --outdir <OUTDIR> -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
+   nextflow run nf-core/fetchngs --input ids.csv --outdir <OUTDIR> -profile <docker/singularity/podman/shifter/charliecloud/conda/institute>
    ```
 
 ## Documentation
