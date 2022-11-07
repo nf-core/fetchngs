@@ -5,7 +5,7 @@ include { SRATOOLS_FASTERQDUMP        } from '../../../modules/nf-core/sratools/
 /**
  * Download FASTQ sequencing reads from the NCBI's Sequence Read Archive (SRA).
  */
-workflow SRAFASTQ {
+workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     take:
     sra_ids  // channel: [ val(meta), val(id) ]
 
