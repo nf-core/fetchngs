@@ -26,8 +26,6 @@ include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'
 include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
 
-include { SRAFASTQ                } from '../subworkflows/nf-core/srafastq/main'
-
 /*
 ========================================================================================
     IMPORT NF-CORE MODULES/SUBWORKFLOWS
@@ -35,6 +33,8 @@ include { SRAFASTQ                } from '../subworkflows/nf-core/srafastq/main'
 */
 
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
+
+include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/main'
 
 /*
 ========================================================================================
@@ -112,15 +112,15 @@ workflow SRA {
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         //
-        SRAFASTQ (
+        FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
             ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
         )
-        ch_versions = ch_versions.mix(SRAFASTQ.out.versions.first())
+        ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
         SRA_FASTQ_FTP
             .out
             .fastq
-            .mix(SRAFASTQ.out.reads)
+            .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
             .map { 
                 meta, fastq ->
                     def reads = meta.single_end ? [ fastq ] : fastq
