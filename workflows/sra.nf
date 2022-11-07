@@ -80,18 +80,26 @@ workflow SRA {
         .splitCsv(header:true, sep:'\t')
         .map {
             meta ->
-                meta.single_end = meta.single_end.toBoolean()
-                [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+                def meta_clone = meta.clone()
+                meta_clone.single_end = meta_clone.single_end.toBoolean()
+                return meta_clone
         }
         .unique()
-        .branch {
-            ftp: it[0].fastq_1  && !params.force_sratools_download
-            sra: !it[0].fastq_1 || params.force_sratools_download
-        }
-        .set { ch_sra_reads }
+        .set { ch_sra_metadata }
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     if (!params.skip_fastq_download) {
+
+        ch_sra_metadata
+            .map { 
+                meta -> 
+                    [ meta, [ meta.fastq_1, meta.fastq_2 ] ] 
+            }
+            .branch {
+                ftp: it[0].fastq_1  && !params.force_sratools_download
+                sra: !it[0].fastq_1 || params.force_sratools_download
+            }
+            .set { ch_sra_reads }
 
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
@@ -109,33 +117,47 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(SRAFASTQ.out.versions.first())
 
-        //
-        // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
-        //
-        SRA_TO_SAMPLESHEET (
-            SRA_FASTQ_FTP.out.fastq.mix(SRAFASTQ.out.reads),
-            params.nf_core_pipeline ?: '',
-            params.sample_mapping_fields
-        )
+        SRA_FASTQ_FTP
+            .out
+            .fastq
+            .mix(SRAFASTQ.out.reads)
+            .map { 
+                meta, fastq ->
+                    def reads = meta.single_end ? [ fastq ] : fastq
+                    def meta_clone = meta.clone()
+                    meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
+                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
+                    return meta_clone
+            }
+            .set { ch_sra_metadata }
+    }
 
-        //
-        // MODULE: Create a merged samplesheet across all samples for the pipeline
-        //
-        SRA_MERGE_SAMPLESHEET (
-            SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
-            SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
-        )
-        ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
+    //
+    // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
+    //
+    SRA_TO_SAMPLESHEET (
+        ch_sra_metadata,
+        params.nf_core_pipeline ?: '',
+        params.sample_mapping_fields
+    )
 
-        //
-        // MODULE: Create a MutiQC config file with sample name mappings
-        //
-        if (params.sample_mapping_fields) {
-            MULTIQC_MAPPINGS_CONFIG (
-                SRA_MERGE_SAMPLESHEET.out.mappings
-            )
-            ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
-        }
+    //
+    // MODULE: Create a merged samplesheet across all samples for the pipeline
+    //
+    SRA_MERGE_SAMPLESHEET (
+        SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
+        SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
+    )
+    ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
+
+    //
+    // MODULE: Create a MutiQC config file with sample name mappings
+    //
+    if (params.sample_mapping_fields) {
+        MULTIQC_MAPPINGS_CONFIG (
+            SRA_MERGE_SAMPLESHEET.out.mappings
+        )
+        ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
     }
 
     //
