@@ -49,9 +49,7 @@ DDBJ_IDS = (
 )
 GEO_IDS = ("GSE18729", "GSM465244")
 ID_REGEX = re.compile(r"^([A-Z]+)([0-9]+)$")
-PREFIX_LIST = sorted(
-    {ID_REGEX.match(id).group(1) for id in SRA_IDS + ENA_IDS + DDBJ_IDS + GEO_IDS}
-)
+PREFIX_LIST = sorted({ID_REGEX.match(id).group(1) for id in SRA_IDS + ENA_IDS + DDBJ_IDS + GEO_IDS})
 
 
 # List of metadata fields fetched from the ENA API - can be overriden by options
@@ -193,25 +191,18 @@ class DatabaseIdentifierChecker:
 class DatabaseResolver:
     """Define a service class for resolving various identifiers to experiments."""
 
-    _GEO_PREFIXES = {
-        "GSE",
-        "GSM"
-    }
+    _GEO_PREFIXES = {"GSE", "GSM"}
     _SRA_PREFIXES = {
         "PRJNA",
         "SAMN",
-        "SRR",
         "DRA",
         "DRP",
-        "DRR",
         "DRS",
         "DRX",
         "PRJDB",
         "SAMD",
     }
-    _ENA_PREFIXES = {
-        "ERR"
-    }
+    _ENA_PREFIXES = {"ERR", "SRR", "DRR"}
 
     @classmethod
     def expand_identifier(cls, identifier):
@@ -240,24 +231,14 @@ class DatabaseResolver:
     def _content_check(cls, response, identifier):
         """Check that the response has content or terminate."""
         if response.status == 204:
-            logger.error(
-                f"There is no content for id {identifier}. Maybe you lack the right "
-                f"permissions?"
-            )
+            logger.error(f"There is no content for id {identifier}. Maybe you lack the right " f"permissions?")
             sys.exit(1)
 
     @classmethod
     def _id_to_srx(cls, identifier):
         """Resolve the identifier to SRA experiments."""
-        params = {
-            "id": identifier,
-            "db": "sra",
-            "rettype": "runinfo",
-            "retmode": "text"
-        }
-        response = fetch_url(
-            f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}"
-        )
+        params = {"id": identifier, "db": "sra", "rettype": "runinfo", "retmode": "text"}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}")
         cls._content_check(response, identifier)
         return [row["Experiment"] for row in open_table(response, delimiter=",")]
 
@@ -265,20 +246,13 @@ class DatabaseResolver:
     def _gse_to_srx(cls, identifier):
         """Resolve the identifier to SRA experiments."""
         ids = []
-        params = {
-            "id": identifier,
-            "db": "gds",
-            "rettype": "runinfo",
-            "retmode": "text"
-        }
-        response = fetch_url(
-            f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}"
-        )
+        params = {"id": identifier, "db": "gds", "rettype": "runinfo", "retmode": "text"}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}")
         cls._content_check(response, identifier)
         gsm_ids = [
             line.split("=")[1].strip()
             for line in response.text().splitlines()
-            if line.split('=')[1].strip().startswith('GSM')
+            if line.split("=")[1].strip().startswith("GSM")
         ]
         for gsm_id in gsm_ids:
             ids += cls._id_to_srx(gsm_id)
@@ -293,13 +267,9 @@ class DatabaseResolver:
             "result": "read_run",
             "fields": ",".join(fields),
         }
-        response = fetch_url(
-            f"https://www.ebi.ac.uk/ena/portal/api/filereport?{urlencode(params)}"
-        )
+        response = fetch_url(f"https://www.ebi.ac.uk/ena/portal/api/filereport?{urlencode(params)}")
         cls._content_check(response, identifier)
-        return [
-            row["experiment_accession"] for row in open_table(response, delimiter="\t")
-        ]
+        return [row["experiment_accession"] for row in open_table(response, delimiter="\t")]
 
 
 class ENAMetadataFetcher:
@@ -328,9 +298,7 @@ class ENAMetadataFetcher:
 
         """
         params = {**self._params, "accession": accession}
-        response = fetch_url(
-            f"https://www.ebi.ac.uk/ena/portal/api/filereport?{urlencode(params)}"
-        )
+        response = fetch_url(f"https://www.ebi.ac.uk/ena/portal/api/filereport?{urlencode(params)}")
         self._content_check(response, accession)
         return open_table(response, delimiter="\t")
 
@@ -338,10 +306,7 @@ class ENAMetadataFetcher:
     def _content_check(cls, response, identifier):
         """Check that the response has content or terminate."""
         if response.status == 204:
-            logger.error(
-                f"There is no content for id {identifier}. Maybe you lack the right "
-                f"permissions?"
-            )
+            logger.error(f"There is no content for id {identifier}. Maybe you lack the right " f"permissions?")
             sys.exit(1)
 
 
@@ -362,8 +327,7 @@ def open_table(response, delimiter=","):
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser(
-        description="Download and create a run information metadata file from SRA / "
-        "ENA / DDBJ / GEO identifiers.",
+        description="Download and create a run information metadata file from SRA / " "ENA / DDBJ / GEO identifiers.",
         epilog="Example usage: python fetch_sra_runinfo.py <FILE_IN> <FILE_OUT>",
     )
     parser.add_argument(
@@ -383,8 +347,7 @@ def parse_args(args=None):
         "--ena_metadata_fields",
         type=str,
         default=",".join(ENA_METADATA_FIELDS),
-        help=f"Comma-separated list of ENA metadata fields to fetch "
-        f"(default: {','.join(ENA_METADATA_FIELDS)}).",
+        help=f"Comma-separated list of ENA metadata fields to fetch " f"(default: {','.join(ENA_METADATA_FIELDS)}).",
     )
     parser.add_argument(
         "-l",
@@ -431,9 +394,7 @@ def get_ena_fields():
     return [
         row["columnId"]
         for row in open_table(
-            fetch_url(
-                f"https://www.ebi.ac.uk/ena/portal/api/returnFields?{urlencode(params)}"
-            ),
+            fetch_url(f"https://www.ebi.ac.uk/ena/portal/api/returnFields?{urlencode(params)}"),
             delimiter="\t",
         )
     ]
@@ -453,16 +414,11 @@ def fetch_sra_runinfo(file_in, file_out, ena_metadata_fields):
             seen_ids.add(db_id)
             if not DatabaseIdentifierChecker.is_valid(db_id):
                 id_str = ", ".join([x + "*" for x in PREFIX_LIST])
-                logger.error(
-                    f"Please provide a valid database id starting with {id_str}!\n"
-                    f"Line: '{line.strip()}'"
-                )
+                logger.error(f"Please provide a valid database id starting with {id_str}!\n" f"Line: '{line.strip()}'")
                 sys.exit(1)
             ids = DatabaseResolver.expand_identifier(db_id)
             if not ids:
-                logger.error(
-                    f"No matches found for database id {db_id}!\nLine: '{line.strip()}'"
-                )
+                logger.error(f"No matches found for database id {db_id}!\nLine: '{line.strip()}'")
                 sys.exit(1)
             for accession in ids:
                 for row in ena_fetcher.open_experiment_table(accession):

@@ -3,6 +3,18 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.8](https://github.com/nf-core/fetchngs/releases/tag/1.8)] - 2022-11-08
+
+### Enhancements & fixes
+
+- [#111](https://github.com/nf-core/fetchngs/issues/111) - Change input mimetype to csv
+- [#114](https://github.com/nf-core/fetchngs/issues/114) - Final samplesheet is not created when `--skip_fastq_download` is provided
+- [#118](https://github.com/nf-core/fetchngs/issues/118) - Allow input pattern validation for csv/tsv/txt
+- [#119](https://github.com/nf-core/fetchngs/issues/119) - `--force_sratools_download` results in different fastq names compared to FTP download
+- [#121](https://github.com/nf-core/fetchngs/issues/121) - Add `tower.yml` to render samplesheet as Report in Tower
+- Fetch `SRR` and `DRR` metadata from ENA API instead of NCBI API to bypass frequent breaking changes
+- Updated pipeline template to [nf-core/tools 2.6](https://github.com/nf-core/tools/releases/tag/2.6)
+
 ## [[1.7](https://github.com/nf-core/fetchngs/releases/tag/1.7)] - 2022-07-01
 
 ### :warning: Major enhancements
