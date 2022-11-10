@@ -1,10 +1,9 @@
 name: nf-core CI
 # This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 on:
-  push:
+  pull_request:
     branches:
       - dev
-  pull_request:
   release:
     types: [published]
 
@@ -13,47 +12,65 @@ env:
 
 jobs:
   test:
-    name: Run pipeline with test data
+    name: Run ${{ matrix.profile }}-${{ matrix.NXF_VER }} pipeline test
     # Only run on push if this is the nf-core dev branch (merged PRs)
-    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}"
+    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/rnaseq') }}"
     runs-on: ubuntu-latest
     strategy:
       matrix:
         NXF_VER:
           - "21.10.3"
           - "latest-everything"
+        test:
+          - "default"
+        profile: ["docker"]
+        exclude:
+          - NXF_VER: "latest-everything"
+            profile: "conda"
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: /usr/local/bin/nextflow
+          key: ${{ runner.os }}
+          restore-keys: |
+            ${{ runner.os }}-nextflow-
 
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Run pipeline with test data
+      - name: Install nf-test
         run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
+          wget -qO- https://code.askimed.com/install/nf-test | bash
+          sudo mv nf-test /usr/local/bin/
 
-  parameters:
-    name: Test workflow parameters
-    if: ${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        parameters:
-          - "--nf_core_pipeline rnaseq"
-          - "--ena_metadata_fields run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5 --sample_mapping_fields run_accession,library_layout"
-          - "--skip_fastq_download"
-          - "--force_sratools_download"
-    steps:
-      - name: Check out pipeline code
-        uses: actions/checkout@v2
+      - name: Set up Singularity
+        if: matrix.profile == 'singularity'
+        uses: eWaterCycle/setup-singularity@v5
+        with:
+          singularity-version: 3.7.1
 
-      - name: Install Nextflow
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
-      - name: Run pipeline with various parameters
-        run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results ${{ matrix.parameters }}
+      - name: Set up miniconda
+        if: matrix.profile == 'conda'
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          channels: conda-forge,bioconda,defaults
+          python-version: ${{ matrix.python-version }}
+
+      - name: Conda clean
+        if: matrix.profile == 'conda'
+        run: conda clean -a
+
+      - name: Run nf-test
+        run: nf-test test --profile=${{ matrix.profile }} tests/pipeline/default/*.nf.test --junitxml=default.xml
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: "default.xml"
