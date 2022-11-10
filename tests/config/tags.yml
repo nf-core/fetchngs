@@ -1,0 +1,10 @@
+default:
+  - bin/**
+  - conf/**
+  - lib/**
+  - modules/**
+  - subworkflows/**
+  - tests/**
+  - workflows/**
+  - nextflow.config
+  - main.nf
