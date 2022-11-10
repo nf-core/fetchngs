@@ -1,0 +1,85 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+
+    }
+
+    test("Should generate rnaseq samplesheet") {
+
+        when {
+            params {
+                nf_core_pipeline = "rnaseq"
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert new File("$outputDir/samplesheet/samplesheet.csv").exists()
+        }
+
+    }
+
+    test("Should generate rnaseq samplesheet with specific ENA metadata fields") {
+
+        when {
+            params {
+                ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
+                sample_mapping_fields = "run_accession,library_layout"
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert new File("$outputDir/samplesheet/samplesheet.csv").exists()
+            // FIXME assert header of samplesheet contains only specific ENA metadata fields
+        }
+
+    }
+
+    test("Should skip fastq download") {
+
+        when {
+            params {
+                skip_fastq_download = true
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assert workflow.success
+        }
+
+    }
+
+    test("Should use sratools") {
+
+        when {
+            params {
+                force_sratools_download = true
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assert workflow.success
+            // FIXME Check that sratools was used
+        }
+
+    }
+
+}
