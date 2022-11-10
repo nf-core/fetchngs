@@ -39,6 +39,11 @@ jobs:
         tags: ["${{ fromJson(needs.changes.outputs.tags) }}"]
         profile: ["docker"] # TODO Add singularity/conda
         component: ["pipeline"] # TODO , "subworkflows", "modules"]
+        exclude:
+          - NXF_VER: "latest-everything"
+            profile: "conda"
+          - tags: "default"
+            component: "modules"
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v2
