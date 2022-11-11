@@ -26,7 +26,7 @@ jobs:
           filters: "tests/config/tags.yml"
 
   test_changes:
-    name: ${{ matrix.tags }} ${{ matrix.component }} ${{ matrix.profile }}
+    name: ${{ matrix.tags }} ${{ matrix.component }} ${{ matrix.profile }} ${{ matrix.NXF_VER }}
     runs-on: ubuntu-20.04
     needs: changes
     if: needs.changes.outputs.tags != '[]'
