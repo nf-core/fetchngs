@@ -1,0 +1,15 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "versions": [
+                    "versions.yml:md5,cd1056ca246a1ab3486fb6800f3012fb"
+                ],
+                "tsv": [
+                    "SRR9984183.runinfo.tsv:md5,a69083928f4b856d428a681c291b7ad6"
+                ]
+            }
+        ],
+        "timestamp": "2022-11-11T04:20:20+0000"
+    }
+}

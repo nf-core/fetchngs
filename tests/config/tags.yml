@@ -8,3 +8,7 @@ default:
   - workflows/**
   - nextflow.config
   - main.nf
+
+sra_ids_to_runinfo:
+  - modules/local/sra_ids_to_runinfo.nf
+  - tests/modules/sra_ids_to_runinfo/**
