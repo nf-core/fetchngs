@@ -1,5 +1,5 @@
 {
-    "Should run without failures": {
+    "Should run without failures without fields": {
         "content": [
             {
                 "versions": [
@@ -10,6 +10,19 @@
                 ]
             }
         ],
-        "timestamp": "2022-11-11T04:20:20+0000"
+        "timestamp": "2022-11-11T04:23:34+0000"
+    },
+    "Should run without failures with fields": {
+        "content": [
+            {
+                "versions": [
+                    "versions.yml:md5,cd1056ca246a1ab3486fb6800f3012fb"
+                ],
+                "tsv": [
+                    "SRR9984183.runinfo.tsv:md5,6419f18c29ab09634b3dd97a6b2acd06"
+                ]
+            }
+        ],
+        "timestamp": "2022-11-11T04:23:34+0000"
     }
 }
