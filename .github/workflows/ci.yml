@@ -38,7 +38,7 @@ jobs:
           - "latest-everything"
         tags: ["${{ fromJson(needs.changes.outputs.tags) }}"]
         profile: ["docker"] # TODO Add singularity/conda
-        component: ["pipeline"] # TODO , "subworkflows", "modules"]
+        component: ["pipeline", "modules"] # There aren't any subworkflows
         exclude:
           - NXF_VER: "latest-everything"
             profile: "conda"
