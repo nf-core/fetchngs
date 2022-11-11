@@ -49,6 +49,8 @@ jobs:
             profile: "conda"
           - tags: "default"
             component: "modules"
+          - tags: "sra_ids_to_runinfo"
+            component: "pipeline"
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v2
