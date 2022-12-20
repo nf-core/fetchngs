@@ -4,7 +4,7 @@ process SYNAPSE_GET {
     label 'process_low'
     label 'error_retry'
 
-    conda (params.enable_conda ? "bioconda::synapseclient=2.6.0" : null)
+    conda "bioconda::synapseclient=2.6.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/synapseclient:2.6.0--pyh5e36f6f_0' :
         'quay.io/biocontainers/synapseclient:2.6.0--pyh5e36f6f_0' }"
