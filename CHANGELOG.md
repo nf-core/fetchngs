@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+- Updated pipeline template to [nf-core/tools 2.7.2](https://github.com/nf-core/tools/releases/tag/2.7.2)
+
 ## [[1.8](https://github.com/nf-core/fetchngs/releases/tag/1.8)] - 2022-11-08
 
 ### Enhancements & fixes
