@@ -3,11 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unpublished Version / DEV]
+## [[1.9](https://github.com/nf-core/rnaseq/releases/tag/1.9)] - 2022-12-21
 
 ### Enhancements & fixes
 
+- Bumped minimum Nextflow version from `21.10.3` -> `22.10.1`
 - Updated pipeline template to [nf-core/tools 2.7.2](https://github.com/nf-core/tools/releases/tag/2.7.2)
+- Added support for generating nf-core/atacseq compatible samplesheets
+- Added `--nf_core_rnaseq_strandedness` parameter to specify value for `strandedness` entry added to samplesheet created when using `--nf_core_pipeline rnaseq`. The default is `auto` which can be used with nf-core/rnaseq v3.10 onwards to auto-detect strandedness during the pipeline execution.
 
 ## [[1.8](https://github.com/nf-core/fetchngs/releases/tag/1.8)] - 2022-11-08
 

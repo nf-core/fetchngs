@@ -8,6 +8,7 @@ process SYNAPSE_TO_SAMPLESHEET {
     input:
     tuple val(meta), path(fastq)
     val pipeline
+    val strandedness
 
     output:
     tuple val(meta), path("*.csv"), emit: samplesheet
@@ -35,7 +36,11 @@ process SYNAPSE_TO_SAMPLESHEET {
     // Add nf-core pipeline specific entries
     if (pipeline) {
         if (pipeline == 'rnaseq') {
-            pipeline_map << [ strandedness: 'unstranded' ]
+            pipeline_map << [ strandedness: strandedness ]
+        } else if (pipeline == 'atacseq') {
+            pipeline_map << [ replicate: 1 ]
+        } else if (pipeline == 'taxprofiler') {
+            pipeline_map << [ fasta: '' ]
         }
     }
     pipeline_map << meta_map

@@ -43,8 +43,15 @@
                 "nf_core_pipeline": {
                     "type": "string",
                     "fa_icon": "fab fa-apple",
-                    "description": "Name of supported nf-core pipeline e.g.  'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns.",
-                    "enum": ["rnaseq", "viralrecon", "taxprofiler"]
+                    "description": "Name of supported nf-core pipeline e.g. 'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns.",
+                    "enum": ["rnaseq", "atacseq", "viralrecon", "taxprofiler"]
+                },
+                "nf_core_rnaseq_strandedness": {
+                    "type": "string",
+                    "fa_icon": "fas fa-car",
+                    "description": "Value for 'strandedness' entry added to samplesheet created when using '--nf_core_pipeline rnaseq'.",
+                    "help_text": "The default is 'auto' which can be used with nf-core/rnaseq v3.10 onwards to auto-detect strandedness during the pipeline execution.",
+                    "default": "auto"
                 },
                 "force_sratools_download": {
                     "type": "boolean",
