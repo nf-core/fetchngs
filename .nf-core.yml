@@ -1,1 +1,5 @@
 repository_type: pipeline
+lint:
+  files_unchanged:
+    - assets/sendmail_template.txt
+    - lib/NfcoreTemplate.groovy
