@@ -58,10 +58,13 @@ The final sample information for the FastQ files used for samplesheet generation
 As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include:
 
 - [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/atacseq](https://nf-co.re/atacseq/usage#samplesheet-input)
 - Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
 - [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)
 
-You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers you defined using `--input` are represented in the samplesheet. Also, public databases don't reliably hold information such as strandedness information so you may need to amend these entries too if for example your samplesheet was created by providing `--nf_core_pipeline rnaseq`.
+You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers required by the downstream nf-core pipeline are accurately represented in the samplesheet. For example, the nf-core/atacseq pipeline requires a `replicate` column to be provided in it's input samplehsheet, however, public databases don't reliably hold information regarding replicates so you may need to amend these entries if your samplesheet was created by providing `--nf_core_pipeline atacseq`.
+
+From v1.9 of this pipeline the default `strandedness` in the output samplesheet will be set to `auto` when using `--nf_core_pipeline rnaseq`. This will only work with v3.10 onwards of nf-core/rnaseq which permits the auto-detection of strandedness during the pipeline execution. You can change this behaviour with the `--nf_core_rnaseq_strandedness` parameter which is set to `auto` by default.
 
 ### Bypass `FTP` data download
 

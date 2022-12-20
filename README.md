@@ -55,10 +55,11 @@ This downloads a text file called `SRR_Acc_List.txt` that can be directly provid
 The columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include:
 
 - [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/atacseq](https://nf-co.re/atacseq/usage#samplesheet-input)
 - Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
 - [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)
 
-You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core.
+See [usage docs](https://nf-co.re/fetchngs/1.8/usage#samplesheet-format) for more details.
 
 ## Quick Start
 
