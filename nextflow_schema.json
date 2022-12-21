@@ -43,8 +43,15 @@
                 "nf_core_pipeline": {
                     "type": "string",
                     "fa_icon": "fab fa-apple",
-                    "description": "Name of supported nf-core pipeline e.g.  'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns.",
-                    "enum": ["rnaseq", "viralrecon", "taxprofiler"]
+                    "description": "Name of supported nf-core pipeline e.g. 'rnaseq'. A samplesheet for direct use with the pipeline will be created with the appropriate columns.",
+                    "enum": ["rnaseq", "atacseq", "viralrecon", "taxprofiler"]
+                },
+                "nf_core_rnaseq_strandedness": {
+                    "type": "string",
+                    "fa_icon": "fas fa-car",
+                    "description": "Value for 'strandedness' entry added to samplesheet created when using '--nf_core_pipeline rnaseq'.",
+                    "help_text": "The default is 'auto' which can be used with nf-core/rnaseq v3.10 onwards to auto-detect strandedness during the pipeline execution.",
+                    "default": "auto"
                 },
                 "force_sratools_download": {
                     "type": "boolean",
@@ -174,6 +181,12 @@
                     "fa_icon": "fas fa-question-circle",
                     "hidden": true
                 },
+                "version": {
+                    "type": "boolean",
+                    "description": "Display version and exit.",
+                    "fa_icon": "fas fa-question-circle",
+                    "hidden": true
+                },
                 "publish_dir_mode": {
                     "type": "string",
                     "default": "copy",
@@ -207,7 +220,7 @@
                     "type": "string",
                     "description": "Incoming hook URL for messaging service",
                     "fa_icon": "fas fa-people-group",
-                    "help_text": "Incoming hook URL for messaging service. Currently, only MS Teams is supported.",
+                    "help_text": "Incoming hook URL for messaging service. Currently, MS Teams and Slack are supported.",
                     "hidden": true
                 },
                 "tracedir": {
@@ -230,12 +243,6 @@
                     "description": "Show all params when using `--help`",
                     "hidden": true,
                     "help_text": "By default, parameters set as _hidden_ in the schema are not shown on the command line when a user runs with `--help`. Specifying this option will tell the pipeline to show all parameters."
-                },
-                "enable_conda": {
-                    "type": "boolean",
-                    "description": "Run this workflow with Conda. You can also use '-profile conda' instead of providing this parameter.",
-                    "hidden": true,
-                    "fa_icon": "fas fa-bacon"
                 }
             }
         }

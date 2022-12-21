@@ -115,7 +115,8 @@ workflow SYNAPSE {
     //
     SYNAPSE_TO_SAMPLESHEET (
         ch_fastq,
-        params.nf_core_pipeline ?: ''
+        params.nf_core_pipeline ?: '',
+        params.nf_core_rnaseq_strandedness ?: 'auto'
     )
 
     //

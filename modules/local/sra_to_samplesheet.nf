@@ -8,6 +8,7 @@ process SRA_TO_SAMPLESHEET {
     input:
     val meta
     val pipeline
+    val strandedness
     val mapping_fields
 
     output:
@@ -38,7 +39,9 @@ process SRA_TO_SAMPLESHEET {
     // Add nf-core pipeline specific entries
     if (pipeline) {
         if (pipeline == 'rnaseq') {
-            pipeline_map << [ strandedness: 'unstranded' ]
+            pipeline_map << [ strandedness: strandedness ]
+        } else if (pipeline == 'atacseq') {
+            pipeline_map << [ replicate: 1 ]
         } else if (pipeline == 'taxprofiler') {
             pipeline_map << [ fasta: '' ]
         }
