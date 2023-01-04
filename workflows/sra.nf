@@ -138,6 +138,7 @@ workflow SRA {
     SRA_TO_SAMPLESHEET (
         ch_sra_metadata,
         params.nf_core_pipeline ?: '',
+        params.nf_core_rnaseq_strandedness ?: 'auto',
         params.sample_mapping_fields
     )
 
