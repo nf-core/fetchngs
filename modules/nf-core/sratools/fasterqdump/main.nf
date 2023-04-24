@@ -33,6 +33,8 @@ process SRATOOLS_FASTERQDUMP {
 
     fasterq-dump \\
         $args \\
+        --split-files \\
+        --include-technical \\
         --threads $task.cpus \\
         --outfile $outfile \\
         ${sra.name}
