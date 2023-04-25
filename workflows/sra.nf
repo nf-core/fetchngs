@@ -124,6 +124,7 @@ workflow SRA {
             .map { 
                 meta, fastq ->
                     def reads = meta.single_end ? [ fastq ] : fastq
+                    log.info "$meta.id: $reads"
                     def meta_clone = meta.clone()
                     meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
                     meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
