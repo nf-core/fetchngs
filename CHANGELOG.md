@@ -5,6 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unpublished Version / DEV]
 
+- [#144](https://github.com/nf-core/fetchngs/issues/144) - Add support to download 10X Genomics data
 - Bumped modules version to allow for sratools download of sralite format files.
 
 ### Enhancements & fixes
