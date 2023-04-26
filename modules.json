@@ -17,7 +17,7 @@
                     },
                     "sratools/fasterqdump": {
                         "branch": "master",
-                        "git_sha": "c8e35eb2055c099720a75538d1b8adb3fb5a464c",
+                        "git_sha": "10cb20f6a130d104fef335a8290f3ffce650f28d",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "sratools/prefetch": {
