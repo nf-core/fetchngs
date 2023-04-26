@@ -124,9 +124,10 @@ workflow SRA {
             .map { 
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
-                    def fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
-                    def fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
-                    return [ meta + [ fastq_1: fastq_1, fastq_2: fastq_2 ] ]
+                    def meta_clone = meta.clone()
+                    meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
+                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
+                    return meta_clone
             }
             .set { ch_sra_metadata }
     }
