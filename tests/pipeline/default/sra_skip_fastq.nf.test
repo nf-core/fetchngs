@@ -1,0 +1,42 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    options "-profile test,docker"
+    tag "pipeline"
+
+    test("SRA Skip FASTQ") {
+
+        when {
+            params {
+                outdir              = "$outputDir"
+                skip_fastq_download = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(path("$outputDir/metadata/").list()).match("metadata") },
+                { assert snapshot(path("$outputDir/samplesheet/").list()).match("samplesheet") },
+                { assert !new File("$outputDir/fastq/DRX024467_DRR026872.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/DRX026011_DRR028935_1.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/DRX026011_DRR028935_2.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/ERX1188904_ERR1109373_1.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/ERX1188904_ERR1109373_2.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/ERX1234253_ERR1160846.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX10940790_SRR14593545_1.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX10940790_SRR14593545_2.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX11047067_SRR14709033.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX6725035_SRR9984183.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX9315476_SRR12848126_1.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX9315476_SRR12848126_2.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX9626017_SRR13191702_1.fastq.gz").exists() },
+                { assert !new File("$outputDir/fastq/SRX9626017_SRR13191702_2.fastq.gz").exists() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,26 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    options "-profile test_synapse,docker"
+    tag "pipeline"
+
+    test("Synapse Input Type") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(path("$outputDir/samplesheet/").list()).match("samplesheet") }
+            )
+        }
+
+    }
+
+}
