@@ -4,7 +4,6 @@
     nf-core/fetchngs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github : https://github.com/nf-core/fetchngs
-
     Website: https://nf-co.re/fetchngs
     Slack  : https://nfcore.slack.com/channels/fetchngs
 ----------------------------------------------------------------------------------------
