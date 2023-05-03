@@ -57,7 +57,6 @@ PREFIX_LIST = sorted({ID_REGEX.match(id).group(1) for id in SRA_IDS + ENA_IDS + 
 # Full list of accepted fields can be obtained here:
 # https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run
 ENA_METADATA_FIELDS = (
-    "accession",
     "run_accession",
     "experiment_accession",
     "sample_accession",
@@ -364,10 +363,12 @@ def validate_fields_parameter(param, valid_vals, param_desc):
     if len(set(user_vals) & set(valid_vals)) == len(user_vals):
         return user_vals
     else:
+        invalid_vals = [x for x in user_vals if x not in valid_vals]
         logger.error(
             f"Please provide a valid value for {param_desc}!\n"
             f"Provided values = {param}\n"
-            f"Accepted values = {','.join(valid_vals)}"
+            f"Accepted values = {','.join(valid_vals)}\n"
+            f"The following values are invalid: {','.join(invalid_vals)}\n"
         )
         sys.exit(1)
 
