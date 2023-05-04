@@ -94,7 +94,7 @@ class WorkflowMain {
     }
 
     // Check if input ids are from the SRA
-    public static Boolean isSraId(input, log) {
+    public static Boolean isSraId(input) {
         def is_sra = false
         def total_ids = 0
         def no_match_ids = []
@@ -111,15 +111,14 @@ class WorkflowMain {
             if (num_match == total_ids) {
                 is_sra = true
             } else {
-                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!"
-                System.exit(1)
+                Nextflow.error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!")
             }
         }
         return is_sra
     }
 
     // Check if input ids are from the Synapse platform
-    public static Boolean isSynapseId(input, log) {
+    public static Boolean isSynapseId(input) {
         def is_synapse = false
         def total_ids = 0
         def no_match_ids = []
@@ -136,8 +135,7 @@ class WorkflowMain {
             if (num_match == total_ids) {
                 is_synapse = true
             } else {
-                log.error "Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!"
-                System.exit(1)
+                Nextflow.error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!")
             }
         }
         return is_synapse

@@ -39,9 +39,9 @@ Channel
 
 // Auto-detect input id type
 def input_type = ''
-if (WorkflowMain.isSraId(ch_input, log)) {
+if (WorkflowMain.isSraId(ch_input)) {
     input_type = 'sra'
-} else if (WorkflowMain.isSynapseId(ch_input, log)) {
+} else if (WorkflowMain.isSynapseId(ch_input)) {
     input_type = 'synapse'
 } else {
     exit 1, 'Ids provided via --input not recognised please make sure they are either SRA / ENA / DDBJ or Synapse ids!'

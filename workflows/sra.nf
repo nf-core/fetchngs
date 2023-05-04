@@ -11,7 +11,7 @@ def valid_params = [
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
 // Validate input parameters
-WorkflowSra.initialise(params, log, valid_params)
+WorkflowSra.initialise(params, valid_params)
 
 /*
 ========================================================================================
@@ -55,7 +55,7 @@ workflow SRA {
     //
     ids
         .collect()
-        .map { WorkflowSra.isGeoFail(it, log) }
+        .map { WorkflowSra.isGeoFail(it) }
 
     //
     // MODULE: Get SRA run information for public database ids
