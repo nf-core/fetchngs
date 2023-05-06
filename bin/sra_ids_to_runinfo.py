@@ -191,7 +191,6 @@ class DatabaseResolver:
     _GEO_PREFIXES = {"GSE", "GSM"}
     _SRA_PREFIXES = {
         "PRJNA",
-        "SAMN",
         "DRA",
         "DRP",
         "DRS",
@@ -199,7 +198,7 @@ class DatabaseResolver:
         "PRJDB",
         "SAMD",
     }
-    _ENA_PREFIXES = {"ERR", "SRR", "DRR"}
+    _ENA_PREFIXES = {"ERR", "SRR", "SAMN", "DRR"}
 
     @classmethod
     def expand_identifier(cls, identifier):
