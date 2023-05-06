@@ -19,6 +19,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 ### Enhancements & fixes
 
+- [#85](https://github.com/nf-core/fetchngs/issues/85) - Not able to fetch metadata for ERR* ids associated with ArrayExpress
 - [#144](https://github.com/nf-core/fetchngs/issues/144) - Add support to download 10X Genomics data
 - [#148](https://github.com/nf-core/fetchngs/pull/148) - Fix default metadata fields for ENA API v2.0
 - Bumped modules version to allow for sratools download of sralite format files.
