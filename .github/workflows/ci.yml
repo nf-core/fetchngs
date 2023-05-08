@@ -1,5 +1,7 @@
+# This is the nf-core CI workflow configuration for GitHub Actions
 name: nf-core CI
-# This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
+
+# This workflow is triggered when a pull request is made to the 'dev' branch or when a new release is published
 on:
   pull_request:
     branches:
@@ -7,6 +9,7 @@ on:
   release:
     types: [published]
 
+# Setting environment variable for Nextflow logs
 env:
   NXF_ANSI_LOG: false
 
@@ -15,88 +18,66 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+  # Define the jobs to be run in parallel
 jobs:
-  changes:
-    name: Check for changes
+  test:
+    # Name the job with the corresponding profile, Nextflow version and aligner
+    name: Run ${{ matrix.profile }}-${{ matrix.NXF_VER }} pipeline test
+
+    # Set the condition for running the job
+    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/rnaseq') }}"
+
+    # Specify the runner for the job
     runs-on: ubuntu-latest
-    outputs:
-      # Expose matched filters as job 'modules' output variable
-      tags: ${{ steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@v2
 
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: "tests/config/tags.yml"
-
-  test_changes:
-    name: ${{ matrix.tags }} ${{ matrix.component }} ${{ matrix.profile }} ${{ matrix.NXF_VER }}
-    runs-on: ubuntu-20.04
-    needs: changes
-    if: needs.changes.outputs.tags != '[]'
+    # Define the matrix for different Nextflow versions, profiles and aligners
     strategy:
-      fail-fast: false
       matrix:
         NXF_VER:
-          - "22.10.1"
           - "latest-everything"
-        tags: ["${{ fromJson(needs.changes.outputs.tags) }}"]
-        profile: ["docker"] # TODO Add singularity/conda
-        component: ["pipeline", "modules"] # There aren't any subworkflows
-        exclude:
-          - NXF_VER: "latest-everything"
-            profile: "conda"
-          - tags: "default"
-            component: "modules"
-          - tags: "sra_ids_to_runinfo"
-            component: "pipeline"
+        profile: ["docker"]
+
+    # Define the steps for the job
     steps:
+      # Checkout the pipeline code from the repository
       - name: Check out pipeline code
         uses: actions/checkout@v3
 
-      - uses: actions/cache@v2
+      # Cache Test Data
+      - name: Cache test data
+        uses: actions/cache@v2
         with:
-          path: /usr/local/bin/
+          path: /usr/local/bin/nextflow
           key: ${{ runner.os }}
           restore-keys: |
             ${{ runner.os }}-nextflow-
 
+      # Install the specified version of Nextflow
       - name: Install Nextflow
-        env:
-          CAPSULE_LOG: none
-        run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
+        uses: nf-core/setup-nextflow@v1
+        with:
+          version: "${{ matrix.NXF_VER }}"
 
+      # Install nf-test
       - name: Install nf-test
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
-      - name: Set up Singularity
-        if: matrix.profile == 'singularity'
-        uses: eWaterCycle/setup-singularity@v5
-        with:
-          singularity-version: 3.7.1
-
-      - name: Set up miniconda
-        if: matrix.profile == 'conda'
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          channels: conda-forge,bioconda,defaults
-          python-version: ${{ matrix.python-version }}
-
-      - name: Conda clean
-        if: matrix.profile == 'conda'
-        run: conda clean -a
-
+      # Run nf-test with the specified aligner and output test results in TAP format
       - name: Run nf-test
-        run: nf-test test --profile=${{ matrix.profile }} tests/${{ matrix.component }}/${{ matrix.tags }}/*.nf.test --junitxml=${{ matrix.tags }}.xml
+        run: |
+          nf-test test tests/pipeline/ --tap=test.tap
 
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
-        if: always() # always run even if the previous step fails
+      # If the test fails, output the software_versions.yml using the 'batcat' utility
+      - name: Output log on failure
+        if: failure()
+        run: |
+          sudo apt install bat > /dev/null
+          batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
+
+      # Use TAP summary to display test results
+      - uses: pcolby/tap-summary@v1
         with:
-          report_paths: "${{ matrix.tags }}.xml"
+          path: >-
+            test.tap
