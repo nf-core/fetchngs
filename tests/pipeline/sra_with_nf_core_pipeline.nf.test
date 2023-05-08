@@ -1,0 +1,110 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    options "-profile test,docker"
+    tag "pipeline"
+
+    test("SRA NF-CORE/RNASEQ Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "rnaseq"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/").list()).match("rnaseq_metadata") },
+                { assert snapshot(path("$outputDir/samplesheet/").list()).match("rnaseq_samplesheet") }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/RNASEQ Samplesheet With ENA metadata") {
+
+        when {
+            params {
+                outdir                = "$outputDir"
+                nf_core_pipeline      = "rnaseq"
+                ena_metadata_fields   = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
+                sample_mapping_fields = "run_accession,library_layout"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/").list()).match("rnaseq_ena_metadata") },
+                { assert snapshot(path("$outputDir/samplesheet/").list()).match("rnaseq_specific_ena_samplesheet") }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/ATACSEQ Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "atacseq"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/").list()).match("atacseq_metadata") },
+                { assert snapshot(path("$outputDir/samplesheet/").list()).match("atacseq_samplesheet") }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/VIRALRECON Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "viralrecon"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/").list()).match("viralrecon_metadata") },
+                { assert snapshot(path("$outputDir/samplesheet/").list()).match("viralrecon_samplesheet") }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/TAXPROFILER Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "taxprofiler"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/").list()).match("taxprofiler_metadata") },
+                { assert snapshot(path("$outputDir/samplesheet/").list()).match("taxprofiler_samplesheet") }
+            )
+        }
+    }
+
+}
