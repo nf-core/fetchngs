@@ -23,13 +23,21 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     //
     // Prefetch sequencing reads in SRA format.
     //
-    SRATOOLS_PREFETCH ( ch_sra_ids, settings )
+    if (!params.dbgap_key) {
+        SRATOOLS_PREFETCH ( ch_sra_ids, settings, [] )
+    } else {
+        SRATOOLS_PREFETCH ( ch_sra_ids, settings, certificate = file(params.dbgap_key, checkIfExists: true) )
+    }
     ch_versions = ch_versions.mix(SRATOOLS_PREFETCH.out.versions.first())
 
     //
     // Convert the SRA format into one or more compressed FASTQ files.
     //
-    SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings )
+    if (!params.dbgap_key) {
+       SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, [] ) 
+    } else {
+       SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, certificate = file(params.dbgap_key, checkIfExists: true) ) 
+    }
     ch_versions = ch_versions.mix(SRATOOLS_FASTERQDUMP.out.versions.first())
 
     emit:
