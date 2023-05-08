@@ -21,23 +21,26 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     ch_versions = ch_versions.mix(CUSTOM_SRATOOLSNCBISETTINGS.out.versions)
 
     //
-    // Prefetch sequencing reads in SRA format.
+    // Prefetch sequencing reads in SRA format and convert into one or more compressed FASTQ files.
+    // If specified in params, use the provided JWT file for pulling protected SRA runs, else provide 
+    // an empty list.
     //
+    
     if (!params.dbgap_key) {
-        SRATOOLS_PREFETCH ( ch_sra_ids, settings, [] )
-    } else {
-        SRATOOLS_PREFETCH ( ch_sra_ids, settings, certificate = file(params.dbgap_key, checkIfExists: true) )
-    }
-    ch_versions = ch_versions.mix(SRATOOLS_PREFETCH.out.versions.first())
+        
+        SRATOOLS_PREFETCH ( ch_sra_ids, settings, [] ) 
+        SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, [] )
 
-    //
-    // Convert the SRA format into one or more compressed FASTQ files.
-    //
-    if (!params.dbgap_key) {
-       SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, [] ) 
     } else {
-       SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, certificate = file(params.dbgap_key, checkIfExists: true) ) 
+        
+        certificate = file(params.dbgap_key, checkIfExists: true) // optional input channel for JWT
+
+        SRATOOLS_PREFETCH ( ch_sra_ids, settings, certificate ) 
+        SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, certificate ) 
+
     }
+
+    ch_versions = ch_versions.mix(SRATOOLS_PREFETCH.out.versions.first())
     ch_versions = ch_versions.mix(SRATOOLS_FASTERQDUMP.out.versions.first())
 
     emit:
