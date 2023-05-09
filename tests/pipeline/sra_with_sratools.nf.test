@@ -5,7 +5,7 @@ nextflow_pipeline {
     options "-profile test,docker"
     tag "pipeline"
 
-    test("SRA Force SRAtools Download") {
+    test("Force SRA-Tools Download") {
 
         when {
             params {

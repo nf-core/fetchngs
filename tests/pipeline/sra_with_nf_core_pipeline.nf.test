@@ -25,7 +25,7 @@ nextflow_pipeline {
         }
     }
 
-    test("SRA NF-CORE/RNASEQ Samplesheet With ENA metadata") {
+    test("SRA NF-CORE/RNASEQ Samplesheet With Specific ENA metadata") {
 
         when {
             params {
