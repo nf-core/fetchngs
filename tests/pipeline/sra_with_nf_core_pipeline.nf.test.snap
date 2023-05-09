@@ -71,16 +71,14 @@
     "rnaseq_samplesheet": {
         "content": [
             "id_mappings.csv:md5,40c6daa8d668b4930bfd9045248e16ec",
-            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d",
-            "samplesheet.csv:md5,9fa43672fb5ffcf0dec423a4627dc028"
+            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d"
         ],
         "timestamp": "2023-05-09T14:11:58+0000"
     },
     "rnaseq_samplesheet_specific_ena": {
         "content": [
             "id_mappings.csv:md5,0efde324e1818c0827390a17449a6e8a",
-            "multiqc_config.yml:md5,6af65b0ae40e1bba60a25361771624bd",
-            "samplesheet.csv:md5,dc7371849e112d0e95646ef1c34339d0"
+            "multiqc_config.yml:md5,6af65b0ae40e1bba60a25361771624bd"
         ],
         "timestamp": "2023-05-09T14:11:58+0000"
     },
@@ -101,24 +99,21 @@
     "rnaseq_specific_ena_samplesheet": {
         "content": [
             "id_mappings.csv:md5,0efde324e1818c0827390a17449a6e8a",
-            "multiqc_config.yml:md5,6af65b0ae40e1bba60a25361771624bd",
-            "samplesheet.csv:md5,6a08c28af1ed2629e18f0014f4d72ed6"
+            "multiqc_config.yml:md5,6af65b0ae40e1bba60a25361771624bd"
         ],
         "timestamp": "2023-05-09T14:11:58+0000"
     },
     "atacseq_samplesheet": {
         "content": [
             "id_mappings.csv:md5,40c6daa8d668b4930bfd9045248e16ec",
-            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d",
-            "samplesheet.csv:md5,236f64ee8d40b3b658aecc0298cccfb2"
+            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d"
         ],
         "timestamp": "2023-05-09T14:11:58+0000"
     },
     "taxprofiler_samplesheet": {
         "content": [
             "id_mappings.csv:md5,40c6daa8d668b4930bfd9045248e16ec",
-            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d",
-            "samplesheet.csv:md5,336e53f72cc538a58911880ec7c9b5da"
+            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d"
         ],
         "timestamp": "2023-05-09T14:11:58+0000"
     },
