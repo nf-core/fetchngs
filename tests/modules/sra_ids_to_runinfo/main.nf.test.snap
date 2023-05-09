@@ -2,27 +2,39 @@
     "Should run without failures without fields": {
         "content": [
             {
-                "versions": [
-                    "versions.yml:md5,cd1056ca246a1ab3486fb6800f3012fb"
+                "0": [
+                    "SRR9984183.runinfo.tsv:md5,6bc8bfb7058412e5a54b83e08d3d1673"
+                ],
+                "1": [
+                    "versions.yml:md5,61ebf47bc00075513ff16295beddb197"
                 ],
                 "tsv": [
-                    "SRR9984183.runinfo.tsv:md5,a69083928f4b856d428a681c291b7ad6"
+                    "SRR9984183.runinfo.tsv:md5,6bc8bfb7058412e5a54b83e08d3d1673"
+                ],
+                "versions": [
+                    "versions.yml:md5,61ebf47bc00075513ff16295beddb197"
                 ]
             }
         ],
-        "timestamp": "2022-11-11T04:23:34+0000"
+        "timestamp": "2023-05-09T02:22:52+0000"
     },
     "Should run without failures with fields": {
         "content": [
             {
-                "versions": [
-                    "versions.yml:md5,cd1056ca246a1ab3486fb6800f3012fb"
+                "0": [
+                    "SRR9984183.runinfo.tsv:md5,6419f18c29ab09634b3dd97a6b2acd06"
+                ],
+                "1": [
+                    "versions.yml:md5,61ebf47bc00075513ff16295beddb197"
                 ],
                 "tsv": [
                     "SRR9984183.runinfo.tsv:md5,6419f18c29ab09634b3dd97a6b2acd06"
+                ],
+                "versions": [
+                    "versions.yml:md5,61ebf47bc00075513ff16295beddb197"
                 ]
             }
         ],
-        "timestamp": "2022-11-11T04:23:34+0000"
+        "timestamp": "2023-05-09T02:22:52+0000"
     }
 }
