@@ -36,8 +36,7 @@
     "viralrecon_samplesheet": {
         "content": [
             "id_mappings.csv:md5,40c6daa8d668b4930bfd9045248e16ec",
-            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d",
-            "samplesheet.csv:md5,da9e9eca2c1c05e4da526806316faa5f"
+            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d"
         ],
         "timestamp": "2023-05-09T14:11:58+0000"
     },

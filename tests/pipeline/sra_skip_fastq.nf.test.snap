@@ -16,8 +16,7 @@
     "samplesheet": {
         "content": [
             "id_mappings.csv:md5,40c6daa8d668b4930bfd9045248e16ec",
-            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d",
-            "samplesheet.csv:md5,c5cadf299f1c842cd9063200fb640445"
+            "multiqc_config.yml:md5,a6370add94bbe60c6bbe1bb48a038e8d"
         ],
         "timestamp": "2023-05-09T14:08:13+0000"
     },

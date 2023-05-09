@@ -20,7 +20,9 @@ nextflow_pipeline {
                 { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("rnaseq_metadata") },
-                { assert snapshot(path("$outputDir/samplesheet/").list()).match("rnaseq_samplesheet") }
+                { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
+                                path("$outputDir/samplesheet/multiqc_config.yml")).match("samplesheet") },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
             )
         }
     }
