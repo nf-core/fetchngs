@@ -9,19 +9,19 @@ This document describes the output produced by the pipeline. The directories lis
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data depending on the type of ids provided:
 
 - Download FastQ files and create samplesheet from:
-  1. [SRA / ENA / DDBJ ids](#sra--ena--ddbj-ids)
+  1. [SRA / ENA / DDBJ / GEO ids](#sra--ena--ddbj--geo-ids)
   2. [Synapse ids](#synapse-ids)
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
 Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline.
 
-### SRA / ENA / DDBJ ids
+### SRA / ENA / DDBJ / GEO ids
 
 <details markdown="1">
 <summary>Output files</summary>
 
 - `fastq/`
-  - `*.fastq.gz`: Paired-end/single-end reads downloaded from the SRA / ENA / DDBJ.
+  - `*.fastq.gz`: Paired-end/single-end reads downloaded from the SRA / ENA / DDBJ / GEO.
 - `fastq/md5/`
   - `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA.
 - `samplesheet/`

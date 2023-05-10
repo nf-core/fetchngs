@@ -111,7 +111,7 @@ class WorkflowMain {
             if (num_match == total_ids) {
                 is_sra = true
             } else {
-                Nextflow.error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!")
+                Nextflow.error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / GEO / DDBJ or Synapse ids!")
             }
         }
         return is_sra
@@ -135,7 +135,7 @@ class WorkflowMain {
             if (num_match == total_ids) {
                 is_synapse = true
             } else {
-                Nextflow.error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / DDBJ or Synapse ids!")
+                Nextflow.error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / GEO / DDBJ or Synapse ids!")
             }
         }
         return is_synapse
