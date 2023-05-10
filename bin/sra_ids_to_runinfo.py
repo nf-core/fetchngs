@@ -191,7 +191,6 @@ class DatabaseResolver:
     _GEO_GSM_PREFIXES = {"GSM"}
     _GEO_GSE_PREFIXES = {"GDS", "GSE"}
     _SRA_PREFIXES = {
-        "PRJNA",
         "DRA",
         "DRP",
         "DRS",
