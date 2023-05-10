@@ -188,7 +188,8 @@ class DatabaseIdentifierChecker:
 class DatabaseResolver:
     """Define a service class for resolving various identifiers to experiments."""
 
-    _GEO_PREFIXES = {"GSE", "GSM"}
+    _GEO_GSM_PREFIXES = {"GSM"}
+    _GEO_GSE_PREFIXES = {"GDS", "GSE"}
     _SRA_PREFIXES = {
         "PRJNA",
         "DRA",
@@ -214,7 +215,9 @@ class DatabaseResolver:
 
         """
         prefix = ID_REGEX.match(identifier).group(1)
-        if prefix in cls._GEO_PREFIXES:
+        if prefix in cls._GEO_GSM_PREFIXES:
+            return cls._gsm_to_srx(identifier)
+        elif prefix in cls._GEO_GSE_PREFIXES:
             return cls._gse_to_srx(identifier)
         elif prefix in cls._SRA_PREFIXES:
             return cls._id_to_srx(identifier)
@@ -239,7 +242,7 @@ class DatabaseResolver:
         return [row["Experiment"] for row in open_table(response, delimiter=",")]
 
     @classmethod
-    def _gse_to_srx(cls, identifier):
+    def _gsm_to_srx(cls, identifier):
         """Resolve the GEO identifier to SRA experiments."""
         ids = []
         params = {"term": identifier, "db": "sra", "retmode": "json"}
@@ -249,6 +252,32 @@ class DatabaseResolver:
         gsm_ids = r_json['esearchresult']['idlist']
         for gsm_id in gsm_ids:
             ids += cls._id_to_srx(gsm_id)
+        return ids
+    
+    @classmethod
+    def _gds_to_gsm(cls, identifier):
+        """Resolve the GEO UIDs to GSM IDs to then resolve to SRA IDs."""
+        ids = []
+        params = {"id": identifier, "db": "gds", "retmode": "json", "retmax": 10}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?{urlencode(params)}")
+        cls._content_check(response, identifier)
+        r_json = json.loads(response.text())
+        
+        for each in r_json['result'][identifier]['samples'][0:]:
+            ids += cls._gsm_to_srx(each['accession'])
+        return ids
+
+    @classmethod
+    def _gse_to_srx(cls, identifier):
+        """Resolve the GSE identifier to GEO UIDs."""
+        ids = []
+        params = {"term": identifier, "db": "gds", "retmode": "json"}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?{urlencode(params)}")
+        cls._content_check(response, identifier)
+        r_json = json.loads(response.text())
+        gds_uids = r_json['esearchresult']['idlist']
+        for gds_uid in gds_uids:
+            ids += cls._gds_to_gsm(gds_uid)
         return ids
 
     @classmethod
