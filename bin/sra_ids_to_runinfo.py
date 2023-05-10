@@ -14,7 +14,7 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
-
+import json
 
 logger = logging.getLogger()
 
@@ -240,16 +240,13 @@ class DatabaseResolver:
 
     @classmethod
     def _gse_to_srx(cls, identifier):
-        """Resolve the identifier to SRA experiments."""
+        """Resolve the GEO identifier to SRA experiments."""
         ids = []
-        params = {"id": identifier, "db": "gds", "rettype": "runinfo", "retmode": "text"}
-        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}")
+        params = {"term": identifier, "db": "sra", "retmode": "json"}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?{urlencode(params)}")
         cls._content_check(response, identifier)
-        gsm_ids = [
-            line.split("=")[1].strip()
-            for line in response.text().splitlines()
-            if line.split("=")[1].strip().startswith("GSM")
-        ]
+        r_json = json.loads(response.text())
+        gsm_ids = r_json['esearchresult']['idlist']
         for gsm_id in gsm_ids:
             ids += cls._id_to_srx(gsm_id)
         return ids
