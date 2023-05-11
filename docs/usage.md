@@ -22,7 +22,7 @@ The pipeline has been set-up to automatically download and process the raw FastQ
 
 If `SRR`/`ERR`/`DRR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX`/`DRX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
 
-The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP. Otherwise they are downloaded using sra-tools. 
+The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP. Otherwise they are downloaded using sra-tools.
 
 All of the sample metadata obtained from the ENA will be appended as additional columns to help you manually curate the generated samplesheet before you run the pipeline. You can customise the metadata fields that are appended to the samplesheet via the `--ena_metadata_fields` parameter. The default list of fields used by the pipeline can be found at the top of the [`bin/sra_ids_to_runinfo.py`](https://github.com/nf-core/fetchngs/blob/master/bin/sra_ids_to_runinfo.py) script within the pipeline repo. However, this pipeline requires a minimal set of fields to download FastQ files i.e. `'run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5'`. A comprehensive list of accepted metadata fields can be obtained from the [ENA API](https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run).
 
@@ -72,12 +72,11 @@ If FTP connections are blocked on your network use the [`--force_sratools_downlo
 
 ### Downloading dbGAP data with JWT
 
-As of v1.10, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`. 
- 
+As of v1.10, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`.
 
-Note that due to the way the pipeline resolves SRA IDs down to the experiment to be able to merge multiple runs, your JWT cart file must be generated for *all* runs in an experiment. Otherwise, upon running `prefetch` and `fasterq-dump`, the pipeline will return a `403 Error` when trying to download data for other runs under an experiment that are not authenticated for with the provided JWT cart file.
+Note that due to the way the pipeline resolves SRA IDs down to the experiment to be able to merge multiple runs, your JWT cart file must be generated for _all_ runs in an experiment. Otherwise, upon running `prefetch` and `fasterq-dump`, the pipeline will return a `403 Error` when trying to download data for other runs under an experiment that are not authenticated for with the provided JWT cart file.
 
-Users can log into the [SRA Run Selector](https://www.ncbi.nlm.nih.gov/Traces/study/), search for the dbGAP study they have been granted access to using the phs identifier, and select all available runs to activate the `JWT Cart` button to download the file. 
+Users can log into the [SRA Run Selector](https://www.ncbi.nlm.nih.gov/Traces/study/), search for the dbGAP study they have been granted access to using the phs identifier, and select all available runs to activate the `JWT Cart` button to download the file.
 
 ## Running the pipeline
 
