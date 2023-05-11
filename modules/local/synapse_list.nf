@@ -3,10 +3,10 @@ process SYNAPSE_LIST {
     tag "$id"
     label 'process_low'
 
-    conda "bioconda::synapseclient=2.6.0"
+    conda "bioconda::synapseclient=2.7.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/synapseclient:2.6.0--pyh5e36f6f_0' :
-        'quay.io/biocontainers/synapseclient:2.6.0--pyh5e36f6f_0' }"
+        'https://depot.galaxyproject.org/singularity/synapseclient:2.7.1--pyh7cba7a3_0' :
+        'biocontainers/synapseclient:2.7.1--pyh7cba7a3_0' }"
 
     input:
     val id
