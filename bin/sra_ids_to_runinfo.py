@@ -248,11 +248,11 @@ class DatabaseResolver:
         response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?{urlencode(params)}")
         cls._content_check(response, identifier)
         r_json = json.loads(response.text())
-        gsm_ids = r_json['esearchresult']['idlist']
+        gsm_ids = r_json["esearchresult"]["idlist"]
         for gsm_id in gsm_ids:
             ids += cls._id_to_srx(gsm_id)
         return ids
-    
+
     @classmethod
     def _gds_to_gsm(cls, identifier):
         """Resolve the GEO UIDs to GSM IDs to then resolve to SRA IDs."""
@@ -261,9 +261,9 @@ class DatabaseResolver:
         response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?{urlencode(params)}")
         cls._content_check(response, identifier)
         r_json = json.loads(response.text())
-        
-        for each in r_json['result'][identifier]['samples'][0:]:
-            ids += cls._gsm_to_srx(each['accession'])
+
+        for each in r_json["result"][identifier]["samples"][0:]:
+            ids += cls._gsm_to_srx(each["accession"])
         return ids
 
     @classmethod
@@ -274,7 +274,7 @@ class DatabaseResolver:
         response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?{urlencode(params)}")
         cls._content_check(response, identifier)
         r_json = json.loads(response.text())
-        gds_uids = r_json['esearchresult']['idlist']
+        gds_uids = r_json["esearchresult"]["idlist"]
         for gds_uid in gds_uids:
             ids += cls._gds_to_gsm(gds_uid)
         return ids
