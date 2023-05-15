@@ -27,6 +27,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #147](https://github.com/nf-core/fetchngs/pull/147) - Updated pipeline template to [nf-core/tools 2.8](https://github.com/nf-core/tools/releases/tag/2.8)
 - [PR #148](https://github.com/nf-core/fetchngs/pull/148) - Fix default metadata fields for ENA API v2.0
 - [PR #150](https://github.com/nf-core/fetchngs/pull/150) - Add infrastructure and CI for multi-cloud full-sized tests run via Nextflow Tower
+- [nf-core/modules#3417](https://github.com/nf-core/modules/pull/3417) - Update sratools modules to optionally take a JWT file as input
 
 ### Software dependencies
 

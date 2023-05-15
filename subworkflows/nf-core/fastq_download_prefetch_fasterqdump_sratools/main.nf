@@ -7,7 +7,8 @@ include { SRATOOLS_FASTERQDUMP        } from '../../../modules/nf-core/sratools/
 //
 workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     take:
-    ch_sra_ids  // channel: [ val(meta), val(id) ]
+    ch_sra_ids   // channel: [ val(meta), val(id) ]
+    ch_dbgap_key // channel: [ path(dbgap_key) ]
 
     main:
 
@@ -17,33 +18,22 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     // Detect existing NCBI user settings or create new ones.
     //
     CUSTOM_SRATOOLSNCBISETTINGS()
-    def settings = CUSTOM_SRATOOLSNCBISETTINGS.out.ncbi_settings  // value channel: path(settings)
+    ch_ncbi_settings = CUSTOM_SRATOOLSNCBISETTINGS.out.ncbi_settings
     ch_versions = ch_versions.mix(CUSTOM_SRATOOLSNCBISETTINGS.out.versions)
 
     //
-    // Prefetch sequencing reads in SRA format and convert into one or more compressed FASTQ files.
-    // If specified in params, use the provided JWT file for pulling protected SRA runs, else provide 
-    // an empty list.
+    // Prefetch sequencing reads in SRA format.
     //
-    
-    if (!params.dbgap_key) {
-        
-        SRATOOLS_PREFETCH ( ch_sra_ids, settings, [] ) 
-        SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, [] )
-
-    } else {
-        
-        certificate = file(params.dbgap_key, checkIfExists: true) // optional input channel for JWT
-
-        SRATOOLS_PREFETCH ( ch_sra_ids, settings, certificate ) 
-        SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, settings, certificate ) 
-
-    }
-
+    SRATOOLS_PREFETCH ( ch_sra_ids, ch_ncbi_settings, ch_dbgap_key )
     ch_versions = ch_versions.mix(SRATOOLS_PREFETCH.out.versions.first())
+
+    //
+    // Convert the SRA format into one or more compressed FASTQ files.
+    //
+    SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, ch_ncbi_settings, ch_dbgap_key )
     ch_versions = ch_versions.mix(SRATOOLS_FASTERQDUMP.out.versions.first())
 
     emit:
-    reads    = SRATOOLS_FASTERQDUMP.out.reads  // channel: [ val(meta), [ reads ] ]
-    versions = ch_versions                     // channel: [ versions.yml ]
+    reads    = SRATOOLS_FASTERQDUMP.out.reads // channel: [ val(meta), [ reads ] ]
+    versions = ch_versions                    // channel: [ versions.yml ]
 }

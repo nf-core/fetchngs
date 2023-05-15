@@ -10,7 +10,7 @@ process SRATOOLS_PREFETCH {
     input:
     tuple val(meta), val(id)
     path ncbi_settings
-    path certificate 
+    path certificate
 
     output:
     tuple val(meta), path(id), emit: sra
