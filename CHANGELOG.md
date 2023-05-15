@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[1.10.0](https://github.com/nf-core/fetchngs/releases/tag/1.10.0)] - 2023-05-12
+## [[1.10.0](https://github.com/nf-core/fetchngs/releases/tag/1.10.0)] - 2023-05-15
 
 ### Credits
 
@@ -14,6 +14,7 @@ Special thanks to the following for their contributions to the release:
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Moritz E. Beber](https://github.com/Midnighter)
 - [Rob Syme](https://github.com/robsyme)
+- [sirclockalot](https://github.com/sirclockalot)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 
@@ -27,7 +28,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #147](https://github.com/nf-core/fetchngs/pull/147) - Updated pipeline template to [nf-core/tools 2.8](https://github.com/nf-core/tools/releases/tag/2.8)
 - [PR #148](https://github.com/nf-core/fetchngs/pull/148) - Fix default metadata fields for ENA API v2.0
 - [PR #150](https://github.com/nf-core/fetchngs/pull/150) - Add infrastructure and CI for multi-cloud full-sized tests run via Nextflow Tower
-- [nf-core/modules#3417](https://github.com/nf-core/modules/pull/3417) - Update sratools modules to optionally take a JWT file as input
+- [PR #157](https://github.com/nf-core/fetchngs/pull/157) - Add `public_aws_ecr.config` to source mulled containers when using `public.ecr.aws` Docker Biocontainer registry
 
 ### Software dependencies
 
