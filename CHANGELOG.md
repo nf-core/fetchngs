@@ -22,11 +22,11 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [#85](https://github.com/nf-core/fetchngs/issues/85) - Not able to fetch metadata for ERR ids associated with ArrayExpress
 - [#129](https://github.com/nf-core/fetchngs/issues/129) - Pipeline is working with SRA run ids but failing with corresponding Biosample ids
 - [#144](https://github.com/nf-core/fetchngs/issues/144) - Add support to download 10X Genomics data
+- [#104](https://github.com/nf-core/fetchngs/issues/104) - Add support back in for [GEO IDs](https://www.ncbi.nlm.nih.gov/geo) (removed in v1.7)
 - [PR #140](https://github.com/nf-core/fetchngs/pull/140) - Bumped modules version to allow for sratools download of sralite format files
 - [PR #147](https://github.com/nf-core/fetchngs/pull/147) - Updated pipeline template to [nf-core/tools 2.8](https://github.com/nf-core/tools/releases/tag/2.8)
 - [PR #148](https://github.com/nf-core/fetchngs/pull/148) - Fix default metadata fields for ENA API v2.0
 - [PR #150](https://github.com/nf-core/fetchngs/pull/150) - Add infrastructure and CI for multi-cloud full-sized tests run via Nextflow Tower
-- [PR #155](https://github.com/nf-core/fetchngs/pull/155) - Add support back in for [GEO IDs](https://www.ncbi.nlm.nih.gov/geo) (removed in v1.7)
 
 ### Software dependencies
 
