@@ -78,10 +78,10 @@ Note that due to the way the pipeline resolves SRA IDs down to the experiment to
 
 Users can log into the [SRA Run Selector](https://www.ncbi.nlm.nih.gov/Traces/study/), search for the dbGAP study they have been granted access to using the phs identifier, and select all available runs to activate the `JWT Cart` button to download the file.
 
-To test this functionality in your cloud computing environment, you can use the protected dbGAP cloud testing study with accession `SRR1219902`:
+To test this functionality in your cloud computing environment, you can use the protected dbGAP cloud testing study with experiment accession `SRX512039`:
 
-- On the [SRA Run Selector page for `SRR1219902`](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRR1219902&o=acc_s%3Aa&s=SRR1219902), select the available run and click on `JWT Cart` to download a key file called `jwt.cart` that can be directly provided to the pipeline with `--dbgap_key jwt.cart`
-- Click on `Accession List` to download a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline with `--input SRR_Acc_List.txt`
+- On the [SRA Run Selector page for `SRX512039`](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRX512039&o=acc_s%3Aa), select the two available runs (`SRR1219865` and `SRR1219902`) and click on `JWT Cart` to download a key file called `cart.jwt` that can be directly provided to the pipeline with `--dbgap_key cart.jwt`
+- Click on `Accession List` to download a text file called `SRR_Acc_List.txt` with the SRR IDs that can be directly provided to the pipeline with `--input SRR_Acc_List.txt`
 
 ## Running the pipeline
 
