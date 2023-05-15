@@ -113,7 +113,8 @@ workflow SRA {
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         //
         FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
-            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
+            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] },
+            params.dbgap_key ?: []
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
