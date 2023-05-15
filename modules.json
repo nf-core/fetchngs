@@ -17,12 +17,12 @@
                     },
                     "sratools/fasterqdump": {
                         "branch": "master",
-                        "git_sha": "603ecbd9f45300c9788f197d2a15a005685b4220",
+                        "git_sha": "6712754854ae2832abfff3f0800cdb4a6a60bfca",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "sratools/prefetch": {
                         "branch": "master",
-                        "git_sha": "911696ea0b62df80e900ef244d7867d177971f73",
+                        "git_sha": "6712754854ae2832abfff3f0800cdb4a6a60bfca",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     }
                 }
@@ -31,7 +31,7 @@
                 "nf-core": {
                     "fastq_download_prefetch_fasterqdump_sratools": {
                         "branch": "master",
-                        "git_sha": "a9784afdd5dcda23b84e64db75dc591065d64653",
+                        "git_sha": "6712754854ae2832abfff3f0800cdb4a6a60bfca",
                         "installed_by": ["subworkflows"]
                     }
                 }

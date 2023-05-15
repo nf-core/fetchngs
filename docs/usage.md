@@ -70,6 +70,19 @@ From v1.9 of this pipeline the default `strandedness` in the output samplesheet 
 
 If FTP connections are blocked on your network use the [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameter to force the pipeline to download data using sra-tools instead of the ENA FTP.
 
+### Downloading dbGAP data with JWT
+
+As of v1.10.0, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/) on a supported cloud computing environment (Amazon Web Services or Google Cloud Platform). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`.
+
+Note that due to the way the pipeline resolves SRA IDs down to the experiment to be able to merge multiple runs, your JWT cart file must be generated for _all_ runs in an experiment. Otherwise, upon running `prefetch` and `fasterq-dump`, the pipeline will return a `403 Error` when trying to download data for other runs under an experiment that are not authenticated for with the provided JWT cart file.
+
+Users can log into the [SRA Run Selector](https://www.ncbi.nlm.nih.gov/Traces/study/), search for the dbGAP study they have been granted access to using the phs identifier, and select all available runs to activate the `JWT Cart` button to download the file.
+
+To test this functionality in your cloud computing environment, you can use the protected dbGAP cloud testing study with experiment accession `SRX512039`:
+
+- On the [SRA Run Selector page for `SRX512039`](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRX512039&o=acc_s%3Aa), select the two available runs (`SRR1219865` and `SRR1219902`) and click on `JWT Cart` to download a key file called `cart.jwt` that can be directly provided to the pipeline with `--dbgap_key cart.jwt`
+- Click on `Accession List` to download a text file called `SRR_Acc_List.txt` with the SRR IDs that can be directly provided to the pipeline with `--input SRR_Acc_List.txt`
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
