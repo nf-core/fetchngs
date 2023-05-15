@@ -72,7 +72,7 @@ If FTP connections are blocked on your network use the [`--force_sratools_downlo
 
 ### Downloading dbGAP data with JWT
 
-As of v1.10, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`.
+As of v1.10.0, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`.
 
 Note that due to the way the pipeline resolves SRA IDs down to the experiment to be able to merge multiple runs, your JWT cart file must be generated for _all_ runs in an experiment. Otherwise, upon running `prefetch` and `fasterq-dump`, the pipeline will return a `403 Error` when trying to download data for other runs under an experiment that are not authenticated for with the provided JWT cart file.
 
