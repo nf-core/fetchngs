@@ -26,7 +26,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #147](https://github.com/nf-core/fetchngs/pull/147) - Updated pipeline template to [nf-core/tools 2.8](https://github.com/nf-core/tools/releases/tag/2.8)
 - [PR #148](https://github.com/nf-core/fetchngs/pull/148) - Fix default metadata fields for ENA API v2.0
 - [PR #150](https://github.com/nf-core/fetchngs/pull/150) - Add infrastructure and CI for multi-cloud full-sized tests run via Nextflow Tower
-- [PR #152](https://github.com/nf-core/fetchngs/pull/152) - Add support for downloading protected dbGAP data using a JWT file
+- [#138](https://github.com/nf-core/fetchngs/issues/138) - Add support for downloading protected dbGAP data using a JWT file
 
 ### Software dependencies
 
