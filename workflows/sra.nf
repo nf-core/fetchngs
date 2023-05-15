@@ -114,7 +114,7 @@ workflow SRA {
         //
         FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
             ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] },
-            params.dbgap_key ?: []
+            params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : []
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
