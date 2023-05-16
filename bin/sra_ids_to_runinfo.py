@@ -14,7 +14,8 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
-
+import json
+import time
 
 logger = logging.getLogger()
 
@@ -57,14 +58,12 @@ PREFIX_LIST = sorted({ID_REGEX.match(id).group(1) for id in SRA_IDS + ENA_IDS + 
 # Full list of accepted fields can be obtained here:
 # https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run
 ENA_METADATA_FIELDS = (
-    "accession",
     "run_accession",
     "experiment_accession",
     "sample_accession",
     "secondary_sample_accession",
     "study_accession",
     "secondary_study_accession",
-    "parent_study",
     "submission_accession",
     "run_alias",
     "experiment_alias",
@@ -84,7 +83,6 @@ ENA_METADATA_FIELDS = (
     "sample_title",
     "experiment_title",
     "study_title",
-    "description",
     "sample_description",
     "fastq_md5",
     "fastq_bytes",
@@ -191,10 +189,9 @@ class DatabaseIdentifierChecker:
 class DatabaseResolver:
     """Define a service class for resolving various identifiers to experiments."""
 
-    _GEO_PREFIXES = {"GSE", "GSM"}
+    _GEO_GSM_PREFIXES = {"GSM"}
+    _GEO_GSE_PREFIXES = {"GDS", "GSE"}
     _SRA_PREFIXES = {
-        "PRJNA",
-        "SAMN",
         "DRA",
         "DRP",
         "DRS",
@@ -202,7 +199,7 @@ class DatabaseResolver:
         "PRJDB",
         "SAMD",
     }
-    _ENA_PREFIXES = {"ERR", "SRR", "DRR"}
+    _ENA_PREFIXES = {"ERR", "SRR", "SAMN", "DRR"}
 
     @classmethod
     def expand_identifier(cls, identifier):
@@ -218,7 +215,9 @@ class DatabaseResolver:
 
         """
         prefix = ID_REGEX.match(identifier).group(1)
-        if prefix in cls._GEO_PREFIXES:
+        if prefix in cls._GEO_GSM_PREFIXES:
+            return cls._gsm_to_srx(identifier)
+        elif prefix in cls._GEO_GSE_PREFIXES:
             return cls._gse_to_srx(identifier)
         elif prefix in cls._SRA_PREFIXES:
             return cls._id_to_srx(identifier)
@@ -243,19 +242,42 @@ class DatabaseResolver:
         return [row["Experiment"] for row in open_table(response, delimiter=",")]
 
     @classmethod
-    def _gse_to_srx(cls, identifier):
-        """Resolve the identifier to SRA experiments."""
+    def _gsm_to_srx(cls, identifier):
+        """Resolve the GEO identifier to SRA experiments."""
         ids = []
-        params = {"id": identifier, "db": "gds", "rettype": "runinfo", "retmode": "text"}
-        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?{urlencode(params)}")
+        params = {"term": identifier, "db": "sra", "retmode": "json"}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?{urlencode(params)}")
         cls._content_check(response, identifier)
-        gsm_ids = [
-            line.split("=")[1].strip()
-            for line in response.text().splitlines()
-            if line.split("=")[1].strip().startswith("GSM")
-        ]
+        r_json = json.loads(response.text())
+        gsm_ids = r_json["esearchresult"]["idlist"]
         for gsm_id in gsm_ids:
             ids += cls._id_to_srx(gsm_id)
+        return ids
+
+    @classmethod
+    def _gds_to_gsm(cls, identifier):
+        """Resolve the GEO UIDs to GSM IDs to then resolve to SRA IDs."""
+        ids = []
+        params = {"id": identifier, "db": "gds", "retmode": "json", "retmax": 10}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?{urlencode(params)}")
+        cls._content_check(response, identifier)
+        r_json = json.loads(response.text())
+
+        for each in r_json["result"][identifier]["samples"][0:]:
+            ids += cls._gsm_to_srx(each["accession"])
+        return ids
+
+    @classmethod
+    def _gse_to_srx(cls, identifier):
+        """Resolve the GSE identifier to GEO UIDs."""
+        ids = []
+        params = {"term": identifier, "db": "gds", "retmode": "json"}
+        response = fetch_url(f"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?{urlencode(params)}")
+        cls._content_check(response, identifier)
+        r_json = json.loads(response.text())
+        gds_uids = r_json["esearchresult"]["idlist"]
+        for gds_uid in gds_uids:
+            ids += cls._gds_to_gsm(gds_uid)
         return ids
 
     @classmethod
@@ -366,23 +388,52 @@ def validate_fields_parameter(param, valid_vals, param_desc):
     if len(set(user_vals) & set(valid_vals)) == len(user_vals):
         return user_vals
     else:
+        invalid_vals = [x for x in user_vals if x not in valid_vals]
         logger.error(
             f"Please provide a valid value for {param_desc}!\n"
             f"Provided values = {param}\n"
-            f"Accepted values = {','.join(valid_vals)}"
+            f"Accepted values = {','.join(valid_vals)}\n"
+            f"The following values are invalid: {','.join(invalid_vals)}\n"
         )
         sys.exit(1)
 
 
 def fetch_url(url):
     """Return a response object for the given URL and handle errors appropriately."""
+    sleep_time = 5  # Hardcode sleep duration in seconds
+    max_num_attempts = 3  # Hardcode max number of request attempts
+    attempt = 0
+
     try:
         with urlopen(url) as response:
             return Response(response=response)
+
     except HTTPError as e:
-        logger.error("The server couldn't fulfill the request.")
-        logger.error(f"Status: {e.code} {e.reason}")
-        sys.exit(1)
+        if e.status == 429:
+            # If the response is 429, sleep and retry
+            if "Retry-After" in e.headers:
+                retry_after = int(e.headers["Retry-After"])
+                logging.warning(f"Received 429 response from server. Retrying after {retry_after} seconds...")
+                time.sleep(retry_after)
+            else:
+                logging.warning(f"Received 429 response from server. Retrying in {sleep_time} seconds...")
+                time.sleep(sleep_time)
+                sleep_time *= 2  # Increment sleep time
+            attempt += 1
+            return fetch_url(url)  # Recursive call to retry request
+
+        elif e.status == 500:
+            # If the response is 500, sleep and retry max 3 times
+            if attempt <= max_num_attempts:
+                logging.warning(f"Received 500 response from server. Retrying in {sleep_time} seconds...")
+                time.sleep(sleep_time)
+                sleep_time *= 2
+                attempt += 1
+                return fetch_url(url)
+            else:
+                logging.error("Exceeded max request attempts. Exiting.")
+                sys.exit(1)
+
     except URLError as e:
         logger.error("We failed to reach a server.")
         logger.error(f"Reason: {e.reason}")

@@ -11,7 +11,7 @@ def valid_params = [
 def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
 // Validate input parameters
-WorkflowSra.initialise(params, log, valid_params)
+WorkflowSra.initialise(params, valid_params)
 
 /*
 ========================================================================================
@@ -49,13 +49,6 @@ workflow SRA {
 
     main:
     ch_versions = Channel.empty()
-
-    //
-    // Fail the pipeline if GEO ids detected
-    //
-    ids
-        .collect()
-        .map { WorkflowSra.isGeoFail(it, log) }
 
     //
     // MODULE: Get SRA run information for public database ids
@@ -113,7 +106,8 @@ workflow SRA {
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         //
         FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
-            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] }
+            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] },
+            params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : []
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
@@ -123,7 +117,7 @@ workflow SRA {
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
             .map { 
                 meta, fastq ->
-                    def reads = meta.single_end ? [ fastq ] : fastq
+                    def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
                     def meta_clone = meta.clone()
                     meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
                     meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''

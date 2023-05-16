@@ -3,6 +3,46 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.10.0](https://github.com/nf-core/fetchngs/releases/tag/1.10.0)] - 2023-05-16
+
+### Credits
+
+Special thanks to the following for their contributions to the release:
+
+- [Adam Talbot](https://github.com/adamrtalbot)
+- [Esha Joshi](https://github.com/ejseqera)
+- [Maxime Garcia](https://github.com/maxulysse)
+- [Moritz E. Beber](https://github.com/Midnighter)
+- [Rob Syme](https://github.com/robsyme)
+- [sirclockalot](https://github.com/sirclockalot)
+
+Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
+
+### Enhancements & fixes
+
+- [#85](https://github.com/nf-core/fetchngs/issues/85) - Not able to fetch metadata for ERR ids associated with ArrayExpress
+- [#104](https://github.com/nf-core/fetchngs/issues/104) - Add support back in for [GEO IDs](https://www.ncbi.nlm.nih.gov/geo) (removed in v1.7)
+- [#129](https://github.com/nf-core/fetchngs/issues/129) - Pipeline is working with SRA run ids but failing with corresponding Biosample ids
+- [#138](https://github.com/nf-core/fetchngs/issues/138) - Add support for downloading protected dbGAP data using a JWT file
+- [#144](https://github.com/nf-core/fetchngs/issues/144) - Add support to download 10X Genomics data
+- [PR #140](https://github.com/nf-core/fetchngs/pull/140) - Bumped modules version to allow for sratools download of sralite format files
+- [PR #147](https://github.com/nf-core/fetchngs/pull/147) - Updated pipeline template to [nf-core/tools 2.8](https://github.com/nf-core/tools/releases/tag/2.8)
+- [PR #148](https://github.com/nf-core/fetchngs/pull/148) - Fix default metadata fields for ENA API v2.0
+- [PR #150](https://github.com/nf-core/fetchngs/pull/150) - Add infrastructure and CI for multi-cloud full-sized tests run via Nextflow Tower
+- [PR #157](https://github.com/nf-core/fetchngs/pull/157) - Add `public_aws_ecr.config` to source mulled containers when using `public.ecr.aws` Docker Biocontainer registry
+
+### Software dependencies
+
+| Dependency      | Old version | New version |
+| --------------- | ----------- | ----------- |
+| `synapseclient` | 2.6.0       | 2.7.1       |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present.
+>
+> **NB:** Dependency has been **added** if just the new version information is present.
+>
+> **NB:** Dependency has been **removed** if new version information isn't present.
+
 ## [[1.9](https://github.com/nf-core/fetchngs/releases/tag/1.9)] - 2022-12-21
 
 ### Enhancements & fixes

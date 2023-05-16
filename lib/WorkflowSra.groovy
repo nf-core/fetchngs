@@ -2,17 +2,18 @@
 // This file holds several functions specific to the workflow/sra.nf in the nf-core/fetchngs pipeline
 //
 
+import nextflow.Nextflow
+
 class WorkflowSra {
 
     //
     // Check and validate parameters
     //
-    public static void initialise(params, log, valid_params) {
+    public static void initialise(params, valid_params) {
         // Check minimal ENA fields are provided to download FastQ files
         def ena_metadata_fields = params.ena_metadata_fields ? params.ena_metadata_fields.split(',').collect{ it.trim().toLowerCase() } : valid_params['ena_metadata_fields']
         if (!ena_metadata_fields.containsAll(valid_params['ena_metadata_fields'])) {
-            log.error "Invalid option: '${params.ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_params['ena_metadata_fields'].join(',')}'"
-            System.exit(1)
+            Nextflow.error("Invalid option: '${params.ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_params['ena_metadata_fields'].join(',')}'")
         }
     }
 
@@ -28,22 +29,5 @@ class WorkflowSra {
             "  as additional columns to help you manually curate the samplesheet before\n" +
             "  running nf-core/other pipelines.\n" +
             "==================================================================================="
-    }
-
-    // Fail pipeline if input ids are from the GEO
-    public static void isGeoFail(ids, log) {
-        def pattern = /^(GS[EM])(\d+)$/
-        for (id in ids) {
-            if (id =~ pattern) {
-                log.error "===================================================================================\n" +
-                    "  GEO id detected: ${id}\n" +
-                    "  Support for GEO ids was dropped in v1.7 due to breaking changes in the NCBI API.\n" +
-                    "  Please remove any GEO ids from the input samplesheet.\n\n" +
-                    "  Please see:\n" +
-                    "  https://github.com/nf-core/fetchngs/pull/102\n" +
-                    "==================================================================================="
-                System.exit(1)
-            }
-        }
     }
 }
