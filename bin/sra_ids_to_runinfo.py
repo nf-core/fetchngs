@@ -15,6 +15,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import urlopen
 import json
+import time
 
 logger = logging.getLogger()
 
@@ -399,13 +400,40 @@ def validate_fields_parameter(param, valid_vals, param_desc):
 
 def fetch_url(url):
     """Return a response object for the given URL and handle errors appropriately."""
+    sleep_time = 5  # Hardcode sleep duration in seconds
+    max_num_attempts = 3  # Hardcode max number of request attempts
+    attempt = 0
+
     try:
         with urlopen(url) as response:
             return Response(response=response)
+
     except HTTPError as e:
-        logger.error("The server couldn't fulfill the request.")
-        logger.error(f"Status: {e.code} {e.reason}")
-        sys.exit(1)
+        if e.status == 429:
+            # If the response is 429, sleep and retry
+            if "Retry-After" in e.headers:
+                retry_after = int(e.headers["Retry-After"])
+                logging.warning(f"Received 429 response from server. Retrying after {retry_after} seconds...")
+                time.sleep(retry_after)
+            else:
+                logging.warning(f"Received 429 response from server. Retrying in {sleep_time} seconds...")
+                time.sleep(sleep_time)
+                sleep_time *= 2  # Increment sleep time
+            attempt += 1
+            return fetch_url(url)  # Recursive call to retry request
+
+        elif e.status == 500:
+            # If the response is 500, sleep and retry max 3 times
+            if attempt <= max_num_attempts:
+                logging.warning(f"Received 500 response from server. Retrying in {sleep_time} seconds...")
+                time.sleep(sleep_time)
+                sleep_time *= 2
+                attempt += 1
+                return fetch_url(url)
+            else:
+                logging.error("Exceeded max request attempts. Exiting.")
+                sys.exit(1)
+
     except URLError as e:
         logger.error("We failed to reach a server.")
         logger.error(f"Reason: {e.reason}")
