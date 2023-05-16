@@ -33,7 +33,7 @@ jobs:
         id: get_version
         run: |
           VERSION=$(grep 'nextflowVersion' nextflow.config | awk -F'= ' '{print $2}' | tr -d '!>=" ')
-          echo "::set-output name=version::$VERSION"
+          echo "nxf_version=$VERSION" >> $GITHUB_OUTPUT
 
   test:
     name: Run ${{ matrix.profile }} pipeline test
