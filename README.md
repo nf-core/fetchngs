@@ -12,7 +12,7 @@
 
 ## Introduction
 
-**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public and private databases. At present, the pipeline supports SRA / ENA / DDBJ / Synapse ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
+**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public and private databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO / Synapse ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
 ## Usage
 
@@ -56,7 +56,7 @@ For more details, please refer to the [usage documentation](https://nf-co.re/fet
 
 Via a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/fetchngs/sra_ids_test.csv)) the pipeline performs the following steps:
 
-### SRA / ENA / DDBJ ids
+### SRA / ENA / DDBJ / GEO ids
 
 1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the [ENA API](https://ena-docs.readthedocs.io/en/latest/retrieval/programmatic-access.html)
 2. Fetch extensive id metadata via ENA API
@@ -64,18 +64,6 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
    - If direct download links are available from the ENA API, fetch in parallel via `curl` and perform `md5sum` check
    - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ
 4. Collate id metadata and paths to FastQ files in a single samplesheet
-
-### GEO ids
-
-Support for GEO ids was dropped in [[v1.7](https://github.com/nf-core/fetchngs/releases/tag/1.7)] due to breaking changes introduced in the NCBI API. For more detailed information please see [this PR](https://github.com/nf-core/fetchngs/pull/102).
-
-As a workaround, if you have a GEO accession you can directly download a text file containing the appropriate SRA ids to pass to the pipeline instead:
-
-- Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
-- Click `SRA Run Selector` at the bottom of the GEO accession page
-- Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
-
-This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
 
 ### Synapse ids
 

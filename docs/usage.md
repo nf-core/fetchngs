@@ -8,15 +8,15 @@
 
 The pipeline has been set-up to automatically download and process the raw FastQ files from both public and private repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
-| `SRA`        | `ENA`        | `DDBJ`       | `Synapse`   |
-| ------------ | ------------ | ------------ | ----------- |
-| SRR11605097  | ERR4007730   | DRR171822    | syn26240435 |
-| SRX8171613   | ERX4009132   | DRX162434    |             |
-| SRS6531847   | ERS4399630   | DRS090921    |             |
-| SAMN14689442 | SAMEA6638373 | SAMD00114846 |             |
-| SRP256957    | ERP120836    | DRP004793    |             |
-| SRA1068758   | ERA2420837   | DRA008156    |             |
-| PRJNA625551  | PRJEB37513   | PRJDB4176    |             |
+| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      | `Synapse`   |
+| ------------ | ------------ | ------------ | ---------- | ----------- |
+| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 | syn26240435 |
+| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |             |
+| SRS6531847   | ERS4399630   | DRS090921    |            |             |
+| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |             |
+| SRP256957    | ERP120836    | DRP004793    |            |             |
+| SRA1068758   | ERA2420837   | DRA008156    |            |             |
+| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |             |
 
 ### SRR / ERR / DRR ids
 

@@ -51,13 +51,6 @@ workflow SRA {
     ch_versions = Channel.empty()
 
     //
-    // Fail the pipeline if GEO ids detected
-    //
-    ids
-        .collect()
-        .map { WorkflowSra.isGeoFail(it) }
-
-    //
     // MODULE: Get SRA run information for public database ids
     //
     SRA_IDS_TO_RUNINFO (
