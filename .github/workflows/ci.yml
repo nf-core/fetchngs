@@ -18,30 +18,43 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-  # Define the jobs to be run in parallel
+# Define the jobs to be run in parallel
 jobs:
-  test:
-    # Name the job with the corresponding profile, Nextflow version and aligner
-    name: Run ${{ matrix.profile }}-${{ matrix.NXF_VER }} pipeline test
-
-    # Set the condition for running the job
-    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}"
-
-    # Specify the runner for the job
+  get_version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
 
-    # Define the matrix for different Nextflow versions, profiles and aligners
-    strategy:
-      matrix:
-        NXF_VER:
-          - "latest-everything"
-        profile: ["docker"]
-
-    # Define the steps for the job
     steps:
-      # Checkout the pipeline code from the repository
       - name: Check out pipeline code
         uses: actions/checkout@v3
+
+      - name: Get Minimum supported Nextflow version
+        id: get_version
+        run: |
+          VERSION=$(grep 'nextflowVersion' nextflow.config | awk -F'= ' '{print $2}' | tr -d '!>=" ')
+          echo "::set-output name=version::$VERSION"
+
+  test:
+    name: Run ${{ matrix.profile }} pipeline test
+    needs: get_version
+
+    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}"
+
+    runs-on: ubuntu-latest
+    env:
+      NXF_VER: ${{ needs.get_version.outputs.version }}
+
+    strategy:
+      matrix:
+        profile: ["docker"]
+
+    steps:
+      - name: Check out pipeline code
+        uses: actions/checkout@v3
+
+      - name: Use Nextflow version
+        run: echo "Using Nextflow version $NXF_VER"
 
       # Cache Test Data
       - name: Cache test data
