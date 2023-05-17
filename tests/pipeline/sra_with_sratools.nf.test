@@ -2,7 +2,7 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
-    profile "test,docker"
+    profile "test"
     tag "pipeline"
 
     test("Force SRA-Tools Download") {

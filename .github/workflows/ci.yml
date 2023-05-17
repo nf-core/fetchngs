@@ -80,7 +80,7 @@ jobs:
       # Run nf-test with the specified aligner and output test results in TAP format
       - name: Run nf-test
         run: |
-          nf-test test tests/pipeline/ --tap=test.tap
+          nf-test test tests/pipeline/ --tap=test.tap --profile "${{ matrix.profile }}"
 
       # If the test fails, output the software_versions.yml using the 'batcat' utility
       - name: Output log on failure
