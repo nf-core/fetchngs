@@ -69,7 +69,7 @@ jobs:
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
-          version: "${{ matrix.NXF_VER }}"
+          version: $NXF_VER
 
       # Install nf-test
       - name: Install nf-test
