@@ -61,7 +61,7 @@ jobs:
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
-          version: ${{ needs.get_version.outputs.VERSION }}
+          version: "$NXF_VER"
 
       - name: Install nf-test
         run: |
