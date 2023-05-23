@@ -38,7 +38,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      NXF_VER: ${{ needs.get_version.outputs.version }}
+      NXF_VER: ${{ needs.get_version.outputs.VERSION }}
 
     strategy:
       matrix:
