@@ -1,7 +1,5 @@
-# This is the nf-core CI workflow configuration for GitHub Actions
 name: nf-core CI
 
-# This workflow is triggered when a pull request is made to the 'dev' branch or when a new release is published
 on:
   pull_request:
     branches:
@@ -9,16 +7,13 @@ on:
   release:
     types: [published]
 
-# Setting environment variable for Nextflow logs
 env:
   NXF_ANSI_LOG: false
 
-# Cancel if a newer run is started
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# Define the jobs to be run in parallel
 jobs:
   get_version:
     runs-on: ubuntu-latest
@@ -33,7 +28,7 @@ jobs:
         id: get_version
         run: |
           VERSION=$(grep 'nextflowVersion' nextflow.config | awk -F'= ' '{print $2}' | tr -d '!>=" ')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
   test:
     name: Run ${{ matrix.profile }} pipeline test
@@ -56,29 +51,25 @@ jobs:
       - name: Use Nextflow version
         run: echo "Using Nextflow version $NXF_VER"
 
-      # Cache Test Data
       - name: Cache test data
         uses: actions/cache@v2
         with:
           path: /usr/local/bin/nextflow
           key: ${{ runner.os }}
-          restore-keys: |
-            ${{ runner.os }}-nextflow-
+          restore-keys: ${{ runner.os }}-nextflow-
 
-      # Install the specified version of Nextflow
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
+        with:
+          version: "$NXF_VER"
 
-      # Install nf-test
       - name: Install nf-test
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
-      # Run nf-test with the specified aligner and output test results in TAP format
       - name: Run nf-test
-        run: |
-          nf-test test tests/pipeline/ --tap=test.tap
+        run: nf-test test tests/pipeline/ --tap=test.tap
 
       # If the test fails, output the software_versions.yml using the 'batcat' utility
       - name: Output log on failure
@@ -87,8 +78,6 @@ jobs:
           sudo apt install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
 
-      # Use TAP summary to display test results
       - uses: pcolby/tap-summary@v1
         with:
-          path: >-
-            test.tap
+          path: test.tap
