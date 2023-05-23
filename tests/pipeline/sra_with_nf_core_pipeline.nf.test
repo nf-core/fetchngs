@@ -2,7 +2,6 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
-    profile "test"
     tag "pipeline"
 
     test("SRA NF-CORE/RNASEQ Samplesheet") {
@@ -15,9 +14,12 @@ nextflow_pipeline {
         }
 
         then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(softwareVersions).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("rnaseq_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -39,9 +41,12 @@ nextflow_pipeline {
         }
 
         then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(softwareVersions).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("rnaseq_ena_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -61,9 +66,12 @@ nextflow_pipeline {
         }
 
         then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(softwareVersions).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("atacseq_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -83,9 +91,12 @@ nextflow_pipeline {
         }
 
         then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(softwareVersions).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("viralrecon_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -105,9 +116,12 @@ nextflow_pipeline {
         }
 
         then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(path("$outputDir/pipeline_info/software_versions.yml")).match("software_versions") },
+                { assert snapshot(softwareVersions).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("taxprofiler_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),

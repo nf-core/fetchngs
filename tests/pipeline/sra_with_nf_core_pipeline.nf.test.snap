@@ -6,20 +6,46 @@
             "ERR1109373.runinfo_ftp.tsv:md5,d1717cb1638950b7af22ec1b976616a4",
             "ERR1160846.runinfo_ftp.tsv:md5,5611622d583e6bc6d45d8f934696ff1e",
             "GSE214215.runinfo_ftp.tsv:md5,4224b5733b92daa40689538de9498ab9",
-            "GSM4907283.runinfo_ftp.tsv:md5,3d2c2395ee6690338f56fca84acb54ba",
+            "GSM4907283.runinfo_ftp.tsv:md5,92591968fa8fa37a9f7160fe8ada11a2",
             "SRR12848126.runinfo_ftp.tsv:md5,9563f91d4cc6aa58d2ed5fba2eb30baf",
             "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e",
             "SRR14593545.runinfo_ftp.tsv:md5,302271a4a1d99865362d0228e6439580",
             "SRR14709033.runinfo_ftp.tsv:md5,e059c4a0dfdddd70c1998a1ea9c1e65f",
             "SRR9984183.runinfo_ftp.tsv:md5,1e299191d23e0f3bd0aabf98c9d8133e"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:58+0000"
     },
     "software_versions": {
         "content": [
-            "software_versions.yml:md5,9f477f11e8db6ac81cda776d0375fbb3"
+            {
+                "CUSTOM_DUMPSOFTWAREVERSIONS": {
+                    "python": "3.11.0",
+                    "yaml": "6.0"
+                },
+                "CUSTOM_SRATOOLSNCBISETTINGS": {
+                    "sratools": "2.11.0"
+                },
+                "MULTIQC_MAPPINGS_CONFIG": {
+                    "python": "3.9.5"
+                },
+                "SRA_FASTQ_FTP": {
+                    "curl": "7.81.0"
+                },
+                "SRA_IDS_TO_RUNINFO": {
+                    "python": "3.9.5"
+                },
+                "SRA_MERGE_SAMPLESHEET": {
+                    "sed": "4.7"
+                },
+                "SRA_RUNINFO_TO_FTP": {
+                    "python": "3.9.5"
+                },
+                "Workflow": {
+                    "nf-core/fetchngs": "1.11.0dev"
+                }
+            }
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "viralrecon_metadata": {
         "content": [
@@ -35,14 +61,14 @@
             "SRR14709033.runinfo_ftp.tsv:md5,e059c4a0dfdddd70c1998a1ea9c1e65f",
             "SRR9984183.runinfo_ftp.tsv:md5,1e299191d23e0f3bd0aabf98c9d8133e"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "viralrecon_samplesheet": {
         "content": [
             "id_mappings.csv:md5,07262807636ce4b50102308eabdcf253",
             "multiqc_config.yml:md5,a24e0e280fa03b95bb678c17e4c36d93"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "atacseq_metadata": {
         "content": [
@@ -58,7 +84,7 @@
             "SRR14709033.runinfo_ftp.tsv:md5,e059c4a0dfdddd70c1998a1ea9c1e65f",
             "SRR9984183.runinfo_ftp.tsv:md5,1e299191d23e0f3bd0aabf98c9d8133e"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "rnaseq_ena_metadata": {
         "content": [
@@ -74,21 +100,21 @@
             "SRR14709033.runinfo_ftp.tsv:md5,2385a9cc5e320e78b02743c45d1338f1",
             "SRR9984183.runinfo_ftp.tsv:md5,f1ed9fc572d2e0d145be7f547f6d1236"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "rnaseq_samplesheet": {
         "content": [
             "id_mappings.csv:md5,07262807636ce4b50102308eabdcf253",
             "multiqc_config.yml:md5,a24e0e280fa03b95bb678c17e4c36d93"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "rnaseq_samplesheet_specific_ena": {
         "content": [
             "id_mappings.csv:md5,0efde324e1818c0827390a17449a6e8a",
             "multiqc_config.yml:md5,6af65b0ae40e1bba60a25361771624bd"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "rnaseq_metadata": {
         "content": [
@@ -104,35 +130,35 @@
             "SRR14709033.runinfo_ftp.tsv:md5,e059c4a0dfdddd70c1998a1ea9c1e65f",
             "SRR9984183.runinfo_ftp.tsv:md5,1e299191d23e0f3bd0aabf98c9d8133e"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "rnaseq_specific_ena_samplesheet": {
         "content": [
             "id_mappings.csv:md5,0efde324e1818c0827390a17449a6e8a",
             "multiqc_config.yml:md5,6af65b0ae40e1bba60a25361771624bd"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "atacseq_samplesheet": {
         "content": [
             "id_mappings.csv:md5,07262807636ce4b50102308eabdcf253",
             "multiqc_config.yml:md5,a24e0e280fa03b95bb678c17e4c36d93"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "rnaseq_ena_samplesheet": {
         "content": [
             "id_mappings.csv:md5,8473773df806859c6af7acafcfe5aa6f",
             "multiqc_config.yml:md5,6f6189ee58855de81eaf82ad86e21040"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "taxprofiler_samplesheet": {
         "content": [
             "id_mappings.csv:md5,07262807636ce4b50102308eabdcf253",
             "multiqc_config.yml:md5,a24e0e280fa03b95bb678c17e4c36d93"
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     },
     "fastq": {
         "content": [
@@ -182,6 +208,6 @@
                 "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
             ]
         ],
-        "timestamp": "2023-05-16T20:54:25+0000"
+        "timestamp": "2023-05-23T18:27:57+0000"
     }
 }

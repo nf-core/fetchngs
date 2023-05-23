@@ -69,7 +69,7 @@ jobs:
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
-          version: "$NXF_VER"
+          version: "${{ matrix.NXF_VER }}"
 
       # Install nf-test
       - name: Install nf-test
@@ -80,7 +80,7 @@ jobs:
       # Run nf-test with the specified aligner and output test results in TAP format
       - name: Run nf-test
         run: |
-          nf-test test tests/pipeline/ --tap=test.tap --profile "${{ matrix.profile }}"
+          nf-test test tests/pipeline/ --tap=test.tap
 
       # If the test fails, output the software_versions.yml using the 'batcat' utility
       - name: Output log on failure
