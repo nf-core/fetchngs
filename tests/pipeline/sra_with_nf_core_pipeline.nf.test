@@ -19,7 +19,7 @@ nextflow_pipeline {
 
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("software_versions") },
+                { assert snapshot(softwareVersions).match("rnaseq_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("rnaseq_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -46,7 +46,7 @@ nextflow_pipeline {
 
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("software_versions") },
+                { assert snapshot(softwareVersions).match("rnaseq_ena_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("rnaseq_ena_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -71,7 +71,7 @@ nextflow_pipeline {
 
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("software_versions") },
+                { assert snapshot(softwareVersions).match("atacseq_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("atacseq_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -96,7 +96,7 @@ nextflow_pipeline {
 
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("software_versions") },
+                { assert snapshot(softwareVersions).match("viralrecon_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("viralrecon_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
@@ -121,7 +121,7 @@ nextflow_pipeline {
 
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("software_versions") },
+                { assert snapshot(softwareVersions).match("taxprofiler_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/").list()).match("taxprofiler_metadata") },
                 { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
