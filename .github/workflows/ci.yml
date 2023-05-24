@@ -1,9 +1,10 @@
 name: nf-core CI
-
+# This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 on:
-  pull_request:
+  push:
     branches:
       - dev
+  pull_request:
   release:
     types: [published]
 
@@ -11,57 +12,28 @@ env:
   NXF_ANSI_LOG: false
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
-  get_version:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get_version.outputs.version }}
-
-    steps:
-      - name: Check out pipeline code
-        uses: actions/checkout@v3
-
-      - name: Get Minimum supported Nextflow version
-        id: get_version
-        run: |
-          VERSION=$(grep 'nextflowVersion' nextflow.config | awk -F'= ' '{print $2}' | tr -d '!>=" ')
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-
   test:
-    name: Run ${{ matrix.profile }} pipeline test
-    needs: get_version
-
+    name: Run pipeline with test data
+    # Only run on push if this is the nf-core dev branch (merged PRs)
     if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}"
-
     runs-on: ubuntu-latest
-    env:
-      NXF_VER: ${{ needs.get_version.outputs.VERSION }}
-
     strategy:
       matrix:
-        profile: ["docker"]
-
+        NXF_VER:
+          - "22.10.1"
+          - "latest-everything"
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
-
-      - name: Use Nextflow version
-        run: echo "Using Nextflow version $NXF_VER"
-
-      - name: Cache test data
-        uses: actions/cache@v2
-        with:
-          path: /usr/local/bin/nextflow
-          key: ${{ runner.os }}
-          restore-keys: ${{ runner.os }}-nextflow-
 
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
-          version: "${{ env.NXF_VER }}"
+          version: "${{ matrix.NXF_VER }}"
 
       - name: Install nf-test
         run: |
