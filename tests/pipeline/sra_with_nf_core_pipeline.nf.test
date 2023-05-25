@@ -1,0 +1,184 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "main.nf"
+    tag "pipeline"
+
+    test("SRA NF-CORE/RNASEQ Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "rnaseq"
+            }
+        }
+
+        then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(softwareVersions).match("rnaseq_software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1109373.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1160846.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/GSE214215.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR12848126.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR13191702.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14593545.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14709033.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR9984183.runinfo_ftp.tsv")).match("rnaseq_metadata") },
+                { assert new File("$outputDir/metadata/GSM4907283.runinfo_ftp.tsv").exists() },
+                { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
+                                path("$outputDir/samplesheet/multiqc_config.yml")).match("rnaseq_samplesheet") },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/RNASEQ Samplesheet With Specific ENA metadata") {
+
+        when {
+            params {
+                outdir                = "$outputDir"
+                nf_core_pipeline      = "rnaseq"
+                ena_metadata_fields   = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
+                sample_mapping_fields = "run_accession,library_layout"
+            }
+        }
+
+        then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(softwareVersions).match("rnaseq_ena_software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1109373.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1160846.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/GSE214215.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR12848126.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR13191702.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14593545.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14709033.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR9984183.runinfo_ftp.tsv")).match("rnaseq_ena_metadata") },
+                { assert new File("$outputDir/metadata/GSM4907283.runinfo_ftp.tsv").exists() },
+                { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
+                                path("$outputDir/samplesheet/multiqc_config.yml")).match("rnaseq_ena_samplesheet") },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/ATACSEQ Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "atacseq"
+            }
+        }
+
+        then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(softwareVersions).match("atacseq_software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1109373.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1160846.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/GSE214215.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR12848126.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR13191702.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14593545.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14709033.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR9984183.runinfo_ftp.tsv")).match("atacseq_metadata") },
+                { assert new File("$outputDir/metadata/GSM4907283.runinfo_ftp.tsv").exists() },
+                { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
+                                path("$outputDir/samplesheet/multiqc_config.yml")).match("atacseq_samplesheet") },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/VIRALRECON Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "viralrecon"
+            }
+        }
+
+        then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(softwareVersions).match("viralrecon_software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1109373.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1160846.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/GSE214215.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR12848126.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR13191702.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14593545.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14709033.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR9984183.runinfo_ftp.tsv")).match("viralrecon_metadata") },
+                { assert new File("$outputDir/metadata/GSM4907283.runinfo_ftp.tsv").exists() },
+                { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
+                                path("$outputDir/samplesheet/multiqc_config.yml")).match("viralrecon_samplesheet") },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
+            )
+        }
+    }
+
+    test("SRA NF-CORE/TAXPROFILER Samplesheet") {
+
+        when {
+            params {
+                outdir           = "$outputDir"
+                nf_core_pipeline = "taxprofiler"
+            }
+        }
+
+        then {
+            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
+            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
+
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(softwareVersions).match("taxprofiler_software_versions") },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
+                { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1109373.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/ERR1160846.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/GSE214215.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR12848126.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR13191702.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14593545.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR14709033.runinfo_ftp.tsv"),
+                                path("$outputDir/metadata/SRR9984183.runinfo_ftp.tsv")).match("taxprofiler_metadata") },
+                { assert new File("$outputDir/metadata/GSM4907283.runinfo_ftp.tsv").exists() },
+                { assert snapshot(path("$outputDir/samplesheet/id_mappings.csv"),
+                                path("$outputDir/samplesheet/multiqc_config.yml")).match("taxprofiler_samplesheet") },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
+            )
+        }
+    }
+
+}

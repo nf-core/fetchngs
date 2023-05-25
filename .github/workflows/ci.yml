@@ -5,6 +5,9 @@ on:
     branches:
       - dev
   pull_request:
+    branches:
+      - dev
+      - master
   release:
     types: [published]
 
@@ -16,48 +19,83 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Run pipeline with test data
-    # Only run on push if this is the nf-core dev branch (merged PRs)
-    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}"
+  test-dev:
+    # Only run on dev branch or when a PR is opened against dev
+    if: github.base_ref == 'dev' || github.event_name == 'push'
+    name: Run pipeline with test data on dev
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        NXF_VER:
-          - "22.10.1"
-          - "latest-everything"
+        NXF_VER: ["latest-everything"]
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
 
+      # Install Nextflow
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Run pipeline with test data
+      # Install nf-test
+      - name: Install nf-test
         run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
+          wget -qO- https://code.askimed.com/install/nf-test | bash
+          sudo mv nf-test /usr/local/bin/
 
-  parameters:
-    name: Test workflow parameters
-    if: ${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}
+      # Run nf-test
+      - name: Run nf-test
+        run: nf-test test tests/pipeline/ --tap=test.tap
+
+      # If the test fails, output the software_versions.yml using the 'batcat' utility
+      - name: Output log on failure
+        if: failure()
+        run: |
+          sudo apt install bat > /dev/null
+          batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
+
+      # Comment on the PR with the test results
+      - name: PR comment with file
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: test.tap
+
+  test-master:
+    if: github.base_ref == 'master'
+    name: Run pipeline with test data on master
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        parameters:
-          - "--nf_core_pipeline rnaseq"
-          - "--ena_metadata_fields run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5 --sample_mapping_fields run_accession,library_layout"
-          - "--skip_fastq_download"
-          - "--force_sratools_download"
+        NXF_VER: ["22.10.1", "latest-everything"]
     steps:
       - name: Check out pipeline code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
+      # Install Nextflow
       - name: Install Nextflow
+        uses: nf-core/setup-nextflow@v1
+        with:
+          version: "${{ matrix.NXF_VER }}"
+
+      # Install nf-test
+      - name: Install nf-test
         run: |
-          wget -qO- get.nextflow.io | bash
-          sudo mv nextflow /usr/local/bin/
-      - name: Run pipeline with various parameters
+          wget -qO- https://code.askimed.com/install/nf-test | bash
+          sudo mv nf-test /usr/local/bin/
+
+      # Run nf-test
+      - name: Run nf-test
+        run: nf-test test tests/pipeline/ --tap=test.tap
+
+      # If the test fails, output the software_versions.yml using the 'batcat' utility
+      - name: Output log on failure
+        if: failure()
         run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results ${{ matrix.parameters }}
+          sudo apt install bat > /dev/null
+          batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
+
+      # Comment on the PR with the test results
+      - name: PR comment with file
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: test.tap
