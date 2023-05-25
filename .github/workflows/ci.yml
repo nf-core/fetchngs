@@ -20,6 +20,7 @@ concurrency:
 
 jobs:
   test-dev:
+    # Only run on dev branch or when a PR is opened against dev
     if: github.base_ref == 'dev' || github.event_name == 'push'
     name: Run pipeline with test data on dev
     runs-on: ubuntu-latest
@@ -30,16 +31,19 @@ jobs:
       - name: Check out pipeline code
         uses: actions/checkout@v3
 
+      # Install Nextflow
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
           version: "${{ matrix.NXF_VER }}"
 
+      # Install nf-test
       - name: Install nf-test
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
+      # Run nf-test
       - name: Run nf-test
         run: nf-test test tests/pipeline/ --tap=test.tap
 
@@ -50,9 +54,11 @@ jobs:
           sudo apt install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
 
-      - uses: pcolby/tap-summary@v1
+      # Comment on the PR with the test results
+      - name: PR comment with file
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          path: test.tap
+          filePath: test.tap
 
   test-master:
     if: github.base_ref == 'master'
@@ -65,16 +71,19 @@ jobs:
       - name: Check out pipeline code
         uses: actions/checkout@v3
 
+      # Install Nextflow
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
         with:
           version: "${{ matrix.NXF_VER }}"
 
+      # Install nf-test
       - name: Install nf-test
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
+      # Run nf-test
       - name: Run nf-test
         run: nf-test test tests/pipeline/ --tap=test.tap
 
@@ -85,6 +94,8 @@ jobs:
           sudo apt install bat > /dev/null
           batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
 
-      - uses: pcolby/tap-summary@v1
+      # Comment on the PR with the test results
+      - name: PR comment with file
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          path: test.tap
+          filePath: test.tap
