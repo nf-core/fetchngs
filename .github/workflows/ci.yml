@@ -24,6 +24,7 @@ jobs:
     if: github.base_ref == 'dev' || github.event_name == 'push'
     name: Run pipeline with test data on dev
     runs-on: ubuntu-latest
+    # Define the matrix of different Nextflow versions to test
     strategy:
       matrix:
         NXF_VER: ["latest-everything"]
@@ -56,14 +57,17 @@ jobs:
 
       # Comment on the PR with the test results
       - name: PR comment with file
+        if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
           filePath: test.tap
 
   test-master:
+    # Only run on master branch or when a PR is opened against master
     if: github.base_ref == 'master'
     name: Run pipeline with test data on master
     runs-on: ubuntu-latest
+    # Define the matrix of different Nextflow versions to test
     strategy:
       matrix:
         NXF_VER: ["22.10.1", "latest-everything"]
@@ -96,6 +100,7 @@ jobs:
 
       # Comment on the PR with the test results
       - name: PR comment with file
+        if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
           filePath: test.tap
