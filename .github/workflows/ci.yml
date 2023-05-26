@@ -56,6 +56,7 @@ jobs:
 
       # Comment on the PR with the test results
       - name: PR comment with file
+        if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
           filePath: test.tap
@@ -96,6 +97,7 @@ jobs:
 
       # Comment on the PR with the test results
       - name: PR comment with file
+        if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
           filePath: test.tap
