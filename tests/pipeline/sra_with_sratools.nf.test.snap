@@ -12,43 +12,20 @@
             "SRR14709033.runinfo_ftp.tsv:md5,e059c4a0dfdddd70c1998a1ea9c1e65f",
             "SRR9984183.runinfo_ftp.tsv:md5,1e299191d23e0f3bd0aabf98c9d8133e"
         ],
-        "timestamp": "2023-05-24T23:48:56+0000"
+        "timestamp": "2023-05-28T15:07:23+0000"
     },
     "samplesheet": {
         "content": [
             "id_mappings.csv:md5,07262807636ce4b50102308eabdcf253",
             "multiqc_config.yml:md5,a24e0e280fa03b95bb678c17e4c36d93"
         ],
-        "timestamp": "2023-05-24T23:48:56+0000"
+        "timestamp": "2023-05-28T15:07:23+0000"
     },
     "software_versions": {
         "content": [
-            {
-                "CUSTOM_DUMPSOFTWAREVERSIONS": {
-                    "python": "3.11.0",
-                    "yaml": "6.0"
-                },
-                "CUSTOM_SRATOOLSNCBISETTINGS": {
-                    "sratools": "2.11.0"
-                },
-                "MULTIQC_MAPPINGS_CONFIG": {
-                    "python": "3.9.5"
-                },
-                "SRA_IDS_TO_RUNINFO": {
-                    "python": "3.9.5"
-                },
-                "SRA_MERGE_SAMPLESHEET": {
-                    "sed": "4.7"
-                },
-                "SRA_RUNINFO_TO_FTP": {
-                    "python": "3.9.5"
-                },
-                "Workflow": {
-                    "nf-core/fetchngs": "1.11.0dev"
-                }
-            }
+            "{CUSTOM_DUMPSOFTWAREVERSIONS={python=3.11.0, yaml=6.0}, CUSTOM_SRATOOLSNCBISETTINGS={sratools=2.11.0}, MULTIQC_MAPPINGS_CONFIG={python=3.9.5}, SRA_IDS_TO_RUNINFO={python=3.9.5}, SRA_MERGE_SAMPLESHEET={sed=4.7}, SRA_RUNINFO_TO_FTP={python=3.9.5}, Workflow={nf-core/fetchngs=1.11.0dev}}"
         ],
-        "timestamp": "2023-05-24T23:48:56+0000"
+        "timestamp": "2023-05-28T15:07:23+0000"
     },
     "fastq": {
         "content": [
@@ -77,6 +54,6 @@
             "SRX9626017_SRR13191702_1.fastq.gz:md5,627a90afcd9f3cfc7f5f91074f9a2df7",
             "SRX9626017_SRR13191702_2.fastq.gz:md5,3d9b2c68a8ad1547105b17de81b2d9af"
         ],
-        "timestamp": "2023-05-24T23:48:56+0000"
+        "timestamp": "2023-05-28T15:07:23+0000"
     }
 }
