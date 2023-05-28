@@ -1,5 +1,5 @@
-name: nf-core CI
 # This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
+name: nf-core CI
 on:
   push:
     branches:
@@ -14,20 +14,22 @@ on:
 env:
   NXF_ANSI_LOG: false
 
+# cancel-in-progress: true ensures that if a new push is made to the same branch while a previous run is still in progress, the previous run is cancelled
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
   test-dev:
-    # Only run on dev branch or when a PR is opened against dev
-    if: github.base_ref == 'dev' || github.event_name == 'push'
+    # Only run if the pull request is against the dev branch or if the push is to the dev branch
+    if: ${{ (github.base_ref == 'dev' || (github.event_name == 'push')) }}
     name: Run pipeline with test data on dev
     runs-on: ubuntu-latest
     # Define the matrix of different Nextflow versions to test
     strategy:
       matrix:
         NXF_VER: ["latest-everything"]
+        NFTEST_VER: ["0.7.3"]
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
@@ -41,7 +43,7 @@ jobs:
       # Install nf-test
       - name: Install nf-test
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
+          wget -qO- https://code.askimed.com/install/nf-test | bash -s ${{ matrix.NFTEST_VER }}
           sudo mv nf-test /usr/local/bin/
 
       # Run nf-test
@@ -64,13 +66,14 @@ jobs:
 
   test-master:
     # Only run on master branch or when a PR is opened against master
-    if: github.base_ref == 'master'
+    if: ${{ (github.base_ref == 'master') }}
     name: Run pipeline with test data on master
     runs-on: ubuntu-latest
     # Define the matrix of different Nextflow versions to test
     strategy:
       matrix:
         NXF_VER: ["22.10.1", "latest-everything"]
+        NFTEST_VER: ["0.7.3"]
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
@@ -84,7 +87,7 @@ jobs:
       # Install nf-test
       - name: Install nf-test
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
+          wget -qO- https://code.askimed.com/install/nf-test | bash -s ${{ matrix.NFTEST_VER }}
           sudo mv nf-test /usr/local/bin/
 
       # Run nf-test
