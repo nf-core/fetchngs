@@ -1,5 +1,5 @@
-name: nf-core CI
 # This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
+name: nf-core CI
 on:
   push:
     branches:
@@ -9,25 +9,31 @@ on:
       - dev
       - master
   release:
-    types: [published]
+    types:
+      - "published"
 
 env:
   NXF_ANSI_LOG: false
+  NFTEST_VER: "0.7.3"
 
+# cancel-in-progress: true ensures that if a new push is made to the same branch while a previous run is still in progress, the previous run is cancelled
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
   test-dev:
-    # Only run on dev branch or when a PR is opened against dev
-    if: github.base_ref == 'dev' || github.event_name == 'push'
+    # Only run if the pull request is against the dev branch or if the push is to the dev branch
+    if: (github.base_ref == 'dev' || (github.event_name == 'push'))
     name: Run pipeline with test data on dev
     runs-on: ubuntu-latest
     # Define the matrix of different Nextflow versions to test
     strategy:
       matrix:
-        NXF_VER: ["latest-everything"]
+        NXF_VER:
+          - "latest-everything"
+        profile: # TODO ["singularity", "conda"]
+          - "docker"
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
@@ -41,12 +47,12 @@ jobs:
       # Install nf-test
       - name: Install nf-test
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
+          wget -qO- https://code.askimed.com/install/nf-test | bash -s $NFTEST_VER
           sudo mv nf-test /usr/local/bin/
 
       # Run nf-test
       - name: Run nf-test
-        run: nf-test test tests/pipeline/ --tap=test.tap
+        run: nf-test test tests/pipeline/ --profile "test,${{ matrix.profile }}" --tap=test.tap
 
       # If the test fails, output the software_versions.yml using the 'batcat' utility
       - name: Output log on failure
@@ -56,11 +62,13 @@ jobs:
           batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
 
       # Comment on the PR with the test results
-      - name: PR comment with file
-        if: github.event_name == 'pull_request'
+      - name: Comment PR with execution number
         uses: thollander/actions-comment-pull-request@v2
         with:
-          filePath: test.tap
+          message: |
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+          comment_tag: execution
+          reactions: eyes
 
   test-master:
     # Only run on master branch or when a PR is opened against master
@@ -70,7 +78,11 @@ jobs:
     # Define the matrix of different Nextflow versions to test
     strategy:
       matrix:
-        NXF_VER: ["22.10.1", "latest-everything"]
+        NXF_VER:
+          - "22.10.1"
+          - "latest-everything"
+        profile:
+          - "docker"
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
@@ -84,12 +96,12 @@ jobs:
       # Install nf-test
       - name: Install nf-test
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
+          wget -qO- https://code.askimed.com/install/nf-test | bash -s $NFTEST_VER
           sudo mv nf-test /usr/local/bin/
 
       # Run nf-test
       - name: Run nf-test
-        run: nf-test test tests/pipeline/ --tap=test.tap
+        run: nf-test test tests/pipeline/ --profile "test,${{ matrix.profile }}" --tap=test.tap
 
       # If the test fails, output the software_versions.yml using the 'batcat' utility
       - name: Output log on failure
@@ -99,8 +111,10 @@ jobs:
           batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
 
       # Comment on the PR with the test results
-      - name: PR comment with file
-        if: github.event_name == 'pull_request'
+      - name: Comment PR with execution number
         uses: thollander/actions-comment-pull-request@v2
         with:
-          filePath: test.tap
+          message: |
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+          comment_tag: execution
+          reactions: eyes

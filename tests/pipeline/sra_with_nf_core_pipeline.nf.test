@@ -2,6 +2,7 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
+    tag "sra_nf-core"
     tag "pipeline"
 
     test("SRA NF-CORE/RNASEQ Samplesheet") {
@@ -14,12 +15,9 @@ nextflow_pipeline {
         }
 
         then {
-            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
-            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
-
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("rnaseq_software_versions") },
+                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("rnaseq_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
@@ -51,12 +49,9 @@ nextflow_pipeline {
         }
 
         then {
-            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
-            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
-
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("rnaseq_ena_software_versions") },
+                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("rnaseq_ena_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
@@ -86,12 +81,9 @@ nextflow_pipeline {
         }
 
         then {
-            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
-            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
-
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("atacseq_software_versions") },
+                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("atacseq_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
@@ -121,12 +113,9 @@ nextflow_pipeline {
         }
 
         then {
-            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
-            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
-
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("viralrecon_software_versions") },
+                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("viralrecon_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
@@ -156,12 +145,9 @@ nextflow_pipeline {
         }
 
         then {
-            def softwareVersions = path("$outputDir/pipeline_info/software_versions.yml").yaml
-            if (softwareVersions.containsKey("Workflow")) { softwareVersions.Workflow.remove("Nextflow") }
-
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(softwareVersions).match("taxprofiler_software_versions") },
+                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("taxprofiler_software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
