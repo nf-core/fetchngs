@@ -63,6 +63,7 @@ jobs:
 
       # Comment on the PR with the test results
       - name: Comment PR with execution number
+        if: github.event_name == 'pull_request' && github.ref != 'refs/heads/dev'
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
@@ -112,6 +113,7 @@ jobs:
 
       # Comment on the PR with the test results
       - name: Comment PR with execution number
+        if: github.event_name == 'pull_request' && github.ref != 'refs/heads/dev'
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
