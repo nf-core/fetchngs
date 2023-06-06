@@ -22,18 +22,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-dev:
-    # Only run if the pull request is against the dev branch or if the push is to the dev branch
-    if: (github.base_ref == 'dev' || (github.event_name == 'push'))
-    name: Run pipeline with test data on dev
+  test:
+    name: Run pipeline with test data
     runs-on: ubuntu-latest
-    # Define the matrix of different Nextflow versions to test
     strategy:
       matrix:
-        NXF_VER:
-          - "latest-everything"
-        profile: # TODO ["singularity", "conda"]
-          - "docker"
+        include:
+          - NXF_VER: "latest-everything"
+            pull_request_target: "dev"
+            profile: "docker"
+          - NXF_VER: "22.10.1"
+            pull_request_target: "master"
+            profile: "docker"
+          - NXF_VER: "latest-everything"
+            pull_request_target: "master"
+            profile: "docker"
+
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
@@ -52,71 +56,23 @@ jobs:
 
       # Run nf-test
       - name: Run nf-test
-        run: nf-test test tests/pipeline/ --profile "test,${{ matrix.profile }}" --tap=test.tap
+        id: nf-test
+        run: |
+          nf-test test tests/pipeline/ --profile "test,${{ matrix.profile }}" --tap=test.tap
+          echo "tap=$(cat test.tap)" >> $GITHUB_OUTPUT
 
       # If the test fails, output the software_versions.yml using the 'batcat' utility
       - name: Output log on failure
         if: failure()
         run: |
           sudo apt install bat > /dev/null
-          batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
+          batcat --decorations=always --color=always ${{ github.workspace }}/.nf-test/tests/*/output/pipeline_info/software_versions.yml
 
       # Comment on the PR with the test results
       - name: Comment PR with execution number
-        if: github.event_name == 'pull_request' && github.ref != 'refs/heads/dev'
+        if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
-          comment_tag: execution
-          reactions: eyes
-
-  test-master:
-    # Only run on master branch or when a PR is opened against master
-    if: github.base_ref == 'master'
-    name: Run pipeline with test data on master
-    runs-on: ubuntu-latest
-    # Define the matrix of different Nextflow versions to test
-    strategy:
-      matrix:
-        NXF_VER:
-          - "22.10.1"
-          - "latest-everything"
-        profile:
-          - "docker"
-    steps:
-      - name: Check out pipeline code
-        uses: actions/checkout@v3
-
-      # Install Nextflow
-      - name: Install Nextflow
-        uses: nf-core/setup-nextflow@v1
-        with:
-          version: "${{ matrix.NXF_VER }}"
-
-      # Install nf-test
-      - name: Install nf-test
-        run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash -s $NFTEST_VER
-          sudo mv nf-test /usr/local/bin/
-
-      # Run nf-test
-      - name: Run nf-test
-        run: nf-test test tests/pipeline/ --profile "test,${{ matrix.profile }}" --tap=test.tap
-
-      # If the test fails, output the software_versions.yml using the 'batcat' utility
-      - name: Output log on failure
-        if: failure()
-        run: |
-          sudo apt install bat > /dev/null
-          batcat --decorations=always --color=always /home/runner/work/fetchngs/fetchngs/.nf-test/tests/*/output/pipeline_info/software_versions.yml
-
-      # Comment on the PR with the test results
-      - name: Comment PR with execution number
-        if: github.event_name == 'pull_request' && github.ref != 'refs/heads/dev'
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: |
-            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
-          comment_tag: execution
-          reactions: eyes
+            _(ci_test_results **${{ steps.nf-test.outputs.tap }}** )_
+          comment_tag: ci_test_results
