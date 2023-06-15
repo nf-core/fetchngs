@@ -70,6 +70,12 @@ From v1.9 of this pipeline the default `strandedness` in the output samplesheet 
 
 If FTP connections are blocked on your network use the [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameter to force the pipeline to download data using sra-tools instead of the ENA FTP.
 
+### Downloading 10X Genomics Data
+
+As of v1.10.0, this pipeline now supports downloading of 10X Genomics data. For 10X data sets, the output needs to be split into three fastq files, consisting of the feature barcode+UMI, cDNA sequence reads, and sample index. Adding the `--force_sratools_download` parameter will cause the pipeline to use the sra-tools fasterq-dump program with appropriate setting to ensure that all three files are generated.
+
+Please note that in our experience the downloaded R1, R2, and R3 fastq files do not always correspond to the same data types across different submissions. In many cases, R1 will be the cell barcode + UMI, R2 is the cDNA sequence, and R3 is the sample index. However, this is not alway the case. Users are strongly encouraged to verify their data before proceeding with downstream analysis.
+
 ### Downloading dbGAP data with JWT
 
 As of v1.10.0, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/) on a supported cloud computing environment (Amazon Web Services or Google Cloud Platform). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`.
