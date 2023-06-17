@@ -21,49 +21,56 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  define_nxf_versions:
+    name: Choose nextflow versions to test against depending on target branch
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.nxf_versions.outputs.matrix }}
+    steps:
+      - id: nxf_versions
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "dev" && "${{ matrix.NXF_VER }}" != "latest-everything" ]]; then
+            echo matrix='["latest-everything"]' | tee -a $GITHUB_OUTPUT
+          else
+            echo matrix='["latest-everything", "22.10.1"]' | tee -a $GITHUB_OUTPUT
+          fi
+
   test:
     name: Run pipeline with test data
+    needs: define_nxf_versions
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        NXF_VER:
-          - "22.10.1"
-          - "latest-everything"
+        NXF_VER: ${{ fromJson(needs.define_nxf_versions.outputs.matrix) }}
         profile:
           - "docker"
 
     steps:
-      # Skip if it's a pull_request to dev and NXF_VER is '22.10.1'
-      - name: Skip condition
-        id: condition
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "dev" && "${{ matrix.NXF_VER }}" != "latest-everything" ]]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-          fi
-
       - name: Check out pipeline code
-        if: steps.condition.outputs.skip != 'true'
         uses: actions/checkout@v3
 
       - name: Install Nextflow
-        if: steps.condition.outputs.skip != 'true'
         uses: nf-core/setup-nextflow@v1
         with:
           version: "${{ matrix.NXF_VER }}"
 
       - name: Install nf-test
-        if: steps.condition.outputs.skip != 'true'
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash -s $NFTEST_VER
           sudo mv nf-test /usr/local/bin/
 
       - name: Run nf-test
-        if: steps.condition.outputs.skip != 'true'
         run: |
-          nf-test test tests/pipeline/ --profile "test,${{ matrix.profile }}" --tap=test.tap
+          nf-test test tests/pipeline/ --profile "test,${{ matrix.profile }}" --junitxml=test.xml
 
       - name: Output log on failure
         if: failure()
         run: |
           sudo apt install bat > /dev/null
           batcat --decorations=always --color=always ${{ github.workspace }}/.nf-test/tests/*/output/pipeline_info/software_versions.yml
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: test.xml
