@@ -23,7 +23,7 @@
     },
     "software_versions": {
         "content": [
-            "{CUSTOM_DUMPSOFTWAREVERSIONS={python=3.11.0, yaml=6.0}, CUSTOM_SRATOOLSNCBISETTINGS={sratools=2.11.0}, MULTIQC_MAPPINGS_CONFIG={python=3.9.5}, SRA_FASTQ_FTP={curl=7.81.0}, SRA_IDS_TO_RUNINFO={python=3.9.5}, SRA_MERGE_SAMPLESHEET={sed=4.7}, SRA_RUNINFO_TO_FTP={python=3.9.5}, Workflow={nf-core/fetchngs=1.11.0}}"
+            "{CUSTOM_DUMPSOFTWAREVERSIONS={python=3.11.0, yaml=6.0}, CUSTOM_SRATOOLSNCBISETTINGS={sratools=2.11.0}, MULTIQC_MAPPINGS_CONFIG={python=3.9.5}, SRA_FASTQ_FTP={curl=7.81.0}, SRA_IDS_TO_RUNINFO={python=3.9.5}, SRA_MERGE_SAMPLESHEET={sed=4.7}, SRA_RUNINFO_TO_FTP={python=3.9.5}, Workflow={nf-core/fetchngs=1.10.1}}"
         ],
         "timestamp": "2023-05-28T15:25:33+0000"
     },
