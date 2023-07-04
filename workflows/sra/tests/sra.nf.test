@@ -2,22 +2,21 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
-    tag "sratools_force"
-    tag "pipeline"
+    tag "sra"
+    tag "workflow"
 
-    test("Force SRA-Tools Download") {
+    test("SRA FASTQ & Metadata") {
 
         when {
             params {
-                outdir                  = "$outputDir"
-                force_sratools_download = true
+                outdir = "$outputDir"
             }
         }
 
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("software_versions") },
+                { assert snapshot(NftestUtils.removeNextflowVersion("$outputDir")).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
