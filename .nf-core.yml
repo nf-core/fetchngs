@@ -1,7 +1,15 @@
 repository_type: pipeline
 lint:
   files_unchanged:
+    - .github/CONTRIBUTING.md
+    - .github/ISSUE_TEMPLATE/bug_report.yml
+    - assets/nf-core-fetchngs_logo_light.png
     - assets/sendmail_template.txt
     - lib/NfcoreTemplate.groovy
     - .gitattributes
-  actions_ci: False
+  actions_ci: false
+  multiqc_config: false
+  nextflow_config:
+    - 'params.validationShowHiddenParams'
+    - 'params.validationSchemaIgnoreParams'
+  schema_params: false
