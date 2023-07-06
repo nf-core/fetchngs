@@ -1,0 +1,2 @@
+"sample","experiment_accession","run_accession","sample_accession","experiment_alias","run_alias","sample_alias","experiment_title","sample_title","sample_description"
+"ERX1234253","ERX1234253","ERR1160846","SAMEA3687214","qiita_ptid_1263:10317.BLANK.93.3E.r22","qiita_ppdid_706:10317.BLANK.93.3E.r22","qiita_sid_10317:10317.BLANK.93.3E.r22","qiita_ptid_1263:10317.BLANK.93.3E.r22;Illumina HiSeq 2500 sequencing; qiita_ptid_1263:10317.BLANK.93.3E.r22","10317.BLANK.93.3E.r22","American Gut control"
