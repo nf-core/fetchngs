@@ -52,6 +52,7 @@ jobs:
           - "sra_with_rnaseq_specific_ena"
           - "sra_with_taxprofiler"
           - "sra_with_viralrecon"
+          - "modules_local"
         profile:
           - "docker"
 

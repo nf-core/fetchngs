@@ -16,7 +16,7 @@ nextflow_process {
                 input[0] = [
                             [ id:'SRX9626017_SRR13191702', single_end:false ], // meta map
                             [ SRR13191702 ]
-                           ]
+                        ]
                 """
             }
         }
