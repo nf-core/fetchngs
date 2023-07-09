@@ -1,0 +1,21 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "SRR9984183.runinfo.tsv:md5,51cba5fab4d6f0c0386e4397672240b9"
+                ],
+                "1": [
+                    "versions.yml:md5,1c14442e9b494b586eafe41e77300fae"
+                ],
+                "tsv": [
+                    "SRR9984183.runinfo.tsv:md5,51cba5fab4d6f0c0386e4397672240b9"
+                ],
+                "versions": [
+                    "versions.yml:md5,1c14442e9b494b586eafe41e77300fae"
+                ]
+            }
+        ],
+        "timestamp": "2023-07-06T13:16:51+0000"
+    }
+}

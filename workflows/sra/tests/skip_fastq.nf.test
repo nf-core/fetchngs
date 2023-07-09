@@ -3,7 +3,7 @@ nextflow_pipeline {
     name "Test Workflow main.nf"
     script "main.nf"
     tag "sra_skip_fastq"
-    tag "pipeline"
+    tag "workflow"
 
     test("SRA Skip FASTQ") {
 
@@ -17,7 +17,7 @@ nextflow_pipeline {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("software_versions") },
+                { assert snapshot(NftestUtils.removeNextflowVersion("$outputDir")).match("software_versions") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/ERR1109373.runinfo_ftp.tsv"),

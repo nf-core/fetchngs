@@ -2,21 +2,24 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
-    tag "sra"
-    tag "pipeline"
+    tag "sra_with_rnaseq_specific_ena"
+    tag "workflow"
 
-    test("SRA FASTQ & Metadata") {
+    test("SRA NF-CORE/RNASEQ Samplesheet With Specific ENA metadata") {
 
         when {
             params {
-                outdir = "$outputDir"
+                outdir                = "$outputDir"
+                nf_core_pipeline      = "rnaseq"
+                ena_metadata_fields   = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
+                sample_mapping_fields = "run_accession,library_layout"
             }
         }
 
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(UTILS.removeNextflowVersion("$outputDir")).match("software_versions") },
+                { assert snapshot(NftestUtils.removeNextflowVersion("$outputDir")).match("software_versions") },
                 { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
                 { assert snapshot(path("$outputDir/metadata/DRR026872.runinfo_ftp.tsv"),
                                 path("$outputDir/metadata/DRR028935.runinfo_ftp.tsv"),
@@ -34,7 +37,5 @@ nextflow_pipeline {
                 { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
             )
         }
-
     }
-
 }

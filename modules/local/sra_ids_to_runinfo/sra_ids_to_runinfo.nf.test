@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process SRA_IDS_TO_RUNINFO"
+    script "modules/local/sra_ids_to_runinfo.nf"
+    process "SRA_IDS_TO_RUNINFO"
+    tag "sra_ids_to_runinfo"
+    tag "modules_local"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = 'SRR9984183'
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}

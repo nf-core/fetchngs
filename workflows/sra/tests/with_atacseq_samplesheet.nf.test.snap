@@ -1,0 +1,80 @@
+{
+    "metadata": {
+        "content": [
+            "DRR026872.runinfo_ftp.tsv:md5,ef90876b2cbcb3721251b4cdef8cc47b",
+            "DRR028935.runinfo_ftp.tsv:md5,f79eefcea5db346f76f76f87df7f8dd2",
+            "ERR1109373.runinfo_ftp.tsv:md5,d1717cb1638950b7af22ec1b976616a4",
+            "ERR1160846.runinfo_ftp.tsv:md5,1b2dc1a64117de20b2164724836da345",
+            "GSE214215.runinfo_ftp.tsv:md5,23a580c89ee7bf681ca3ffa26aa1837f",
+            "SRR12848126.runinfo_ftp.tsv:md5,5d1e6bfd3d4077d1e66378c58e44975d",
+            "SRR13191702.runinfo_ftp.tsv:md5,409e262bb41bb6103315126db4d0dd1d",
+            "SRR14593545.runinfo_ftp.tsv:md5,888eaa19fd0b7fea4dc3e9800c1d26f2",
+            "SRR14709033.runinfo_ftp.tsv:md5,975dd9b32bdbd78b5da3cd88a5f705c1",
+            "SRR9984183.runinfo_ftp.tsv:md5,911a48308f76387b97842d35abc43c8f"
+        ],
+        "timestamp": "2023-07-06T14:03:45+0000"
+    },
+    "samplesheet": {
+        "content": [
+            "id_mappings.csv:md5,aa5eab8068e59a3866fd6d1fa8fe1b5a",
+            "multiqc_config.yml:md5,1337fdab76cbca9b78dbf06d7344a3b8"
+        ],
+        "timestamp": "2023-07-06T14:03:45+0000"
+    },
+    "software_versions": {
+        "content": [
+            "{CUSTOM_DUMPSOFTWAREVERSIONS={python=3.11.0, yaml=6.0}, CUSTOM_SRATOOLSNCBISETTINGS={sratools=2.11.0}, MULTIQC_MAPPINGS_CONFIG={python=3.9.5}, SRA_FASTQ_FTP={curl=7.81.0}, SRA_IDS_TO_RUNINFO={python=3.9.5}, SRA_MERGE_SAMPLESHEET={sed=4.7}, SRA_RUNINFO_TO_FTP={python=3.9.5}, Workflow={nf-core/fetchngs=1.10.1}}"
+        ],
+        "timestamp": "2023-07-06T14:03:45+0000"
+    },
+    "fastq": {
+        "content": [
+            "DRX024467_DRR026872.fastq.gz:md5,515e5448c55e054113c4a22df5f62791",
+            "DRX026011_DRR028935_1.fastq.gz:md5,cc01df82a9354bb6b3be93483b20c35a",
+            "DRX026011_DRR028935_2.fastq.gz:md5,941c9998d746416dad53c94c480ddf30",
+            "ERX1188904_ERR1109373_1.fastq.gz:md5,9fd57225d6c07a31843276d6df9b15c0",
+            "ERX1188904_ERR1109373_2.fastq.gz:md5,5a62e8f785687dce890cfb4fe3e607f9",
+            "ERX1234253_ERR1160846.fastq.gz:md5,5924f20ef547ebdfed7cad795bbab6e6",
+            "SRX10940790_SRR14593545_1.fastq.gz:md5,6a4762cf0f1f9f5544d3735e2e07c5d3",
+            "SRX10940790_SRR14593545_2.fastq.gz:md5,cbd30715fdef457d7aa24a12f19eedf2",
+            "SRX11047067_SRR14709033.fastq.gz:md5,79140dd1cb3fd1c5e02d88e01f7c3eda",
+            "SRX17709227_SRR21711856.fastq.gz:md5,7cd1402155befc87be338132d1f31f64",
+            "SRX17709228_SRR21711855.fastq.gz:md5,cbe4e9f967a71593f9ec3c6edaf11c83",
+            "SRX6725035_SRR9984183.fastq.gz:md5,0b512d2dc31685983456bd56fd836544",
+            "SRX9315476_SRR12848126_1.fastq.gz:md5,03f5a34586aef9cd61f54eb26831a665",
+            "SRX9315476_SRR12848126_2.fastq.gz:md5,97701c5d884af8d96ba95d7237f3bf79",
+            "SRX9504942_SRR13055517_1.fastq.gz:md5,dcf4438c0b682242ee90c5f3a803fb40",
+            "SRX9504942_SRR13055517_2.fastq.gz:md5,18dbe96e7f58b63406d9058938df1962",
+            "SRX9504942_SRR13055518_1.fastq.gz:md5,5ec894d863fcefe394470a0925aefde4",
+            "SRX9504942_SRR13055518_2.fastq.gz:md5,aead170df9851773d5202b5760c76d76",
+            "SRX9504942_SRR13055519_1.fastq.gz:md5,5ad51460c6c4a850dd37a206e2c441c1",
+            "SRX9504942_SRR13055519_2.fastq.gz:md5,a977367bf41dacf4c21bc0c8201b8b88",
+            "SRX9504942_SRR13055520_1.fastq.gz:md5,795d460abff6009c7f5ff7c14b773fbe",
+            "SRX9504942_SRR13055520_2.fastq.gz:md5,c3f34379356b28d6dac7212abc1a0a04",
+            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
+            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98",
+            [
+                "DRX024467_DRR026872.fastq.gz.md5:md5,dacaeba3498fb8f405411a22cdb4b40d",
+                "DRX026011_DRR028935_1.fastq.gz.md5:md5,a47018c5972ba4c11539d0d6bc25eda9",
+                "DRX026011_DRR028935_2.fastq.gz.md5:md5,f477bbef548fbed665734ebf084eea2f",
+                "ERX1188904_ERR1109373_1.fastq.gz.md5:md5,50c1c3108631dc32a3151b67e0260d86",
+                "ERX1188904_ERR1109373_2.fastq.gz.md5:md5,1f22463d410e91a288c83d43654b2499",
+                "ERX1234253_ERR1160846.fastq.gz.md5:md5,513a8437ad331fc512b088b3750aa1ff",
+                "SRX17709227_SRR21711856.fastq.gz.md5:md5,13a38fbef27c3e15867d80887145ae75",
+                "SRX17709228_SRR21711855.fastq.gz.md5:md5,1e871ddd9e92e1866e0c64d36eb5ec85",
+                "SRX6725035_SRR9984183.fastq.gz.md5:md5,84f59dbb76c9b5eab7e14d90ced352c4",
+                "SRX9504942_SRR13055517_1.fastq.gz.md5:md5,a03f7f374dc401047b6f6ccaec3885cc",
+                "SRX9504942_SRR13055517_2.fastq.gz.md5:md5,facaf207753e977327e7b7df7bb8ace0",
+                "SRX9504942_SRR13055518_1.fastq.gz.md5:md5,5cf412cd62aadaa4838d9eabb5b44368",
+                "SRX9504942_SRR13055518_2.fastq.gz.md5:md5,93292b826afc72b23be93df26dd710c8",
+                "SRX9504942_SRR13055519_1.fastq.gz.md5:md5,f6ad6e2610397147a0a55c651de3992f",
+                "SRX9504942_SRR13055519_2.fastq.gz.md5:md5,2fe7dd4bcc1e7e61c6f54ef50cf961f3",
+                "SRX9504942_SRR13055520_1.fastq.gz.md5:md5,ab195b37746a3424a1099d9f8cc58de8",
+                "SRX9504942_SRR13055520_2.fastq.gz.md5:md5,10c448e23f1f7e7af61ec1204f8fc882",
+                "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
+                "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
+            ]
+        ],
+        "timestamp": "2023-07-06T14:03:45+0000"
+    }
+}
