@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SRA_RUNINFO_TO_FTP"
-    script "modules/local/sra_runinfo_to_ftp.nf"
+    script "modules/local/sra_runinfo_to_ftp/sra_runinfo_to_ftp.nf"
     process "SRA_RUNINFO_TO_FTP"
     tag "sra_runinfo_to_ftp"
     tag "modules_local"
@@ -14,7 +14,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file("$baseDir/modules/local/tests/input/sra_runinfo_to_ftp/SRR13191702.runinfo.tsv", checkIfExists: true)
+                input[0] = file(params.test_data['modules_local']['sra_runinfo_to_ftp'], checkIfExists: true)
                 """
             }
         }

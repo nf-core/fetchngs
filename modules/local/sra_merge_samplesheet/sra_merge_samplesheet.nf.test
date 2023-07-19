@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test Process SRA_MERGE_SAMPLESHEET"
-    script "modules/local/sra_merge_samplesheet.nf"
+    script "modules/local/sra_merge_samplesheet/sra_merge_samplesheet.nf"
     process "SRA_MERGE_SAMPLESHEET"
     tag "sra_merge_samplesheet"
     tag "modules_local"
@@ -14,8 +14,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file("$baseDir/modules/local/tests/input/sra_merge_samplesheet/samplesheets/*", checkIfExists: true)
-                input[1] = file("$baseDir/modules/local/tests/input/sra_merge_samplesheet/mappings/*", checkIfExists: true)
+                input[0] = file(params.test_data['modules_local']['sra_merge_samplesheet_samplesheets'], checkIfExists: true)
+                input[1] = file(params.test_data['modules_local']['sra_merge_samplesheet_mappings'], checkIfExists: true)
                 """
             }
         }

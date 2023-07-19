@@ -1,9 +1,10 @@
 nextflow_process {
 
     name "Test Process SRA_TO_SAMPLESHEET"
-    script "modules/local/sra_to_samplesheet.nf"
+    script "modules/local/sra_to_samplesheet/sra_to_samplesheet.nf"
     process "SRA_TO_SAMPLESHEET"
     tag "sra_to_samplesheet"
+    tag "modules_local"
 
     test("Should run without failures") {
 
@@ -16,7 +17,7 @@ nextflow_process {
                 input[1] =
                 input[2] =
                 input[3] =
-                input[4] = file("$baseDir/modules/local/tests/input/sra_to_samplesheet/SRX9626017_SRR13191702.mappings.csv", checkIfExists: true)
+                input[4] = file(params.test_data['modules_local']['sra_to_samplesheet'], checkIfExists: true)
                 """
             }
         }
