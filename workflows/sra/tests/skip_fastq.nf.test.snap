@@ -1,30 +1,30 @@
 {
     "metadata": {
         "content": [
-            "DRR026872.runinfo_ftp.tsv:md5,ef90876b2cbcb3721251b4cdef8cc47b",
+            "DRR026872.runinfo_ftp.tsv:md5,73606f6a05c45b077809da43ca638b5f",
             "DRR028935.runinfo_ftp.tsv:md5,f79eefcea5db346f76f76f87df7f8dd2",
             "ERR1109373.runinfo_ftp.tsv:md5,d1717cb1638950b7af22ec1b976616a4",
             "ERR1160846.runinfo_ftp.tsv:md5,1b2dc1a64117de20b2164724836da345",
             "GSE214215.runinfo_ftp.tsv:md5,23a580c89ee7bf681ca3ffa26aa1837f",
             "SRR12848126.runinfo_ftp.tsv:md5,5d1e6bfd3d4077d1e66378c58e44975d",
             "SRR13191702.runinfo_ftp.tsv:md5,409e262bb41bb6103315126db4d0dd1d",
-            "SRR14593545.runinfo_ftp.tsv:md5,888eaa19fd0b7fea4dc3e9800c1d26f2",
+            "SRR14593545.runinfo_ftp.tsv:md5,62015706ac156693ba3d86ed050cab54",
             "SRR14709033.runinfo_ftp.tsv:md5,975dd9b32bdbd78b5da3cd88a5f705c1",
-            "SRR9984183.runinfo_ftp.tsv:md5,911a48308f76387b97842d35abc43c8f"
+            "SRR9984183.runinfo_ftp.tsv:md5,53ab34ff3612b0e2c7d60476822787be"
         ],
-        "timestamp": "2023-07-06T14:02:03+0000"
+        "timestamp": "2023-08-06T23:37:00+0000"
     },
     "samplesheet": {
         "content": [
-            "id_mappings.csv:md5,aa5eab8068e59a3866fd6d1fa8fe1b5a",
-            "multiqc_config.yml:md5,1337fdab76cbca9b78dbf06d7344a3b8"
+            "id_mappings.csv:md5,3e287081f1e9349921fa8c709a874565",
+            "multiqc_config.yml:md5,a97047e12b0ea3f46d285629e4053548"
         ],
-        "timestamp": "2023-07-06T14:02:03+0000"
+        "timestamp": "2023-08-06T23:37:00+0000"
     },
     "software_versions": {
         "content": [
             "{CUSTOM_DUMPSOFTWAREVERSIONS={python=3.11.0, yaml=6.0}, MULTIQC_MAPPINGS_CONFIG={python=3.9.5}, SRA_IDS_TO_RUNINFO={python=3.9.5}, SRA_MERGE_SAMPLESHEET={sed=4.7}, SRA_RUNINFO_TO_FTP={python=3.9.5}, Workflow={nf-core/fetchngs=1.10.1}}"
         ],
-        "timestamp": "2023-07-06T14:02:03+0000"
+        "timestamp": "2023-08-06T23:37:00+0000"
     }
 }

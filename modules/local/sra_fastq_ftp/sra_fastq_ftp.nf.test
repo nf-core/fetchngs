@@ -6,7 +6,7 @@ nextflow_process {
     tag "sra_fastq_ftp"
     tag "modules_local"
 
-    test("Should run without failures") {
+    test("SRX9626017_SRR13191702") {
 
         when {
             params {
@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id:'SRX9626017_SRR13191702', single_end:false ], // meta map
-                            [ SRR13191702 ]
+                            [ id:'SRX9626017_SRR13191702', single_end:false, md5_1: '89c5be920021a035084d8aeb74f32df7', md5_2: '56271be38a80db78ef3bdfc5d9909b98' ], // meta map
+                            params.test_data['modules_local']['sra_fastq_ftp']
                         ]
                 """
             }

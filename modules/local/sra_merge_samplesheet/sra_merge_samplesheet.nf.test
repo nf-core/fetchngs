@@ -14,8 +14,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = file(params.test_data['modules_local']['sra_merge_samplesheet_samplesheets'], checkIfExists: true)
-                input[1] = file(params.test_data['modules_local']['sra_merge_samplesheet_mappings'], checkIfExists: true)
+                input[0] = params.test_data['modules_local']['sra_merge_samplesheet_samplesheets'].collect { file(it, checkIfExists: true) }
+                input[1] = params.test_data['modules_local']['sra_merge_samplesheet_mappings'].collect { file(it, checkIfExists: true) }
                 """
             }
         }
