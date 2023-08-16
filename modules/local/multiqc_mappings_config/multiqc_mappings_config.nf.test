@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process MULTIQC_MAPPINGS_CONFIG"
+    script "modules/local/multiqc_mappings_config/multiqc_mappings_config.nf"
+    process "MULTIQC_MAPPINGS_CONFIG"
+    tag "multiqc_mappings_config"
+    tag "modules_local"
+
+    test("SRX9626017_SRR13191702") {
+
+        when {
+            params {
+                outdir   = "$outputDir"
+            }
+            process {
+                """
+                input[0] = file(params.test_data['modules_local']['multiqc_mappings_config'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+            )
+        }
+
+    }
+
+}
