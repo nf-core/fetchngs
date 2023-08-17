@@ -1,16 +1,16 @@
 nextflow_pipeline {
 
-    name "Test Workflow main.nf"
+    name "Test workflow: sra.nf"
     script "main.nf"
     tag "workflows"
-    tag "sra"
-    tag "sra_skip_fastq"
+    tag "workflows_sra"
+    tag "sra_skip_fastq_download"
 
-    test("SRA Skip FASTQ") {
+    test("Parameters: '--skip_fastq_download'") {
 
         when {
             params {
-                outdir              = "$outputDir"
+                outdir = "$outputDir"
                 skip_fastq_download = true
             }
         }
@@ -49,7 +49,5 @@ nextflow_pipeline {
                 { assert !new File("$outputDir/fastq/SRX9626017_SRR13191702_2.fastq.gz").exists() }
             )
         }
-
     }
-
 }

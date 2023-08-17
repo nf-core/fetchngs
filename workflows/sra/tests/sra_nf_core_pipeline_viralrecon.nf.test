@@ -1,17 +1,17 @@
 nextflow_pipeline {
 
-    name "Test Workflow main.nf"
+    name "Test workflow: sra.nf"
     script "main.nf"
     tag "workflows"
-    tag "sra"
-    tag "sra_force_sratools_download"
+    tag "workflows_sra"
+    tag "sra_nf_core_pipeline_viralrecon"
 
-    test("Force SRA-Tools Download") {
+    test("Parameters: '--nf_core_pipeline viralrecon'") {
 
         when {
             params {
-                outdir                  = "$outputDir"
-                force_sratools_download = true
+                outdir = "$outputDir"
+                nf_core_pipeline = "viralrecon"
             }
         }
 
@@ -36,7 +36,5 @@ nextflow_pipeline {
                 { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
             )
         }
-
     }
-
 }

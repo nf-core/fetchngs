@@ -1,6 +1,6 @@
 nextflow_pipeline {
 
-    name "Test Workflow main.nf"
+    name "Test workflow: synapse.nf"
     script "main.nf"
     tag "workflows"
     tag "synapse"

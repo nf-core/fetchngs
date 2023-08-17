@@ -45,7 +45,14 @@ jobs:
         NXF_VER: ${{ fromJson(needs.define_nxf_versions.outputs.matrix) }}
         test_tags:
           - "modules_local"
-          - "sra"
+          - "sra_default_parameters"
+          - "sra_custom_ena_metadata_fields"
+          - "sra_force_sratools_download"
+          - "sra_nf_core_pipeline_atacseq"
+          - "sra_nf_core_pipeline_rnaseq"
+          - "sra_nf_core_pipeline_taxprofiler"
+          - "sra_nf_core_pipeline_viralrecon"
+          - "sra_skip_fastq_download"
         profile:
           - "docker"
 

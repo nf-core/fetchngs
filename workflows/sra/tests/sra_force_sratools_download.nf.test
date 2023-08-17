@@ -1,17 +1,17 @@
 nextflow_pipeline {
 
-    name "Test Workflow main.nf"
+    name "Test workflow: sra.nf"
     script "main.nf"
     tag "workflows"
-    tag "sra"
-    tag "sra_with_taxprofiler"
+    tag "workflows_sra"
+    tag "sra_force_sratools_download"
 
-    test("SRA NF-CORE/TAXPROFILER Samplesheet") {
+    test("Parameters: '--force_sratools_download'") {
 
         when {
             params {
-                outdir           = "$outputDir"
-                nf_core_pipeline = "taxprofiler"
+                outdir = "$outputDir"
+                force_sratools_download = true
             }
         }
 
@@ -37,5 +37,4 @@ nextflow_pipeline {
             )
         }
     }
-
 }

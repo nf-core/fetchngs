@@ -1,17 +1,19 @@
 nextflow_pipeline {
 
-    name "Test Workflow main.nf"
+    name "Test workflow: sra.nf"
     script "main.nf"
     tag "workflows"
-    tag "sra"
-    tag "sra_with_atacseq"
+    tag "workflows_sra"
+    tag "sra_custom_ena_metadata_fields"
 
-    test("SRA NF-CORE/ATACSEQ Samplesheet") {
+    test("Parameters: '--nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...'") {
 
         when {
             params {
-                outdir           = "$outputDir"
-                nf_core_pipeline = "atacseq"
+                outdir = "$outputDir"
+                nf_core_pipeline = "rnaseq"
+                ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
+                sample_mapping_fields = "run_accession,library_layout"
             }
         }
 

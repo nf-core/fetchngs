@@ -1,17 +1,17 @@
 nextflow_pipeline {
 
-    name "Test Workflow main.nf"
+    name "Test workflow: sra.nf"
     script "main.nf"
     tag "workflows"
-    tag "sra"
-    tag "sra_with_viralrecon"
+    tag "workflows_sra"
+    tag "sra_nf_core_pipeline_atacseq"
 
-    test("SRA NF-CORE/VIRALRECON Samplesheet") {
+    test("Parameters: '--nf_core_pipeline atacseq'") {
 
         when {
             params {
-                outdir           = "$outputDir"
-                nf_core_pipeline = "viralrecon"
+                outdir = "$outputDir"
+                nf_core_pipeline = "atacseq"
             }
         }
 
