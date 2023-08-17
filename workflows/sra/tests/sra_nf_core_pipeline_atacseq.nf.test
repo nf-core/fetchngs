@@ -1,0 +1,25 @@
+nextflow_pipeline {
+
+    name "Test workflow: sra.nf"
+    script "main.nf"
+    tag "workflows"
+    tag "workflows_sra"
+    tag "sra_nf_core_pipeline_atacseq"
+
+    test("Parameters: --nf_core_pipeline atacseq") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                nf_core_pipeline = "atacseq"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

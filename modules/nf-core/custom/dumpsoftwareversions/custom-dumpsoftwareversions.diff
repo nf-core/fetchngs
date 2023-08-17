@@ -1,0 +1,13 @@
+Changes in module 'nf-core/custom/dumpsoftwareversions'
+--- modules/nf-core/custom/dumpsoftwareversions/templates/dumpsoftwareversions.py
++++ modules/nf-core/custom/dumpsoftwareversions/templates/dumpsoftwareversions.py
+@@ -75,7 +75,6 @@
+             versions_by_module[module] = process_versions
+ 
+     versions_by_module["Workflow"] = {
+-        "Nextflow": "$workflow.nextflow.version",
+         "$workflow.manifest.name": "$workflow.manifest.version",
+     }
+ 
+
+************************************************************

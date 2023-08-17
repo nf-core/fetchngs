@@ -1,0 +1,25 @@
+nextflow_pipeline {
+
+    name "Test workflow: sra.nf"
+    script "main.nf"
+    tag "workflows"
+    tag "workflows_sra"
+    tag "sra_force_sratools_download"
+
+    test("Parameters: --force_sratools_download") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                force_sratools_download = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
