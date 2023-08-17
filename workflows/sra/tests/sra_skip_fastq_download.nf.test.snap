@@ -1,4 +1,12 @@
 {
+    "Parameters: '--skip_fastq_download'": {
+        "content": [
+            {
+                
+            }
+        ],
+        "timestamp": "2023-08-17T12:25:19+0000"
+    },
     "metadata": {
         "content": [
             "DRR026872.runinfo_ftp.tsv:md5,73606f6a05c45b077809da43ca638b5f",
@@ -12,19 +20,27 @@
             "SRR14709033.runinfo_ftp.tsv:md5,975dd9b32bdbd78b5da3cd88a5f705c1",
             "SRR9984183.runinfo_ftp.tsv:md5,53ab34ff3612b0e2c7d60476822787be"
         ],
-        "timestamp": "2023-08-06T23:37:00+0000"
+        "timestamp": "2023-08-17T12:25:19+0000"
     },
     "samplesheet": {
         "content": [
             "id_mappings.csv:md5,3e287081f1e9349921fa8c709a874565",
             "multiqc_config.yml:md5,a97047e12b0ea3f46d285629e4053548"
         ],
-        "timestamp": "2023-08-06T23:37:00+0000"
+        "timestamp": "2023-08-17T12:25:19+0000"
     },
     "software_versions": {
         "content": [
             "{CUSTOM_DUMPSOFTWAREVERSIONS={python=3.11.0, yaml=6.0}, MULTIQC_MAPPINGS_CONFIG={python=3.9.5}, SRA_IDS_TO_RUNINFO={python=3.9.5}, SRA_MERGE_SAMPLESHEET={sed=4.7}, SRA_RUNINFO_TO_FTP={python=3.9.5}, Workflow={nf-core/fetchngs=1.10.1}}"
         ],
-        "timestamp": "2023-08-06T23:37:00+0000"
+        "timestamp": "2023-08-17T12:25:19+0000"
+    },
+    "Parameters: --skip_fastq_download": {
+        "content": [
+            {
+                
+            }
+        ],
+        "timestamp": "2023-08-17T12:25:19+0000"
     }
 }
