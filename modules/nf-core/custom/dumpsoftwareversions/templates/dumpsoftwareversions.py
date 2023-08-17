@@ -75,7 +75,6 @@ def main():
             versions_by_module[module] = process_versions
 
     versions_by_module["Workflow"] = {
-        "Nextflow": "$workflow.nextflow.version",
         "$workflow.manifest.name": "$workflow.manifest.version",
     }
 
