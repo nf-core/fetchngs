@@ -1,10 +1,11 @@
 nextflow_process {
 
     name "Test Process SRA_RUNINFO_TO_FTP"
-    script "modules/local/sra_runinfo_to_ftp/sra_runinfo_to_ftp.nf"
+    script "modules/local/sra_runinfo_to_ftp/main.nf"
     process "SRA_RUNINFO_TO_FTP"
-    tag "sra_runinfo_to_ftp"
+    tag "modules"
     tag "modules_local"
+    tag "sra_runinfo_to_ftp"
 
     test("Should run without failures") {
 

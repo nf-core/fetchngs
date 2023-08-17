@@ -49,9 +49,9 @@ if (WorkflowMain.isSraId(ch_input)) {
 
 if (params.input_type == input_type) {
     if (params.input_type == 'sra') {
-        include { SRA } from './workflows/sra/main'
+        include { SRA } from './workflows/sra'
     } else if (params.input_type == 'synapse') {
-        include { SYNAPSE } from './workflows/synapse/main'
+        include { SYNAPSE } from './workflows/synapse'
     }
 } else {
     exit 1, "Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!"

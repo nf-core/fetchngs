@@ -1,8 +1,10 @@
 nextflow_process {
 
     name "Test Process SRA_TO_SAMPLESHEET"
-    script "modules/local/sra_to_samplesheet/sra_to_samplesheet.nf"
+    script "modules/local/sra_to_samplesheet/main.nf"
     process "SRA_TO_SAMPLESHEET"
+    tag "modules"
+    tag "modules_local"
     tag "sra_to_samplesheet"
 
     test("Should run without failures") {

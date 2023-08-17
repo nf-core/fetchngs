@@ -2,8 +2,9 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
+    tag "workflows"
+    tag "sra"
     tag "sra_with_atacseq"
-    tag "workflow"
 
     test("SRA NF-CORE/ATACSEQ Samplesheet") {
 

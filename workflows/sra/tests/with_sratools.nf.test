@@ -2,8 +2,9 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
+    tag "workflows"
+    tag "sra"
     tag "sra_force_sratools_download"
-    tag "workflow"
 
     test("Force SRA-Tools Download") {
 

@@ -2,8 +2,10 @@ nextflow_pipeline {
 
     name "Test Workflow main.nf"
     script "main.nf"
+    tag "workflows"
+    tag "synapse"
+    tag "synapse_default"
     profile "test_synapse"
-    tag "pipeline"
 
     test("Synapse Input Type") {
 

@@ -1,10 +1,11 @@
 nextflow_process {
 
     name "Test Process SRA_FASTQ_FTP"
-    script "modules/local/sra_fastq_ftp/sra_fastq_ftp.nf"
+    script "modules/local/sra_fastq_ftp/main.nf"
     process "SRA_FASTQ_FTP"
-    tag "sra_fastq_ftp"
+    tag "modules"
     tag "modules_local"
+    tag "sra_fastq_ftp"
 
     test("SRX9626017_SRR13191702") {
 
