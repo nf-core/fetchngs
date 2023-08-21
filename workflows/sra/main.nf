@@ -81,6 +81,8 @@ workflow SRA {
         .set { ch_sra_metadata }
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
+    fastq_files = Channel.empty()
+
     if (!params.skip_fastq_download) {
 
         ch_sra_metadata
@@ -111,10 +113,13 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
-        SRA_FASTQ_FTP
-            .out
-            .fastq
-            .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
+        // Isolate FASTQ channel which will be added to emit block
+        fastq_files = fastq_files.mix(
+            SRA_FASTQ_FTP.out.fastq,
+            FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads
+        )
+
+        fastq_files
             .map { 
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
@@ -161,6 +166,11 @@ workflow SRA {
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
+
+    emit:
+        fastq       = fastq_files
+        samplesheet = SRA_MERGE_SAMPLESHEET.out.samplesheet
+        mapping     = SRA_MERGE_SAMPLESHEET.out.mappings
 }
 
 /*
