@@ -27,14 +27,6 @@ include { SYNAPSE_MERGE_SAMPLESHEET } from '../../modules/local/synapse_merge_sa
 
 /*
 ========================================================================================
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
-========================================================================================
-*/
-
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../modules/nf-core/custom/dumpsoftwareversions'
-
-/*
-========================================================================================
     RUN MAIN WORKFLOW
 ========================================================================================
 */
@@ -126,13 +118,6 @@ workflow SYNAPSE {
         SYNAPSE_TO_SAMPLESHEET.out.samplesheet.collect{ it[1] }
     )
     ch_versions = ch_versions.mix(SYNAPSE_MERGE_SAMPLESHEET.out.versions)
-
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
 
     emit:
         fastq       = ch_fastq

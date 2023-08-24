@@ -32,6 +32,15 @@ Channel
     .set { ch_ids }
 
 /*
+========================================================================================
+    IMPORT MODULES/SUBWORKFLOWS
+========================================================================================
+*/
+
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions'
+include { MULTIQC_MAPPINGS_CONFIG     } from './modules/local/multiqc_mappings_config'
+
+/*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOW FOR PIPELINE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +71,8 @@ if (params.input_type == input_type) {
 //
 workflow NFCORE_FETCHNGS {
 
+    ch_versions = Channel.empty()
+
     //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
@@ -69,11 +80,28 @@ workflow NFCORE_FETCHNGS {
         SRA ( ch_ids )
 
     //
+    // MODULE: Create a MutiQC config file with sample name mappings
+    //
+        if (params.sample_mapping_fields) {
+            MULTIQC_MAPPINGS_CONFIG (SRA.out.mappings)
+            ch_versions = SRA.out.versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
+        }
+
+    //
+    // MODULE: Dump software versions for all tools used in the workflow
+    //
+
+    //
     // WORKFLOW: Download FastQ files for Synapse ids
     //
     } else if (params.input_type == 'synapse') {
         SYNAPSE ( ch_ids )
+        ch_versions = SYNAPSE.out.versions
     }
+
+    CUSTOM_DUMPSOFTWAREVERSIONS (
+        ch_versions.unique().collectFile(name: 'collated_versions.yml')
+    )
 }
 
 /*
@@ -88,6 +116,20 @@ workflow NFCORE_FETCHNGS {
 //
 workflow {
     NFCORE_FETCHNGS ()
+}
+
+/*
+========================================================================================
+    COMPLETION EMAIL AND SUMMARY
+========================================================================================
+*/
+
+workflow.onComplete {
+    if (params.email || params.email_on_fail) {
+        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
+    }
+    NfcoreTemplate.summary(workflow, params, log)
+    WorkflowSra.curateSamplesheetWarn(log)
 }
 
 /*
