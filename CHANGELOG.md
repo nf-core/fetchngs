@@ -18,7 +18,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 ### Enhancements & fixes
 
 - [#166](https://github.com/nf-core/fetchngs/issues/175) - Add NF-TEST pipeline end-to-end tests for existing CI tests
-- Emits all files in workflow for testing and enabling workflow to be imported when supported by Nextflow
+- [#184](https://github.com/nf-core/fetchngs/pull/184/files) Emits all files in workflow for testing and enabling workflow to be imported (not supported by Nextflow)
 
 ## [[1.10.0](https://github.com/nf-core/fetchngs/releases/tag/1.10.0)] - 2023-05-16
 
