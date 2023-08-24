@@ -1,5 +1,8 @@
 repository_type: pipeline
 lint:
+  actions_ci: false
+  files_exist:
+    - conf/modules.config
   files_unchanged:
     - .github/CONTRIBUTING.md
     - .github/ISSUE_TEMPLATE/bug_report.yml
@@ -7,7 +10,6 @@ lint:
     - assets/sendmail_template.txt
     - lib/NfcoreTemplate.groovy
     - .gitattributes
-  actions_ci: false
   multiqc_config: false
   nextflow_config:
     - "params.validationShowHiddenParams"
