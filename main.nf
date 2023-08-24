@@ -78,20 +78,25 @@ workflow NFCORE_FETCHNGS {
     //
     if (params.input_type == 'sra') {
         SRA ( ch_ids )
+        ch_versions = ch_versions.mix(SRA.out.versions)
+    }
 
     //
-    // MODULE: Create a MutiQC config file with sample name mappings
+    // MODULE: Create a MultiQC config file with sample name mappings
     //
         if (params.sample_mapping_fields) {
             MULTIQC_MAPPINGS_CONFIG (SRA.out.mappings)
-            ch_versions = SRA.out.versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
+            ch_versions = ch_versions.mix(
+                SRA.out.versions,
+                MULTIQC_MAPPINGS_CONFIG.out.versions
+            )
         }
     //
     // WORKFLOW: Download FastQ files for Synapse ids
     //
     } else if (params.input_type == 'synapse') {
         SYNAPSE ( ch_ids )
-        ch_versions = SYNAPSE.out.versions
+        ch_versions = ch_versions.mix(SYNAPSE.out.versions)
     }
 
     //
