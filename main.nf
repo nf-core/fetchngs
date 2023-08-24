@@ -86,11 +86,6 @@ workflow NFCORE_FETCHNGS {
             MULTIQC_MAPPINGS_CONFIG (SRA.out.mappings)
             ch_versions = SRA.out.versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         }
-
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-
     //
     // WORKFLOW: Download FastQ files for Synapse ids
     //
@@ -99,6 +94,9 @@ workflow NFCORE_FETCHNGS {
         ch_versions = SYNAPSE.out.versions
     }
 
+    //
+    // MODULE: Dump software versions for all tools used in the workflow
+    //
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
