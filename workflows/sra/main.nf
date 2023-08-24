@@ -168,9 +168,11 @@ workflow SRA {
     )
 
     emit:
-        fastq       = fastq_files
-        samplesheet = SRA_MERGE_SAMPLESHEET.out.samplesheet
-        mapping     = SRA_MERGE_SAMPLESHEET.out.mappings
+        fastq         = fastq_files
+        samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
+        mapping       = SRA_MERGE_SAMPLESHEET.out.mappings
+        multiqc_config = MULTIQC_MAPPINGS_CONFIG.out.yml
+        versions      = ch_versions.unique()
 }
 
 /*
