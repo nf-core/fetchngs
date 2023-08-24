@@ -133,6 +133,11 @@ workflow SYNAPSE {
     CUSTOM_DUMPSOFTWAREVERSIONS (
         ch_versions.unique().collectFile(name: 'collated_versions.yml')
     )
+
+    emit:
+        fastq       = ch_fastq
+        samplesheet = SYNAPSE_MERGE_SAMPLESHEET.out.samplesheet
+        versions    = ch_versions.unique()
 }
 
 /*
