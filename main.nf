@@ -38,6 +38,36 @@ if (params.input_type != input_type)         { exit 1, "Ids auto-detected as ${i
 
 /*
 ========================================================================================
+    VALIDATE INPUTS
+========================================================================================
+*/
+
+if (params.input_type == 'sra') {
+    def valid_params = [
+        ena_metadata_fields : ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
+    ]
+
+    def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
+
+    // Validate input parameters
+    WorkflowSra.initialise(params, valid_params)
+}
+
+if (params.input_type == 'synapse') {
+
+    def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
+
+    // Create channel for synapse config
+    if (params.synapse_config) {
+        ch_synapse_config = file(params.synapse_config, checkIfExists: true)
+    } else {
+        exit 1, 'Please provide a Synapse config file for download authentication!'
+    }
+
+}
+
+/*
+========================================================================================
     IMPORT MODULES
 ========================================================================================
 */
@@ -84,7 +114,7 @@ workflow NFCORE_FETCHNGS {
     // WORKFLOW: Download FastQ files for Synapse ids
     //
     } else if (params.input_type == 'synapse') {
-        SYNAPSE ( ch_ids )
+        SYNAPSE(ch_ids, ch_synapse_config)
         ch_versions = ch_versions.mix(SYNAPSE.out.versions)
     }
 
