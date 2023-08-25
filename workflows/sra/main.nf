@@ -1,20 +1,5 @@
 /*
 ========================================================================================
-    VALIDATE INPUTS
-========================================================================================
-*/
-
-def valid_params = [
-    ena_metadata_fields : ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
-]
-
-def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
-
-// Validate input parameters
-WorkflowSra.initialise(params, valid_params)
-
-/*
-========================================================================================
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ========================================================================================
 */

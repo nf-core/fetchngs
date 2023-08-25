@@ -1,20 +1,5 @@
 /*
 ========================================================================================
-    VALIDATE INPUTS
-========================================================================================
-*/
-
-def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
-
-// Create channel for synapse config
-if (params.synapse_config) {
-    ch_synapse_config = file(params.synapse_config, checkIfExists: true)
-} else {
-    exit 1, 'Please provide a Synapse config file for download authentication!'
-}
-
-/*
-========================================================================================
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ========================================================================================
 */
@@ -34,7 +19,8 @@ include { SYNAPSE_MERGE_SAMPLESHEET } from '../../modules/local/synapse_merge_sa
 workflow SYNAPSE {
 
     take:
-    ids // channel: [ ids ]
+    ids               // channel: [ ids ]
+    ch_synapse_config // channel: [ synapse_config ]
 
     main:
     ch_versions = Channel.empty()
@@ -123,20 +109,6 @@ workflow SYNAPSE {
         fastq       = ch_fastq
         samplesheet = SYNAPSE_MERGE_SAMPLESHEET.out.samplesheet
         versions    = ch_versions.unique()
-}
-
-/*
-========================================================================================
-    COMPLETION EMAIL AND SUMMARY
-========================================================================================
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
-    }
-    NfcoreTemplate.summary(workflow, params, log)
-    WorkflowSynapse.curateSamplesheetWarn(log)
 }
 
 /*
