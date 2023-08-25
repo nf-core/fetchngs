@@ -23,7 +23,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out.mappings, workflow.out.samplesheet).match() }
+                { assert snapshot(workflow.out).match() }
             )
         }
     }

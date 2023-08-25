@@ -66,7 +66,7 @@ workflow SRA {
 
     if (!params.skip_fastq_download) {
 
-        ch_sra_metadata
+        ch_sra_reads = ch_sra_metadata
             .map {
                 meta ->
                     [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
@@ -75,7 +75,6 @@ workflow SRA {
                 ftp: it[0].fastq_1  && !params.force_sratools_download
                 sra: !it[0].fastq_1 || params.force_sratools_download
             }
-            .set { ch_sra_reads }
 
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
