@@ -49,18 +49,17 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-    SRA_RUNINFO_TO_FTP
+    ch_sra_metadata = SRA_RUNINFO_TO_FTP
         .out
         .tsv
         .splitCsv(header:true, sep:'\t')
-        .map {
-            meta ->
-                def meta_clone = meta.clone()
-                meta_clone.single_end = meta_clone.single_end.toBoolean()
-                return meta_clone
+        .map{ meta ->
+            def meta_clone = meta.clone()
+            meta_clone.single_end = meta_clone.single_end.toBoolean()
+            return meta_clone
         }
         .unique()
-        .set { ch_sra_metadata }
+
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     fastq_files = Channel.empty()
@@ -101,16 +100,17 @@ workflow SRA {
             FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads
         )
 
-        fastq_files
-            .map {
-                meta, fastq ->
-                    def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
-                    def meta_clone = meta.clone()
-                    meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
-                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
-                    return meta_clone
-            }
-            .set { ch_sra_metadata }
+        ch_sra_metadata = fastq_files.map { meta, fastq ->
+            def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
+            def meta_clone = meta.clone()
+
+            meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
+            meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
+
+            return meta_clone
+        }
+
+        fastq_only_files = fastq_files.map { meta, fastq -> [fastq] }
     }
 
     //
@@ -133,10 +133,10 @@ workflow SRA {
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
     emit:
-        fastq         = fastq_files
-        samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
-        mappings      = SRA_MERGE_SAMPLESHEET.out.mappings
-        versions      = ch_versions.unique()
+    fastq         = fastq_only_files
+    samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
+    mappings      = SRA_MERGE_SAMPLESHEET.out.mappings
+    versions      = ch_versions.unique()
 }
 
 /*
