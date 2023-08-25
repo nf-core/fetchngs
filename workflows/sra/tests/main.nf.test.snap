@@ -3,33 +3,23 @@
         "content": [
             {
                 "0": [
-                    [
-                        "DRX024467_DRR026872.fastq.gz:md5,515e5448c55e054113c4a22df5f62791"
-                    ]
+                    "samplesheet.csv:md5,dbd0e9c1683c603c681184a13f5b7341"
                 ],
                 "1": [
-                    "samplesheet.csv:md5,0f35f9485a633d9c581903abd611b646"
+                    "id_mappings.csv:md5,3e287081f1e9349921fa8c709a874565"
                 ],
                 "2": [
-                    "id_mappings.csv:md5,71ebb4334e4a319a1a007370e36c98f7"
-                ],
-                "3": [
                     "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
                     "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
                     "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
                     "versions.yml:md5,e977678bd13a54fc9c31addf135be15e",
                     "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd"
                 ],
-                "fastq": [
-                    [
-                        "DRX024467_DRR026872.fastq.gz:md5,515e5448c55e054113c4a22df5f62791"
-                    ]
-                ],
                 "mappings": [
-                    "id_mappings.csv:md5,71ebb4334e4a319a1a007370e36c98f7"
+                    "id_mappings.csv:md5,3e287081f1e9349921fa8c709a874565"
                 ],
                 "samplesheet": [
-                    "samplesheet.csv:md5,0f35f9485a633d9c581903abd611b646"
+                    "samplesheet.csv:md5,dbd0e9c1683c603c681184a13f5b7341"
                 ],
                 "versions": [
                     "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
@@ -40,6 +30,6 @@
                 ]
             }
         ],
-        "timestamp": "2023-08-25T12:56:07+0000"
+        "timestamp": "2023-08-25T13:15:46+0000"
     }
 }

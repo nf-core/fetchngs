@@ -109,8 +109,6 @@ workflow SRA {
 
             return meta_clone
         }
-
-        fastq_only_files = fastq_files.map { meta, fastq -> [fastq] }
     }
 
     //
@@ -133,7 +131,6 @@ workflow SRA {
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
     emit:
-    fastq         = fastq_only_files
     samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
     mappings      = SRA_MERGE_SAMPLESHEET.out.mappings
     versions      = ch_versions.unique()
