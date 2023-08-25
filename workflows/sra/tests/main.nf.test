@@ -1,7 +1,8 @@
-nextflow_pipeline {
+nextflow_workflow {
 
-    name "Test workflow: sra.nf"
-    script "main.nf"
+    name "Test workflow: sra/main.nf"
+    script "workflows/sra/main.nf"
+    workflow "SRA"
     tag "workflows"
     tag "workflows_sra"
     tag "sra_default_parameters"
