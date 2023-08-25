@@ -12,7 +12,7 @@ include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesh
 
 /*
 ========================================================================================
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+    IMPORT NF-CORE SUBWORKFLOWS
 ========================================================================================
 */
 
@@ -131,6 +131,7 @@ workflow SRA {
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
     emit:
+    fastq         = fastq_files
     samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
     mappings      = SRA_MERGE_SAMPLESHEET.out.mappings
     versions      = ch_versions.unique()
