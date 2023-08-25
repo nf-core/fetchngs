@@ -21,7 +21,7 @@ WorkflowMain.initialise(workflow, params, log)
 
 // Check if --input file is empty
 ch_input = file(params.input, checkIfExists: true)
-if (ch_input.isEmpty()) {exit 1, "File provided with --input is empty: ${ch_input.getName()}!"}
+if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
 
 // Read in ids from --input file
 ch_ids = Channel.from(file(params.input, checkIfExists: true))
@@ -33,8 +33,8 @@ ch_ids = Channel.from(file(params.input, checkIfExists: true))
 def input_type = ''
 if (WorkflowMain.isSraId(ch_input))          { input_type = 'sra' }
 else if (WorkflowMain.isSynapseId(ch_input)) { input_type = 'synapse' }
-else                                         { exit 1, 'Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!' }
-if (params.input_type != input_type)         { exit 1, "Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!" }
+else                                         { error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!') }
+if (params.input_type != input_type)         { error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!") }
 
 /*
 ========================================================================================
@@ -61,7 +61,7 @@ if (params.input_type == 'synapse') {
     if (params.synapse_config) {
         ch_synapse_config = file(params.synapse_config, checkIfExists: true)
     } else {
-        exit 1, 'Please provide a Synapse config file for download authentication!'
+        error('Please provide a Synapse config file for download authentication!')
     }
 
 }
