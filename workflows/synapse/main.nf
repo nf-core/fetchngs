@@ -127,20 +127,6 @@ workflow SYNAPSE {
 
 /*
 ========================================================================================
-    COMPLETION EMAIL AND SUMMARY
-========================================================================================
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
-    }
-    NfcoreTemplate.summary(workflow, params, log)
-    WorkflowSynapse.curateSamplesheetWarn(log)
-}
-
-/*
-========================================================================================
     THE END
 ========================================================================================
 */
