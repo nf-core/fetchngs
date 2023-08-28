@@ -72,8 +72,8 @@ if (params.input_type == 'synapse') {
 ========================================================================================
 */
 
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions'
 include { MULTIQC_MAPPINGS_CONFIG     } from './modules/local/multiqc_mappings_config'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions'
 
 /*
 ========================================================================================
