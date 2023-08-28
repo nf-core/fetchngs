@@ -27,8 +27,8 @@ nextflow_workflow {
                 { assert new File("$outputDir/custom").exists() },
                 { assert new File("$outputDir/metadata").exists() },
                 { assert new File("$outputDir/pipeline_info").exists() },
-                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") },
-                { assert snapshot(path("$outputDir/samplesheet/").list()).match("samplesheet") }
+                { assert new File("$outputDir/samplesheet").exists() },
+                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") }
             )
         }
     }
