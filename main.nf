@@ -72,8 +72,8 @@ if (params.input_type == 'synapse') {
 ========================================================================================
 */
 
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions'
 include { MULTIQC_MAPPINGS_CONFIG     } from './modules/local/multiqc_mappings_config'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions'
 
 /*
 ========================================================================================
@@ -97,33 +97,25 @@ workflow NFCORE_FETCHNGS {
 
     ch_versions = Channel.empty()
 
-    //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
-    //
     if (params.input_type == 'sra') {
         SRA(ch_ids)
         ch_versions = ch_versions.mix(SRA.out.versions)
-    //
-    // MODULE: Create a MultiQC config file with sample name mappings
-    //
+
+        // MODULE: Create a MultiQC config file with sample name mappings
         if (params.sample_mapping_fields) {
             MULTIQC_MAPPINGS_CONFIG(SRA.out.mappings)
             ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         }
-    //
+
     // WORKFLOW: Download FastQ files for Synapse ids
-    //
     } else if (params.input_type == 'synapse') {
         SYNAPSE(ch_ids, ch_synapse_config)
         ch_versions = ch_versions.mix(SYNAPSE.out.versions)
     }
 
-    //
     // MODULE: Dump software versions for all tools used in the workflow
-    //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
+    CUSTOM_DUMPSOFTWAREVERSIONS(ch_versions.unique().collectFile(name: 'collated_versions.yml'))
 }
 
 /*
