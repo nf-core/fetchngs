@@ -24,10 +24,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-//                { assert snapshot(workflow.out).match() }
-                { assert new File("$outputDir/metadata").exists() },
-                { assert new File("$outputDir/pipeline_info").exists() },
-                { assert new File("$outputDir/samplesheet").exists() }
+                { assert snapshot(workflow.out).match() }
             )
         }
     }
