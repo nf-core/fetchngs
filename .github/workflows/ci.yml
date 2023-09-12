@@ -16,7 +16,7 @@ on:
 
 env:
   NXF_ANSI_LOG: false
-  NFTEST_VER: "0.7.3"
+  NFTEST_VER: "0.8.0-rc1"
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"

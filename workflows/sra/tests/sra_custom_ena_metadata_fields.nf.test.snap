@@ -1,88 +1,573 @@
 {
-    "metadata": {
-        "content": [
-            "DRR026872.runinfo_ftp.tsv:md5,74a5f7058f27a565ce59db481355ca54",
-            "DRR028935.runinfo_ftp.tsv:md5,07a98fdcec207686a4ea2c9a3997edf3",
-            "ERR1109373.runinfo_ftp.tsv:md5,868897310855c50b1d5fc77d1195a1f9",
-            "ERR1160846.runinfo_ftp.tsv:md5,146d7f2ec778b32b7da7ad040e554114",
-            "GSE214215.runinfo_ftp.tsv:md5,adf62affe371dc9bad8e271450bdc2fe",
-            "SRR12848126.runinfo_ftp.tsv:md5,cf8827612a76645824e83418d7d76cbf",
-            "SRR13191702.runinfo_ftp.tsv:md5,2031ca9b7ab736dbde37d05b10cdb0ad",
-            "SRR14593545.runinfo_ftp.tsv:md5,3a1ac14d71744224a61ab542f869e180",
-            "SRR14709033.runinfo_ftp.tsv:md5,2385a9cc5e320e78b02743c45d1338f1",
-            "SRR9984183.runinfo_ftp.tsv:md5,f1ed9fc572d2e0d145be7f547f6d1236"
-        ],
-        "timestamp": "2023-08-28T09:29:59+0000"
-    },
-    "samplesheet": {
-        "content": [
-            "id_mappings.csv:md5,8473773df806859c6af7acafcfe5aa6f",
-            "samplesheet.csv:md5,7bca96e409bd9eb6790e0d6737af686c"
-        ],
-        "timestamp": "2023-08-28T09:29:59+0000"
-    },
-    "software_versions": {
-        "content": [
-            "{CUSTOM_DUMPSOFTWAREVERSIONS={python=3.11.0, yaml=6.0}, CUSTOM_SRATOOLSNCBISETTINGS={sratools=2.11.0}, MULTIQC_MAPPINGS_CONFIG={python=3.9.5}, SRA_FASTQ_FTP={curl=7.81.0}, SRA_IDS_TO_RUNINFO={python=3.9.5}, SRA_MERGE_SAMPLESHEET={sed=4.7}, SRA_RUNINFO_TO_FTP={python=3.9.5}, Workflow={nf-core/fetchngs=1.10.1}}"
-        ],
-        "timestamp": "2023-08-28T09:29:59+0000"
-    },
-    "Parameters: '--nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...'": {
+    "Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...": {
         "content": [
             {
-                
+                "0": [
+                    [
+                        {
+                            "id": "DRX024467_DRR026872",
+                            "run_accession": "DRR026872",
+                            "experiment_accession": "DRX024467",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR026/DRR026872/DRR026872.fastq.gz",
+                            "fastq_md5": "515e5448c55e054113c4a22df5f62791",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR026/DRR026872/DRR026872.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "515e5448c55e054113c4a22df5f62791",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "DRX024467_DRR026872.fastq.gz:md5,515e5448c55e054113c4a22df5f62791"
+                    ],
+                    [
+                        {
+                            "id": "DRX026011_DRR028935",
+                            "run_accession": "DRR028935",
+                            "experiment_accession": "DRX026011",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_2.fastq.gz",
+                            "fastq_md5": "cc01df82a9354bb6b3be93483b20c35a;941c9998d746416dad53c94c480ddf30",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_2.fastq.gz",
+                            "md5_1": "cc01df82a9354bb6b3be93483b20c35a",
+                            "md5_2": "941c9998d746416dad53c94c480ddf30",
+                            "single_end": false
+                        },
+                        [
+                            "DRX026011_DRR028935_1.fastq.gz:md5,cc01df82a9354bb6b3be93483b20c35a",
+                            "DRX026011_DRR028935_2.fastq.gz:md5,941c9998d746416dad53c94c480ddf30"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "ERX1188904_ERR1109373",
+                            "run_accession": "ERR1109373",
+                            "experiment_accession": "ERX1188904",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
+                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
+                            "single_end": false
+                        },
+                        [
+                            "ERX1188904_ERR1109373_1.fastq.gz:md5,9fd57225d6c07a31843276d6df9b15c0",
+                            "ERX1188904_ERR1109373_2.fastq.gz:md5,5a62e8f785687dce890cfb4fe3e607f9"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "ERX1234253_ERR1160846",
+                            "run_accession": "ERR1160846",
+                            "experiment_accession": "ERX1234253",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz",
+                            "fastq_md5": "5924f20ef547ebdfed7cad795bbab6e6",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "5924f20ef547ebdfed7cad795bbab6e6",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "ERX1234253_ERR1160846.fastq.gz:md5,5924f20ef547ebdfed7cad795bbab6e6"
+                    ],
+                    [
+                        {
+                            "id": "SRX10940790_SRR14593545",
+                            "run_accession": "SRR14593545",
+                            "experiment_accession": "SRX10940790",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "",
+                            "fastq_md5": "",
+                            "fastq_1": "",
+                            "fastq_2": "",
+                            "md5_1": "",
+                            "md5_2": "",
+                            "single_end": false
+                        },
+                        [
+                            "SRX10940790_SRR14593545_1.fastq.gz:md5,6a4762cf0f1f9f5544d3735e2e07c5d3",
+                            "SRX10940790_SRR14593545_2.fastq.gz:md5,cbd30715fdef457d7aa24a12f19eedf2"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX11047067_SRR14709033",
+                            "run_accession": "SRR14709033",
+                            "experiment_accession": "SRX11047067",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "",
+                            "fastq_md5": "",
+                            "fastq_1": "",
+                            "fastq_2": "",
+                            "md5_1": "",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX11047067_SRR14709033.fastq.gz:md5,79140dd1cb3fd1c5e02d88e01f7c3eda"
+                    ],
+                    [
+                        {
+                            "id": "SRX17709227_SRR21711856",
+                            "run_accession": "SRR21711856",
+                            "experiment_accession": "SRX17709227",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/056/SRR21711856/SRR21711856.fastq.gz",
+                            "fastq_md5": "7cd1402155befc87be338132d1f31f64",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/056/SRR21711856/SRR21711856.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "7cd1402155befc87be338132d1f31f64",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX17709227_SRR21711856.fastq.gz:md5,7cd1402155befc87be338132d1f31f64"
+                    ],
+                    [
+                        {
+                            "id": "SRX17709228_SRR21711855",
+                            "run_accession": "SRR21711855",
+                            "experiment_accession": "SRX17709228",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/055/SRR21711855/SRR21711855.fastq.gz",
+                            "fastq_md5": "cbe4e9f967a71593f9ec3c6edaf11c83",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/055/SRR21711855/SRR21711855.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "cbe4e9f967a71593f9ec3c6edaf11c83",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX17709228_SRR21711855.fastq.gz:md5,cbe4e9f967a71593f9ec3c6edaf11c83"
+                    ],
+                    [
+                        {
+                            "id": "SRX6725035_SRR9984183",
+                            "run_accession": "SRR9984183",
+                            "experiment_accession": "SRX6725035",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR998/003/SRR9984183/SRR9984183.fastq.gz",
+                            "fastq_md5": "0b512d2dc31685983456bd56fd836544",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR998/003/SRR9984183/SRR9984183.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "0b512d2dc31685983456bd56fd836544",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX6725035_SRR9984183.fastq.gz:md5,0b512d2dc31685983456bd56fd836544"
+                    ],
+                    [
+                        {
+                            "id": "SRX9315476_SRR12848126",
+                            "run_accession": "SRR12848126",
+                            "experiment_accession": "SRX9315476",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "",
+                            "fastq_md5": "",
+                            "fastq_1": "",
+                            "fastq_2": "",
+                            "md5_1": "",
+                            "md5_2": "",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9315476_SRR12848126_1.fastq.gz:md5,03f5a34586aef9cd61f54eb26831a665",
+                            "SRX9315476_SRR12848126_2.fastq.gz:md5,97701c5d884af8d96ba95d7237f3bf79"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055517",
+                            "run_accession": "SRR13055517",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_2.fastq.gz",
+                            "fastq_md5": "dcf4438c0b682242ee90c5f3a803fb40;18dbe96e7f58b63406d9058938df1962",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_2.fastq.gz",
+                            "md5_1": "dcf4438c0b682242ee90c5f3a803fb40",
+                            "md5_2": "18dbe96e7f58b63406d9058938df1962",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055517_1.fastq.gz:md5,dcf4438c0b682242ee90c5f3a803fb40",
+                            "SRX9504942_SRR13055517_2.fastq.gz:md5,18dbe96e7f58b63406d9058938df1962"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055518",
+                            "run_accession": "SRR13055518",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_2.fastq.gz",
+                            "fastq_md5": "5ec894d863fcefe394470a0925aefde4;aead170df9851773d5202b5760c76d76",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_2.fastq.gz",
+                            "md5_1": "5ec894d863fcefe394470a0925aefde4",
+                            "md5_2": "aead170df9851773d5202b5760c76d76",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055518_1.fastq.gz:md5,5ec894d863fcefe394470a0925aefde4",
+                            "SRX9504942_SRR13055518_2.fastq.gz:md5,aead170df9851773d5202b5760c76d76"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055519",
+                            "run_accession": "SRR13055519",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_2.fastq.gz",
+                            "fastq_md5": "5ad51460c6c4a850dd37a206e2c441c1;a977367bf41dacf4c21bc0c8201b8b88",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_2.fastq.gz",
+                            "md5_1": "5ad51460c6c4a850dd37a206e2c441c1",
+                            "md5_2": "a977367bf41dacf4c21bc0c8201b8b88",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055519_1.fastq.gz:md5,5ad51460c6c4a850dd37a206e2c441c1",
+                            "SRX9504942_SRR13055519_2.fastq.gz:md5,a977367bf41dacf4c21bc0c8201b8b88"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055520",
+                            "run_accession": "SRR13055520",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz",
+                            "fastq_md5": "795d460abff6009c7f5ff7c14b773fbe;c3f34379356b28d6dac7212abc1a0a04",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz",
+                            "md5_1": "795d460abff6009c7f5ff7c14b773fbe",
+                            "md5_2": "c3f34379356b28d6dac7212abc1a0a04",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055520_1.fastq.gz:md5,795d460abff6009c7f5ff7c14b773fbe",
+                            "SRX9504942_SRR13055520_2.fastq.gz:md5,c3f34379356b28d6dac7212abc1a0a04"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "run_accession": "SRR13191702",
+                            "experiment_accession": "SRX9626017",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_2.fastq.gz",
+                            "fastq_md5": "89c5be920021a035084d8aeb74f32df7;56271be38a80db78ef3bdfc5d9909b98",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_2.fastq.gz",
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98"
+                        ]
+                    ]
+                ],
+                "1": [
+                    "samplesheet.csv:md5,be5465f34924356e136c804d63e1b562"
+                ],
+                "2": [
+                    "id_mappings.csv:md5,8473773df806859c6af7acafcfe5aa6f"
+                ],
+                "3": [
+                    "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
+                    "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
+                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e",
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd"
+                ],
+                "fastq": [
+                    [
+                        {
+                            "id": "DRX024467_DRR026872",
+                            "run_accession": "DRR026872",
+                            "experiment_accession": "DRX024467",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR026/DRR026872/DRR026872.fastq.gz",
+                            "fastq_md5": "515e5448c55e054113c4a22df5f62791",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR026/DRR026872/DRR026872.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "515e5448c55e054113c4a22df5f62791",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "DRX024467_DRR026872.fastq.gz:md5,515e5448c55e054113c4a22df5f62791"
+                    ],
+                    [
+                        {
+                            "id": "DRX026011_DRR028935",
+                            "run_accession": "DRR028935",
+                            "experiment_accession": "DRX026011",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_2.fastq.gz",
+                            "fastq_md5": "cc01df82a9354bb6b3be93483b20c35a;941c9998d746416dad53c94c480ddf30",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_2.fastq.gz",
+                            "md5_1": "cc01df82a9354bb6b3be93483b20c35a",
+                            "md5_2": "941c9998d746416dad53c94c480ddf30",
+                            "single_end": false
+                        },
+                        [
+                            "DRX026011_DRR028935_1.fastq.gz:md5,cc01df82a9354bb6b3be93483b20c35a",
+                            "DRX026011_DRR028935_2.fastq.gz:md5,941c9998d746416dad53c94c480ddf30"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "ERX1188904_ERR1109373",
+                            "run_accession": "ERR1109373",
+                            "experiment_accession": "ERX1188904",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
+                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
+                            "single_end": false
+                        },
+                        [
+                            "ERX1188904_ERR1109373_1.fastq.gz:md5,9fd57225d6c07a31843276d6df9b15c0",
+                            "ERX1188904_ERR1109373_2.fastq.gz:md5,5a62e8f785687dce890cfb4fe3e607f9"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "ERX1234253_ERR1160846",
+                            "run_accession": "ERR1160846",
+                            "experiment_accession": "ERX1234253",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz",
+                            "fastq_md5": "5924f20ef547ebdfed7cad795bbab6e6",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "5924f20ef547ebdfed7cad795bbab6e6",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "ERX1234253_ERR1160846.fastq.gz:md5,5924f20ef547ebdfed7cad795bbab6e6"
+                    ],
+                    [
+                        {
+                            "id": "SRX10940790_SRR14593545",
+                            "run_accession": "SRR14593545",
+                            "experiment_accession": "SRX10940790",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "",
+                            "fastq_md5": "",
+                            "fastq_1": "",
+                            "fastq_2": "",
+                            "md5_1": "",
+                            "md5_2": "",
+                            "single_end": false
+                        },
+                        [
+                            "SRX10940790_SRR14593545_1.fastq.gz:md5,6a4762cf0f1f9f5544d3735e2e07c5d3",
+                            "SRX10940790_SRR14593545_2.fastq.gz:md5,cbd30715fdef457d7aa24a12f19eedf2"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX11047067_SRR14709033",
+                            "run_accession": "SRR14709033",
+                            "experiment_accession": "SRX11047067",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "",
+                            "fastq_md5": "",
+                            "fastq_1": "",
+                            "fastq_2": "",
+                            "md5_1": "",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX11047067_SRR14709033.fastq.gz:md5,79140dd1cb3fd1c5e02d88e01f7c3eda"
+                    ],
+                    [
+                        {
+                            "id": "SRX17709227_SRR21711856",
+                            "run_accession": "SRR21711856",
+                            "experiment_accession": "SRX17709227",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/056/SRR21711856/SRR21711856.fastq.gz",
+                            "fastq_md5": "7cd1402155befc87be338132d1f31f64",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/056/SRR21711856/SRR21711856.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "7cd1402155befc87be338132d1f31f64",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX17709227_SRR21711856.fastq.gz:md5,7cd1402155befc87be338132d1f31f64"
+                    ],
+                    [
+                        {
+                            "id": "SRX17709228_SRR21711855",
+                            "run_accession": "SRR21711855",
+                            "experiment_accession": "SRX17709228",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/055/SRR21711855/SRR21711855.fastq.gz",
+                            "fastq_md5": "cbe4e9f967a71593f9ec3c6edaf11c83",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR217/055/SRR21711855/SRR21711855.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "cbe4e9f967a71593f9ec3c6edaf11c83",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX17709228_SRR21711855.fastq.gz:md5,cbe4e9f967a71593f9ec3c6edaf11c83"
+                    ],
+                    [
+                        {
+                            "id": "SRX6725035_SRR9984183",
+                            "run_accession": "SRR9984183",
+                            "experiment_accession": "SRX6725035",
+                            "library_layout": "SINGLE",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR998/003/SRR9984183/SRR9984183.fastq.gz",
+                            "fastq_md5": "0b512d2dc31685983456bd56fd836544",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR998/003/SRR9984183/SRR9984183.fastq.gz",
+                            "fastq_2": "",
+                            "md5_1": "0b512d2dc31685983456bd56fd836544",
+                            "md5_2": "",
+                            "single_end": true
+                        },
+                        "SRX6725035_SRR9984183.fastq.gz:md5,0b512d2dc31685983456bd56fd836544"
+                    ],
+                    [
+                        {
+                            "id": "SRX9315476_SRR12848126",
+                            "run_accession": "SRR12848126",
+                            "experiment_accession": "SRX9315476",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "",
+                            "fastq_md5": "",
+                            "fastq_1": "",
+                            "fastq_2": "",
+                            "md5_1": "",
+                            "md5_2": "",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9315476_SRR12848126_1.fastq.gz:md5,03f5a34586aef9cd61f54eb26831a665",
+                            "SRX9315476_SRR12848126_2.fastq.gz:md5,97701c5d884af8d96ba95d7237f3bf79"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055517",
+                            "run_accession": "SRR13055517",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_2.fastq.gz",
+                            "fastq_md5": "dcf4438c0b682242ee90c5f3a803fb40;18dbe96e7f58b63406d9058938df1962",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/017/SRR13055517/SRR13055517_2.fastq.gz",
+                            "md5_1": "dcf4438c0b682242ee90c5f3a803fb40",
+                            "md5_2": "18dbe96e7f58b63406d9058938df1962",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055517_1.fastq.gz:md5,dcf4438c0b682242ee90c5f3a803fb40",
+                            "SRX9504942_SRR13055517_2.fastq.gz:md5,18dbe96e7f58b63406d9058938df1962"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055518",
+                            "run_accession": "SRR13055518",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_2.fastq.gz",
+                            "fastq_md5": "5ec894d863fcefe394470a0925aefde4;aead170df9851773d5202b5760c76d76",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/018/SRR13055518/SRR13055518_2.fastq.gz",
+                            "md5_1": "5ec894d863fcefe394470a0925aefde4",
+                            "md5_2": "aead170df9851773d5202b5760c76d76",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055518_1.fastq.gz:md5,5ec894d863fcefe394470a0925aefde4",
+                            "SRX9504942_SRR13055518_2.fastq.gz:md5,aead170df9851773d5202b5760c76d76"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055519",
+                            "run_accession": "SRR13055519",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_2.fastq.gz",
+                            "fastq_md5": "5ad51460c6c4a850dd37a206e2c441c1;a977367bf41dacf4c21bc0c8201b8b88",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/019/SRR13055519/SRR13055519_2.fastq.gz",
+                            "md5_1": "5ad51460c6c4a850dd37a206e2c441c1",
+                            "md5_2": "a977367bf41dacf4c21bc0c8201b8b88",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055519_1.fastq.gz:md5,5ad51460c6c4a850dd37a206e2c441c1",
+                            "SRX9504942_SRR13055519_2.fastq.gz:md5,a977367bf41dacf4c21bc0c8201b8b88"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9504942_SRR13055520",
+                            "run_accession": "SRR13055520",
+                            "experiment_accession": "SRX9504942",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz",
+                            "fastq_md5": "795d460abff6009c7f5ff7c14b773fbe;c3f34379356b28d6dac7212abc1a0a04",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz",
+                            "md5_1": "795d460abff6009c7f5ff7c14b773fbe",
+                            "md5_2": "c3f34379356b28d6dac7212abc1a0a04",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9504942_SRR13055520_1.fastq.gz:md5,795d460abff6009c7f5ff7c14b773fbe",
+                            "SRX9504942_SRR13055520_2.fastq.gz:md5,c3f34379356b28d6dac7212abc1a0a04"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "run_accession": "SRR13191702",
+                            "experiment_accession": "SRX9626017",
+                            "library_layout": "PAIRED",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_2.fastq.gz",
+                            "fastq_md5": "89c5be920021a035084d8aeb74f32df7;56271be38a80db78ef3bdfc5d9909b98",
+                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_1.fastq.gz",
+                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_2.fastq.gz",
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98",
+                            "single_end": false
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98"
+                        ]
+                    ]
+                ],
+                "mappings": [
+                    "id_mappings.csv:md5,8473773df806859c6af7acafcfe5aa6f"
+                ],
+                "samplesheet": [
+                    "samplesheet.csv:md5,be5465f34924356e136c804d63e1b562"
+                ],
+                "versions": [
+                    "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
+                    "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
+                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e",
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd"
+                ]
             }
         ],
-        "timestamp": "2023-08-28T09:29:59+0000"
-    },
-    "fastq": {
-        "content": [
-            "DRX024467_DRR026872.fastq.gz:md5,515e5448c55e054113c4a22df5f62791",
-            "DRX026011_DRR028935_1.fastq.gz:md5,cc01df82a9354bb6b3be93483b20c35a",
-            "DRX026011_DRR028935_2.fastq.gz:md5,941c9998d746416dad53c94c480ddf30",
-            "ERX1188904_ERR1109373_1.fastq.gz:md5,9fd57225d6c07a31843276d6df9b15c0",
-            "ERX1188904_ERR1109373_2.fastq.gz:md5,5a62e8f785687dce890cfb4fe3e607f9",
-            "ERX1234253_ERR1160846.fastq.gz:md5,5924f20ef547ebdfed7cad795bbab6e6",
-            "SRX10940790_SRR14593545_1.fastq.gz:md5,6a4762cf0f1f9f5544d3735e2e07c5d3",
-            "SRX10940790_SRR14593545_2.fastq.gz:md5,cbd30715fdef457d7aa24a12f19eedf2",
-            "SRX11047067_SRR14709033.fastq.gz:md5,79140dd1cb3fd1c5e02d88e01f7c3eda",
-            "SRX17709227_SRR21711856.fastq.gz:md5,7cd1402155befc87be338132d1f31f64",
-            "SRX17709228_SRR21711855.fastq.gz:md5,cbe4e9f967a71593f9ec3c6edaf11c83",
-            "SRX6725035_SRR9984183.fastq.gz:md5,0b512d2dc31685983456bd56fd836544",
-            "SRX9315476_SRR12848126_1.fastq.gz:md5,03f5a34586aef9cd61f54eb26831a665",
-            "SRX9315476_SRR12848126_2.fastq.gz:md5,97701c5d884af8d96ba95d7237f3bf79",
-            "SRX9504942_SRR13055517_1.fastq.gz:md5,dcf4438c0b682242ee90c5f3a803fb40",
-            "SRX9504942_SRR13055517_2.fastq.gz:md5,18dbe96e7f58b63406d9058938df1962",
-            "SRX9504942_SRR13055518_1.fastq.gz:md5,5ec894d863fcefe394470a0925aefde4",
-            "SRX9504942_SRR13055518_2.fastq.gz:md5,aead170df9851773d5202b5760c76d76",
-            "SRX9504942_SRR13055519_1.fastq.gz:md5,5ad51460c6c4a850dd37a206e2c441c1",
-            "SRX9504942_SRR13055519_2.fastq.gz:md5,a977367bf41dacf4c21bc0c8201b8b88",
-            "SRX9504942_SRR13055520_1.fastq.gz:md5,795d460abff6009c7f5ff7c14b773fbe",
-            "SRX9504942_SRR13055520_2.fastq.gz:md5,c3f34379356b28d6dac7212abc1a0a04",
-            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
-            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98",
-            [
-                "DRX024467_DRR026872.fastq.gz.md5:md5,dacaeba3498fb8f405411a22cdb4b40d",
-                "DRX026011_DRR028935_1.fastq.gz.md5:md5,a47018c5972ba4c11539d0d6bc25eda9",
-                "DRX026011_DRR028935_2.fastq.gz.md5:md5,f477bbef548fbed665734ebf084eea2f",
-                "ERX1188904_ERR1109373_1.fastq.gz.md5:md5,50c1c3108631dc32a3151b67e0260d86",
-                "ERX1188904_ERR1109373_2.fastq.gz.md5:md5,1f22463d410e91a288c83d43654b2499",
-                "ERX1234253_ERR1160846.fastq.gz.md5:md5,513a8437ad331fc512b088b3750aa1ff",
-                "SRX17709227_SRR21711856.fastq.gz.md5:md5,13a38fbef27c3e15867d80887145ae75",
-                "SRX17709228_SRR21711855.fastq.gz.md5:md5,1e871ddd9e92e1866e0c64d36eb5ec85",
-                "SRX6725035_SRR9984183.fastq.gz.md5:md5,84f59dbb76c9b5eab7e14d90ced352c4",
-                "SRX9504942_SRR13055517_1.fastq.gz.md5:md5,a03f7f374dc401047b6f6ccaec3885cc",
-                "SRX9504942_SRR13055517_2.fastq.gz.md5:md5,facaf207753e977327e7b7df7bb8ace0",
-                "SRX9504942_SRR13055518_1.fastq.gz.md5:md5,5cf412cd62aadaa4838d9eabb5b44368",
-                "SRX9504942_SRR13055518_2.fastq.gz.md5:md5,93292b826afc72b23be93df26dd710c8",
-                "SRX9504942_SRR13055519_1.fastq.gz.md5:md5,f6ad6e2610397147a0a55c651de3992f",
-                "SRX9504942_SRR13055519_2.fastq.gz.md5:md5,2fe7dd4bcc1e7e61c6f54ef50cf961f3",
-                "SRX9504942_SRR13055520_1.fastq.gz.md5:md5,ab195b37746a3424a1099d9f8cc58de8",
-                "SRX9504942_SRR13055520_2.fastq.gz.md5:md5,10c448e23f1f7e7af61ec1204f8fc882",
-                "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
-                "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
-            ]
-        ],
-        "timestamp": "2023-08-28T09:29:59+0000"
+        "timestamp": "2023-09-11T18:48:18.757655"
     }
 }

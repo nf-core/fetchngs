@@ -16,7 +16,7 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "$outputDir"
+                outdir = "results"
                 nf_core_pipeline = "rnaseq"
                 ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
                 sample_mapping_fields = "run_accession,library_layout"
@@ -26,12 +26,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-//                { assert snapshot(workflow.out).match() }
-                { assert new File("$outputDir/custom").exists() },
-                { assert new File("$outputDir/metadata").exists() },
-                { assert new File("$outputDir/pipeline_info").exists() },
-                { assert new File("$outputDir/samplesheet").exists() },
-                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") }
+                { assert snapshot(workflow.out).match() }
             )
         }
     }

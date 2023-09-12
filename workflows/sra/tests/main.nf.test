@@ -16,19 +16,14 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "$outputDir"
+                outdir = "results"
             }
         }
 
         then {
             assertAll(
                 { assert workflow.success },
-//                { assert snapshot(workflow.out).match() }
-                { assert new File("$outputDir/custom").exists() },
-                { assert new File("$outputDir/metadata").exists() },
-                { assert new File("$outputDir/pipeline_info").exists() },
-                { assert new File("$outputDir/samplesheet").exists() },
-                { assert snapshot(path("$outputDir/fastq/").list()).match("fastq") }
+                { assert snapshot(workflow.out).match() }
             )
         }
     }
