@@ -1,18 +1,17 @@
 # This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 name: nf-core CI
+# This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 on:
-  push:
-    branches:
-      - dev
-      - refactor
   pull_request:
-    branches:
-      - dev
-      - master
-      - refactor
   release:
+    types: [published]
+  merge_group:
     types:
-      - "published"
+      - checks_requested
+    branches:
+      - master
+      - dev
+      - refactor
 
 env:
   NXF_ANSI_LOG: false
@@ -23,6 +22,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Check for changes
+    runs-on: ubuntu-latest
+    outputs:
+      # Expose matched filters as job 'tags' output variable
+      tags: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: "tests/config/tags.yml"
+
   define_nxf_versions:
     name: Choose nextflow versions to test against depending on target branch
     runs-on: ubuntu-latest
@@ -38,23 +50,15 @@ jobs:
           fi
 
   test:
-    name: Run pipeline with test data
-    needs: define_nxf_versions
+    name: ${{ matrix.tags }} ${{ matrix.profile }} NF ${{ matrix.NXF_VER }}
+    needs: [changes, define_nxf_versions]
+    if: needs.changes.outputs.tags != '[]'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         NXF_VER: ${{ fromJson(needs.define_nxf_versions.outputs.matrix) }}
-        test_tags:
-          - "modules_local"
-          - "sra_default_parameters"
-          - "sra_custom_ena_metadata_fields"
-          - "sra_force_sratools_download"
-          - "sra_nf_core_pipeline_atacseq"
-          - "sra_nf_core_pipeline_rnaseq"
-          - "sra_nf_core_pipeline_taxprofiler"
-          - "sra_nf_core_pipeline_viralrecon"
-          - "sra_skip_fastq_download"
+        tags: ["${{ fromJson(needs.changes.outputs.tags) }}"]
         profile:
           - "docker"
 
@@ -74,7 +78,7 @@ jobs:
 
       - name: Run nf-test
         run: |
-          nf-test test --tag ${{ matrix.test_tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml
+          nf-test test --tag ${{ matrix.tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml
 
       - name: Output log on failure
         if: failure()
