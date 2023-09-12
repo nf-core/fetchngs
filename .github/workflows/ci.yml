@@ -33,7 +33,7 @@ jobs:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tests/config/tags.yml"
+          filters: ".github/tags.yml"
 
   define_nxf_versions:
     name: Choose nextflow versions to test against depending on target branch
