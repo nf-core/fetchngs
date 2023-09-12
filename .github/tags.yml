@@ -1,5 +1,4 @@
 # local modules
-
 multiqc_mappings_config:
   - modules/local/multiqc_mappings_config/*
 sra_fastq_ftp:
@@ -16,25 +15,33 @@ sra_to_samplesheet:
 # workflow: sra
 sra_custom_ena_metadata_fields:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_custom_ena_metadata_fields.nf.test
   - workflows/sra/main.nf
 sra_default_parameters:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_default_parameters.nf.test
   - workflows/sra/main.nf
 sra_force_sratools_download:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_force_sratools_download.nf.test
   - workflows/sra/main.nf
 sra_nf_core_pipeline_atacseq:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_nf_core_pipeline_atacseq.nf.test
   - workflows/sra/main.nf
 sra_nf_core_pipeline_rnaseq:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_nf_core_pipeline_rnaseq.nf.test
   - workflows/sra/main.nf
 sra_nf_core_pipeline_taxprofiler:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_nf_core_pipeline_taxprofiler.nf.test
   - workflows/sra/main.nf
 sra_nf_core_pipeline_viralrecon:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_nf_core_pipeline_viralrecon.nf.test
   - workflows/sra/main.nf
 sra_skip_fastq_download:
   - conf/modules/sra.config
+  - workflows/sra/tests/sra_skip_fastq_download.nf.test
   - workflows/sra/main.nf
