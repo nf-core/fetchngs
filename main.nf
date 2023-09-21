@@ -17,7 +17,25 @@ nextflow.enable.dsl = 2
 ========================================================================================
 */
 
-WorkflowMain.initialise(workflow, params, log)
+include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-validation'
+
+def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
+def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
+
+// Print parameter summary log to screen
+log.info logo + paramsSummaryLog(workflow) + citation
+
+// Print help message if needed
+if (params.help) {
+    def String command = "nextflow run ${workflow.manifest.name} --input id.csv -profile docker"
+    log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
+    System.exit(0)
+}
+
+// Validate input parameters
+if (params.validate_params) {
+    validateParameters()
+}
 
 // Check if --input file is empty
 ch_input = file(params.input, checkIfExists: true)
@@ -47,15 +65,11 @@ if (params.input_type == 'sra') {
         ena_metadata_fields : ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
     ]
 
-    def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
-
     // Validate input parameters
     WorkflowSra.initialise(params, valid_params)
 }
 
 if (params.input_type == 'synapse') {
-
-    def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
 
     // Create channel for synapse config
     if (params.synapse_config) {
