@@ -1,61 +1,31 @@
-# This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 name: nf-core CI
+# This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 on:
   push:
     branches:
       - dev
   pull_request:
-    branches:
-      - dev
-      - master
   release:
-    types:
-      - "published"
+    types: [published]
 
 env:
   NXF_ANSI_LOG: false
-  NFTEST_VER: "0.7.3"
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
-  define_nxf_versions:
-    name: Choose nextflow versions to test against depending on target branch
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.nxf_versions.outputs.matrix }}
-    steps:
-      - id: nxf_versions
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "dev" && "${{ matrix.NXF_VER }}" != "latest-everything" ]]; then
-            echo matrix='["latest-everything"]' | tee -a $GITHUB_OUTPUT
-          else
-            echo matrix='["latest-everything", "22.10.1"]' | tee -a $GITHUB_OUTPUT
-          fi
-
   test:
     name: Run pipeline with test data
-    needs: define_nxf_versions
+    # Only run on push if this is the nf-core dev branch (merged PRs)
+    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}"
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        NXF_VER: ${{ fromJson(needs.define_nxf_versions.outputs.matrix) }}
-        test_tags:
-          - "modules_local"
-          - "sra_default_parameters"
-          - "sra_custom_ena_metadata_fields"
-          - "sra_force_sratools_download"
-          - "sra_nf_core_pipeline_atacseq"
-          - "sra_nf_core_pipeline_rnaseq"
-          - "sra_nf_core_pipeline_taxprofiler"
-          - "sra_nf_core_pipeline_viralrecon"
-          - "sra_skip_fastq_download"
-        profile:
-          - "docker"
-
+        NXF_VER:
+          - "22.10.1"
+          - "latest-everything"
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v3
@@ -65,23 +35,29 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Install nf-test
+      - name: Run pipeline with test data
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash -s $NFTEST_VER
-          sudo mv nf-test /usr/local/bin/
+          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
 
-      - name: Run nf-test
+  parameters:
+    name: Test workflow parameters
+    if: ${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        parameters:
+          - "--nf_core_pipeline rnaseq"
+          - "--ena_metadata_fields run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5 --sample_mapping_fields run_accession,library_layout"
+          - "--skip_fastq_download"
+          - "--force_sratools_download"
+    steps:
+      - name: Check out pipeline code
+        uses: actions/checkout@v2
+
+      - name: Install Nextflow
         run: |
-          nf-test test --tag ${{ matrix.test_tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml
-
-      - name: Output log on failure
-        if: failure()
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+      - name: Run pipeline with various parameters
         run: |
-          sudo apt install bat > /dev/null
-          batcat --decorations=always --color=always ${{ github.workspace }}/.nf-test/tests/*/output/pipeline_info/software_versions.yml
-
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
-        if: always() # always run even if the previous step fails
-        with:
-          report_paths: test.xml
+          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results ${{ matrix.parameters }}
