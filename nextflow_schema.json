@@ -69,7 +69,8 @@
                     "type": "string",
                     "fa_icon": "fas fa-address-card",
                     "help_text": "Path to a JWT cart file used to access protected dbGAP data on SRA using the sra-toolkit. Users with granted access to controlled data can download the JWT cart file for the study from the SRA Run Selector upon logging in. The JWT file can only be used on cloud platforms and is valid for 1 hour upon creation.",
-                    "format": "file-path"
+                    "format": "file-path",
+                    "description": "dbGaP repository key."
                 },
                 "outdir": {
                     "type": "string",
