@@ -4,14 +4,14 @@
 ========================================================================================
 */
 
-def valid_params = [
-    ena_metadata_fields : ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
-]
+include { paramsSummaryLog; paramsSummaryMap } from 'plugin/nf-validation'
 
-def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
+def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
+def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
+def summary_params = paramsSummaryMap(workflow)
 
-// Validate input parameters
-WorkflowSra.initialise(params, valid_params)
+// Print parameter summary log to screen
+log.info logo + paramsSummaryLog(workflow) + citation
 
 /*
 ========================================================================================
@@ -84,9 +84,9 @@ workflow SRA {
     if (!params.skip_fastq_download) {
 
         ch_sra_metadata
-            .map { 
-                meta -> 
-                    [ meta, [ meta.fastq_1, meta.fastq_2 ] ] 
+            .map {
+                meta ->
+                    [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
             }
             .branch {
                 ftp: it[0].fastq_1  && !params.force_sratools_download
@@ -115,7 +115,7 @@ workflow SRA {
             .out
             .fastq
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
-            .map { 
+            .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
                     def meta_clone = meta.clone()
