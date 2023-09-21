@@ -54,7 +54,7 @@ class NfcoreTemplate {
     //
     // Construct and send completion email
     //
-    public static void email(workflow, params, summary_params, projectDir, log, multiqc_report=[]) {
+    public static void email(workflow, params, summary_params, projectDir, log) {
 
         // Set up the e-mail variables
         def subject = "[$workflow.manifest.name] Successful: $workflow.runName"
@@ -92,24 +92,6 @@ class NfcoreTemplate {
         email_fields['projectDir']   = workflow.projectDir
         email_fields['summary']      = summary << misc_fields
 
-        // On success try attach the multiqc report
-        def mqc_report = null
-        try {
-            if (workflow.success) {
-                mqc_report = multiqc_report.getVal()
-                if (mqc_report.getClass() == ArrayList && mqc_report.size() >= 1) {
-                    if (mqc_report.size() > 1) {
-                        log.warn "[$workflow.manifest.name] Found multiple reports from process 'MULTIQC', will use only one"
-                    }
-                    mqc_report = mqc_report[0]
-                }
-            }
-        } catch (all) {
-            if (multiqc_report) {
-                log.warn "[$workflow.manifest.name] Could not attach MultiQC report to summary email"
-            }
-        }
-
         // Check if we are only sending emails on failure
         def email_address = params.email
         if (!params.email && params.email_on_fail && !workflow.success) {
@@ -145,9 +127,6 @@ class NfcoreTemplate {
             } catch (all) {
                 // Catch failures and try with plaintext
                 def mail_cmd = [ 'mail', '-s', subject, '--content-type=text/html', email_address ]
-                if ( mqc_report.size() <= max_multiqc_email_size.toBytes() ) {
-                    mail_cmd += [ '-A', mqc_report ]
-                }
                 mail_cmd.execute() << email_html
                 log.info "-${colors.purple}[$workflow.manifest.name]${colors.green} Sent summary e-mail to $email_address (mail)-"
             }
