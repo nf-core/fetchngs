@@ -61,8 +61,7 @@ def parse_sra_runinfo(file_in):
     with open(file_in, "r", newline="") as fin:
         reader = csv.DictReader(fin, delimiter="\t", skipinitialspace=True)
         header = list(reader.fieldnames)
-        missing = frozenset(columns).difference(frozenset(header))
-        if missing:
+        if missing := frozenset(columns).difference(frozenset(header)):
             logger.critical(f"The following expected columns are missing from {file_in}: " f"{', '.join(missing)}.")
             sys.exit(1)
         for row in reader:

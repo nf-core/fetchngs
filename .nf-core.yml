@@ -4,14 +4,5 @@ lint:
   files_exist:
     - conf/modules.config
   files_unchanged:
-    - .github/CONTRIBUTING.md
-    - .github/ISSUE_TEMPLATE/bug_report.yml
-    - assets/nf-core-fetchngs_logo_light.png
     - assets/sendmail_template.txt
     - lib/NfcoreTemplate.groovy
-    - .gitattributes
-  multiqc_config: false
-  nextflow_config:
-    - "params.validationShowHiddenParams"
-    - "params.validationSchemaIgnoreParams"
-  schema_params: false

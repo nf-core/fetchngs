@@ -3,23 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[1.10.1](https://github.com/nf-core/fetchngs/releases/tag/1.10.1)] - 2023-06-29
-
-### Credits
-
-Special thanks to the following for their contributions to the release:
-
-- [Sateesh Peri](https://github.com/sateeshperi)
-- [Edmund Miller](https://github.com/Emiller88)
-- [Maxime Garcia](https://github.com/maxulysse)
-
-Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
-
-### Enhancements & fixes
-
-- [#166](https://github.com/nf-core/fetchngs/issues/175) - Add NF-TEST pipeline end-to-end tests for existing CI tests
-- [#184](https://github.com/nf-core/fetchngs/pull/184) Emits all files in workflow for testing and enabling workflow to be imported (not supported by Nextflow)
-- [#195](https://github.com/nf-core/fetchngs/pull/195) Separate configuration files for all modules
+## dev - [date]
 
 ## [[1.10.0](https://github.com/nf-core/fetchngs/releases/tag/1.10.0)] - 2023-05-16
 
