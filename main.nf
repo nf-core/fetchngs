@@ -1,4 +1,5 @@
 #!/usr/bin/env nextflow
+
 /*
 ========================================================================================
     nf-core/fetchngs
@@ -66,7 +67,6 @@ if (params.input_type == 'synapse') {
 ========================================================================================
 */
 
-include { MULTIQC_MAPPINGS_CONFIG     } from './modules/local/multiqc_mappings_config'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions'
 include { INITIALISE                  } from './subworkflows/nf-core/initialise/main'
 
@@ -98,12 +98,6 @@ workflow NFCORE_FETCHNGS {
         SRA(ch_ids)
         ch_versions = ch_versions.mix(SRA.out.versions)
 
-        // MODULE: Create a MultiQC config file with sample name mappings
-        if (params.sample_mapping_fields) {
-            MULTIQC_MAPPINGS_CONFIG(SRA.out.mappings)
-            ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
-        }
-
     // WORKFLOW: Download FastQ files for Synapse ids
     } else if (params.input_type == 'synapse') {
         SYNAPSE(ch_ids, ch_synapse_config)
@@ -115,9 +109,9 @@ workflow NFCORE_FETCHNGS {
 }
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     RUN ALL WORKFLOWS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
 */
 
 //
