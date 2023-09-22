@@ -17,26 +17,6 @@ nextflow.enable.dsl = 2
 ========================================================================================
 */
 
-include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-validation'
-
-def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
-def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-
-// Print parameter summary log to screen
-log.info logo + paramsSummaryLog(workflow) + citation
-
-// Print help message if needed
-if (params.help) {
-    def String command = "nextflow run ${workflow.manifest.name} --input id.csv -profile docker"
-    log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
-    System.exit(0)
-}
-
-// Validate input parameters
-if (params.validate_params) {
-    validateParameters()
-}
-
 // Check if --input file is empty
 ch_input = file(params.input, checkIfExists: true)
 if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
@@ -88,6 +68,7 @@ if (params.input_type == 'synapse') {
 
 include { MULTIQC_MAPPINGS_CONFIG     } from './modules/local/multiqc_mappings_config'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from './modules/nf-core/custom/dumpsoftwareversions'
+include { INITIALISE                  } from './subworkflows/nf-core/initialise/main'
 
 /*
 ========================================================================================
@@ -108,6 +89,7 @@ if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synaps
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
+    INITIALISE(params.version, params.help, params.valid_params)
 
     ch_versions = Channel.empty()
 
