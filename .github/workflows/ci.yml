@@ -1,6 +1,5 @@
 # This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 name: nf-core CI
-# This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 on:
   pull_request:
   release:
@@ -12,6 +11,7 @@ on:
       - master
       - dev
       - refactor
+      - nf-test
 
 env:
   NXF_ANSI_LOG: false
