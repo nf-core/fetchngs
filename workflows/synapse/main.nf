@@ -19,11 +19,11 @@ if (params.synapse_config) {
 ========================================================================================
 */
 
-include { SYNAPSE_LIST              } from '../modules/local/synapse_list'
-include { SYNAPSE_SHOW              } from '../modules/local/synapse_show'
-include { SYNAPSE_GET               } from '../modules/local/synapse_get'
-include { SYNAPSE_TO_SAMPLESHEET    } from '../modules/local/synapse_to_samplesheet'
-include { SYNAPSE_MERGE_SAMPLESHEET } from '../modules/local/synapse_merge_samplesheet'
+include { SYNAPSE_LIST              } from '../../modules/local/synapse_list'
+include { SYNAPSE_SHOW              } from '../../modules/local/synapse_show'
+include { SYNAPSE_GET               } from '../../modules/local/synapse_get'
+include { SYNAPSE_TO_SAMPLESHEET    } from '../../modules/local/synapse_to_samplesheet'
+include { SYNAPSE_MERGE_SAMPLESHEET } from '../../modules/local/synapse_merge_samplesheet'
 
 /*
 ========================================================================================
@@ -31,7 +31,7 @@ include { SYNAPSE_MERGE_SAMPLESHEET } from '../modules/local/synapse_merge_sampl
 ========================================================================================
 */
 
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../modules/nf-core/custom/dumpsoftwareversions/main'
 
 /*
 ========================================================================================

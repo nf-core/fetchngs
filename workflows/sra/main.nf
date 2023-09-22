@@ -19,12 +19,12 @@ log.info logo + paramsSummaryLog(workflow) + citation
 ========================================================================================
 */
 
-include { SRA_IDS_TO_RUNINFO      } from '../modules/local/sra_ids_to_runinfo'
-include { SRA_RUNINFO_TO_FTP      } from '../modules/local/sra_runinfo_to_ftp'
-include { SRA_FASTQ_FTP           } from '../modules/local/sra_fastq_ftp'
-include { SRA_TO_SAMPLESHEET      } from '../modules/local/sra_to_samplesheet'
-include { SRA_MERGE_SAMPLESHEET   } from '../modules/local/sra_merge_samplesheet'
-include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
+include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
+include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
+include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
+include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
+include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
+include { MULTIQC_MAPPINGS_CONFIG } from '../../modules/local/multiqc_mappings_config'
 
 /*
 ========================================================================================
@@ -32,9 +32,9 @@ include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_conf
 ========================================================================================
 */
 
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
+include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../modules/nf-core/custom/dumpsoftwareversions/main'
 
-include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/main'
+include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/main'
 
 /*
 ========================================================================================
