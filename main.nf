@@ -1,28 +1,33 @@
 #!/usr/bin/env nextflow
+
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     nf-core/fetchngs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     Github : https://github.com/nf-core/fetchngs
     Website: https://nf-co.re/fetchngs
     Slack  : https://nfcore.slack.com/channels/fetchngs
-----------------------------------------------------------------------------------------
+========================================================================================
 */
 
 nextflow.enable.dsl = 2
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     VALIDATE & PRINT PARAMETER SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
 */
 
-include { validateParameters; paramsHelp } from 'plugin/nf-validation'
+include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-validation'
+
+def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
+def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
+
+// Print parameter summary log to screen
+log.info logo + paramsSummaryLog(workflow) + citation
 
 // Print help message if needed
 if (params.help) {
-    def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
-    def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
     def String command = "nextflow run ${workflow.manifest.name} --input id.csv -profile docker"
     log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
     System.exit(0)
@@ -33,11 +38,9 @@ if (params.validate_params) {
     validateParameters()
 }
 
-WorkflowMain.initialise(workflow, params, log)
-
 // Check if --input file is empty
 ch_input = file(params.input, checkIfExists: true)
-if (ch_input.isEmpty()) {exit 1, "File provided with --input is empty: ${ch_input.getName()}!"}
+if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
 
 // Read in ids from --input file
 Channel
@@ -47,12 +50,6 @@ Channel
     .unique()
     .set { ch_ids }
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOW FOR PIPELINE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
 // Auto-detect input id type
 def input_type = ''
 if (WorkflowMain.isSraId(ch_input)) {
@@ -60,8 +57,14 @@ if (WorkflowMain.isSraId(ch_input)) {
 } else if (WorkflowMain.isSynapseId(ch_input)) {
     input_type = 'synapse'
 } else {
-    exit 1, 'Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!'
+    error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!')
 }
+
+/*
+========================================================================================
+    VALIDATE INPUTS
+========================================================================================
+*/
 
 if (params.input_type == input_type) {
     if (params.input_type == 'sra') {
@@ -70,8 +73,14 @@ if (params.input_type == input_type) {
         include { SYNAPSE } from './workflows/synapse'
     }
 } else {
-    exit 1, "Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!"
+    error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
 }
+
+/*
+========================================================================================
+    NAMED WORKFLOW FOR PIPELINE
+========================================================================================
+*/
 
 //
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
@@ -93,9 +102,9 @@ workflow NFCORE_FETCHNGS {
 }
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     RUN ALL WORKFLOWS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
 */
 
 //
@@ -107,7 +116,7 @@ workflow {
 }
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
 */
