@@ -9,13 +9,6 @@ include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp
 include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
 include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
 include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
-
-/*
-========================================================================================
-    IMPORT NF-CORE SUBWORKFLOWS
-========================================================================================
-*/
-
 include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools'
 
 /*
