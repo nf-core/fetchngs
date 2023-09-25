@@ -65,17 +65,12 @@ if (params.input_type != input_type) {
 
 /*
 ========================================================================================
-    VALIDATE INPUTS
+    IMPORT WORKFLOWS
 ========================================================================================
 */
 
-if (params.input_type == input_type) {
-    if (params.input_type == 'sra') {
-        include { SRA } from './workflows/sra'
-    } else if (params.input_type == 'synapse') {
-        include { SYNAPSE } from './workflows/synapse'
-    }
-}
+if (params.input_type == 'sra')     include { SRA     } from './workflows/sra'
+if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synapse'
 
 /*
 ========================================================================================
