@@ -130,6 +130,11 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
+    if (params.sample_mapping_fields) {
+        MULTIQC_MAPPINGS_CONFIG(SRA_MERGE_SAMPLESHEET.out.mappings)
+        ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
+    }
+
     emit:
     fastq         = fastq_files
     samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
