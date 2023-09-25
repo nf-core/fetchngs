@@ -115,7 +115,9 @@ workflow NFCORE_FETCHNGS {
     }
 
     // MODULE: Dump software versions for all tools used in the workflow
-    CUSTOM_DUMPSOFTWAREVERSIONS(ch_versions.unique().collectFile(name: 'collated_versions.yml'))
+    //
+    // MODULE: Dump software versions for all tools used in the workflow
+    //
 }
 
 /*

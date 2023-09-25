@@ -130,6 +130,9 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
+    //
+    // MODULE: Create a MutiQC config file with sample name mappings
+    //
     if (params.sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG (
             SRA_MERGE_SAMPLESHEET.out.mappings
