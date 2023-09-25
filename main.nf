@@ -43,7 +43,8 @@ ch_input = file(params.input, checkIfExists: true)
 if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
 
 // Read in ids from --input file
-Channel.from(file(params.input, checkIfExists: true))
+Channel
+    .from(file(params.input, checkIfExists: true))
     .splitCsv(header:false, sep:'', strip:true)
     .map { it[0] }
     .unique()
@@ -75,9 +76,7 @@ if (params.input_type == 'sra') {
 
     // Validate input parameters
     WorkflowSra.initialise(params, valid_params)
-}
-
-if (params.input_type == 'synapse') {
+} else if (params.input_type == 'synapse') {
 
     // Create channel for synapse config
     if (params.synapse_config) {
@@ -120,12 +119,16 @@ workflow NFCORE_FETCHNGS {
 
     ch_versions = Channel.empty()
 
+    //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
+    //
     if (params.input_type == 'sra') {
         SRA(ch_ids, params.sample_mapping_fields)
         ch_versions = ch_versions.mix(SRA.out.versions)
 
+    //
     // WORKFLOW: Download FastQ files for Synapse ids
+    //
     } else if (params.input_type == 'synapse') {
         SYNAPSE(ch_ids, ch_synapse_config)
         ch_versions = ch_versions.mix(SYNAPSE.out.versions)
