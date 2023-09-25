@@ -72,12 +72,6 @@ if (params.input_type != input_type) {
 if (params.input_type == 'sra')     include { SRA     } from './workflows/sra'
 if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synapse'
 
-/*
-========================================================================================
-    NAMED WORKFLOW FOR PIPELINE
-========================================================================================
-*/
-
 //
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
