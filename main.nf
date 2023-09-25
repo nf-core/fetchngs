@@ -28,7 +28,7 @@ log.info logo + paramsSummaryLog(workflow) + citation
 
 // Print help message if needed
 if (params.help) {
-    def String command = "nextflow run ${workflow.manifest.name} --input id.csv -profile docker"
+    def String command = "nextflow run ${WorkflowMain.manifest.name} --input id.csv -profile docker"
     log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
     System.exit(0)
 }
@@ -75,7 +75,7 @@ if (params.input_type == 'sra') {
     ]
 
     // Validate input parameters
-    Workflow.sraInitialise(params, valid_params)
+    WorkflowMain.sraInitialise(params, valid_params)
 } else if (params.input_type == 'synapse') {
 
     // Create channel for synapse config
@@ -163,8 +163,8 @@ workflow.onComplete {
         NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
     }
     NfcoreTemplate.summary(workflow, params, log)
-    if (params.input_type == 'sra')     { Workflow.sraCurateSamplesheetWarn(log) }
-    if (params.input_type == 'synapse') { Workflow.synapseCurateSamplesheetWarn(log) }
+    if (params.input_type == 'sra')     { WorkflowMain.sraCurateSamplesheetWarn(log) }
+    if (params.input_type == 'synapse') { WorkflowMain.synapseCurateSamplesheetWarn(log) }
 }
 
 /*

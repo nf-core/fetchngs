@@ -56,7 +56,7 @@ workflow SYNAPSE {
     SYNAPSE_SHOW
         .out
         .metadata
-        .map { it -> Workflow.synapseShowToMap(it) }
+        .map { it -> WorkflowMain.synapseShowToMap(it) }
         .set { ch_samples_meta }
 
     //
@@ -72,14 +72,14 @@ workflow SYNAPSE {
     SYNAPSE_GET
         .out
         .fastq
-        .map { meta, fastq -> [ Workflow.synapseSampleNameFromFastQ( fastq , "*{1,2}*"), fastq ] }
+        .map { meta, fastq -> [ WorkflowMain.synapseSampleNameFromFastQ( fastq , "*{1,2}*"), fastq ] }
         .groupTuple(sort: { it -> it.baseName })
         .set { ch_fastq }
 
     SYNAPSE_GET
         .out
         .fastq
-        .map { meta, fastq -> [ Workflow.synapseSampleNameFromFastQ( fastq , "*{1,2}*"), meta.id ] }
+        .map { meta, fastq -> [ WorkflowMain.synapseSampleNameFromFastQ( fastq , "*{1,2}*"), meta.id ] }
         .groupTuple()
         .join(ch_fastq)
         .map { id, synids, fastq ->
