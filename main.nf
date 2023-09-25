@@ -43,12 +43,6 @@ if (params.input_type != input_type) {
     error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
 }
 
-/*
-========================================================================================
-    VALIDATE INPUTS
-========================================================================================
-*/
-
 if (params.input_type == 'sra') {
     def valid_params = [
         ena_metadata_fields : ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
@@ -83,12 +77,6 @@ include { INITIALISE                  } from './subworkflows/nf-core/initialise/
 
 if (params.input_type == 'sra')     include { SRA     } from './workflows/sra'
 if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synapse'
-
-/*
-========================================================================================
-    NAMED WORKFLOW FOR PIPELINE
-========================================================================================
-*/
 
 //
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
