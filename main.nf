@@ -55,7 +55,7 @@ if (params.input_type == 'sra') {
     ]
 
     // Validate input parameters
-    Workflow.sraInitialise(params, valid_params)
+    WorkflowMain.sraInitialise(params, valid_params)
 } else if (params.input_type == 'synapse') {
 
     // Create channel for synapse config
@@ -143,8 +143,8 @@ workflow.onComplete {
         NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
     }
     NfcoreTemplate.summary(workflow, params, log)
-    if (params.input_type == 'sra')     { Workflow.sraCurateSamplesheetWarn(log) }
-    if (params.input_type == 'synapse') { Workflow.synapseCurateSamplesheetWarn(log) }
+    if (params.input_type == 'sra')     { WorkflowMain.sraCurateSamplesheetWarn(log) }
+    if (params.input_type == 'synapse') { WorkflowMain.synapseCurateSamplesheetWarn(log) }
 }
 
 /*
