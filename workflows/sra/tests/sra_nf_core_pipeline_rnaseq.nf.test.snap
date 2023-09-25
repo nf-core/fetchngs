@@ -92,51 +92,6 @@
                     ],
                     [
                         {
-                            "id": "ERX1188904_ERR1109373",
-                            "run_accession": "ERR1109373",
-                            "experiment_accession": "ERX1188904",
-                            "sample_accession": "SAMEA3643867",
-                            "secondary_sample_accession": "ERS951016",
-                            "study_accession": "PRJEB11633",
-                            "secondary_study_accession": "ERP013030",
-                            "submission_accession": "ERA528939",
-                            "run_alias": "ena-RUN-CAM-03-11-2015-17:01:52:847-7",
-                            "experiment_alias": "ena-EXPERIMENT-CAM-03-11-2015-17:01:52:847-7",
-                            "sample_alias": "sample_56",
-                            "study_alias": "ena-STUDY-CAM-02-11-2015-17:42:24:189-13",
-                            "library_layout": "PAIRED",
-                            "library_selection": "RT-PCR",
-                            "library_source": "TRANSCRIPTOMIC",
-                            "library_strategy": "RNA-Seq",
-                            "library_name": "unspecified",
-                            "instrument_model": "Illumina HiSeq 2500",
-                            "instrument_platform": "ILLUMINA",
-                            "base_count": "29700",
-                            "read_count": "169",
-                            "tax_id": "63433",
-                            "scientific_name": "Leptopilina boulardi",
-                            "sample_title": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
-                            "experiment_title": "Illumina HiSeq 2500 paired end sequencing",
-                            "study_title": "Total RNA from abdomen and head of L. boulardi females and alignment of the RNA-Seq reads against the genome of L. boulardi Toti-like Virus.",
-                            "sample_description": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
-                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
-                            "fastq_bytes": "3221;8151;8118",
-                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "fastq_galaxy": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz",
-                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
-                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
-                            "single_end": false
-                        },
-                        [
-                            "ERX1188904_ERR1109373_1.fastq.gz:md5,9fd57225d6c07a31843276d6df9b15c0",
-                            "ERX1188904_ERR1109373_2.fastq.gz:md5,5a62e8f785687dce890cfb4fe3e607f9"
-                        ]
-                    ],
-                    [
-                        {
                             "id": "ERX1234253_ERR1160846",
                             "run_accession": "ERR1160846",
                             "experiment_accession": "ERX1234253",
@@ -662,17 +617,18 @@
                     ]
                 ],
                 "1": [
-                    "samplesheet.csv:md5,fcbb1fbe56dc14561ec83e5f6a70ee80"
+                    "samplesheet.csv:md5,69117245b73776d6e4daecdbfdff9767"
                 ],
                 "2": [
-                    "id_mappings.csv:md5,3e287081f1e9349921fa8c709a874565"
+                    "id_mappings.csv:md5,a18766d39f6b2239163b4ef00eeaf342"
                 ],
                 "3": [
+                    "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
                     "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
-                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
                     "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
-                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e",
-                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd"
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
+                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e"
                 ],
                 "fastq": [
                     [
@@ -760,51 +716,6 @@
                         [
                             "DRX026011_DRR028935_1.fastq.gz:md5,cc01df82a9354bb6b3be93483b20c35a",
                             "DRX026011_DRR028935_2.fastq.gz:md5,941c9998d746416dad53c94c480ddf30"
-                        ]
-                    ],
-                    [
-                        {
-                            "id": "ERX1188904_ERR1109373",
-                            "run_accession": "ERR1109373",
-                            "experiment_accession": "ERX1188904",
-                            "sample_accession": "SAMEA3643867",
-                            "secondary_sample_accession": "ERS951016",
-                            "study_accession": "PRJEB11633",
-                            "secondary_study_accession": "ERP013030",
-                            "submission_accession": "ERA528939",
-                            "run_alias": "ena-RUN-CAM-03-11-2015-17:01:52:847-7",
-                            "experiment_alias": "ena-EXPERIMENT-CAM-03-11-2015-17:01:52:847-7",
-                            "sample_alias": "sample_56",
-                            "study_alias": "ena-STUDY-CAM-02-11-2015-17:42:24:189-13",
-                            "library_layout": "PAIRED",
-                            "library_selection": "RT-PCR",
-                            "library_source": "TRANSCRIPTOMIC",
-                            "library_strategy": "RNA-Seq",
-                            "library_name": "unspecified",
-                            "instrument_model": "Illumina HiSeq 2500",
-                            "instrument_platform": "ILLUMINA",
-                            "base_count": "29700",
-                            "read_count": "169",
-                            "tax_id": "63433",
-                            "scientific_name": "Leptopilina boulardi",
-                            "sample_title": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
-                            "experiment_title": "Illumina HiSeq 2500 paired end sequencing",
-                            "study_title": "Total RNA from abdomen and head of L. boulardi females and alignment of the RNA-Seq reads against the genome of L. boulardi Toti-like Virus.",
-                            "sample_description": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
-                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
-                            "fastq_bytes": "3221;8151;8118",
-                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "fastq_galaxy": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "fastq_1": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz",
-                            "fastq_2": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
-                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
-                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
-                            "single_end": false
-                        },
-                        [
-                            "ERX1188904_ERR1109373_1.fastq.gz:md5,9fd57225d6c07a31843276d6df9b15c0",
-                            "ERX1188904_ERR1109373_2.fastq.gz:md5,5a62e8f785687dce890cfb4fe3e607f9"
                         ]
                     ],
                     [
@@ -1334,20 +1245,21 @@
                     ]
                 ],
                 "mappings": [
-                    "id_mappings.csv:md5,3e287081f1e9349921fa8c709a874565"
+                    "id_mappings.csv:md5,a18766d39f6b2239163b4ef00eeaf342"
                 ],
                 "samplesheet": [
-                    "samplesheet.csv:md5,fcbb1fbe56dc14561ec83e5f6a70ee80"
+                    "samplesheet.csv:md5,69117245b73776d6e4daecdbfdff9767"
                 ],
                 "versions": [
+                    "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
                     "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
-                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
                     "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
-                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e",
-                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd"
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
+                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e"
                 ]
             }
         ],
-        "timestamp": "2023-09-11T18:51:38.198125"
+        "timestamp": "2023-09-25T11:02:54.001279"
     }
 }

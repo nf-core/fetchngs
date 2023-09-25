@@ -12,7 +12,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.from('DRR026872','DRR028935','ERR1109373','ERR1160846','GSE214215','GSM4907283','SRR12848126','SRR13191702','SRR14593545','SRR14709033','SRR9984183')
+                input[0] = Channel.from('DRR026872', 'DRR028935', 'ERR1160846', 'GSE214215', 'GSM4907283', 'SRR12848126', 'SRR13191702', 'SRR14593545', 'SRR14709033', 'SRR9984183')
                 """
             }
             params {
