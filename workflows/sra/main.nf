@@ -22,7 +22,6 @@ workflow SRA {
 
     take:
     ids // channel: [ ids ]
-    sample_mapping_fields
 
     main:
     ch_versions = Channel.empty()
@@ -124,7 +123,7 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
-    if (sample_mapping_fields) {
+    if (params.sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG(SRA_MERGE_SAMPLESHEET.out.mappings)
         ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
     }

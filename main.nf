@@ -123,7 +123,7 @@ workflow NFCORE_FETCHNGS {
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
     if (params.input_type == 'sra') {
-        SRA(ch_ids, params.sample_mapping_fields)
+        SRA(ch_ids)
         ch_versions = ch_versions.mix(SRA.out.versions)
 
     //
