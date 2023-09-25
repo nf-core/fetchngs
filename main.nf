@@ -43,17 +43,24 @@ ch_input = file(params.input, checkIfExists: true)
 if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
 
 // Read in ids from --input file
-ch_ids = Channel.from(file(params.input, checkIfExists: true))
+Channel.from(file(params.input, checkIfExists: true))
     .splitCsv(header:false, sep:'', strip:true)
     .map { it[0] }
     .unique()
+    .set { ch_ids }
 
-// Auto-detect input type
+// Auto-detect input id type
 def input_type = ''
-if (WorkflowMain.isSraId(ch_input))          { input_type = 'sra' }
-else if (WorkflowMain.isSynapseId(ch_input)) { input_type = 'synapse' }
-else                                         { error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!') }
-if (params.input_type != input_type)         { error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!") }
+if (WorkflowMain.isSraId(ch_input)) {
+    input_type = 'sra'
+} else if (WorkflowMain.isSynapseId(ch_input)) {
+    input_type = 'synapse'
+} else {
+    error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!')
+}
+if (params.input_type != input_type) {
+    error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
+}
 
 /*
 ========================================================================================
@@ -83,7 +90,7 @@ if (params.input_type == 'synapse') {
 
 /*
 ========================================================================================
-    IMPORT MODULES
+    IMPORT MODULES/SUBWORKFLOWS
 ========================================================================================
 */
 
