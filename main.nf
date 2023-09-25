@@ -59,6 +59,9 @@ if (WorkflowMain.isSraId(ch_input)) {
 } else {
     error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!')
 }
+if (params.input_type != input_type) {
+    error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
+}
 
 /*
 ========================================================================================
@@ -72,8 +75,6 @@ if (params.input_type == input_type) {
     } else if (params.input_type == 'synapse') {
         include { SYNAPSE } from './workflows/synapse'
     }
-} else {
-    error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
 }
 
 /*
