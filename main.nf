@@ -64,7 +64,6 @@ if (params.input_type == 'sra') {
     } else {
         error('Please provide a Synapse config file for download authentication!')
     }
-
 }
 
 /*
