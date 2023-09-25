@@ -18,16 +18,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 ### Enhancements & fixes
 
 - [#177](https://github.com/nf-core/fetchngs/pull/177) - Template update with nf-core/tools 2.9
-- [#205](https://github.com/nf-core/fetchngs/pull/205) - Rename all local modules, workflows and remove public_aws_ecr profile
+- [#205](https://github.com/nf-core/fetchngs/pull/205) - Rename all local modules, workflows and remove `public_aws_ecr profile`
 - [#206](https://github.com/nf-core/fetchngs/pull/206) - CI improvments and code cleanup
-
-### Software dependencies
-
-> **NB:** Dependency has been **updated** if both old and new version information is present.
->
-> **NB:** Dependency has been **added** if just the new version information is present.
->
-> **NB:** Dependency has been **removed** if new version information isn't present.
 
 ## [[1.10.0](https://github.com/nf-core/fetchngs/releases/tag/1.10.0)] - 2023-05-16
 
