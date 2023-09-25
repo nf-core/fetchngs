@@ -4,11 +4,12 @@
 ========================================================================================
 */
 
-include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
-include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
-include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
-include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
-include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
+include { MULTIQC_MAPPINGS_CONFIG   } from '../../modules/local/multiqc_mappings_config'
+include { SRA_FASTQ_FTP             } from '../../modules/local/sra_fastq_ftp'
+include { SRA_IDS_TO_RUNINFO        } from '../../modules/local/sra_ids_to_runinfo'
+include { SRA_MERGE_SAMPLESHEET     } from '../../modules/local/sra_merge_samplesheet'
+include { SRA_RUNINFO_TO_FTP        } from '../../modules/local/sra_runinfo_to_ftp'
+include { SRA_TO_SAMPLESHEET        } from '../../modules/local/sra_to_samplesheet'
 include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools'
 
 /*
@@ -21,6 +22,7 @@ workflow SRA {
 
     take:
     ids // channel: [ ids ]
+    sample_mapping_fields
 
     main:
     ch_versions = Channel.empty()
@@ -121,6 +123,11 @@ workflow SRA {
         SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
     )
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
+
+    if (sample_mapping_fields) {
+        MULTIQC_MAPPINGS_CONFIG(SRA_MERGE_SAMPLESHEET.out.mappings)
+        ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
+    }
 
     emit:
     fastq         = fastq_files
