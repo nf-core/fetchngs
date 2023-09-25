@@ -28,7 +28,7 @@ log.info logo + paramsSummaryLog(workflow) + citation
 
 // Print help message if needed
 if (params.help) {
-    def String command = "nextflow run ${WorkflowMain.manifest.name} --input id.csv -profile docker"
+    def String command = "nextflow run ${workflow.manifest.name} --input id.csv -profile docker"
     log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
     System.exit(0)
 }

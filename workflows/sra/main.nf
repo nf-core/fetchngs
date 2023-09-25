@@ -53,7 +53,7 @@ workflow SRA {
             return meta_clone
         }
         .unique()
-        .set{ ch_sra_metadata }
+        .set { ch_sra_metadata }
 
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
@@ -93,9 +93,7 @@ workflow SRA {
         fastq_files.mix(
             SRA_FASTQ_FTP.out.fastq,
             FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads
-        ).set { fastq_files }
-
-        fastq_files.map { meta, fastq ->
+        ).map { meta, fastq ->
             def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
             def meta_clone = meta.clone()
 
@@ -126,7 +124,9 @@ workflow SRA {
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
     if (params.sample_mapping_fields) {
-        MULTIQC_MAPPINGS_CONFIG(SRA_MERGE_SAMPLESHEET.out.mappings)
+        MULTIQC_MAPPINGS_CONFIG (
+            SRA_MERGE_SAMPLESHEET.out.mappings
+        )
         ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
     }
 
