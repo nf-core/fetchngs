@@ -1,15 +1,15 @@
 /*
 ========================================================================================
-    IMPORT LOCAL MODULES/SUBWORKFLOWS
+    IMPORT LOCAL MODULES
 ========================================================================================
 */
 
-include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
-include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
-include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
-include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
-include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../../modules/local/multiqc_mappings_config'
+include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
+include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
+include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
+include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
+include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
 
 /*
 ========================================================================================
