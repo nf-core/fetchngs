@@ -113,11 +113,6 @@ workflow NFCORE_FETCHNGS {
         SYNAPSE ( ch_ids, ch_synapse_config )
         ch_versions = ch_versions.mix(SYNAPSE.out.versions)
     }
-
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
 }
 
 /*
