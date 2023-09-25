@@ -55,7 +55,7 @@ if (params.input_type == 'sra') {
     ]
 
     // Validate input parameters
-    WorkflowSra.initialise(params, valid_params)
+    Workflow.sraInitialise(params, valid_params)
 } else if (params.input_type == 'synapse') {
 
     // Create channel for synapse config
@@ -95,7 +95,7 @@ if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synaps
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
-    INITIALISE(params.version, params.help, params.valid_params)
+    INITIALISE ( params.version, params.help, params.valid_params )
 
     ch_versions = Channel.empty()
 
@@ -103,14 +103,14 @@ workflow NFCORE_FETCHNGS {
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
     if (params.input_type == 'sra') {
-        SRA(ch_ids)
+        SRA ( ch_ids )
         ch_versions = ch_versions.mix(SRA.out.versions)
 
     //
     // WORKFLOW: Download FastQ files for Synapse ids
     //
     } else if (params.input_type == 'synapse') {
-        SYNAPSE(ch_ids, ch_synapse_config)
+        SYNAPSE ( ch_ids, ch_synapse_config )
         ch_versions = ch_versions.mix(SYNAPSE.out.versions)
     }
 
@@ -143,8 +143,8 @@ workflow.onComplete {
         NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
     }
     NfcoreTemplate.summary(workflow, params, log)
-    if (params.input_type == 'sra')     { WorkflowSra.curateSamplesheetWarn(log) }
-    if (params.input_type == 'synapse') { WorkflowSynapse.curateSamplesheetWarn(log) }
+    if (params.input_type == 'sra')     { Workflow.sraCurateSamplesheetWarn(log) }
+    if (params.input_type == 'synapse') { Workflow.synapseCurateSamplesheetWarn(log) }
 }
 
 /*

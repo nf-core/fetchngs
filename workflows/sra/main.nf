@@ -50,7 +50,7 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
-    ch_sra_metadata = SRA_RUNINFO_TO_FTP
+    SRA_RUNINFO_TO_FTP
         .out
         .tsv
         .splitCsv(header:true, sep:'\t')
@@ -60,6 +60,7 @@ workflow SRA {
             return meta_clone
         }
         .unique()
+        .set{ ch_sra_metadata }
 
     ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
@@ -67,7 +68,7 @@ workflow SRA {
 
     if (!params.skip_fastq_download) {
 
-        ch_sra_reads = ch_sra_metadata
+        ch_sra_metadata
             .map {
                 meta ->
                     [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
@@ -76,6 +77,7 @@ workflow SRA {
                 ftp: it[0].fastq_1  && !params.force_sratools_download
                 sra: !it[0].fastq_1 || params.force_sratools_download
             }
+            .set { ch_sra_reads }
 
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
@@ -95,12 +97,12 @@ workflow SRA {
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
         // Isolate FASTQ channel which will be added to emit block
-        fastq_files = fastq_files.mix(
+        fastq_files.mix(
             SRA_FASTQ_FTP.out.fastq,
             FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads
-        )
+        ).set { fastq_files }
 
-        ch_sra_metadata = fastq_files.map { meta, fastq ->
+        fastq_files.map { meta, fastq ->
             def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
             def meta_clone = meta.clone()
 
@@ -108,7 +110,7 @@ workflow SRA {
             meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
 
             return meta_clone
-        }
+        }.set { ch_sra_metadata }
     }
 
     //
