@@ -1,9 +1,6 @@
 name: nf-core CI
 # This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
 on:
-  push:
-    branches:
-      - dev
   pull_request:
   release:
     types: [published]
@@ -36,8 +33,28 @@ jobs:
           version: "${{ matrix.NXF_VER }}"
 
       - name: Run pipeline with test data
-        # TODO nf-core: You can customise CI pipeline run tests as required
-        # For example: adding multiple test runs with different parameters
-        # Remember that you can parallelise this by using strategy.matrix
         run: |
           nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
+
+  parameters:
+    name: Test workflow parameters
+    if: ${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        parameters:
+          - "--nf_core_pipeline rnaseq"
+          - "--ena_metadata_fields run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5 --sample_mapping_fields run_accession,library_layout"
+          - "--skip_fastq_download"
+          - "--force_sratools_download"
+    steps:
+      - name: Check out pipeline code
+        uses: actions/checkout@v2
+
+      - name: Install Nextflow
+        run: |
+          wget -qO- get.nextflow.io | bash
+          sudo mv nextflow /usr/local/bin/
+      - name: Run pipeline with various parameters
+        run: |
+          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results ${{ matrix.parameters }}

@@ -2,58 +2,60 @@
 
 ## Introduction
 
-This document describes the output produced by the pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.
-
-The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
-
-<!-- TODO nf-core: Write this documentation describing your workflow's output -->
+This document describes the output produced by the pipeline. The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
 ## Pipeline overview
 
-The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
+The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data depending on the type of ids provided:
 
-- [FastQC](#fastqc) - Raw read QC
-- [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
+- Download FastQ files and create samplesheet from:
+  1. [SRA / ENA / DDBJ / GEO ids](#sra--ena--ddbj--geo-ids)
+  2. [Synapse ids](#synapse-ids)
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
-### FastQC
+Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline.
+
+### SRA / ENA / DDBJ / GEO ids
 
 <details markdown="1">
 <summary>Output files</summary>
 
-- `fastqc/`
-  - `*_fastqc.html`: FastQC report containing quality metrics.
-  - `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
+- `fastq/`
+  - `*.fastq.gz`: Paired-end/single-end reads downloaded from the SRA / ENA / DDBJ / GEO.
+- `fastq/md5/`
+  - `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA.
+- `samplesheet/`
+  - `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
+  - `id_mappings.csv`: File with selected fields that can be used to rename samples to more informative names; see [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
+  - `multiqc_config.yml`: [MultiQC](https://multiqc.info/docs/#bulk-sample-renaming) config file that can be passed to most nf-core pipelines via the `--multiqc_config` parameter for bulk renaming of sample names from database ids; [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
+- `metadata/`
+  - `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA.
+  - `*.runinfo.tsv`: Original metadata file downloaded from the ENA.
 
 </details>
 
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the [FastQC help pages](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
+The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP. Otherwise they are downloaded using sra-tools.
 
-![MultiQC - FastQC sequence counts plot](images/mqc_fastqc_counts.png)
-
-![MultiQC - FastQC mean quality scores plot](images/mqc_fastqc_quality.png)
-
-![MultiQC - FastQC adapter content plot](images/mqc_fastqc_adapter.png)
-
-:::note
-The FastQC plots displayed in the MultiQC report shows _untrimmed_ reads. They may contain adapter sequence and potentially regions with low quality.
-:::
-
-### MultiQC
+### Synapse ids
 
 <details markdown="1">
 <summary>Output files</summary>
 
-- `multiqc/`
-  - `multiqc_report.html`: a standalone HTML file that can be viewed in your web browser.
-  - `multiqc_data/`: directory containing parsed statistics from the different tools used in the pipeline.
-  - `multiqc_plots/`: directory containing static images from the report in various formats.
+- `fastq/`
+  - `*.fastq.gz`: Paired-end/single-end reads downloaded from Synapse.
+- `fastq/md5/`
+  - `*.md5`: Files containing `md5` sum for FastQ files downloaded from the Synapse platform.
+- `samplesheet/`
+  - `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
+- `metadata/`
+  - `*.metadata.txt`: Original metadata file generated using the `synapse show` command.
+  - `*.list.txt`: Original output of the `synapse list` command, containing the Synapse ids, file version numbers, file names, and other file-specific data for the Synapse directory ID provided.
 
 </details>
 
-[MultiQC](http://multiqc.info) is a visualization tool that generates a single HTML report summarising all samples in your project. Most of the pipeline QC results are visualised in the report and further statistics are available in the report data directory.
+FastQ files and corresponding sample information for `Synapse` identifiers are downloaded in parallel directly from the [Synapse](https://www.synapse.org/#) platform. A [configuration file](http://python-docs.synapse.org/build/html/Credentials.html#use-synapseconfig) containing valid login credentials is required for Synapse downloads.
 
-Results generated by MultiQC collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>.
+The final sample information for the FastQ files downloaded from `Synapse` is obtained from the file name itself. The file names are parsed according to the glob pattern `*{1,2}*`. This returns the sample name, presumed to be the longest possible string matching the glob pattern, with the fewest number of wildcard insertions. Further information on sample name parsing can be found in the [usage documentation](https://nf-co.re/fetchngs/usage#introduction).
 
 ### Pipeline information
 
@@ -63,7 +65,6 @@ Results generated by MultiQC collate pipeline QC from supported tools e.g. FastQ
 - `pipeline_info/`
   - Reports generated by Nextflow: `execution_report.html`, `execution_timeline.html`, `execution_trace.txt` and `pipeline_dag.dot`/`pipeline_dag.svg`.
   - Reports generated by the pipeline: `pipeline_report.html`, `pipeline_report.txt` and `software_versions.yml`. The `pipeline_report*` files will only be present if the `--email` / `--email_on_fail` parameter's are used when running the pipeline.
-  - Reformatted samplesheet files used as input to the pipeline: `samplesheet.valid.csv`.
   - Parameters used by the pipeline run: `params.json`.
 
 </details>

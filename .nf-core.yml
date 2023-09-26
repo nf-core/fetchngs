@@ -1,1 +1,11 @@
 repository_type: pipeline
+lint:
+  actions_ci: false
+  files_exist:
+    - .github/workflows/awsfulltest.yml
+    - .github/workflows/awstest.yml
+    - conf/igenomes.config
+    - lib/WorkflowFetchngs.groovy
+  files_unchanged:
+    - assets/sendmail_template.txt
+    - lib/NfcoreTemplate.groovy

@@ -1,40 +1,34 @@
 #!/usr/bin/env nextflow
+
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     nf-core/fetchngs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     Github : https://github.com/nf-core/fetchngs
     Website: https://nf-co.re/fetchngs
     Slack  : https://nfcore.slack.com/channels/fetchngs
-----------------------------------------------------------------------------------------
+========================================================================================
 */
 
 nextflow.enable.dsl = 2
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-params.fasta = WorkflowMain.getGenomeAttribute(params, 'fasta')
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     VALIDATE & PRINT PARAMETER SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
 */
 
-include { validateParameters; paramsHelp } from 'plugin/nf-validation'
+include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-validation'
+
+def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
+def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
+
+// Print parameter summary log to screen
+log.info logo + paramsSummaryLog(workflow) + citation
 
 // Print help message if needed
 if (params.help) {
-    def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
-    def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-    def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv --genome GRCh37 -profile docker"
+    def String command = "nextflow run ${workflow.manifest.name} --input id.csv -profile docker"
     log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
     System.exit(0)
 }
@@ -44,27 +38,63 @@ if (params.validate_params) {
     validateParameters()
 }
 
-WorkflowMain.initialise(workflow, params, log)
+// Check if --input file is empty
+ch_input = file(params.input, checkIfExists: true)
+if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOW FOR PIPELINE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+// Read in ids from --input file
+Channel
+    .from(file(params.input, checkIfExists: true))
+    .splitCsv(header:false, sep:'', strip:true)
+    .map { it[0] }
+    .unique()
+    .set { ch_ids }
 
-include { FETCHNGS } from './workflows/fetchngs'
-
-//
-// WORKFLOW: Run main nf-core/fetchngs analysis pipeline
-//
-workflow NFCORE_FETCHNGS {
-    FETCHNGS ()
+// Auto-detect input id type
+def input_type = ''
+if (WorkflowMain.isSraId(ch_input)) {
+    input_type = 'sra'
+} else if (WorkflowMain.isSynapseId(ch_input)) {
+    input_type = 'synapse'
+} else {
+    error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!')
+}
+if (params.input_type != input_type) {
+    error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
 }
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
+    IMPORT WORKFLOWS
+========================================================================================
+*/
+
+if (params.input_type == 'sra')     include { SRA     } from './workflows/sra'
+if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synapse'
+
+//
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
+//
+workflow NFCORE_FETCHNGS {
+
+    //
+    // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
+    //
+    if (params.input_type == 'sra') {
+        SRA ( ch_ids )
+
+    //
+    // WORKFLOW: Download FastQ files for Synapse ids
+    //
+    } else if (params.input_type == 'synapse') {
+        SYNAPSE ( ch_ids )
+    }
+}
+
+/*
+========================================================================================
     RUN ALL WORKFLOWS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
 */
 
 //
@@ -76,7 +106,7 @@ workflow {
 }
 
 /*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
     THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+========================================================================================
 */
