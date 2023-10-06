@@ -3,7 +3,23 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## dev - [date]
+## [[1.10.1](https://github.com/nf-core/fetchngs/releases/tag/1.10.1)] - 2023-10-09
+
+### Credits
+
+Special thanks to the following for their contributions to the release:
+
+- [Adam Talbot](https://github.com/adamrtalbot)
+- [Harshil Patel](https://github.com/drpatelh)
+- [Maxime Garcia](https://github.com/maxulysse)
+
+Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
+
+### Enhancements & fixes
+
+- [PR #205](https://github.com/nf-core/fetchngs/pull/205) - Rename all local modules, workflows and remove `public_aws_ecr profile`
+- [PR #206](https://github.com/nf-core/fetchngs/pull/206) - CI improvments and code cleanup
+- [PR #208](https://github.com/nf-core/fetchngs/pull/208) - Template update with nf-core/tools 2.10
 
 ## [[1.10.0](https://github.com/nf-core/fetchngs/releases/tag/1.10.0)] - 2023-05-16
 
