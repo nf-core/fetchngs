@@ -133,18 +133,21 @@ workflow SRA {
     //
     // MODULE: Create a MutiQC config file with sample name mappings
     //
+    ch_sample_mappings_yml = Channel.empty()
     if (params.sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG (
             SRA_MERGE_SAMPLESHEET.out.mappings
         )
         ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
+        ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
     }
 
     emit:
-    fastq         = fastq_files
-    samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
-    mappings      = SRA_MERGE_SAMPLESHEET.out.mappings
-    versions      = ch_versions.unique()
+    fastq           = fastq_files
+    samplesheet     = SRA_MERGE_SAMPLESHEET.out.samplesheet
+    mappings        = SRA_MERGE_SAMPLESHEET.out.mappings
+    sample_mappings = ch_sample_mappings_yml
+    versions        = ch_versions.unique()    
 }
 
 /*
