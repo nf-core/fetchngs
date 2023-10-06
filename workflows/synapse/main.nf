@@ -4,7 +4,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-def summary_params = NfcoreSchema.paramsSummaryMap(workflow, params)
+include { paramsSummaryMap } from 'plugin/nf-validation'
+
+def summary_params = paramsSummaryMap(workflow)
 
 // Create channel for synapse config
 if (params.synapse_config) {
