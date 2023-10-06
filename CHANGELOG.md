@@ -25,9 +25,9 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 ### Software dependencies
 
-| Dependency      | Old version | New version |
-| --------------- | ----------- | ----------- |
-| `sra-tools`     | 2.11.0      | 3.0.8       |
+| Dependency  | Old version | New version |
+| ----------- | ----------- | ----------- |
+| `sra-tools` | 2.11.0      | 3.0.8       |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present.
 >
