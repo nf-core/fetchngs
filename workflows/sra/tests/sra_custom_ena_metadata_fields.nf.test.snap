@@ -12,6 +12,12 @@
                     "id_mappings.csv:md5,e8a7d8effe4af1d999dc26cf92cf6621"
                 ],
                 "3": [
+                    [
+                        "multiqc_config.yml:md5,b1c25951b237552448e878f7c9dc4235",
+                        "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9"
+                    ]
+                ],
+                "4": [
                     "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
                     "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
                     "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
@@ -24,6 +30,12 @@
                 ],
                 "mappings": [
                     "id_mappings.csv:md5,e8a7d8effe4af1d999dc26cf92cf6621"
+                ],
+                "sample_mappings": [
+                    [
+                        "multiqc_config.yml:md5,b1c25951b237552448e878f7c9dc4235",
+                        "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9"
+                    ]
                 ],
                 "samplesheet": [
                     "samplesheet.csv:md5,d161b1a26b415a61064d8c558c9695c5"
@@ -38,6 +50,6 @@
                 ]
             }
         ],
-        "timestamp": "2023-09-25T11:58:11.85816"
+        "timestamp": "2023-10-06T12:10:32.762201"
     }
 }
