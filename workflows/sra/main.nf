@@ -1,7 +1,7 @@
 /*
-========================================================================================
-    IMPORT LOCAL MODULES
-========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT LOCAL MODULES/SUBWORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 include { MULTIQC_MAPPINGS_CONFIG } from '../../modules/local/multiqc_mappings_config'
@@ -12,17 +12,17 @@ include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp
 include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
 
 /*
-========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT NF-CORE SUBWORKFLOWS
-========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools'
 
 /*
-========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
-========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 workflow SRA {
@@ -130,22 +130,28 @@ workflow SRA {
     )
     ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
 
+    //
+    // MODULE: Create a MutiQC config file with sample name mappings
+    //
+    ch_sample_mappings_yml = Channel.empty()
     if (params.sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG (
             SRA_MERGE_SAMPLESHEET.out.mappings
         )
         ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
+        ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
     }
 
     emit:
-    fastq         = fastq_files
-    samplesheet   = SRA_MERGE_SAMPLESHEET.out.samplesheet
-    mappings      = SRA_MERGE_SAMPLESHEET.out.mappings
-    versions      = ch_versions.unique()
+    fastq           = fastq_files
+    samplesheet     = SRA_MERGE_SAMPLESHEET.out.samplesheet
+    mappings        = SRA_MERGE_SAMPLESHEET.out.mappings
+    sample_mappings = ch_sample_mappings_yml
+    versions        = ch_versions.unique()    
 }
 
 /*
-========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     THE END
-========================================================================================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
