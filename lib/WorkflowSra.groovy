@@ -9,11 +9,12 @@ class WorkflowSra {
     //
     // Check and validate parameters
     //
-    public static void initialise(params, valid_params) {
+    public static void initialise(params) {
         // Check minimal ENA fields are provided to download FastQ files
-        def ena_metadata_fields = params.ena_metadata_fields ? params.ena_metadata_fields.split(',').collect{ it.trim().toLowerCase() } : valid_params['ena_metadata_fields']
-        if (!ena_metadata_fields.containsAll(valid_params['ena_metadata_fields'])) {
-            Nextflow.error("Invalid option: '${params.ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_params['ena_metadata_fields'].join(',')}'")
+        def valid_ena_metadata_fields = ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
+        def ena_metadata_fields = params.ena_metadata_fields ? params.ena_metadata_fields.split(',').collect{ it.trim().toLowerCase() } : valid_ena_metadata_fields
+        if (!ena_metadata_fields.containsAll(valid_ena_metadata_fields)) {
+            Nextflow.error("Invalid option: '${params.ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
         }
     }
 
