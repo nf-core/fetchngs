@@ -7,7 +7,7 @@
                 "nf-core": {
                     "custom/dumpsoftwareversions": {
                         "branch": "master",
-                        "git_sha": "911696ea0b62df80e900ef244d7867d177971f73",
+                        "git_sha": "05c280924b6c768d484c7c443dad5e605c4ff4b4",
                         "installed_by": ["modules"]
                     },
                     "custom/sratoolsncbisettings": {
@@ -17,12 +17,12 @@
                     },
                     "sratools/fasterqdump": {
                         "branch": "master",
-                        "git_sha": "6712754854ae2832abfff3f0800cdb4a6a60bfca",
+                        "git_sha": "4d9951c6c9c4c19ea944bb73149caf9d3cb1f2fc",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "sratools/prefetch": {
                         "branch": "master",
-                        "git_sha": "6712754854ae2832abfff3f0800cdb4a6a60bfca",
+                        "git_sha": "4d9951c6c9c4c19ea944bb73149caf9d3cb1f2fc",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     }
                 }
@@ -31,7 +31,7 @@
                 "nf-core": {
                     "fastq_download_prefetch_fasterqdump_sratools": {
                         "branch": "master",
-                        "git_sha": "6712754854ae2832abfff3f0800cdb4a6a60bfca",
+                        "git_sha": "dedc0e31087f3306101c38835d051bf49789445a",
                         "installed_by": ["subworkflows"]
                     }
                 }

@@ -17,11 +17,41 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-WorkflowMain.initialise(workflow, params, log)
+include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-validation'
+
+// Print parameter summary log to screen
+def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
+def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
+def String command = "nextflow run ${workflow.manifest.name} --input id.csv -profile docker"
+if (params.help) {
+    log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
+    System.exit(0)
+} else {
+    log.info logo + paramsSummaryLog(workflow) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
+}
 
 // Check if --input file is empty
 ch_input = file(params.input, checkIfExists: true)
-if (ch_input.isEmpty()) {exit 1, "File provided with --input is empty: ${ch_input.getName()}!"}
+if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
+
+// Validate input parameters
+if (params.validate_params) {
+    validateParameters()
+}
+
+// Auto-detect input id type
+def input_type = ''
+if (WorkflowMain.isSraId(ch_input)) {
+    input_type = 'sra'
+} else if (WorkflowMain.isSynapseId(ch_input)) {
+    input_type = 'synapse'
+} else {
+    error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!')
+}
+
+if (params.input_type != input_type) {
+    error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
+}
 
 // Read in ids from --input file
 Channel
@@ -33,29 +63,18 @@ Channel
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOW FOR PIPELINE
+    IMPORT WORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// Auto-detect input id type
-def input_type = ''
-if (WorkflowMain.isSraId(ch_input)) {
-    input_type = 'sra'
-} else if (WorkflowMain.isSynapseId(ch_input)) {
-    input_type = 'synapse'
-} else {
-    exit 1, 'Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!'
-}
+if (params.input_type == 'sra')     include { SRA     } from './workflows/sra'
+if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synapse'
 
-if (params.input_type == input_type) {
-    if (params.input_type == 'sra') {
-        include { SRA } from './workflows/sra'
-    } else if (params.input_type == 'synapse') {
-        include { SYNAPSE } from './workflows/synapse'
-    }
-} else {
-    exit 1, "Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!"
-}
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    NAMED WORKFLOWS FOR PIPELINE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 //
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
