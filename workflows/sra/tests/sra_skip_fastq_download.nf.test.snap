@@ -1,0 +1,51 @@
+{
+    "Parameters: --skip_fastq_download": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    "samplesheet.csv:md5,b1636e896008b96044d352a0757a390b"
+                ],
+                "2": [
+                    "id_mappings.csv:md5,a18766d39f6b2239163b4ef00eeaf342"
+                ],
+                "3": [
+                    [
+                        "multiqc_config.yml:md5,bb99e81ddd360988338c10ecbdbce65a",
+                        "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9"
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
+                    "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47"
+                ],
+                "fastq": [
+                    
+                ],
+                "mappings": [
+                    "id_mappings.csv:md5,a18766d39f6b2239163b4ef00eeaf342"
+                ],
+                "sample_mappings": [
+                    [
+                        "multiqc_config.yml:md5,bb99e81ddd360988338c10ecbdbce65a",
+                        "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9"
+                    ]
+                ],
+                "samplesheet": [
+                    "samplesheet.csv:md5,b1636e896008b96044d352a0757a390b"
+                ],
+                "versions": [
+                    "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
+                    "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47"
+                ]
+            }
+        ],
+        "timestamp": "2023-10-06T12:18:48.477246"
+    }
+}
