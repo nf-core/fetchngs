@@ -5,6 +5,7 @@ slackreport.json
 work/
 data/
 results/
+.nf-test/
 .DS_Store
 testing/
 testing*

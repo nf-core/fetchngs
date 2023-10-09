@@ -36,7 +36,7 @@
                     },
                     "initialise": {
                         "branch": "master",
-                        "git_sha": "7b55a4631bebd1cf827a448d0b70386681fea475",
+                        "git_sha": "8340fb3779fe3233a455aeee1f60ceb203434ab6",
                         "installed_by": ["subworkflows"]
                     }
                 }

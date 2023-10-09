@@ -21,10 +21,13 @@ nextflow.enable.dsl = 2
 ch_input = file(params.input, checkIfExists: true)
 if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
 
-// Validate input parameters
-if (params.validate_params) {
-    validateParameters()
-}
+// Read in ids from --input file
+Channel
+    .from(file(params.input, checkIfExists: true))
+    .splitCsv(header:false, sep:'', strip:true)
+    .map { it[0] }
+    .unique()
+    .set { ch_ids }
 
 // Auto-detect input id type
 def input_type = ''
@@ -85,7 +88,7 @@ if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synaps
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
-    INITIALISE ( params.version, params.help, params.valid_params )
+    INITIALISE ( params.version, params.help, params.validate_params, true )
 
     ch_versions = Channel.empty()
 
