@@ -147,7 +147,7 @@ workflow SRA {
     samplesheet     = SRA_MERGE_SAMPLESHEET.out.samplesheet
     mappings        = SRA_MERGE_SAMPLESHEET.out.mappings
     sample_mappings = ch_sample_mappings_yml
-    versions        = ch_versions.unique()    
+    versions        = ch_versions.unique()
 }
 
 /*

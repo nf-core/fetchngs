@@ -21,13 +21,10 @@ nextflow.enable.dsl = 2
 ch_input = file(params.input, checkIfExists: true)
 if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
 
-// Read in ids from --input file
-Channel
-    .from(file(params.input, checkIfExists: true))
-    .splitCsv(header:false, sep:'', strip:true)
-    .map { it[0] }
-    .unique()
-    .set { ch_ids }
+// Validate input parameters
+if (params.validate_params) {
+    validateParameters()
+}
 
 // Auto-detect input id type
 def input_type = ''
@@ -38,6 +35,7 @@ if (WorkflowMain.isSraId(ch_input)) {
 } else {
     error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!')
 }
+
 if (params.input_type != input_type) {
     error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
 }
@@ -76,6 +74,12 @@ include { INITIALISE                  } from './subworkflows/nf-core/initialise/
 
 if (params.input_type == 'sra')     include { SRA     } from './workflows/sra'
 if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synapse'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    NAMED WORKFLOWS FOR PIPELINE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 
 //
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
