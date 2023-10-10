@@ -34,7 +34,7 @@ jobs:
         id: get_username
         uses: mikefarah/yq@master
         with:
-          cmd: find . -name "tags.yml" -type f -exec yq ea \'. as $item ireduce ({}; . * $item )\' {} + > tags.yml
+          cmd: "find . -name 'tags.yml' -type f -exec yq ea '. as $item ireduce ({}; . * $item )' {} + > tags.yml"
       - name: debug
         run: cat tags.yml
       - uses: dorny/paths-filter@v2
