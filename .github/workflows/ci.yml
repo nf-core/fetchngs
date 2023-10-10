@@ -30,10 +30,17 @@ jobs:
       tags: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v3
+      - name: Combine all tags.yml files
+        id: get_username
+        uses: mikefarah/yq@master
+        with:
+          cmd: find . -name "tags.yml" -type f -exec yq ea '. as $item ireduce ({}; . * $item )' {} + > tags.yml
+      - name: debug
+        run: cat tags.yml
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: ".github/tags.yml"
+          filters: "tags.yml"
 
   define_nxf_versions:
     name: Choose nextflow versions to test against depending on target branch
