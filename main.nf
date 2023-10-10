@@ -17,6 +17,8 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { paramsHelp; paramsSummaryLog; validateParameters } from 'plugin/nf-validation'
+
 // Check if --input file is empty
 ch_input = file(params.input, checkIfExists: true)
 if (ch_input.isEmpty()) { error("File provided with --input is empty: ${ch_input.getName()}!") }
