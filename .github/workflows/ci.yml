@@ -32,15 +32,13 @@ jobs:
       - uses: actions/checkout@v3
       - name: Combine all tags.yml files
         id: get_username
-        uses: mikefarah/yq@master
-        with:
-          cmd: "find . -name 'tags.yml' -type f -exec yq ea '. as $item ireduce (\\{\\}; . * $item )' {} + > tags.yml"
+        run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
       - name: debug
         run: cat tags.yml
       - uses: dorny/paths-filter@v2
         id: filter
         with:
-          filters: "tags.yml"
+          filters: ".github/tags.yml"
 
   define_nxf_versions:
     name: Choose nextflow versions to test against depending on target branch
