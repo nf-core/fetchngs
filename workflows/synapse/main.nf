@@ -106,9 +106,9 @@ workflow SYNAPSE {
     ch_versions = ch_versions.mix(SYNAPSE_MERGE_SAMPLESHEET.out.versions)
 
     emit:
-        fastq       = ch_fastq
-        samplesheet = SYNAPSE_MERGE_SAMPLESHEET.out.samplesheet
-        versions    = ch_versions.unique()
+    fastq       = ch_fastq
+    samplesheet = SYNAPSE_MERGE_SAMPLESHEET.out.samplesheet
+    versions    = ch_versions.unique()
 }
 
 /*

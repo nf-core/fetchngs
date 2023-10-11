@@ -62,10 +62,7 @@ workflow SRA {
         .unique()
         .set { ch_sra_metadata }
 
-    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
-
     fastq_files = Channel.empty()
-
     if (!params.skip_fastq_download) {
 
         ch_sra_metadata
@@ -97,18 +94,19 @@ workflow SRA {
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
         // Isolate FASTQ channel which will be added to emit block
-        fastq_files.mix(
-            SRA_FASTQ_FTP.out.fastq,
-            FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads
-        ).map { meta, fastq ->
-            def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
-            def meta_clone = meta.clone()
+        fastq_files
+            .mix(SRA_FASTQ_FTP.out.fastq, FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
+            .map { 
+                meta, fastq ->
+                    def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
+                    def meta_clone = meta.clone()
 
-            meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
-            meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
+                    meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
+                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
 
-            return meta_clone
-        }.set { ch_sra_metadata }
+                    return meta_clone
+            }
+            .set { ch_sra_metadata }
     }
 
     //
