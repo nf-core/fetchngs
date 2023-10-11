@@ -9,6 +9,6 @@ lint:
     - lib/WorkflowFetchngs.groovy
   files_unchanged:
     - .gitattributes
-    - .prettierignore
+    - .gitignore
     - assets/sendmail_template.txt
     - lib/NfcoreTemplate.groovy

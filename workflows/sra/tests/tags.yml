@@ -1,18 +1,3 @@
-# local modules
-multiqc_mappings_config:
-  - modules/local/multiqc_mappings_config/**
-sra_fastq_ftp:
-  - modules/local/sra_fastq_ftp/**
-sra_ids_to_runinfo:
-  - modules/local/sra_ids_to_runinfo/**
-sra_merge_samplesheet:
-  - modules/local/sra_merge_samplesheet/**
-sra_runinfo_to_ftp:
-  - modules/local/sra_runinfo_to_ftp/**
-sra_to_samplesheet:
-  - modules/local/sra_to_samplesheet/**
-
-# workflow: sra
 sra_custom_ena_metadata_fields:
   - modules/local/sra_ids_to_runinfo/**
   - modules/local/sra_runinfo_to_ftp/**
