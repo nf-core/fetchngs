@@ -85,6 +85,7 @@ workflow {
         params.input_type,
         params.email,
         params.email_on_fail,
+        params.hook_url,
         PIPELINE_INITIALISATION.out.summary_params
     )
 }

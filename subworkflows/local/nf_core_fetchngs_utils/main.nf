@@ -11,7 +11,7 @@
 include { CUSTOM_DUMPSOFTWAREVERSIONS                 } from '../../../modules/nf-core/custom/dumpsoftwareversions'
 include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion } from '../nextflow_pipeline_utils'
 include { NF_VALIDATION_PLUGIN_UTILS                  } from '../nf_validation_plugin_utils'
-include { NF_CORE_PIPELINE_UTILS; workflowCitation; nfCoreLogo; dashedLine; completionEmail; completionSummary } from '../nf_core_pipeline_utils'
+include { NF_CORE_PIPELINE_UTILS; workflowCitation; nfCoreLogo; dashedLine; completionEmail; completionSummary; imNotification } from '../nf_core_pipeline_utils'
 
 /*
 ========================================================================================
@@ -96,6 +96,7 @@ workflow PIPELINE_COMPLETION {
     input_type     //  string: 'sra' or 'synapse'
     email          //  string: email address
     email_on_fail  //  string: email address sent on pipeline failure
+    hook_url       //  string: hook URL for notifications
     summary_params //     map: Groovy map of the parameters used in the pipeline
 
     main:
@@ -116,6 +117,10 @@ workflow PIPELINE_COMPLETION {
         }
 
         completionSummary()
+
+        if (hook_url) {
+            imNotification(summary_params)
+        }
 
         if (input_type == 'sra') {
             sraCurateSamplesheetWarn()
