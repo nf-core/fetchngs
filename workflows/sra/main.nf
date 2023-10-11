@@ -96,7 +96,7 @@ workflow SRA {
         // Isolate FASTQ channel which will be added to emit block
         fastq_files
             .mix(SRA_FASTQ_FTP.out.fastq, FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
-            .map { 
+            .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
                     def meta_clone = meta.clone()
