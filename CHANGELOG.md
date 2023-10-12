@@ -13,10 +13,12 @@ Special thanks to the following for their contributions to the release:
 - [Edmund Miller](https://github.com/Emiller88)
 - [Esha Joshi](https://github.com/ejseqera)
 - [Harshil Patel](https://github.com/drpatelh)
+- [Lukas Forer](https://github.com/lukfor)
 - [James Fellows Yates](https://github.com/jfy133)
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Rob Syme](https://github.com/robsyme)
 - [Sateesh Peri](https://github.com/sateeshperi)
+- [Sebastian Schönherr](https://github.com/seppinho)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 
