@@ -11,7 +11,6 @@ on:
       - master
       - dev
       - refactor
-      - nf-test
 
 env:
   NXF_ANSI_LOG: false
