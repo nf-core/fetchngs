@@ -7,7 +7,7 @@
                 "nf-core": {
                     "custom/dumpsoftwareversions": {
                         "branch": "master",
-                        "git_sha": "1526dc37227a1101bdca25339337362e187a6b3b",
+                        "git_sha": "1b372269755a5c4a13c23bc130ebada8cb9d4cd0",
                         "installed_by": ["modules"]
                     },
                     "custom/sratoolsncbisettings": {
