@@ -1,7 +1,7 @@
 nextflow_workflow {
 
     name "Test workflow: sra/main.nf"
-    script "workflows/sra/main.nf"
+    script "../main.nf"
     workflow "SRA"
     tag "multiqc_mappings_config"
     tag "sra_fastq_ftp"

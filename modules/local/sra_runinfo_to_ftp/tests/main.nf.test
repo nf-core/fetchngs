@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test process: SRA_RUNINFO_TO_FTP"
-    script "modules/local/sra_runinfo_to_ftp/main.nf"
+    script "../main.nf"
     process "SRA_RUNINFO_TO_FTP"
     tag "modules"
     tag "modules_local"

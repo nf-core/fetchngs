@@ -1,7 +1,7 @@
 nextflow_process {
 
     name "Test process: MULTIQC_MAPPINGS_CONFIG"
-    script "modules/local/multiqc_mappings_config/main.nf"
+    script "../main.nf"
     process "MULTIQC_MAPPINGS_CONFIG"
     tag "modules"
     tag "modules_local"
