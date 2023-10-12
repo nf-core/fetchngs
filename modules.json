@@ -7,7 +7,7 @@
                 "nf-core": {
                     "custom/dumpsoftwareversions": {
                         "branch": "master",
-                        "git_sha": "05c280924b6c768d484c7c443dad5e605c4ff4b4",
+                        "git_sha": "1526dc37227a1101bdca25339337362e187a6b3b",
                         "installed_by": ["modules"]
                     },
                     "custom/sratoolsncbisettings": {
@@ -17,12 +17,12 @@
                     },
                     "sratools/fasterqdump": {
                         "branch": "master",
-                        "git_sha": "4d9951c6c9c4c19ea944bb73149caf9d3cb1f2fc",
+                        "git_sha": "b4d743f1bb8d92eb129a5925a9211beb689be625",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "sratools/prefetch": {
                         "branch": "master",
-                        "git_sha": "4d9951c6c9c4c19ea944bb73149caf9d3cb1f2fc",
+                        "git_sha": "096ea8a4db569cc680ada4105e1d313cc56329c8",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     }
                 }

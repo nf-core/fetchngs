@@ -29,7 +29,7 @@ workflow NFCORE_FETCHNGS {
     ids // channel: database ids read in from --input
 
     main:
-    
+
     ch_versions = Channel.empty()
 
     //
