@@ -1,0 +1,27 @@
+nextflow_pipeline {
+
+    name "Test pipeline"
+    script "../main.nf"
+    tag "pipeline"
+
+    test("Run with profile test") {
+
+        when {
+            params {
+                outdir     = "results"
+                max_cpus   = 2
+                max_memory = '6.GB'
+                max_time   = '6.h'
+                input      = "$projectDir/tests/sra_ids_test.csv"
+                validationSchemaIgnoreParams = 'test_data_base,merge_samplesheet_ids,fastq_ftp_ids,test_data'
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success }
+            )
+        }
+    }
+
+}
