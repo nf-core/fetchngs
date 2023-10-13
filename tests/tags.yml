@@ -1,0 +1,4 @@
+pipeline_fetchngs:
+  - **.nf
+  - **.config
+  - **.nf.test
