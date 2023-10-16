@@ -44,7 +44,8 @@ workflow PIPELINE_INITIALISATION {
         workflow_command,
         pre_help_text,
         post_help_text,
-        params.validate_params
+        params.validate_params,
+        "nextflow_schema.json"
     )
 
     //
