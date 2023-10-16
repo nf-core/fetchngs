@@ -38,6 +38,11 @@
                         "branch": "master",
                         "git_sha": "76cbb00305f6b045c15c1e202a5bdd516d6f64a3",
                         "installed_by": ["subworkflows"]
+                    },
+                    "nfvalidation_plugin_utils": {
+                        "branch": "master",
+                        "git_sha": "a8223a72def6cc46f4652a348feba21845ce68c6",
+                        "installed_by": ["subworkflows"]
                     }
                 }
             }
