@@ -42,6 +42,9 @@ workflow NEXTFLOW_PIPELINE_UTILS {
     if (check_conda_channels) {
         checkCondaChannels()
     }
+
+    emit:
+        out = true
 }
 
 /*
