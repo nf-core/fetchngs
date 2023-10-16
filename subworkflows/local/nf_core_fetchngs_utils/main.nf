@@ -19,7 +19,7 @@ include {
     completionEmail; 
     completionSummary; 
     imNotification 
-} from '../../nf-core/nf_core_pipeline_utils'
+} from '../../nf-core/nfcore_pipeline_utils'
 
 /*
 ========================================================================================
