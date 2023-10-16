@@ -36,7 +36,7 @@
                     },
                     "nextflowpipelineutils": {
                         "branch": "master",
-                        "git_sha": "76cbb00305f6b045c15c1e202a5bdd516d6f64a3",
+                        "git_sha": "1405b3d5078f108f86a2c122846ed2797b4ec8bf",
                         "installed_by": ["subworkflows"]
                     },
                     "nfvalidation_plugin_utils": {
