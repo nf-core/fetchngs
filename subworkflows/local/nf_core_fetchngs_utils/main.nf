@@ -9,9 +9,17 @@
 */
 
 include { CUSTOM_DUMPSOFTWAREVERSIONS                 } from '../../../modules/nf-core/custom/dumpsoftwareversions'
-include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion } from '../../nf-core/nextflowpipelineutils/main'
+include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion  } from '../../nf-core/nextflowpipelineutils/main'
 include { NF_VALIDATION_PLUGIN_UTILS                  } from '../nf_validation_plugin_utils'
-include { NF_CORE_PIPELINE_UTILS; workflowCitation; nfCoreLogo; dashedLine; completionEmail; completionSummary; imNotification } from '../nf_core_pipeline_utils'
+include { 
+    NFCORE_PIPELINE_UTILS; 
+    workflowCitation; 
+    nfCoreLogo; 
+    dashedLine; 
+    completionEmail; 
+    completionSummary; 
+    imNotification 
+} from '../../nf-core/nf_core_pipeline_utils'
 
 /*
 ========================================================================================
@@ -50,7 +58,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    NF_CORE_PIPELINE_UTILS ()
+    NFCORE_PIPELINE_UTILS ()
 
     //
     // Auto-detect input id type
