@@ -9,7 +9,7 @@
 */
 
 include { CUSTOM_DUMPSOFTWAREVERSIONS                 } from '../../../modules/nf-core/custom/dumpsoftwareversions'
-include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion  } from '../../nf-core/nextflowpipelineutils/main'
+include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion } from '../../nf-core/nextflowpipelineutils/main'
 include { NF_VALIDATION_PLUGIN_UTILS                  } from '../nf_validation_plugin_utils'
 include { 
     NFCORE_PIPELINE_UTILS; 
