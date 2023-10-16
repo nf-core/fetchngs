@@ -8,10 +8,13 @@
 ========================================================================================
 */
 
-workflow NF_CORE_PIPELINE_UTILS {
+workflow NFCORE_PIPELINE_UTILS {
 
     main:
     checkConfigProvided()
+
+    emit:
+    success = true
 
 }
 
