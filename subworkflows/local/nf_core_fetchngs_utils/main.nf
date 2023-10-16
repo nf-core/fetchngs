@@ -10,7 +10,7 @@
 
 include { CUSTOM_DUMPSOFTWAREVERSIONS                 } from '../../../modules/nf-core/custom/dumpsoftwareversions'
 include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion } from '../../nf-core/nextflowpipelineutils/main'
-include { NF_VALIDATION_PLUGIN_UTILS                  } from '../nf_validation_plugin_utils'
+include { NF_VALIDATION_PLUGIN_UTILS                  } from '../../nf-core/nfvalidation_plugin_utils/main.nf'
 include { 
     NFCORE_PIPELINE_UTILS; 
     workflowCitation; 
@@ -52,7 +52,8 @@ workflow PIPELINE_INITIALISATION {
         workflow_command,
         pre_help_text,
         post_help_text,
-        params.validate_params
+        params.validate_params,
+        "nextflow_schema.json"
     )
 
     //
