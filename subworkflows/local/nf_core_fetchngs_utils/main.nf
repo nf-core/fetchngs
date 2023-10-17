@@ -112,10 +112,9 @@ workflow PIPELINE_COMPLETION {
     //
     // MODULE: Dump software versions for all tools used in the workflow
     //
-    pipeline_version_info = Channel.of("""
-    "Workflow":
-        "Nextflow": ${workflow.nextflow.version},
-        "${workflow.manifest.name}": ${workflow.manifest.version},
+    pipeline_version_info = Channel.of("""\"workflow\":
+        nextflow: ${workflow.nextflow.version}
+        ${workflow.manifest.name}: ${workflow.manifest.version}
     """.stripIndent())
 
     versions = versions.mix(pipeline_version_info)
