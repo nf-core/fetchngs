@@ -119,7 +119,7 @@ workflow PIPELINE_COMPLETION {
     """.stripIndent())
 
     versions = versions.mix(pipeline_version_info)
-    versions.collectFile(name: 'versions.yml', storeDir: "${params.outdir}/pipeline_info")
+    versions.collectFile(name: 'fetchngs_mqc_versions.yml', storeDir: "${params.outdir}/pipeline_info")
 
     //
     // Completion email and summary
