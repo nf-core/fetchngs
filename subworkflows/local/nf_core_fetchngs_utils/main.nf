@@ -8,7 +8,6 @@
 ========================================================================================
 */
 
-include { CUSTOM_DUMPSOFTWAREVERSIONS                 } from '../../../modules/nf-core/custom/dumpsoftwareversions'
 include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion } from '../../nf-core/nextflowpipelineutils/main'
 include { NF_VALIDATION_PLUGIN_UTILS                  } from '../../nf-core/nfvalidation_plugin_utils/main.nf'
 include { 
@@ -113,9 +112,13 @@ workflow PIPELINE_COMPLETION {
     //
     // MODULE: Dump software versions for all tools used in the workflow
     //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        versions.collectFile(name: 'collated_versions.yml')
-    )
+    pipeline_version_info = Channel.of("""\"workflow\":
+        nextflow: ${workflow.nextflow.version}
+        ${workflow.manifest.name}: ${workflow.manifest.version}
+    """.stripIndent())
+
+    versions = versions.mix(pipeline_version_info)
+    versions.collectFile(name: 'fetchngs_mqc_versions.yml', storeDir: "${params.outdir}/pipeline_info")
 
     //
     // Completion email and summary

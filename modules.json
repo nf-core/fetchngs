@@ -5,12 +5,6 @@
         "https://github.com/nf-core/modules.git": {
             "modules": {
                 "nf-core": {
-                    "custom/dumpsoftwareversions": {
-                        "branch": "master",
-                        "git_sha": "4125fb0c2152efbcec8d9ed71a756c9274b2f7f5",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/custom/dumpsoftwareversions/custom-dumpsoftwareversions.diff"
-                    },
                     "custom/sratoolsncbisettings": {
                         "branch": "master",
                         "git_sha": "4125fb0c2152efbcec8d9ed71a756c9274b2f7f5",
