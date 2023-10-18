@@ -24,7 +24,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 ### Enhancements & fixes
 
-- [PR #XXX](https://github.com/nf-core/fetchngs/pull/XXX) - Use nf-test for all pipeline testing
+- [PR #188](https://github.com/nf-core/fetchngs/pull/188) - Use nf-test for all pipeline testing
 
 ### Enhancements & fixes
 
