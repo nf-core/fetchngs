@@ -3,6 +3,31 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.11.0](https://github.com/nf-core/fetchngs/releases/tag/1.11.0)] - 2023-10-18
+
+### Credits
+
+Special thanks to the following for their contributions to the release:
+
+- [Adam Talbot](https://github.com/adamrtalbot)
+- [Edmund Miller](https://github.com/Emiller88)
+- [Esha Joshi](https://github.com/ejseqera)
+- [Harshil Patel](https://github.com/drpatelh)
+- [Lukas Forer](https://github.com/lukfor)
+- [James Fellows Yates](https://github.com/jfy133)
+- [Maxime Garcia](https://github.com/maxulysse)
+- [Rob Syme](https://github.com/robsyme)
+- [Sateesh Peri](https://github.com/sateeshperi)
+- [Sebastian Schönherr](https://github.com/seppinho)
+
+Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
+
+### Enhancements & fixes
+
+- [PR #188](https://github.com/nf-core/fetchngs/pull/188) - Use nf-test for all pipeline testing
+
+### Enhancements & fixes
+
 ## [[1.10.1](https://github.com/nf-core/fetchngs/releases/tag/1.10.1)] - 2023-10-08
 
 ### Credits
@@ -10,8 +35,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Special thanks to the following for their contributions to the release:
 
 - [Adam Talbot](https://github.com/adamrtalbot)
+- [Davide Carlson](https://github.com/davidecarlson)
 - [Harshil Patel](https://github.com/drpatelh)
 - [Maxime Garcia](https://github.com/maxulysse)
+- [MCMandR](https://github.com/MCMandR)
 - [Rob Syme](https://github.com/robsyme)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.

@@ -1,36 +1,23 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    VALIDATE INPUTS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-include { paramsSummaryMap } from 'plugin/nf-validation'
-
-def summary_params = paramsSummaryMap(workflow)
-
-WorkflowSra.initialise(params)
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
-include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
-include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
-include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
-include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
 include { MULTIQC_MAPPINGS_CONFIG } from '../../modules/local/multiqc_mappings_config'
+include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
+include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
+include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
+include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
+include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+    IMPORT NF-CORE SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../modules/nf-core/custom/dumpsoftwareversions/main'
-include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/main'
+include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,16 +54,15 @@ workflow SRA {
         .out
         .tsv
         .splitCsv(header:true, sep:'\t')
-        .map {
-            meta ->
-                def meta_clone = meta.clone()
-                meta_clone.single_end = meta_clone.single_end.toBoolean()
-                return meta_clone
+        .map{ meta ->
+            def meta_clone = meta.clone()
+            meta_clone.single_end = meta_clone.single_end.toBoolean()
+            return meta_clone
         }
         .unique()
         .set { ch_sra_metadata }
-    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
+    fastq_files = Channel.empty()
     if (!params.skip_fastq_download) {
 
         ch_sra_metadata
@@ -107,16 +93,17 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
-        SRA_FASTQ_FTP
-            .out
-            .fastq
-            .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
+        // Isolate FASTQ channel which will be added to emit block
+        fastq_files
+            .mix(SRA_FASTQ_FTP.out.fastq, FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
                     def meta_clone = meta.clone()
+
                     meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
                     meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
+
                     return meta_clone
             }
             .set { ch_sra_metadata }
@@ -144,33 +131,21 @@ workflow SRA {
     //
     // MODULE: Create a MutiQC config file with sample name mappings
     //
+    ch_sample_mappings_yml = Channel.empty()
     if (params.sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG (
             SRA_MERGE_SAMPLESHEET.out.mappings
         )
         ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
+        ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
     }
 
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION EMAIL AND SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
-    }
-    NfcoreTemplate.summary(workflow, params, log)
-    WorkflowSra.curateSamplesheetWarn(log)
+    emit:
+    fastq           = fastq_files
+    samplesheet     = SRA_MERGE_SAMPLESHEET.out.samplesheet
+    mappings        = SRA_MERGE_SAMPLESHEET.out.mappings
+    sample_mappings = ch_sample_mappings_yml
+    versions        = ch_versions.unique()
 }
 
 /*

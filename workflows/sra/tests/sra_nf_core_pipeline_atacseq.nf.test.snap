@@ -1,0 +1,55 @@
+{
+    "Parameters: --nf_core_pipeline atacseq": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    "samplesheet.csv:md5,35292d2bea78b087d75c3333f6319b6b"
+                ],
+                "2": [
+                    "id_mappings.csv:md5,3e70c965568c59f8c8fbb8e99e7a8b79"
+                ],
+                "3": [
+                    [
+                        "multiqc_config.yml:md5,6d4c3e5137704358474330207f5f2b5c",
+                        "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9"
+                    ]
+                ],
+                "4": [
+                    "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
+                    "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
+                    "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
+                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e"
+                ],
+                "fastq": [
+                    
+                ],
+                "mappings": [
+                    "id_mappings.csv:md5,3e70c965568c59f8c8fbb8e99e7a8b79"
+                ],
+                "sample_mappings": [
+                    [
+                        "multiqc_config.yml:md5,6d4c3e5137704358474330207f5f2b5c",
+                        "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9"
+                    ]
+                ],
+                "samplesheet": [
+                    "samplesheet.csv:md5,35292d2bea78b087d75c3333f6319b6b"
+                ],
+                "versions": [
+                    "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
+                    "versions.yml:md5,45e4a369df2d3af023b8622aa3f6d5a8",
+                    "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
+                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
+                    "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
+                    "versions.yml:md5,e977678bd13a54fc9c31addf135be15e"
+                ]
+            }
+        ],
+        "timestamp": "2023-10-18T09:47:56.240260295"
+    }
+}

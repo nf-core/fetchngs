@@ -1,0 +1,2 @@
+sra_merge_samplesheet:
+  - modules/local/sra_merge_samplesheet/**

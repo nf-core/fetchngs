@@ -3,6 +3,7 @@
 [![GitHub Actions CI Status](https://github.com/nf-core/fetchngs/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/fetchngs/actions?query=workflow%3A%22nf-core+CI%22)
 [![GitHub Actions Linting Status](https://github.com/nf-core/fetchngs/workflows/nf-core%20linting/badge.svg)](https://github.com/nf-core/fetchngs/actions?query=workflow%3A%22nf-core+linting%22)
 [![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/fetchngs/results)
+[![nf-test](https://img.shields.io/badge/tested_with-nf--test-337ab7.svg)](https://github.com/askimed/nf-test)
 [![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.5070524-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.5070524)
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)

@@ -37,7 +37,7 @@
 - [Synapse](https://pubmed.ncbi.nlm.nih.gov/24071850/)
   > Omberg L, Ellrott K, Yuan Y, Kandoth C, Wong C, Kellen MR, Friend SH, Stuart J, Liang H, Margolin AA. Enabling transparent and collaborative computational analysis of 12 tumor types within The Cancer Genome Atlas. Nat Genet. 2013 Oct;45(10):1121-6. doi: 10.1038/ng.2761. PMID: 24071850; PMCID: PMC3950337.
 
-## Software packaging/containerisation tools
+## Software packaging/containerisation/testing tools
 
 - [Anaconda](https://anaconda.com)
 
@@ -54,6 +54,8 @@
 - [Docker](https://dl.acm.org/doi/10.5555/2600239.2600241)
 
   > Merkel, D. (2014). Docker: lightweight linux containers for consistent development and deployment. Linux Journal, 2014(239), 2. doi: 10.5555/2600239.2600241.
+
+- [nf-test](https://code.askimed.com/nf-test)
 
 - [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
 
