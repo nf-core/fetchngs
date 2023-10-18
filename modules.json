@@ -13,7 +13,8 @@
                     "sratools/fasterqdump": {
                         "branch": "master",
                         "git_sha": "4125fb0c2152efbcec8d9ed71a756c9274b2f7f5",
-                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"],
+                        "patch": "modules/nf-core/sratools/fasterqdump/sratools-fasterqdump.diff"
                     },
                     "sratools/prefetch": {
                         "branch": "master",
