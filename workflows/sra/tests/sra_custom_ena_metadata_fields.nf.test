@@ -1,0 +1,39 @@
+nextflow_workflow {
+
+    name "Test workflow: sra/main.nf"
+    script "../main.nf"
+    workflow "SRA"
+    tag "workflows"
+    tag "workflows_sra"
+    tag "multiqc_mappings_config"
+    tag "sra_fastq_ftp"
+    tag "sra_ids_to_runinfo"
+    tag "sra_merge_samplesheet"
+    tag "sra_runinfo_to_ftp"
+    tag "sra_to_samplesheet"
+    tag "sra_custom_ena_metadata_fields"
+
+    test("Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.from('ERR1160846', 'GSE214215', 'SRR12848126')
+                """
+            }
+            params {
+                outdir = "results"
+                nf_core_pipeline = "rnaseq"
+                ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
+                sample_mapping_fields = "run_accession,library_layout"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

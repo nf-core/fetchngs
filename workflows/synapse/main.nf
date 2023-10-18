@@ -1,22 +1,5 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    VALIDATE INPUTS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-include { paramsSummaryMap } from 'plugin/nf-validation'
-
-def summary_params = paramsSummaryMap(workflow)
-
-// Create channel for synapse config
-if (params.synapse_config) {
-    ch_synapse_config = file(params.synapse_config, checkIfExists: true)
-} else {
-    exit 1, 'Please provide a Synapse config file for download authentication!'
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
@@ -29,14 +12,6 @@ include { SYNAPSE_MERGE_SAMPLESHEET } from '../../modules/local/synapse_merge_sa
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../modules/nf-core/custom/dumpsoftwareversions/main'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
@@ -44,7 +19,8 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../../modules/nf-core/custom/dumps
 workflow SYNAPSE {
 
     take:
-    ids // channel: [ ids ]
+    ids               // channel: [ ids ]
+    ch_synapse_config // channel: [ synapse_config ]
 
     main:
     ch_versions = Channel.empty()
@@ -80,7 +56,7 @@ workflow SYNAPSE {
     SYNAPSE_SHOW
         .out
         .metadata
-        .map { it -> WorkflowSynapse.synapseShowToMap(it) }
+        .map { it -> WorkflowMain.synapseShowToMap(it) }
         .set { ch_samples_meta }
 
     //
@@ -96,14 +72,14 @@ workflow SYNAPSE {
     SYNAPSE_GET
         .out
         .fastq
-        .map { meta, fastq -> [ WorkflowSynapse.sampleNameFromFastQ( fastq , "*{1,2}*"), fastq ] }
+        .map { meta, fastq -> [ WorkflowMain.synapseSampleNameFromFastQ( fastq , "*{1,2}*"), fastq ] }
         .groupTuple(sort: { it -> it.baseName })
         .set { ch_fastq }
 
     SYNAPSE_GET
         .out
         .fastq
-        .map { meta, fastq -> [ WorkflowSynapse.sampleNameFromFastQ( fastq , "*{1,2}*"), meta.id ] }
+        .map { meta, fastq -> [ WorkflowMain.synapseSampleNameFromFastQ( fastq , "*{1,2}*"), meta.id ] }
         .groupTuple()
         .join(ch_fastq)
         .map { id, synids, fastq ->
@@ -129,26 +105,10 @@ workflow SYNAPSE {
     )
     ch_versions = ch_versions.mix(SYNAPSE_MERGE_SAMPLESHEET.out.versions)
 
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION EMAIL AND SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log)
-    }
-    NfcoreTemplate.summary(workflow, params, log)
-    WorkflowSynapse.curateSamplesheetWarn(log)
+    emit:
+    fastq       = ch_fastq
+    samplesheet = SYNAPSE_MERGE_SAMPLESHEET.out.samplesheet
+    versions    = ch_versions.unique()
 }
 
 /*
