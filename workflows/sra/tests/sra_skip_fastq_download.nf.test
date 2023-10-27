@@ -6,11 +6,6 @@ nextflow_workflow {
     tag "workflows"
     tag "workflows_sra"
     tag "multiqc_mappings_config"
-    tag "sra_fastq_ftp"
-    tag "sra_ids_to_runinfo"
-    tag "sra_merge_samplesheet"
-    tag "sra_runinfo_to_ftp"
-    tag "sra_to_samplesheet"
     tag "sra_skip_fastq_download"
 
     test("Parameters: --skip_fastq_download") {
