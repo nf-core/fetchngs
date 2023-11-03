@@ -10,14 +10,9 @@
                 ]
             },
             [
-                [
-                    "execution_report_2023-11-03_15-38-47.html:md5,ad72aa5999bd358d23271edcec68d63a",
-                    "execution_timeline_2023-11-03_15-38-47.html:md5,ebb586aae39c1bffa6bdf66522a8ecd8",
-                    "pipeline_dag_2023-11-03_15-38-47.html:md5,2be1c73588a4881da16bebdf50a5eed5"
-                ]
             ]
         ],
-        "timestamp": "2023-11-03T15:38:50.23845"
+        "timestamp": "2023-10-13T11:55:54.576748"
     },
     "Should dump params": {
         "content": [
