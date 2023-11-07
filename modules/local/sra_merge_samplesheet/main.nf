@@ -6,9 +6,11 @@ process SRA_MERGE_SAMPLESHEET {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    path ('samplesheets/*')
-    path ('mappings/*')
-
+    // path ('samplesheets/*')
+    // path ('mappings/*')
+    path 'samplesheets.txt'
+    path 'mappings.txt'
+    
     output:
     path "samplesheet.csv", emit: samplesheet
     path "id_mappings.csv", emit: mappings
@@ -16,16 +18,16 @@ process SRA_MERGE_SAMPLESHEET {
 
     script:
     """
-    head -n 1 `ls ./samplesheets/* | head -n 1` > samplesheet.csv
-    for fileid in `ls ./samplesheets/*`; do
+    head -n 1 `head -n 1 samplesheets.txt` > samplesheet.csv
+    while read fileid; do
         awk 'NR>1' \$fileid >> samplesheet.csv
-    done
-
-    head -n 1 `ls ./mappings/* | head -n 1` > id_mappings.csv
-    for fileid in `ls ./mappings/*`; do
+    done < samplesheets.txt
+    
+    head -n 1 `head -n 1 mappings.txt` > id_mappings.csv
+    while read fileid; do
         awk 'NR>1' \$fileid >> id_mappings.csv
-    done
-
+    done < mappings.txt
+    
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         sed: \$(echo \$(sed --version 2>&1) | sed 's/^.*GNU sed) //; s/ .*\$//')
