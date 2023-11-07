@@ -118,7 +118,7 @@ workflow SRA {
         params.nf_core_rnaseq_strandedness ?: 'auto',
         params.sample_mapping_fields
     )
-    
+  
 
     // Combine all sample sheet/mapping paths into two files
     ch_samplesheets=SRA_TO_SAMPLESHEET.out.samplesheet.map{it[1].toString()}.collectFile(name: 'samplesheets.txt', newLine: true)
@@ -127,10 +127,7 @@ workflow SRA {
     //
     // MODULE: Create a merged samplesheet across all samples for the pipeline
     //
-    // SRA_MERGE_SAMPLESHEET (
-    //     SRA_TO_SAMPLESHEET.out.samplesheet.collect{it[1]},
-    //     SRA_TO_SAMPLESHEET.out.mappings.collect{it[1]}
-    // )
+
     SRA_MERGE_SAMPLESHEET (
         ch_samplesheets,
         ch_mappings
