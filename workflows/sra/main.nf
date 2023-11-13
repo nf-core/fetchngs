@@ -7,7 +7,6 @@
 include { MULTIQC_MAPPINGS_CONFIG } from '../../modules/local/multiqc_mappings_config'
 include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
 include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
-include { SRA_MERGE_SAMPLESHEET   } from '../../modules/local/sra_merge_samplesheet'
 include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
 include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
 
@@ -121,19 +120,8 @@ workflow SRA {
   
 
     // Combine all sample sheet/mapping paths into two files
-    ch_samplesheets=SRA_TO_SAMPLESHEET.out.samplesheet.map{it[1].toString()}.collectFile(name: 'samplesheets.txt', newLine: true)
-    ch_mappings=SRA_TO_SAMPLESHEET.out.mappings.map{it[1].toString()}.collectFile(name: 'mappings.txt', newLine: true)
-
-    //
-    // MODULE: Create a merged samplesheet across all samples for the pipeline
-    //
-
-    SRA_MERGE_SAMPLESHEET (
-        ch_samplesheets,
-        ch_mappings
-    )
-
-    ch_versions = ch_versions.mix(SRA_MERGE_SAMPLESHEET.out.versions)
+    ch_samplesheet=SRA_TO_SAMPLESHEET.out.samplesheet.map{it[1]}.collectFile(name:'samplesheets.csv', newLine: true, keepHeader: true, storeDir:params.outdir)
+    ch_mappings=SRA_TO_SAMPLESHEET.out.samplesheet.map{it[1]}.collectFile(name:'id_mappings.csv', newLine: true, keepHeader: true, storeDir:params.outdir)
 
     //
     // MODULE: Create a MutiQC config file with sample name mappings
@@ -141,7 +129,7 @@ workflow SRA {
     ch_sample_mappings_yml = Channel.empty()
     if (params.sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG (
-            SRA_MERGE_SAMPLESHEET.out.mappings
+            ch_mappings
         )
         ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
@@ -149,8 +137,8 @@ workflow SRA {
 
     emit:
     fastq           = fastq_files
-    samplesheet     = SRA_MERGE_SAMPLESHEET.out.samplesheet
-    mappings        = SRA_MERGE_SAMPLESHEET.out.mappings
+    samplesheet     = ch_samplesheet
+    mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     versions        = ch_versions.unique()
 }
