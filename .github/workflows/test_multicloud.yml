@@ -1,3 +1,4 @@
+#NOTE: This file is the prototype for test_multicloud.yml file (as part of nf-core/hackathon nov23 azuremegatests)
 name: Submit workflow with test-profile (small sized datasets) on multiple cloud providers
 run-name: Submitting workflow to all cloud providers using small sized data (test profile)
 on:
