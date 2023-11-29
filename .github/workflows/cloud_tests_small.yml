@@ -65,7 +65,7 @@ jobs:
           compute_env: ${{ secrets.TOWER_CE_AZURE_CPU }}
           workdir: "${{ secrets.TOWER_BUCKET_AZURE }}/work/fetchngs/work-${{ github.sha }}"
           run_name: "azure_fetchngs_small"
-          revision: ${{ steps.extract_branch.outputs.branch }}
+          revision: ${{ github.sha }}
           profiles: test
           parameters: |
             {
