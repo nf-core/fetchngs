@@ -1,5 +1,5 @@
-name: small-sized tests on cloud providers
-run-name: Submitting workflow to all cloud providers using small sized data
+name: Submit workflow with test-profile (small sized datasets) on multiple cloud providers
+run-name: Submitting workflow to all cloud providers using small sized data (test profile)
 on:
   workflow_dispatch:
     inputs:
