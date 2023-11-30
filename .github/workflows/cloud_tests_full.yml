@@ -1,5 +1,5 @@
 name: full-sized tests on cloud providers
-run-name: Submitting workflow to all cloud providers using full sized data
+run-name: Submitting workflow to all cloud providers using full sized data with seqerakit
 on:
   release:
     types: [published]
@@ -15,67 +15,70 @@ on:
           - aws
           - azure
           - gcp
+env:
+  TOWER_WORKSPACE_ID: ${{ secrets.TOWER_WORKSPACE_ID }}
+  TOWER_ACCESS_TOKEN: ${{ secrets.TOWER_ACCESS_TOKEN }}
+  MEGATESTS_ALERTS_SLACK_HOOK_URL: ${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }} 
+
 jobs:
+  create-yaml:
+    runs-on: ubuntu-latest
+    name: Create fetchngs launch yaml
+    steps:
+      - name: Checkout # checkout your sources file
+        uses: actions/checkout@v3
+      - name: Write yaml # use the action to read yaml
+        id: yaml-action
+        uses: teunmooij/yaml@v1
+        with:
+          data: >-
+            {"launch": [{"name": "${RUN_NAME}", "url": "https://github.com/nf-core/fetchngs", "workspace": "${TOWER_WORKSPACE_ID}", "revision": "${GITHUB_SHA}", "compute-env": "${TOWER_CE_NAME}", "profile": "test_full", "work-dir": "${TOWER_BUCKET}/work/fetchngs/work-${GITHUB_SHA}", "params": {"outdir": "${TOWER_BUCKET}/fetchngs/results-${GITHUB_SHA}", "hook_url": "${MEGATESTS_ALERTS_SLACK_HOOK_URL}"}}]}
+          to-file: 'tests/fetchngs.yml'
+      - name: Debug file
+        run: |
+          cat tests/fetchngs.yml
+
   run-full-tests-on-aws:
     if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'aws' || !github.event.inputs }}
     runs-on: ubuntu-latest
+    container:
+      image: quay.io/biocontainers/seqerakit:0.4.3--pyhdfd78af_0
+    env:
+        TOWER_CE_NAME: ${{ secrets.TOWER_CE_AWS_CPU }}
+        TOWER_BUCKET: ${{ secrets.TOWER_BUCKET_AWS }}
+        RUN_NAME: "aws_fetchngs_full"
     steps:
-      - uses: seqeralabs/action-tower-launch@v1
-        with:
-          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
-          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
-          compute_env: ${{ secrets.TOWER_CE_AWS_CPU }}
-          workdir: "${{ secrets.TOWER_BUCKET_AWS }}/work/fetchngs/work-${{ github.sha }}"
-          run_name: "aws_fetchngs_full"
-          profiles: test_full
-          parameters: |
-            {
-                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
-                "outdir": "${{ secrets.TOWER_BUCKET_AWS }}/fetchngs/results-${{ github.sha }}"
-            }
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Tower debug log file
-          path: tower_action_*.log
+      - name: Check out source-code repository
+        uses: actions/checkout@v3
+
+      - name: Run test_full on AWS with seqerakit
+        run: |
+          seqerakit tests/fetchngs.yml
+
   run-full-tests-on-gcp:
     if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'gcp' || !github.event.inputs }}
     runs-on: ubuntu-latest
+    container:
+      image: quay.io/biocontainers/seqerakit:0.4.3--pyhdfd78af_0
+    env:
+        TOWER_CE_NAME: ${{ secrets.TOWER_CE_GCP_CPU }}
+        TOWER_BUCKET: ${{ secrets.TOWER_BUCKET_GCP }}
+        RUN_NAME: "gcp_fetchngs_full"
     steps:
-      - uses: seqeralabs/action-tower-launch@v1
-        with:
-          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
-          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
-          compute_env: ${{ secrets.TOWER_CE_GCP_CPU }}
-          workdir: "${{ secrets.TOWER_BUCKET_GCP }}/work/fetchngs/work-${{ github.sha }}"
-          run_name: "gcp_fetchngs_full"
-          profiles: test_full
-          parameters: |
-            {
-                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
-                "outdir": "${{ secrets.TOWER_BUCKET_GCP }}/fetchngs/results-${{ github.sha }}"
-            }
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Tower debug log file
-          path: tower_action_*.log
+          - name: Run test_full on GCP with seqerakit
+            run: |
+              seqerakit tests/fetchngs.yml
+
   run-full-tests-on-azure:
     if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'azure' || !github.event.inputs }}
     runs-on: ubuntu-latest
+    container:
+      image: quay.io/biocontainers/seqerakit:0.4.3--pyhdfd78af_0
+    env:
+        TOWER_CE_NAME: ${{ secrets.TOWER_CE_AZURE_CPU }}
+        TOWER_BUCKET: ${{ secrets.TOWER_BUCKET_AZURE }}
+        RUN_NAME: "gcp_fetchngs_full"
     steps:
-      - uses: seqeralabs/action-tower-launch@v1
-        with:
-          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
-          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
-          compute_env: ${{ secrets.TOWER_CE_AZURE_CPU }}
-          workdir: "${{ secrets.TOWER_BUCKET_AZURE }}/work/fetchngs/work-${{ github.sha }}"
-          run_name: "azure_fetchngs_full"
-          profiles: test_full
-          parameters: |
-            {
-                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
-                "outdir": "${{ secrets.TOWER_BUCKET_AZURE }}/fetchngs/results-${{ github.sha }}"
-            }
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Tower debug log file
-          path: tower_action_*.log
+          - name: Run test_full on Azure with seqerakit
+            run: |
+              seqerakit tests/fetchngs.yml
