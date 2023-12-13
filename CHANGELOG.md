@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [[1.11.0](https://github.com/nf-core/fetchngs/releases/tag/1.11.0)] - 2023-10-18
+## [Unpublished Version / DEV]
 
 ### Credits
 
@@ -19,14 +20,26 @@ Special thanks to the following for their contributions to the release:
 - [Rob Syme](https://github.com/robsyme)
 - [Sateesh Peri](https://github.com/sateeshperi)
 - [Sebastian Schönherr](https://github.com/seppinho)
+- [Sebastian Uhrig](https://github.com/suhrig)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 
 ### Enhancements & fixes
 
 - [PR #188](https://github.com/nf-core/fetchngs/pull/188) - Use nf-test for all pipeline testing
+- [#169](https://github.com/nf-core/fetchngs/issues/173) - download of big files time out and don't resume
 
-### Enhancements & fixes
+### Software dependencies
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| `wget`     |             | 1.20.1      |
+
+> **NB:** Dependency has been **updated** if both old and new version information is present.
+>
+> **NB:** Dependency has been **added** if just the new version information is present.
+>
+> **NB:** Dependency has been **removed** if new version information isn't present.
 
 ## [[1.10.1](https://github.com/nf-core/fetchngs/releases/tag/1.10.1)] - 2023-10-08
 
