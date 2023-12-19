@@ -15,8 +15,6 @@ Special thanks to the following for their contributions to the release:
 
 - [PR #241](https://github.com/nf-core/fetchngs/pull/241) - download of big files time out and don't resume
 
-## [[1.11.0](https://github.com/nf-core/fetchngs/releases/tag/1.11.0)] - 2023-10-18
-
 ### Software dependencies
 
 | Dependency | Old version | New version |
@@ -28,6 +26,8 @@ Special thanks to the following for their contributions to the release:
 > **NB:** Dependency has been **added** if just the new version information is present.
 >
 > **NB:** Dependency has been **removed** if new version information isn't present.
+
+## [[1.11.0](https://github.com/nf-core/fetchngs/releases/tag/1.11.0)] - 2023-10-18
 
 ### Credits
 
