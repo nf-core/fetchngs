@@ -3,69 +3,25 @@
         "content": [
             {
                 "0": [
-                    [
-                        {
-                            "id": "SRX9626017_SRR13191702",
-                            "single_end": false,
-                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
-                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
-                        },
-                        [
-                            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
-                            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98"
-                        ]
-                    ]
+                    
                 ],
                 "1": [
-                    [
-                        {
-                            "id": "SRX9626017_SRR13191702",
-                            "single_end": false,
-                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
-                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
-                        },
-                        [
-                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
-                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
-                        ]
-                    ]
+                    
                 ],
                 "2": [
-                    "versions.yml:md5,6b9d69dea1c1305f74a65197ee871f1b"
+                    
                 ],
                 "fastq": [
-                    [
-                        {
-                            "id": "SRX9626017_SRR13191702",
-                            "single_end": false,
-                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
-                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
-                        },
-                        [
-                            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
-                            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98"
-                        ]
-                    ]
+                    
                 ],
                 "md5": [
-                    [
-                        {
-                            "id": "SRX9626017_SRR13191702",
-                            "single_end": false,
-                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
-                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
-                        },
-                        [
-                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
-                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
-                        ]
-                    ]
+                    
                 ],
                 "versions": [
-                    "versions.yml:md5,6b9d69dea1c1305f74a65197ee871f1b"
+                    
                 ]
             }
         ],
-        "timestamp": "2023-09-22T10:58:46.998421"
+        "timestamp": "2023-12-19T21:44:01.92664"
     }
 }
