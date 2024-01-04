@@ -118,10 +118,24 @@ workflow SRA {
         params.sample_mapping_fields
     )
   
+    // Merge samplesheets and mapping files across all samples
+    SRA_TO_SAMPLESHEET
+        .out
+        .samplesheet
+        .map { it[1] }
+        .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true)
+        .map { it.text.tokenize('\n').join('\n') }
+        .collectFile(name:'samplesheet.csv', storeDir: "${params.outdir}/samplesheet")
+        .set { ch_samplesheet }
 
-    // Combine all sample sheet/mapping paths into two files
-    ch_samplesheet=SRA_TO_SAMPLESHEET.out.samplesheet.map{it[1]}.collectFile(name:'samplesheets.csv', newLine: true, keepHeader: true, storeDir:params.outdir)
-    ch_mappings=SRA_TO_SAMPLESHEET.out.samplesheet.map{it[1]}.collectFile(name:'id_mappings.csv', newLine: true, keepHeader: true, storeDir:params.outdir)
+    SRA_TO_SAMPLESHEET
+        .out
+        .mappings
+        .map { it[1] }
+        .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true)
+        .map { it.text.tokenize('\n').join('\n') }
+        .collectFile(name:'id_mappings.csv', storeDir: "${params.outdir}/samplesheet")
+        .set { ch_mappings }
 
     //
     // MODULE: Create a MutiQC config file with sample name mappings
