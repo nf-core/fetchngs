@@ -4,10 +4,10 @@ process SRA_FASTQ_FTP {
     label 'process_low'
     label 'error_retry'
 
-    conda "bioconda::sra-tools=2.11.0"
+    conda "conda-forge::wget=1.20.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:2.11.0--pl5321ha49a11a_3' :
-        'biocontainers/sra-tools:2.11.0--pl5321ha49a11a_3' }"
+        'https://depot.galaxyproject.org/singularity/wget:1.20.1' :
+        'biocontainers/wget:1.20.1' }"
 
     input:
     tuple val(meta), val(fastq)
@@ -21,40 +21,40 @@ process SRA_FASTQ_FTP {
     def args = task.ext.args ?: ''
     if (meta.single_end) {
         """
-        curl \\
+        wget \\
             $args \\
-            -L ${fastq[0]} \\
-            -o ${meta.id}.fastq.gz
+            -O ${meta.id}.fastq.gz \\
+            ${fastq[0]}
 
         echo "${meta.md5_1}  ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            curl: \$(echo \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//'))
+            wget: \$(echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//'))
         END_VERSIONS
         """
     } else {
         """
-        curl \\
+        wget \\
             $args \\
-            -L ${fastq[0]} \\
-            -o ${meta.id}_1.fastq.gz
+            -O ${meta.id}_1.fastq.gz \\
+            ${fastq[0]}
 
         echo "${meta.md5_1}  ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
         md5sum -c ${meta.id}_1.fastq.gz.md5
 
-        curl \\
+        wget \\
             $args \\
-            -L ${fastq[1]} \\
-            -o ${meta.id}_2.fastq.gz
+            -O ${meta.id}_2.fastq.gz \\
+            ${fastq[1]}
 
         echo "${meta.md5_2}  ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5
 
         cat <<-END_VERSIONS > versions.yml
         "${task.process}":
-            curl: \$(echo \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//'))
+            wget: \$(echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//'))
         END_VERSIONS
         """
     }
