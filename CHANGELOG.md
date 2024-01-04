@@ -9,11 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Special thanks to the following for their contributions to the release:
 
+- [Alexandru Mizeranschi](https://github.com/nicolae06)
 - [Sebastian Uhrig](https://github.com/suhrig)
+
+Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 
 ### Enhancements & fixes
 
-- [PR #241](https://github.com/nf-core/fetchngs/pull/241) - download of big files time out and don't resume
+- [PR #241](https://github.com/nf-core/fetchngs/pull/241) - Download of big files time out and don't resume ([#169](https://github.com/nf-core/fetchngs/issues/169))
 
 ### Software dependencies
 
