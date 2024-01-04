@@ -6,10 +6,10 @@
                     
                 ],
                 "1": [
-                    "samplesheet.csv:md5,0a9b99509bcc64ca245408b6bb634f15"
+                    "samplesheet.csv:md5,81856795ac19f44aeb72ae5b3042e609"
                 ],
                 "2": [
-                    "id_mappings.csv:md5,3e70c965568c59f8c8fbb8e99e7a8b79"
+                    "id_mappings.csv:md5,ca34293cf91a004ea52627dd8b58a43a"
                 ],
                 "3": [
                     [
@@ -20,14 +20,13 @@
                 "4": [
                     "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
                     "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
-                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
                     "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47"
                 ],
                 "fastq": [
                     
                 ],
                 "mappings": [
-                    "id_mappings.csv:md5,3e70c965568c59f8c8fbb8e99e7a8b79"
+                    "id_mappings.csv:md5,ca34293cf91a004ea52627dd8b58a43a"
                 ],
                 "sample_mappings": [
                     [
@@ -36,16 +35,15 @@
                     ]
                 ],
                 "samplesheet": [
-                    "samplesheet.csv:md5,0a9b99509bcc64ca245408b6bb634f15"
+                    "samplesheet.csv:md5,81856795ac19f44aeb72ae5b3042e609"
                 ],
                 "versions": [
                     "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
                     "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
-                    "versions.yml:md5,b21338b74b9a8fe0c7a114f7686c07cd",
                     "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47"
                 ]
             }
         ],
-        "timestamp": "2023-10-18T09:50:04.300075498"
+        "timestamp": "2024-01-04T19:59:06.257582"
     }
 }
