@@ -1,16 +1,29 @@
+common: &common
+  - .github
+  - nexflow_schema.json
+  - nextflow.config
+  - nf-test.config
 sra_custom_ena_metadata_fields:
+  - *common
   - workflows/sra/**
 sra_default_parameters:
+  - *common
   - workflows/sra/**
 sra_force_sratools_download:
+  - *common
   - workflows/sra/**
 sra_nf_core_pipeline_atacseq:
+  - *common
   - workflows/sra/**
 sra_nf_core_pipeline_rnaseq:
+  - *common
   - workflows/sra/**
 sra_nf_core_pipeline_taxprofiler:
+  - *common
   - workflows/sra/**
 sra_nf_core_pipeline_viralrecon:
+  - *common
   - workflows/sra/**
 sra_skip_fastq_download:
+  - *common
   - workflows/sra/**

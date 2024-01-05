@@ -17,6 +17,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 ### Enhancements & fixes
 
 - [PR #241](https://github.com/nf-core/fetchngs/pull/241) - Download of big files time out and don't resume ([#169](https://github.com/nf-core/fetchngs/issues/169))
+- Fix nf-test path directory and add common tags for all tests to trigger
 
 ### Software dependencies
 
