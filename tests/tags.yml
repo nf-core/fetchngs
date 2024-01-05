@@ -1,4 +1,4 @@
-test:
+default:
   - .github
   - nexflow_schema.json
   - nextflow.config

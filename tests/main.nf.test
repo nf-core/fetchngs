@@ -2,6 +2,7 @@ nextflow_pipeline {
 
     name "Test pipeline"
     script "../main.nf"
+    tag "default"
     tag "pipeline"
     tag "pipeline_fetchngs"
 
