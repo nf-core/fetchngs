@@ -1,16 +1,24 @@
 sra_custom_ena_metadata_fields:
+  - *test
   - workflows/sra/**
 sra_default_parameters:
+  - *test
   - workflows/sra/**
 sra_force_sratools_download:
+  - *test
   - workflows/sra/**
 sra_nf_core_pipeline_atacseq:
+  - *test
   - workflows/sra/**
 sra_nf_core_pipeline_rnaseq:
+  - *test
   - workflows/sra/**
 sra_nf_core_pipeline_taxprofiler:
+  - *test
   - workflows/sra/**
 sra_nf_core_pipeline_viralrecon:
+  - *test
   - workflows/sra/**
 sra_skip_fastq_download:
+  - *test
   - workflows/sra/**

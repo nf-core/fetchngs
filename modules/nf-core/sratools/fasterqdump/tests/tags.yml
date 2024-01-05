@@ -1,2 +1,3 @@
 sratools/fasterqdump:
+  - *test
   - modules/nf-core/sratools/fasterqdump/**

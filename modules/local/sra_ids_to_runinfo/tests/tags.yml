@@ -1,2 +1,3 @@
 sra_ids_to_runinfo:
+  - *test
   - modules/local/sra_ids_to_runinfo/**

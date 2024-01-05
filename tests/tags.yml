@@ -1,9 +1,11 @@
 default:
+  - *test
   - .github
   - nexflow_schema.json
   - nextflow.config
   - nf-test.config
 pipeline_fetchngs:
+  - *test
   - "**.nf"
   - "**.config"
   - "**.nf.test"

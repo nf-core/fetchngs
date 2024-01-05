@@ -1,2 +1,3 @@
 sra_runinfo_to_ftp:
+  - *test
   - modules/local/sra_runinfo_to_ftp/**

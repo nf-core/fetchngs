@@ -1,2 +1,3 @@
 multiqc_mappings_config:
+  - *test
   - modules/local/multiqc_mappings_config/**
