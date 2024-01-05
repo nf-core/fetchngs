@@ -3,3 +3,4 @@ test: &test
   - nexflow_schema.json
   - nextflow.config
   - nf-test.config
+  
