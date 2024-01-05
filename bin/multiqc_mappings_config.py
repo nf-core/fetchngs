@@ -10,4 +10,4 @@ with open(sys.argv[1], "r") as fin, open(sys.argv[2], "w") as fout:
     rename = []
     for line in fin:
         rename.append(f"  - [{', '.join(line.strip().split(','))}]")
-    fout.write(config + '\n'.join(sorted(rename)) + '\n')
+    fout.write(config + "\n".join(sorted(rename)) + "\n")
