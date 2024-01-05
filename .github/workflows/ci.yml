@@ -13,7 +13,8 @@ on:
 
 env:
   NXF_ANSI_LOG: false
-  NFTEST_VER: "0.8.1"
+  NFTEST_VER: "0.8.2"
+  TMPDIR: ${{ github.workspace }}
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
