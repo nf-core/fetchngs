@@ -123,7 +123,7 @@ workflow SRA {
         .out
         .samplesheet
         .map { it[1] }
-        .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true)
+        .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
         .collectFile(name:'samplesheet.csv', storeDir: "${params.outdir}/samplesheet")
         .set { ch_samplesheet }
@@ -132,7 +132,7 @@ workflow SRA {
         .out
         .mappings
         .map { it[1] }
-        .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true)
+        .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
         .collectFile(name:'id_mappings.csv', storeDir: "${params.outdir}/samplesheet")
         .set { ch_mappings }
