@@ -90,7 +90,7 @@ jobs:
         run: |
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
-      
+
       - name: Install icdiff for nf-test diff viewing
         run: |
           sudo apt install icdiff
