@@ -14,7 +14,6 @@ on:
 env:
   NXF_ANSI_LOG: false
   NFTEST_VER: "0.8.2"
-  TMPDIR: ${{ github.workspace }}/.nf-test
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
