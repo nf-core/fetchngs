@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test process: MULTIQC_MAPPINGS_CONFIG"
+    script "../main.nf"
+    process "MULTIQC_MAPPINGS_CONFIG"
+    tag "modules"
+    tag "modules_local"
+    tag "multiqc_mappings_config"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+
+            process {
+                """
+                input[0] = file(params.test_data['modules_local']['multiqc_mappings_config'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

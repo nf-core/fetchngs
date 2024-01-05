@@ -13,52 +13,42 @@ nextflow.enable.dsl = 2
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
+    NAMED WORKFLOWS FOR PIPELINE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-params.fasta = WorkflowMain.getGenomeAttribute(params, 'fasta')
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    VALIDATE & PRINT PARAMETER SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-include { validateParameters; paramsHelp } from 'plugin/nf-validation'
-
-// Print help message if needed
-if (params.help) {
-    def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
-    def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-    def String command = "nextflow run ${workflow.manifest.name} --input samplesheet.csv --genome GRCh37 -profile docker"
-    log.info logo + paramsHelp(command) + citation + NfcoreTemplate.dashedLine(params.monochrome_logs)
-    System.exit(0)
-}
-
-// Validate input parameters
-if (params.validate_params) {
-    validateParameters()
-}
-
-WorkflowMain.initialise(workflow, params, log)
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOW FOR PIPELINE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-include { FETCHNGS } from './workflows/fetchngs'
+if (params.input_type == 'sra')     include { SRA     } from './workflows/sra'
+if (params.input_type == 'synapse') include { SYNAPSE } from './workflows/synapse'
 
 //
-// WORKFLOW: Run main nf-core/fetchngs analysis pipeline
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
-    FETCHNGS ()
+
+    take:
+    ids // channel: database ids read in from --input
+
+    main:
+
+    ch_versions = Channel.empty()
+
+    //
+    // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
+    //
+    if (params.input_type == 'sra') {
+        SRA ( ids )
+        ch_versions = SRA.out.versions
+
+    //
+    // WORKFLOW: Download FastQ files for Synapse ids
+    //
+    } else if (params.input_type == 'synapse') {
+        SYNAPSE ( ids )
+        ch_versions = SYNAPSE.out.versions
+    }
+
+    emit:
+    versions = ch_versions
 }
 
 /*
@@ -67,12 +57,37 @@ workflow NFCORE_FETCHNGS {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { PIPELINE_INITIALISATION } from './subworkflows/local/nf_core_fetchngs_utils'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/nf_core_fetchngs_utils'
+
 //
 // WORKFLOW: Execute a single named workflow for the pipeline
-// See: https://github.com/nf-core/rnaseq/issues/619
 //
 workflow {
-    NFCORE_FETCHNGS ()
+
+    //
+    // SUBWORKFLOW: Run initialisation tasks
+    //
+    PIPELINE_INITIALISATION ()
+
+    //
+    // WORKFLOW: Run primary workflows for the pipeline
+    //
+    NFCORE_FETCHNGS (
+        PIPELINE_INITIALISATION.out.ids
+    )
+
+    //
+    // SUBWORKFLOW: Run completion tasks
+    //
+    PIPELINE_COMPLETION (
+        NFCORE_FETCHNGS.out.versions,
+        params.input_type,
+        params.email,
+        params.email_on_fail,
+        params.hook_url,
+        PIPELINE_INITIALISATION.out.summary_params
+    )
 }
 
 /*

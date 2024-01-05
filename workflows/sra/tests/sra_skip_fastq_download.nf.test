@@ -1,0 +1,32 @@
+nextflow_workflow {
+
+    name "Test workflow: sra/main.nf"
+    script "../main.nf"
+    workflow "SRA"
+    tag "workflows"
+    tag "workflows_sra"
+    tag "multiqc_mappings_config"
+    tag "sra_skip_fastq_download"
+
+    test("Parameters: --skip_fastq_download") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.from('ERR1160846', 'GSE214215', 'SRR12848126')
+                """
+            }
+            params {
+                outdir = "results"
+                skip_fastq_download = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

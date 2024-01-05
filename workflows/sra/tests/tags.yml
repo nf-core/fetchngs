@@ -1,0 +1,16 @@
+sra_custom_ena_metadata_fields:
+  - workflows/sra/**
+sra_default_parameters:
+  - workflows/sra/**
+sra_force_sratools_download:
+  - workflows/sra/**
+sra_nf_core_pipeline_atacseq:
+  - workflows/sra/**
+sra_nf_core_pipeline_rnaseq:
+  - workflows/sra/**
+sra_nf_core_pipeline_taxprofiler:
+  - workflows/sra/**
+sra_nf_core_pipeline_viralrecon:
+  - workflows/sra/**
+sra_skip_fastq_download:
+  - workflows/sra/**
