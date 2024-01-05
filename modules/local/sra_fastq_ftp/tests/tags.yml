@@ -1,2 +1,3 @@
 sra_fastq_ftp:
+  - *common
   - modules/local/sra_fastq_ftp/**

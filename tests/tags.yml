@@ -1,4 +1,10 @@
+test: &common
+  - .github
+  - nexflow_schema.json
+  - nextflow.config
+  - nf-test.config
 pipeline_fetchngs:
+  - *common
   - "**.nf"
   - "**.config"
   - "**.nf.test"
