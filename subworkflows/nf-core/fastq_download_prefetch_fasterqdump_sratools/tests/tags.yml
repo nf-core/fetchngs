@@ -1,3 +1,2 @@
 fastq_download_prefetch_fasterqdump_sratools:
-  - *common
   - subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools/**

@@ -1,3 +1,2 @@
 sratools/prefetch:
-  - *common
   - modules/nf-core/sratools/prefetch/**

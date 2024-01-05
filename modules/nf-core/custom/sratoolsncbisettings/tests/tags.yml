@@ -1,3 +1,2 @@
 custom/sratoolsncbisettings:
-  - *common
   - modules/nf-core/custom/sratoolsncbisettings/**
