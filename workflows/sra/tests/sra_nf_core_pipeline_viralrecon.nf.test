@@ -17,7 +17,7 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "$outputDir"
+                outdir = "results"
                 nf_core_pipeline = "viralrecon"
             }
         }

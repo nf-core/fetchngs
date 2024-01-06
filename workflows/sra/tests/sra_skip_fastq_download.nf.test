@@ -17,7 +17,7 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "$outputDir"
+                outdir = "results"
                 skip_fastq_download = true
             }
         }
