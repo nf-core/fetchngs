@@ -22,10 +22,23 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
-            )
+            assert workflow.success
+
+            with(workflow.out.samplesheet) {
+                assert path(get(0)).readLines().size() == 5
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"ERX1234253"', '"SRX17709227"', '"SRX17709228"', '"SRX9315476"']
+                assert path(get(0)).text.contains('Illumina HiSeq 4000')
+            }
+
+            with(workflow.out.mappings) {
+                assert path(get(0)).readLines().size() == 5
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"ERX1234253"', '"SRX17709227"', '"SRX17709228"', '"SRX9315476"']
+                assert path(get(0)).text.contains('Illumina HiSeq 4000')
+            }
+
+            with(workflow.out.sample_mappings) {
+                assert path(get(0)[0]).md5 == "3bc981f0de28023083cdf13691d249d5"
+            }
         }
     }
 }

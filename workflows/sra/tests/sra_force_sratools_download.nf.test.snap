@@ -3,10 +3,10 @@
         "content": [
             {
                 "0": [
-                    "samplesheet.csv:md5,81856795ac19f44aeb72ae5b3042e609"
+                    "samplesheet.csv:md5,0f2c0516990774b5d7d76a7ddf763f55"
                 ],
                 "1": [
-                    "id_mappings.csv:md5,ca34293cf91a004ea52627dd8b58a43a"
+                    "id_mappings.csv:md5,f7c0bd1713fe14917b4298e252312296"
                 ],
                 "2": [
                     [
@@ -20,7 +20,7 @@
                         "experiment_accession": "ERX1234253",
                         "experiment_alias": "qiita_ptid_1263:10317.BLANK.93.3E.r22",
                         "experiment_title": "Illumina HiSeq 2500 sequencing: qiita_ptid_1263:10317.BLANK.93.3E.r22",
-                        "fastq_1": "ERX1234253_ERR1160846.fastq.gz:md5,b1de59f829fbd2d60a1ed4bc3da55709",
+                        "fastq_1": "ERX1234253_ERR1160846.fastq.gz:md5,98515d664854f1c96f55ac836fb671b9",
                         "fastq_2": "",
                         "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz",
                         "fastq_bytes": "18077",
@@ -98,7 +98,7 @@
                         "experiment_accession": "SRX17709227",
                         "experiment_alias": "GSM6601460_r1",
                         "experiment_title": "Illumina HiSeq 4000 sequencing: GSM6601460: sham-treated worms in day 5 Caenorhabditis elegans RNA-Seq",
-                        "fastq_1": "results/fastq/SRX17709227_SRR21711856_1.fastq.gz",
+                        "fastq_1": "SRX17709227_SRR21711856_1.fastq.gz:md5,5f8db5a1966e244aad03f5bd9ca45b3d",
                         "fastq_2": "",
                         "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/SRR217/056/SRR21711856/SRR21711856.fastq.gz",
                         "fastq_bytes": "447377777",
@@ -137,7 +137,7 @@
                         "experiment_accession": "SRX17709228",
                         "experiment_alias": "GSM6601461_r1",
                         "experiment_title": "Illumina HiSeq 4000 sequencing: GSM6601461: PM2.5-treated worms in day 5 Caenorhabditis elegans RNA-Seq",
-                        "fastq_1": "results/fastq/SRX17709228_SRR21711855_1.fastq.gz",
+                        "fastq_1": "SRX17709228_SRR21711855_1.fastq.gz:md5,bb3026b15647a3fc82a62ecb58641924",
                         "fastq_2": "",
                         "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/SRR217/055/SRR21711855/SRR21711855.fastq.gz",
                         "fastq_bytes": "529798447",
@@ -179,7 +179,7 @@
                     "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47"
                 ],
                 "mappings": [
-                    "id_mappings.csv:md5,ca34293cf91a004ea52627dd8b58a43a"
+                    "id_mappings.csv:md5,f7c0bd1713fe14917b4298e252312296"
                 ],
                 "sample_mappings": [
                     [
@@ -188,7 +188,7 @@
                     ]
                 ],
                 "samplesheet": [
-                    "samplesheet.csv:md5,81856795ac19f44aeb72ae5b3042e609"
+                    "samplesheet.csv:md5,0f2c0516990774b5d7d76a7ddf763f55"
                 ],
                 "sra_metadata": [
                     {
@@ -196,7 +196,7 @@
                         "experiment_accession": "ERX1234253",
                         "experiment_alias": "qiita_ptid_1263:10317.BLANK.93.3E.r22",
                         "experiment_title": "Illumina HiSeq 2500 sequencing: qiita_ptid_1263:10317.BLANK.93.3E.r22",
-                        "fastq_1": "ERX1234253_ERR1160846.fastq.gz:md5,b1de59f829fbd2d60a1ed4bc3da55709",
+                        "fastq_1": "ERX1234253_ERR1160846.fastq.gz:md5,98515d664854f1c96f55ac836fb671b9",
                         "fastq_2": "",
                         "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz",
                         "fastq_bytes": "18077",
@@ -274,7 +274,7 @@
                         "experiment_accession": "SRX17709227",
                         "experiment_alias": "GSM6601460_r1",
                         "experiment_title": "Illumina HiSeq 4000 sequencing: GSM6601460: sham-treated worms in day 5 Caenorhabditis elegans RNA-Seq",
-                        "fastq_1": "results/fastq/SRX17709227_SRR21711856_1.fastq.gz",
+                        "fastq_1": "SRX17709227_SRR21711856_1.fastq.gz:md5,5f8db5a1966e244aad03f5bd9ca45b3d",
                         "fastq_2": "",
                         "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/SRR217/056/SRR21711856/SRR21711856.fastq.gz",
                         "fastq_bytes": "447377777",
@@ -313,7 +313,7 @@
                         "experiment_accession": "SRX17709228",
                         "experiment_alias": "GSM6601461_r1",
                         "experiment_title": "Illumina HiSeq 4000 sequencing: GSM6601461: PM2.5-treated worms in day 5 Caenorhabditis elegans RNA-Seq",
-                        "fastq_1": "results/fastq/SRX17709228_SRR21711855_1.fastq.gz",
+                        "fastq_1": "SRX17709228_SRR21711855_1.fastq.gz:md5,bb3026b15647a3fc82a62ecb58641924",
                         "fastq_2": "",
                         "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/SRR217/055/SRR21711855/SRR21711855.fastq.gz",
                         "fastq_bytes": "529798447",
@@ -356,6 +356,6 @@
                 ]
             }
         ],
-        "timestamp": "2024-01-07T13:36:22.094035"
+        "timestamp": "2024-01-07T15:09:34.563421"
     }
 }
