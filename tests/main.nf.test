@@ -2,6 +2,7 @@ nextflow_pipeline {
 
     name "Test pipeline"
     script "../main.nf"
+    config "../conf/test.config"
     tag "pipeline"
     tag "pipeline_fetchngs"
 
@@ -9,20 +10,12 @@ nextflow_pipeline {
 
         when {
             params {
-                outdir     = "results"
-                max_cpus   = 2
-                max_memory = '6.GB'
-                max_time   = '6.h'
-                input      = "$projectDir/tests/sra_ids_test.csv"
-                validationSchemaIgnoreParams = 'test_data_base,fastq_ftp_ids,test_data'
+                outdir = "$outputDir"
             }
         }
 
         then {
-            assertAll(
-                { assert workflow.success }
-            )
+            assert workflow.success
         }
     }
-
 }
