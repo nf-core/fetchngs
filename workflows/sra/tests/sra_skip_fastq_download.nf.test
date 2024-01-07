@@ -43,9 +43,9 @@ nextflow_workflow {
 
             with(workflow.out.sra_metadata) {
                 assert get(0).get('experiment_accession') == 'ERX1234253'
-                assert get(1).get('experiment_accession') == 'SRX17709227'
-                assert get(2).get('experiment_accession') == 'SRX17709228'
-                assert get(3).get('experiment_accession') == 'SRX9315476'
+                assert get(1).get('experiment_accession') == 'SRX9315476'
+                assert get(2).get('experiment_accession') == 'SRX17709227'
+                assert get(3).get('experiment_accession') == 'SRX17709228'
             }
         }
     }
