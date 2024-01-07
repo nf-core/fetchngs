@@ -17,7 +17,7 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 nf_core_pipeline = "atacseq"
             }
         }

@@ -17,7 +17,7 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 force_sratools_download = true
             }
         }
