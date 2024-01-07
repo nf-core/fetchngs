@@ -27,13 +27,13 @@ nextflow_workflow {
 
             with(workflow.out.samplesheet) {
                 assert path(get(0)).readLines().size() == 5
-                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"SRX17709227"', '"SRX17709228"', '"ERX1234253"', '"SRX9315476"']
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"ERX1234253"', '"SRX17709227"', '"SRX17709228"', '"SRX9315476"']
                 assert path(get(0)).text.contains('Illumina HiSeq 4000')
             }
 
             with(workflow.out.mappings) {
                 assert path(get(0)).readLines().size() == 5
-                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"SRX17709227"', '"SRX17709228"', '"ERX1234253"', '"SRX9315476"']
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"ERX1234253"', '"SRX17709227"', '"SRX17709228"', '"SRX9315476"']
                 assert path(get(0)).text.contains('Illumina HiSeq 4000')
             }
 
