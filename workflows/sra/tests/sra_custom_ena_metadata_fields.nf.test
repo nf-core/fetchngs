@@ -13,7 +13,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.from('ERR1160846', 'GSE214215', 'SRR12848126')
+                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
                 """
             }
             params {
@@ -28,19 +28,19 @@ nextflow_workflow {
             assert workflow.success
 
             with(workflow.out.samplesheet) {
-                assert path(get(0)).readLines().size() == 5
-                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"ERX1234253"', '"SRX17709227"', '"SRX17709228"', '"SRX9315476"']
+                assert path(get(0)).readLines().size() == 4
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
                 assert path(get(0)).text.contains('SINGLE')
             }
 
             with(workflow.out.mappings) {
-                assert path(get(0)).readLines().size() == 5
-                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"ERX1234253"', '"SRX17709227"', '"SRX17709228"', '"SRX9315476"']
+                assert path(get(0)).readLines().size() == 4
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
                 assert path(get(0)).text.contains('SINGLE')
             }
 
             with(workflow.out.sample_mappings) {
-                assert path(get(0)[0]).md5 == "3bc981f0de28023083cdf13691d249d5"
+                assert path(get(0)[0]).md5 == "3b70bc9658eab4ba2f4ec98cb749ac9d"
             }
         }
     }
