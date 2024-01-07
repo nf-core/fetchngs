@@ -61,7 +61,6 @@ workflow SRA {
         .unique()
         .set { ch_sra_metadata }
 
-    ch_fastq_files = Channel.empty()
     if (!params.skip_fastq_download) {
 
         ch_sra_metadata
@@ -93,8 +92,10 @@ workflow SRA {
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
         // Isolate FASTQ channel which will be added to emit block
-        ch_fastq_files
-            .mix(SRA_FASTQ_FTP.out.fastq, FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
+        SRA_FASTQ_FTP
+            .out
+            .fastq
+            .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
@@ -150,10 +151,10 @@ workflow SRA {
     }
 
     emit:
-    fastq           = ch_fastq_files
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
+    sra_metadata    = ch_sra_metadata
     versions        = ch_versions.unique()
 }
 
