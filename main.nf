@@ -57,8 +57,8 @@ workflow NFCORE_FETCHNGS {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { PIPELINE_INITIALISATION } from './subworkflows/local/nf_core_fetchngs_utils'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/nf_core_fetchngs_utils'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
 
 //
 // WORKFLOW: Execute a single named workflow for the pipeline

@@ -8,17 +8,17 @@
 ========================================================================================
 */
 
-include { NEXTFLOW_PIPELINE_UTILS; getWorkflowVersion } from '../../nf-core/nextflowpipelineutils/main'
-include { NF_VALIDATION_PLUGIN_UTILS                  } from '../../nf-core/nfvalidation_plugin_utils/main.nf'
+include { UTILS_NEXTFLOW_PIPELINE; getWorkflowVersion } from '../../nf-core/utils_nextflow_pipeline'
+include { UTILS_NFVALIDATION_PLUGIN                   } from '../../nf-core/utils_nfvalidation_plugin'
 include { 
-    NFCORE_PIPELINE_UTILS; 
+    UTILS_NFCORE_PIPELINE; 
     workflowCitation; 
     nfCoreLogo; 
     dashedLine; 
     completionEmail; 
     completionSummary; 
     imNotification 
-} from '../../nf-core/nfcore_pipeline_utils'
+} from '../../nf-core/utils_nfcore_pipeline'
 
 /*
 ========================================================================================
@@ -33,7 +33,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Print version and exit if required and dump pipeline parameters to JSON file
     //
-    NEXTFLOW_PIPELINE_UTILS (
+    UTILS_NEXTFLOW_PIPELINE (
         params.version,
         true,
         params.outdir,
@@ -46,7 +46,7 @@ workflow PIPELINE_INITIALISATION {
     def pre_help_text = nfCoreLogo(getWorkflowVersion())
     def post_help_text = '\n' + workflowCitation() + '\n' + dashedLine()
     def String workflow_command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input ids.csv --outdir <OUTDIR>"
-    NF_VALIDATION_PLUGIN_UTILS (
+    UTILS_NFVALIDATION_PLUGIN (
         params.help,
         workflow_command,
         pre_help_text,
@@ -58,7 +58,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    NFCORE_PIPELINE_UTILS ()
+    UTILS_NFCORE_PIPELINE ()
 
     //
     // Auto-detect input id type
@@ -88,7 +88,7 @@ workflow PIPELINE_INITIALISATION {
 
     emit:
     ids            = ch_ids
-    summary_params = NF_VALIDATION_PLUGIN_UTILS.out.summary_params
+    summary_params = UTILS_NFVALIDATION_PLUGIN.out.summary_params
 }
 
 /*
