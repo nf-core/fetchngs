@@ -10,14 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Special thanks to the following for their contributions to the release:
 
 - [Alexandru Mizeranschi](https://github.com/nicolae06)
+- [Alexander Blaessle](https://github.com/alexblaessle)
 - [Sebastian Uhrig](https://github.com/suhrig)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 
 ### Enhancements & fixes
 
+- [PR #238](https://github.com/nf-core/fetchngs/pull/238) - Resolved bug when prefetching large studies ([#236](https://github.com/nf-core/fetchngs/issues/236))
 - [PR #241](https://github.com/nf-core/fetchngs/pull/241) - Download of big files time out and don't resume ([#169](https://github.com/nf-core/fetchngs/issues/169))
 - [PR #242](https://github.com/nf-core/fetchngs/pull/242) - Template update for nf-core/tools v2.11
+- [PR #243](https://github.com/nf-core/fetchngs/pull/243) - Fixes for [PR #238](https://github.com/nf-core/fetchngs/pull/238)
 
 ### Software dependencies
 

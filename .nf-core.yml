@@ -17,3 +17,6 @@ lint:
     - .gitignore
     - assets/sendmail_template.txt
     - lib/NfcoreTemplate.groovy
+    - .github/CONTRIBUTING.md
+    - .github/PULL_REQUEST_TEMPLATE.md
+    - .github/workflows/linting.yml
