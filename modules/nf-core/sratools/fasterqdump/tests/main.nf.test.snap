@@ -8,7 +8,7 @@
                             "id": "test_single_end",
                             "single_end": true
                         },
-                        "test_single_end_1.fastq.gz:md5,1054c7b71884acdb5eed8a378f18be82"
+                        "test_single_end.fastq.gz:md5,1054c7b71884acdb5eed8a378f18be82"
                     ]
                 ],
                 "1": [
@@ -20,7 +20,7 @@
                             "id": "test_single_end",
                             "single_end": true
                         },
-                        "test_single_end_1.fastq.gz:md5,1054c7b71884acdb5eed8a378f18be82"
+                        "test_single_end.fastq.gz:md5,1054c7b71884acdb5eed8a378f18be82"
                     ]
                 ],
                 "versions": [
