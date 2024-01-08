@@ -2,7 +2,6 @@ nextflow_pipeline {
 
     name "Test pipeline"
     script "../main.nf"
-    config "../conf/test.config"
     tag "pipeline"
     tag "pipeline_fetchngs"
 
@@ -11,6 +10,7 @@ nextflow_pipeline {
         when {
             params {
                 outdir = "$outputDir"
+                input = 'https://raw.githubusercontent.com/nf-core/test-datasets/2732b911c57e607fa7aea5ba0c3d91b25bafb662/testdata/v1.12.0/sra_ids_test.csv'
             }
         }
 
