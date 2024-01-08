@@ -15,8 +15,8 @@ env:
   NXF_ANSI_LOG: false
   NFT_VER: "0.8.3"
   NFT_WORKDIR: "~"
-  NFT_DIFF: "icdiff"
-  NFT_DIFF_ARGS: "-N --cols 200 -L expected -L observed -t"
+  NFT_DIFF: "pdiff"
+  NFT_DIFF_ARGS: "--line-numbers --expand-tabs=2"
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
@@ -77,6 +77,16 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          architecture: "x64"
+
+      - name: Install pdiff to see diff between nf-test snapshots
+        run: |
+          python -m pip install --upgrade pip
+          pip install pdiff
+
       - name: Cache nf-test installation
         id: cache-software
         uses: actions/cache@v3
@@ -97,12 +107,13 @@ jobs:
           sudo apt install icdiff
 
       - name: Run nf-test
-        uses: pcolby/tap-summary@v1
+        run: |
+          nf-test test --verbose --tag ${{ matrix.tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml --tap=test.tap
+
+      - uses: pcolby/tap-summary@v1
         with:
           path: >-
             test.tap
-        run: |
-          nf-test test --verbose --tag ${{ matrix.tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml --tap=test.tap
 
       - name: Output log on failure
         if: failure()
