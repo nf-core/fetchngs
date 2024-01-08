@@ -13,7 +13,8 @@ on:
 
 env:
   NXF_ANSI_LOG: false
-  NFTEST_VER: "0.8.3"
+  NFT_VER: "0.8.3"
+  NFT_WORKDIR: "~"
   NFT_DIFF: "icdiff"
   NFT_DIFF_ARGS: "-N --cols 200 -L expected -L observed -t"
 
@@ -83,7 +84,7 @@ jobs:
           path: |
             /usr/local/bin/nf-test
             /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NFTEST_VER }}-nftest
+          key: ${{ runner.os }}-${{ env.NFT_VER }}-nftest
 
       - name: Install nf-test
         if: steps.cache-software.outputs.cache-hit != 'true'
@@ -96,8 +97,12 @@ jobs:
           sudo apt install icdiff
 
       - name: Run nf-test
+        uses: pcolby/tap-summary@v1
+        with:
+          path: >-
+            test.tap
         run: |
-          nf-test test --verbose --tag ${{ matrix.tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml
+          nf-test test --verbose --tag ${{ matrix.tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml --tap=test.tap
 
       - name: Output log on failure
         if: failure()
