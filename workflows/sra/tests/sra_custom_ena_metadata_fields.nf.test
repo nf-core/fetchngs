@@ -13,11 +13,11 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.from('ERR1160846', 'GSE214215', 'SRR12848126')
+                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
                 """
             }
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 nf_core_pipeline = "rnaseq"
                 ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
                 sample_mapping_fields = "run_accession,library_layout"
@@ -25,10 +25,23 @@ nextflow_workflow {
         }
 
         then {
-            assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
-            )
+            assert workflow.success
+
+            with(workflow.out.samplesheet) {
+                assert path(get(0)).readLines().size() == 4
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                assert path(get(0)).text.contains('SINGLE')
+            }
+
+            with(workflow.out.mappings) {
+                assert path(get(0)).readLines().size() == 4
+                assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                assert path(get(0)).text.contains('SINGLE')
+            }
+
+            with(workflow.out.sample_mappings) {
+                assert path(get(0)[0]).md5 == "3b70bc9658eab4ba2f4ec98cb749ac9d"
+            }
         }
     }
 }
