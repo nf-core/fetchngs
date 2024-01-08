@@ -21,7 +21,7 @@ nextflow_pipeline {
                 { assert new File("$outputDir/samplesheet/samplesheet.csv").readLines().size() == 15 },
                 { assert new File("$outputDir/samplesheet/samplesheet.csv").readLines()*.split(',')[0].take(4) == ['"sample"', '"fastq_1"', '"fastq_2"', '"run_accession"'] },
                 { assert new File("$outputDir/samplesheet/samplesheet.csv").readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX024467"', '"DRX026011"', '"ERX1234253"', '"SRX10940790"', '"SRX11047067"', '"SRX17709227"', '"SRX17709228"', '"SRX6725035"', '"SRX9315476"', '"SRX9504942"', '"SRX9504942"', '"SRX9504942"', '"SRX9504942"', '"SRX9626017"'] },
-                { assert new File("$outputDir/samplesheet/samplesheet.csv").text.contains('Illumina HiSeq 2500') },                
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").text.contains('Illumina HiSeq 2500') },
                 { assert new File("$outputDir/custom/user-settings.mkfg").exists() },
                 { assert new File("$outputDir/fastq/DRX024467_DRR026872.fastq.gz").exists() },
                 { assert new File("$outputDir/fastq/DRX026011_DRR028935_1.fastq.gz").exists() },
