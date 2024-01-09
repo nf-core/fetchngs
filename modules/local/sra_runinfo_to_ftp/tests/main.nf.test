@@ -16,7 +16,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = file(params.test_data['modules_local']['sra_runinfo_to_ftp'], checkIfExists: true)
+                input[0] = file(params.pipelines_test_data_base + '/modules/local/sra_runinfo_to_ftp/SRR13191702.runinfo.tsv', checkIfExists: true)
                 """
             }
         }
