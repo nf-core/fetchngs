@@ -1,6 +1,6 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/nf-core-fetchngs_logo_dark.png">
-  <img alt="nf-core/fetchngs logo" src="nf-core-fetchngs_logo_light.png">
+  <img alt="nf-core/fetchngs logo" src="docs/images/nf-core-fetchngs_logo_light.png">
 </picture>
 
 [![GitHub Actions CI Status](https://github.com/nf-core/fetchngs/workflows/nf-core%20CI/badge.svg)](https://github.com/nf-core/fetchngs/actions?query=workflow%3A%22nf-core+CI%22)
