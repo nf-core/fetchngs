@@ -21,6 +21,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #241](https://github.com/nf-core/fetchngs/pull/241) - Download of big files time out and don't resume ([#169](https://github.com/nf-core/fetchngs/issues/169))
 - [PR #242](https://github.com/nf-core/fetchngs/pull/242) - Template update for nf-core/tools v2.11
 - [PR #243](https://github.com/nf-core/fetchngs/pull/243) - Fixes for [PR #238](https://github.com/nf-core/fetchngs/pull/238)
+- [PR #246](https://github.com/nf-core/fetchngs/pull/246) - Handle dark/light mode for logo in GitHub README properly
 
 ### Software dependencies
 
