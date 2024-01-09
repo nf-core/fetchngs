@@ -102,13 +102,9 @@ jobs:
           wget -qO- https://code.askimed.com/install/nf-test | bash
           sudo mv nf-test /usr/local/bin/
 
-      - name: Install icdiff for nf-test diff viewing
-        run: |
-          sudo apt install icdiff
-
       - name: Run nf-test
         run: |
-          nf-test test --verbose --tag ${{ matrix.tags }} --profile "test,${{ matrix.profile }}" --junitxml=test.xml --tap=test.tap
+          nf-test test --verbose --tag ${{ matrix.tags }} --profile "${{ matrix.profile }}" --junitxml=test.xml --tap=test.tap
 
       - uses: pcolby/tap-summary@v1
         with:

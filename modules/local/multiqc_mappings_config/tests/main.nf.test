@@ -16,7 +16,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = file(params.test_data['modules_local']['multiqc_mappings_config'], checkIfExists: true)
+                input[0] = file(params.pipelines_test_data_base + '/modules/local/multiqc_mappings_config/SRX9626017_SRR13191702.mappings.csv', checkIfExists: true)
                 """
             }
         }
