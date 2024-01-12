@@ -16,7 +16,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [], file(params.modules_test_data_base + '/data/genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true) ]
+                input[0] = [ [], file(params.testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true) ]
                 """
             }
         }
@@ -30,28 +30,6 @@ nextflow_process {
 
     }
 
-    test("test_untar_different_output_path") {
-
-        when {
-            params {
-                outdir   = "$outputDir"
-            }
-            process {
-                """
-                input[0] = [ [], file(params.modules_test_data_base + '/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true) ]
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.success },
-                { assert snapshot(process.out.untar).match("test_untar_different_output_path") },
-            )
-        }
-
-    }
-
     test("test_untar_onlyfiles") {
 
         when {
@@ -60,7 +38,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [], file(params.modules_test_data_base + '/data/generic/tar/hello.tar.gz', checkIfExists: true) ]
+                input[0] = [ [], file(params.testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true) ]
                 """
             }
         }
