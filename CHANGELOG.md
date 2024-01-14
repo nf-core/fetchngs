@@ -23,6 +23,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #243](https://github.com/nf-core/fetchngs/pull/243) - Fixes for [PR #238](https://github.com/nf-core/fetchngs/pull/238)
 - [PR #246](https://github.com/nf-core/fetchngs/pull/246) - Handle dark/light mode for logo in GitHub README properly
 - [PR #248](https://github.com/nf-core/fetchngs/pull/248) - Update pipeline level test data path to use mirror on s3
+- [PR #249](https://github.com/nf-core/fetchngs/pull/249) - Update modules which includes absolute paths for test data, making module level test compatible within the pipeline.
 
 ### Software dependencies
 
