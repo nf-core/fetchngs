@@ -1,6 +1,7 @@
 nextflow_process {
     name "Test Process SRATOOLS_FASTERQDUMP"
     script "../main.nf"
+    config "./nextflow.config"
     process "SRATOOLS_FASTERQDUMP"
     tag "modules"
     tag "modules_nfcore"
@@ -9,7 +10,6 @@ nextflow_process {
     tag "sratools/fasterqdump"
 
     test("Single-end") {
-
         setup {
             run("UNTAR") {
                 script "modules/nf-core/untar/main.nf"
@@ -22,6 +22,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
+
             process {
                 """
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_single_end', single_end:true ], files]}
@@ -53,6 +57,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
+
             process {
                 """
                 input[0] = UNTAR.out.untar.map{ meta, files -> [ [ id:'test_paired_end', single_end:false ], files]}
