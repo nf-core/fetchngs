@@ -10,6 +10,7 @@ nextflow_process {
     tag "sratools/fasterqdump"
 
     test("Single-end") {
+
         setup {
             run("UNTAR") {
                 script "modules/nf-core/untar/main.nf"

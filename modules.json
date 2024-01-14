@@ -7,22 +7,22 @@
                 "nf-core": {
                     "custom/sratoolsncbisettings": {
                         "branch": "master",
-                        "git_sha": "20e78a9868eaa69c8cac91152397def32374b807",
+                        "git_sha": "8e6960947b6647952b97667173805b34b40f25d6",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "sratools/fasterqdump": {
                         "branch": "master",
-                        "git_sha": "20e78a9868eaa69c8cac91152397def32374b807",
+                        "git_sha": "8e6960947b6647952b97667173805b34b40f25d6",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "sratools/prefetch": {
                         "branch": "master",
-                        "git_sha": "20e78a9868eaa69c8cac91152397def32374b807",
+                        "git_sha": "8e6960947b6647952b97667173805b34b40f25d6",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "untar": {
                         "branch": "master",
-                        "git_sha": "20e78a9868eaa69c8cac91152397def32374b807",
+                        "git_sha": "8e6960947b6647952b97667173805b34b40f25d6",
                         "installed_by": ["modules"]
                     }
                 }
