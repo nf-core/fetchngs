@@ -58,7 +58,9 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE ( params.monochrome_logs )
+    UTILS_NFCORE_PIPELINE (
+        params.monochrome_logs
+    )
 
     //
     // Auto-detect input id type
