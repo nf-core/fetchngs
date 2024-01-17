@@ -3,6 +3,7 @@
 //
 
 import org.yaml.snakeyaml.Yaml
+import nextflow.extension.FilesEx
 
 /*
 ========================================================================================
@@ -290,6 +291,8 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
         try {
             if (plaintext_email) { throw GroovyException('Send plaintext e-mail, not HTML') }
             // Try to send HTML e-mail using sendmail
+            def sendmail_tf = new File(workflow.launchDir.toString(), ".sendmail_tmp.html")
+            sendmail_tf.withWriter { w -> w << sendmail_html }
             [ 'sendmail', '-t' ].execute() << sendmail_html
             log.info "-${colors.purple}[$workflow.manifest.name]${colors.green} Sent summary e-mail to $email_address (sendmail)-"
         } catch (all) {
@@ -301,14 +304,16 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     }
 
     // Write summary e-mail HTML to a file
-    def output_d = new File("${outdir}/pipeline_info/")
-    if (!output_d.exists()) {
-        output_d.mkdirs()
-    }
-    def output_hf = new File(output_d, "pipeline_report.html")
+    def output_hf = new File(workflow.launchDir.toString(), ".pipeline_report.html")
     output_hf.withWriter { w -> w << email_html }
-    def output_tf = new File(output_d, "pipeline_report.txt")
+    FilesEx.copyTo(output_hf.toPath(), "${outdir}/pipeline_info/pipeline_report.html");
+    output_hf.delete()
+
+    // Write summary e-mail TXT to a file
+    def output_tf = new File(workflow.launchDir.toString(), ".pipeline_report.txt")
     output_tf.withWriter { w -> w << email_txt }
+    FilesEx.copyTo(output_tf.toPath(), "${outdir}/pipeline_info/pipeline_report.txt");
+    output_tf.delete()
 }
 
 //
