@@ -57,9 +57,8 @@ def workflowCitation() {
 // Get software versions for pipeline
 //
 def processVersionsFromYAML(yaml_file) {
-    Yaml parser = new Yaml()
-    versions = parser.load(yaml_file).collectEntries { k,v -> [ k.tokenize(':')[-1], v ] }
     Yaml yaml = new Yaml()
+    versions = yaml.load(yaml_file).collectEntries { k,v -> [ k.tokenize(':')[-1], v ] }
     return yaml.dumpAsMap(versions).trim()
 }
 
