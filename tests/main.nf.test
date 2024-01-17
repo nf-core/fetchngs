@@ -72,7 +72,7 @@ nextflow_pipeline {
                 { assert new File("$outputDir/metadata/SRR14593545.runinfo_ftp.tsv").exists() },
                 { assert new File("$outputDir/metadata/SRR14709033.runinfo_ftp.tsv").exists() },
                 { assert new File("$outputDir/metadata/SRR9984183.runinfo_ftp.tsv").exists() },
-                { assert new File("$outputDir/pipeline_info/fetchngs_mqc_versions.yml").exists() },
+                { assert new File("$outputDir/pipeline_info/nf_core_fetchngs_software_mqc_versions.yml").exists() },
                 { assert new File("$outputDir/samplesheet/id_mappings.csv").exists() },
                 { assert new File("$outputDir/samplesheet/multiqc_config.yml").exists() },
                 { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
