@@ -67,8 +67,8 @@ workflow {
     //
     // WORKFLOW: Run primary workflows for the pipeline
     //
-    NFCORE_FETCHNGS ( 
-        PIPELINE_INITIALISATION.out.ids 
+    NFCORE_FETCHNGS (
+        PIPELINE_INITIALISATION.out.ids
     )
 
     //
