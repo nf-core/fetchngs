@@ -14,10 +14,6 @@ workflow UTILS_NFCORE_PIPELINE {
 
     main:
     checkConfigProvided()
-
-    emit:
-    success = true
-
 }
 
 /*
@@ -72,6 +68,21 @@ def workflowVersionToYAML(workflow_version) {
       "$workflow.manifest.name": "${workflow_version}"
     """.stripIndent().trim()
 }
+
+//
+// Get channel of software versions used in pipeline in YAML format
+//
+def softwareVersionsToYAML(ch_versions, workflow_version) {
+    
+    return 
+        ch_versions
+            .unique()
+            .map { processVersionsFromYAML(it) }
+            .mix(Channel.of(workflowVersionToYAML(workflow_version)))
+        // .set { ch_software_versions }
+    // return ch_software_versions
+}
+
 
 //
 // Get workflow summary for MultiQC
