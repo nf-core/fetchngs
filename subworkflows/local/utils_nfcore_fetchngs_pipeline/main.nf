@@ -10,7 +10,6 @@
 
 include { UTILS_NFVALIDATION_PLUGIN } from '../../nf-core/utils_nfvalidation_plugin'
 include { paramsSummaryMap          } from 'plugin/nf-validation'
-include { getWorkflowVersion        } from '../../nf-core/utils_nextflow_pipeline'
 include { UTILS_NEXTFLOW_PIPELINE   } from '../../nf-core/utils_nextflow_pipeline'
 include { completionEmail           } from '../../nf-core/utils_nfcore_pipeline'
 include { completionSummary         } from '../../nf-core/utils_nfcore_pipeline'
@@ -43,7 +42,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Validate parameters and generate parameter summary to stdout
     //
-    def pre_help_text = nfCoreLogo(getWorkflowVersion(), params.monochrome_logs)
+    def pre_help_text = nfCoreLogo(params.monochrome_logs)
     def post_help_text = '\n' + workflowCitation() + '\n' + dashedLine(params.monochrome_logs)
     def String workflow_command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input ids.csv --outdir <OUTDIR>"
     UTILS_NFVALIDATION_PLUGIN (
@@ -116,13 +115,13 @@ workflow PIPELINE_COMPLETION {
     //
     workflow.onComplete {
         if (email || email_on_fail) {
-            completionEmail(summary_params, getWorkflowVersion(), email, email_on_fail, plaintext_email, outdir, monochrome_logs)
+            completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs)
         }
 
         completionSummary(monochrome_logs)
 
         if (hook_url) {
-            imNotification(summary_params, getWorkflowVersion(), hook_url)
+            imNotification(summary_params, hook_url)
         }
 
         if (input_type == 'sra') {

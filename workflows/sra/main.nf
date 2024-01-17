@@ -9,9 +9,7 @@ include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
 include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
 include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
-include { getWorkflowVersion      } from '../../subworkflows/nf-core/utils_nextflow_pipeline'
-include { processVersionsFromYAML } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
-include { workflowVersionToYAML   } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML  } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,11 +154,9 @@ workflow SRA {
     //
     // Collate and save software versions
     //
-    ch_versions
-        .unique()
-        .map { processVersionsFromYAML(it) }
-        .mix(Channel.of(workflowVersionToYAML(getWorkflowVersion())))
-        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'collated_software_mqc_versions.yml', newLine: true)
+    softwareVersionsToYAML(ch_versions)
+        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+
 
     emit:
     samplesheet     = ch_samplesheet

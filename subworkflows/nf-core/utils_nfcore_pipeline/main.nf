@@ -50,6 +50,24 @@ def workflowCitation() {
 }
 
 //
+// Generate workflow version string
+//
+def getWorkflowVersion() {
+    String version_string = ""
+    if (workflow.manifest.version) {
+        def prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
+        version_string += "${prefix_v}${workflow.manifest.version}"
+    }
+
+    if (workflow.commitId) {
+        def git_shortsha = workflow.commitId.substring(0, 7)
+        version_string += "-g${git_shortsha}"
+    }
+
+    return version_string
+}
+
+//
 // Get software versions for pipeline
 //
 def processVersionsFromYAML(yaml_file) {
@@ -61,28 +79,23 @@ def processVersionsFromYAML(yaml_file) {
 //
 // Get workflow version for pipeline
 //
-def workflowVersionToYAML(workflow_version) {
+def workflowVersionToYAML() {
     return """
-    'Workflow':
-      "Nextflow": "$workflow.nextflow.version"
-      "$workflow.manifest.name": "${workflow_version}"
+    Workflow:
+      $workflow.manifest.name: ${getWorkflowVersion()}
+      Nextflow: $workflow.nextflow.version
     """.stripIndent().trim()
 }
 
 //
 // Get channel of software versions used in pipeline in YAML format
 //
-def softwareVersionsToYAML(ch_versions, workflow_version) {
-    
-    return 
-        ch_versions
-            .unique()
-            .map { processVersionsFromYAML(it) }
-            .mix(Channel.of(workflowVersionToYAML(workflow_version)))
-        // .set { ch_software_versions }
-    // return ch_software_versions
+def softwareVersionsToYAML(ch_versions) {
+    return ch_versions
+                .unique()
+                .map { processVersionsFromYAML(it) }
+                .mix(Channel.of(workflowVersionToYAML()))
 }
-
 
 //
 // Get workflow summary for MultiQC
@@ -115,7 +128,7 @@ def paramsSummaryMultiqc(summary_params) {
 //
 // nf-core logo
 //
-def nfCoreLogo(workflow_version, monochrome_logs=true) {
+def nfCoreLogo(monochrome_logs=true) {
     Map colors = logColours(monochrome_logs)
     String.format(
         """\n
@@ -125,7 +138,7 @@ def nfCoreLogo(workflow_version, monochrome_logs=true) {
         ${colors.blue}  |\\ | |__  __ /  ` /  \\ |__) |__         ${colors.yellow}}  {${colors.reset}
         ${colors.blue}  | \\| |       \\__, \\__/ |  \\ |___     ${colors.green}\\`-._,-`-,${colors.reset}
                                                 ${colors.green}`._,._,\'${colors.reset}
-        ${colors.purple}  ${workflow.manifest.name} ${workflow_version}${colors.reset}
+        ${colors.purple}  ${workflow.manifest.name} ${getWorkflowVersion()}${colors.reset}
         ${dashedLine(monochrome_logs)}
         """.stripIndent()
     )
@@ -210,7 +223,7 @@ def logColours(monochrome_logs=true) {
 //
 // Construct and send completion email
 //
-def completionEmail(summary_params, workflow_version, email, email_on_fail, plaintext_email, outdir, monochrome_logs=true) {
+def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs=true) {
 
     // Set up the e-mail variables
     def subject = "[$workflow.manifest.name] Successful: $workflow.runName"
@@ -236,7 +249,7 @@ def completionEmail(summary_params, workflow_version, email, email_on_fail, plai
     misc_fields['Nextflow Compile Timestamp'] = workflow.nextflow.timestamp
 
     def email_fields = [:]
-    email_fields['version']      = workflow_version
+    email_fields['version']      = getWorkflowVersion()
     email_fields['runName']      = workflow.runName
     email_fields['success']      = workflow.success
     email_fields['dateComplete'] = workflow.complete
@@ -317,7 +330,7 @@ def completionSummary(monochrome_logs=true) {
 //
 // Construct and send a notification to a web server as JSON e.g. Microsoft Teams and Slack
 //
-def imNotification(summary_params, workflow_version, hook_url) {
+def imNotification(summary_params, hook_url) {
     def summary = [:]
     for (group in summary_params.keySet()) {
         summary << summary_params[group]
@@ -336,7 +349,7 @@ def imNotification(summary_params, workflow_version, hook_url) {
     misc_fields['nxf_timestamp']                        = workflow.nextflow.timestamp
 
     def msg_fields = [:]
-    msg_fields['version']      = workflow_version
+    msg_fields['version']      = getWorkflowVersion()
     msg_fields['runName']      = workflow.runName
     msg_fields['success']      = workflow.success
     msg_fields['dateComplete'] = workflow.complete

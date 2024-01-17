@@ -9,9 +9,7 @@ include { SYNAPSE_SHOW              } from '../../modules/local/synapse_show'
 include { SYNAPSE_GET               } from '../../modules/local/synapse_get'
 include { SYNAPSE_TO_SAMPLESHEET    } from '../../modules/local/synapse_to_samplesheet'
 include { SYNAPSE_MERGE_SAMPLESHEET } from '../../modules/local/synapse_merge_samplesheet'
-include { getWorkflowVersion        } from '../../subworkflows/nf-core/utils_nextflow_pipeline'
-include { processVersionsFromYAML   } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
-include { workflowVersionToYAML     } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML    } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,11 +109,8 @@ workflow SYNAPSE {
     //
     // Collate and save software versions
     //
-    ch_versions
-        .unique()
-        .map { processVersionsFromYAML(it) }
-        .mix(Channel.of(workflowVersionToYAML(getWorkflowVersion())))
-        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'collated_software_mqc_versions.yml', newLine: true)
+    softwareVersionsToYAML(ch_versions)
+        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
 
     emit:
     fastq       = ch_fastq
