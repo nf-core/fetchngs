@@ -61,15 +61,6 @@ workflow PIPELINE_INITIALISATION {
     UTILS_NFCORE_PIPELINE ()
 
     //
-    // Read in ids from --input file via nf-validation plugin
-    //
-    Channel
-        .fromSamplesheet("input", skip_duplicate_check: true)
-        .map { it[0] }
-        .unique()
-        .set { ch_ids }
-    
-    //
     // Auto-detect input id type
     //
     ch_input = file(params.input)
@@ -86,6 +77,14 @@ workflow PIPELINE_INITIALISATION {
     if (params.input_type != input_type) {
         error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
     }
+
+    // Read in ids from --input file
+    Channel
+        .from(ch_input)
+        .splitCsv(header:false, sep:'', strip:true)
+        .map { it[0] }
+        .unique()
+        .set { ch_ids }
 
     emit:
     ids = ch_ids
