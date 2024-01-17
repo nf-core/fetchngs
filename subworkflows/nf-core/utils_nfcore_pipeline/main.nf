@@ -2,6 +2,8 @@
 // Subworkflow with utility functions specific to the nf-core pipeline template
 //
 
+import org.yaml.snakeyaml.Yaml
+
 /*
 ========================================================================================
     SUBWORKFLOW DEFINITION
@@ -9,9 +11,6 @@
 */
 
 workflow UTILS_NFCORE_PIPELINE {
-
-    take:
-    monochrome_logs // boolean: Disable ANSI colour codes in log output
 
     main:
     checkConfigProvided()
@@ -55,9 +54,58 @@ def workflowCitation() {
 }
 
 //
+// Get software versions for pipeline
+//
+def processVersionsFromYAML(yaml_file) {
+    Yaml parser = new Yaml()
+    versions = parser.load(yaml_file).collectEntries { k,v -> [ k.tokenize(':')[-1], v ] }
+    Yaml yaml = new Yaml()
+    return yaml.dumpAsMap(versions).trim()
+}
+
+//
+// Get workflow version for pipeline
+//
+def workflowVersionToYAML(workflow_version) {
+    return """
+    'Workflow':
+      "Nextflow": "$workflow.nextflow.version"
+      "$workflow.manifest.name": "${workflow_version}"
+    """.stripIndent().trim()
+}
+
+//
+// Get workflow summary for MultiQC
+//
+def paramsSummaryMultiqc(summary_params) {
+    def summary_section = ''
+    for (group in summary_params.keySet()) {
+        def group_params = summary_params.get(group)  // This gets the parameters of that particular group
+        if (group_params) {
+            summary_section += "    <p style=\"font-size:110%\"><b>$group</b></p>\n"
+            summary_section += "    <dl class=\"dl-horizontal\">\n"
+            for (param in group_params.keySet()) {
+                summary_section += "        <dt>$param</dt><dd><samp>${group_params.get(param) ?: '<span style=\"color:#999999;\">N/A</a>'}</samp></dd>\n"
+            }
+            summary_section += "    </dl>\n"
+        }
+    }
+
+    String yaml_file_text  = "id: '${workflow.manifest.name.replace('/','-')}-summary'\n"
+    yaml_file_text        += "description: ' - this information is collected when the pipeline is started.'\n"
+    yaml_file_text        += "section_name: '${workflow.manifest.name} Workflow Summary'\n"
+    yaml_file_text        += "section_href: 'https://github.com/${workflow.manifest.name}'\n"
+    yaml_file_text        += "plot_type: 'html'\n"
+    yaml_file_text        += "data: |\n"
+    yaml_file_text        += "${summary_section}"
+
+    return yaml_file_text
+}
+
+//
 // nf-core logo
 //
-def nfCoreLogo(workflow_version, monochrome_logs = true) {
+def nfCoreLogo(workflow_version, monochrome_logs=true) {
     Map colors = logColours(monochrome_logs)
     String.format(
         """\n
@@ -76,7 +124,7 @@ def nfCoreLogo(workflow_version, monochrome_logs = true) {
 //
 // Return dashed line
 //
-def dashedLine(monochrome_logs = true) {
+def dashedLine(monochrome_logs=true) {
     Map colors = logColours(monochrome_logs)
     return "-${colors.dim}----------------------------------------------------${colors.reset}-"
 }
@@ -84,7 +132,7 @@ def dashedLine(monochrome_logs = true) {
 //
 // ANSII colours used for terminal logging
 //
-def logColours(monochrome_logs = true) {
+def logColours(monochrome_logs=true) {
     Map colorcodes = [:]
 
     // Reset / Meta
@@ -152,7 +200,7 @@ def logColours(monochrome_logs = true) {
 //
 // Construct and send completion email
 //
-def completionEmail(summary_params, monochrome_logs = true) {
+def completionEmail(summary_params, workflow_version, email, email_on_fail, plaintext_email, outdir, monochrome_logs=true) {
 
     // Set up the e-mail variables
     def subject = "[$workflow.manifest.name] Successful: $workflow.runName"
@@ -178,7 +226,7 @@ def completionEmail(summary_params, monochrome_logs = true) {
     misc_fields['Nextflow Compile Timestamp'] = workflow.nextflow.timestamp
 
     def email_fields = [:]
-    email_fields['version']      = NfcoreTemplate.version(workflow)
+    email_fields['version']      = workflow_version
     email_fields['runName']      = workflow.runName
     email_fields['success']      = workflow.success
     email_fields['dateComplete'] = workflow.complete
@@ -191,9 +239,9 @@ def completionEmail(summary_params, monochrome_logs = true) {
     email_fields['summary']      = summary << misc_fields
 
     // Check if we are only sending emails on failure
-    def email_address = params.email
-    if (!params.email && params.email_on_fail && !workflow.success) {
-        email_address = params.email_on_fail
+    def email_address = email
+    if (!email && email_on_fail && !workflow.success) {
+        email_address = email_on_fail
     }
 
     // Render the TXT template
@@ -217,7 +265,7 @@ def completionEmail(summary_params, monochrome_logs = true) {
     Map colors = logColours(monochrome_logs)
     if (email_address) {
         try {
-            if (params.plaintext_email) { throw GroovyException('Send plaintext e-mail, not HTML') }
+            if (plaintext_email) { throw GroovyException('Send plaintext e-mail, not HTML') }
             // Try to send HTML e-mail using sendmail
             [ 'sendmail', '-t' ].execute() << sendmail_html
             log.info "-${colors.purple}[$workflow.manifest.name]${colors.green} Sent summary e-mail to $email_address (sendmail)-"
@@ -230,7 +278,7 @@ def completionEmail(summary_params, monochrome_logs = true) {
     }
 
     // Write summary e-mail HTML to a file
-    def output_d = new File("${params.outdir}/pipeline_info/")
+    def output_d = new File("${outdir}/pipeline_info/")
     if (!output_d.exists()) {
         output_d.mkdirs()
     }
@@ -243,7 +291,7 @@ def completionEmail(summary_params, monochrome_logs = true) {
 //
 // Print pipeline summary on completion
 //
-def completionSummary(monochrome_logs = true) {
+def completionSummary(monochrome_logs=true) {
     Map colors = logColours(monochrome_logs)
     if (workflow.success) {
         if (workflow.stats.ignoredCount == 0) {
@@ -259,9 +307,7 @@ def completionSummary(monochrome_logs = true) {
 //
 // Construct and send a notification to a web server as JSON e.g. Microsoft Teams and Slack
 //
-def imNotification(summary_params) {
-    def hook_url = params.hook_url
-
+def imNotification(summary_params, workflow_version, hook_url) {
     def summary = [:]
     for (group in summary_params.keySet()) {
         summary << summary_params[group]
@@ -280,7 +326,7 @@ def imNotification(summary_params) {
     misc_fields['nxf_timestamp']                        = workflow.nextflow.timestamp
 
     def msg_fields = [:]
-    msg_fields['version']      = NfcoreTemplate.version(workflow)
+    msg_fields['version']      = workflow_version
     msg_fields['runName']      = workflow.runName
     msg_fields['success']      = workflow.success
     msg_fields['dateComplete'] = workflow.complete

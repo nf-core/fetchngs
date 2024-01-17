@@ -8,17 +8,17 @@
 ========================================================================================
 */
 
-include { UTILS_NEXTFLOW_PIPELINE; getWorkflowVersion } from '../../nf-core/utils_nextflow_pipeline'
-include { UTILS_NFVALIDATION_PLUGIN                   } from '../../nf-core/utils_nfvalidation_plugin'
-include { 
-    UTILS_NFCORE_PIPELINE; 
-    workflowCitation; 
-    nfCoreLogo; 
-    dashedLine; 
-    completionEmail; 
-    completionSummary; 
-    imNotification 
-} from '../../nf-core/utils_nfcore_pipeline'
+include { UTILS_NEXTFLOW_PIPELINE   } from '../../nf-core/utils_nextflow_pipeline'
+include { getWorkflowVersion        } from '../../nf-core/utils_nextflow_pipeline'
+include { UTILS_NFVALIDATION_PLUGIN } from '../../nf-core/utils_nfvalidation_plugin'
+include { paramsSummaryMap          } from 'plugin/nf-validation'
+include { UTILS_NFCORE_PIPELINE     } from '../../nf-core/utils_nfcore_pipeline'
+include { workflowCitation          } from '../../nf-core/utils_nfcore_pipeline'
+include { nfCoreLogo                } from '../../nf-core/utils_nfcore_pipeline'
+include { dashedLine                } from '../../nf-core/utils_nfcore_pipeline'
+include { completionEmail           } from '../../nf-core/utils_nfcore_pipeline'
+include { completionSummary         } from '../../nf-core/utils_nfcore_pipeline'
+include { imNotification            } from '../../nf-core/utils_nfcore_pipeline'
 
 /*
 ========================================================================================
@@ -43,8 +43,8 @@ workflow PIPELINE_INITIALISATION {
     //
     // Validate parameters and generate parameter summary to stdout
     //
-    def pre_help_text = nfCoreLogo(getWorkflowVersion())
-    def post_help_text = '\n' + workflowCitation() + '\n' + dashedLine()
+    def pre_help_text = nfCoreLogo(getWorkflowVersion(), params.monochrome_logs)
+    def post_help_text = '\n' + workflowCitation() + '\n' + dashedLine(params.monochrome_logs)
     def String workflow_command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input ids.csv --outdir <OUTDIR>"
     UTILS_NFVALIDATION_PLUGIN (
         params.help,
@@ -58,9 +58,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE (
-        params.monochrome_logs
-    )
+    UTILS_NFCORE_PIPELINE ()
 
     //
     // Auto-detect input id type
@@ -89,8 +87,7 @@ workflow PIPELINE_INITIALISATION {
         .set { ch_ids }
 
     emit:
-    ids            = ch_ids
-    summary_params = UTILS_NFVALIDATION_PLUGIN.out.summary_params
+    ids = ch_ids
 }
 
 /*
@@ -102,38 +99,30 @@ workflow PIPELINE_INITIALISATION {
 workflow PIPELINE_COMPLETION {
 
     take:
-    versions       // channel: software tools versions
-    input_type     //  string: 'sra' or 'synapse'
-    email          //  string: email address
-    email_on_fail  //  string: email address sent on pipeline failure
-    hook_url       //  string: hook URL for notifications
-    summary_params //     map: Groovy map of the parameters used in the pipeline
+    input_type      //  string: 'sra' or 'synapse'
+    email           //  string: email address
+    email_on_fail   //  string: email address sent on pipeline failure
+    plaintext_email // boolean: Send plain-text email instead of HTML
+    outdir          //    path: Path to output directory where results will be published
+    monochrome_logs // boolean: Disable ANSI colour codes in log output
+    hook_url        //  string: hook URL for notifications
 
     main:
 
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-    pipeline_version_info = Channel.of("""\"workflow\":
-        nextflow: ${workflow.nextflow.version}
-        ${workflow.manifest.name}: ${workflow.manifest.version}
-    """.stripIndent())
-
-    versions = versions.mix(pipeline_version_info)
-    versions.collectFile(name: 'fetchngs_mqc_versions.yml', storeDir: "${params.outdir}/pipeline_info")
+    summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
 
     //
     // Completion email and summary
     //
     workflow.onComplete {
         if (email || email_on_fail) {
-            completionEmail(summary_params)
+            completionEmail(summary_params, getWorkflowVersion(), email, email_on_fail, plaintext_email, outdir, monochrome_logs)
         }
 
-        completionSummary()
+        completionSummary(monochrome_logs)
 
         if (hook_url) {
-            imNotification(summary_params)
+            imNotification(summary_params, getWorkflowVersion(), hook_url)
         }
 
         if (input_type == 'sra') {

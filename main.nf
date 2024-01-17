@@ -30,25 +30,19 @@ workflow NFCORE_FETCHNGS {
 
     main:
 
-    ch_versions = Channel.empty()
-
     //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
     if (params.input_type == 'sra') {
         SRA ( ids )
-        ch_versions = SRA.out.versions
 
     //
     // WORKFLOW: Download FastQ files for Synapse ids
     //
     } else if (params.input_type == 'synapse') {
         SYNAPSE ( ids )
-        ch_versions = SYNAPSE.out.versions
     }
 
-    emit:
-    versions = ch_versions
 }
 
 /*
@@ -73,20 +67,21 @@ workflow {
     //
     // WORKFLOW: Run primary workflows for the pipeline
     //
-    NFCORE_FETCHNGS (
-        PIPELINE_INITIALISATION.out.ids
+    NFCORE_FETCHNGS ( 
+        PIPELINE_INITIALISATION.out.ids 
     )
 
     //
     // SUBWORKFLOW: Run completion tasks
     //
     PIPELINE_COMPLETION (
-        NFCORE_FETCHNGS.out.versions,
         params.input_type,
         params.email,
         params.email_on_fail,
-        params.hook_url,
-        PIPELINE_INITIALISATION.out.summary_params
+        params.plaintext_email,
+        params.outdir,
+        params.monochrome_logs,
+        params.hook_url
     )
 }
 
