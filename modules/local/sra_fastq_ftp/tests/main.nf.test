@@ -3,9 +3,8 @@ nextflow_process {
     name "Test process: SRA_FASTQ_FTP"
     script "../main.nf"
     process "SRA_FASTQ_FTP"
-    tag "modules"
-    tag "modules_local"
-    tag "sra_fastq_ftp"
+
+    tag "SRA_FASTQ_FTP"
 
     test("Should run without failures") {
 

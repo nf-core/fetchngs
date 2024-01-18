@@ -4,10 +4,8 @@ nextflow_process {
     script "../main.nf"
     process "CUSTOM_SRATOOLSNCBISETTINGS"
     config "modules/nf-core/custom/sratoolsncbisettings/tests/nextflow.config"
-    tag "modules"
-    tag "modules_nfcore"
-    tag "custom"
-    tag "custom/sratoolsncbisettings"
+
+    tag "CUSTOM_SRATOOLSNCBISETTINGS"
 
     test("Should run without failures") {
 
