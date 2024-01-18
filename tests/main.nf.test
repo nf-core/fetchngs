@@ -3,9 +3,9 @@ nextflow_pipeline {
     name "Test pipeline"
     script "../main.nf"
 
-    tag "SRA"
-    
     tag "FETCHNGS"
+    
+    tag "SRA"
 
     test("Run with profile test") {
 

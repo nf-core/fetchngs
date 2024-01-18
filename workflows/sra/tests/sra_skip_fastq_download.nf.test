@@ -4,15 +4,15 @@ nextflow_workflow {
     script "../main.nf"
     workflow "SRA"
 
+    // Subworkflows
+    tag "SRA"
+
     // Modules
     tag "MULTIQC_MAPPINGS_CONFIG"
     tag "SRA_FASTQ_FTP"
     tag "SRA_IDS_TO_RUNINFO"
     tag "SRA_RUNINFO_TO_FTP"
     tag "SRA_TO_SAMPLESHEET"
-
-    // Subworkflows
-    tag "SRA"
 
     test("Parameters: --skip_fastq_download") {
 
