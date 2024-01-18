@@ -27,19 +27,45 @@ jobs:
     name: Check for changes
     runs-on: ubuntu-latest
     outputs:
-      # Expose matched filters as job 'tags' output variable
-      tags: ${{ steps.filter.outputs.changes }}
+      n_changes: ${{ steps.changed_files.outputs.all_modified_files_count }}
+      tags: ${{ steps.changed_files.outputs.all_changed_files }}
     steps:
-      - uses: actions/checkout@v3
-      - name: Combine all tags.yml files
-        id: get_username
-        run: find . -name "tags.yml" -not -path "./.github/*" -exec cat {} + > .github/tags.yml
-      - name: debug
-        run: cat .github/tags.yml
-      - uses: dorny/paths-filter@v2
-        id: filter
+      - name: Install Nextflow
+        uses: nf-core/setup-nextflow@v1
         with:
-          filters: ".github/tags.yml"
+          version: "${{ matrix.NXF_VER }}"
+
+      - name: Cache nf-test installation
+        id: cache-software
+        uses: actions/cache@v3
+        with:
+          path: |
+            /usr/local/bin/nf-test
+            /home/runner/.nf-test/nf-test.jar
+          key: ${{ runner.os }}-${{ env.NFT_VER }}-nftest
+
+      - name: Install nf-test
+        if: steps.cache-software.outputs.cache-hit != 'true'
+        run: |
+          wget -qO- https://code.askimed.com/install/nf-test | bash
+          sudo mv nf-test /usr/local/bin/
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: tj-actions/changed-files@v42
+        id: changed_files
+        with:
+          dir_names: "true"
+
+      - name: nf-test list tags
+        id: list
+        if: ${{ steps.changed_files.outputs.all_modified_files_count > 0 }}
+        run: nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }} | paste -sd, -
+
+      - name: debug
+        run: echo ${{ steps.changed_files.outputs }}
 
   define_nxf_versions:
     name: Choose nextflow versions to test against depending on target branch
@@ -56,9 +82,9 @@ jobs:
           fi
 
   test:
-    name: ${{ matrix.tags }} ${{ matrix.profile }} NF ${{ matrix.NXF_VER }}
+    name: ${{ matrix.tags }} ${{ matrix.profile }} NF-${{ matrix.NXF_VER }}
     needs: [changes, define_nxf_versions]
-    if: needs.changes.outputs.tags != '[]'
+    if: needs.changes.outputs.n_changes > 0
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
