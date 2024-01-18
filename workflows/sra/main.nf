@@ -9,6 +9,7 @@ include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
 include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
 include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
+include { softwareVersionsToYAML  } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,6 +150,13 @@ workflow SRA {
         ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
     }
+
+    //
+    // Collate and save software versions
+    //
+    softwareVersionsToYAML(ch_versions)
+        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+
 
     emit:
     samplesheet     = ch_samplesheet

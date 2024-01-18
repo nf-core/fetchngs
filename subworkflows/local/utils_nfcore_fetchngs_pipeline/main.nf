@@ -8,17 +8,17 @@
 ========================================================================================
 */
 
-include { UTILS_NEXTFLOW_PIPELINE; getWorkflowVersion } from '../../nf-core/utils_nextflow_pipeline'
-include { UTILS_NFVALIDATION_PLUGIN                   } from '../../nf-core/utils_nfvalidation_plugin'
-include { 
-    UTILS_NFCORE_PIPELINE; 
-    workflowCitation; 
-    nfCoreLogo; 
-    dashedLine; 
-    completionEmail; 
-    completionSummary; 
-    imNotification 
-} from '../../nf-core/utils_nfcore_pipeline'
+include { UTILS_NFVALIDATION_PLUGIN } from '../../nf-core/utils_nfvalidation_plugin'
+include { fromSamplesheet           } from 'plugin/nf-validation'
+include { paramsSummaryMap          } from 'plugin/nf-validation'
+include { UTILS_NEXTFLOW_PIPELINE   } from '../../nf-core/utils_nextflow_pipeline'
+include { completionEmail           } from '../../nf-core/utils_nfcore_pipeline'
+include { completionSummary         } from '../../nf-core/utils_nfcore_pipeline'
+include { dashedLine                } from '../../nf-core/utils_nfcore_pipeline'
+include { nfCoreLogo                } from '../../nf-core/utils_nfcore_pipeline'
+include { imNotification            } from '../../nf-core/utils_nfcore_pipeline'
+include { UTILS_NFCORE_PIPELINE     } from '../../nf-core/utils_nfcore_pipeline'
+include { workflowCitation          } from '../../nf-core/utils_nfcore_pipeline'
 
 /*
 ========================================================================================
@@ -28,56 +28,64 @@ include {
 
 workflow PIPELINE_INITIALISATION {
 
+    take:
+    version             // boolean: Display version and exit
+    help                // boolean: Display help text
+    validate_params     // boolean: Boolean whether to validate parameters against the schema at runtime 
+    monochrome_logs     // boolean: Do not use coloured log outputs
+    outdir              //  string: The output directory where the results will be saved
+    input               //  string: File containing SRA/ENA/GEO/DDBJ identifiers one per line to download their associated metadata and FastQ files
+    input_type          //  string: Specifies the type of identifier provided via `--input` - available options are 'sra' and 'synapse'
+    ena_metadata_fields //  string: Comma-separated list of ENA metadata fields to fetch before downloading data
+
     main:
 
     //
     // Print version and exit if required and dump pipeline parameters to JSON file
     //
     UTILS_NEXTFLOW_PIPELINE (
-        params.version,
+        version,
         true,
-        params.outdir,
+        outdir,
         workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1
     )
 
     //
     // Validate parameters and generate parameter summary to stdout
     //
-    def pre_help_text = nfCoreLogo(getWorkflowVersion())
-    def post_help_text = '\n' + workflowCitation() + '\n' + dashedLine()
+    def pre_help_text = nfCoreLogo(monochrome_logs)
+    def post_help_text = '\n' + workflowCitation() + '\n' + dashedLine(monochrome_logs)
     def String workflow_command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input ids.csv --outdir <OUTDIR>"
     UTILS_NFVALIDATION_PLUGIN (
-        params.help,
+        help,
         workflow_command,
         pre_help_text,
         post_help_text,
-        params.validate_params,
+        validate_params,
         "nextflow_schema.json"
     )
 
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE (
-        params.monochrome_logs
-    )
+    UTILS_NFCORE_PIPELINE ()
 
     //
     // Auto-detect input id type
     //
-    ch_input = file(params.input)
-    def input_type = ''
+    ch_input = file(input)
+    def inferred_input_type = ''
     if (isSraId(ch_input)) {
-        input_type = 'sra'
-        sraCheckENAMetadataFields()
+        inferred_input_type = 'sra'
+        sraCheckENAMetadataFields(ena_metadata_fields)
     } else if (isSynapseId(ch_input)) {
-        input_type = 'synapse'
+        inferred_input_type = 'synapse'
     } else {
         error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ or Synapse ids!')
     }
 
-    if (params.input_type != input_type) {
-        error("Ids auto-detected as ${input_type}. Please provide '--input_type ${input_type}' as a parameter to the pipeline!")
+    if (input_type != inferred_input_type) {
+        error("Ids auto-detected as ${inferred_input_type}. Please provide '--input_type ${inferred_input_type}' as a parameter to the pipeline!")
     }
 
     // Read in ids from --input file
@@ -89,8 +97,7 @@ workflow PIPELINE_INITIALISATION {
         .set { ch_ids }
 
     emit:
-    ids            = ch_ids
-    summary_params = UTILS_NFVALIDATION_PLUGIN.out.summary_params
+    ids = ch_ids
 }
 
 /*
@@ -102,38 +109,30 @@ workflow PIPELINE_INITIALISATION {
 workflow PIPELINE_COMPLETION {
 
     take:
-    versions       // channel: software tools versions
-    input_type     //  string: 'sra' or 'synapse'
-    email          //  string: email address
-    email_on_fail  //  string: email address sent on pipeline failure
-    hook_url       //  string: hook URL for notifications
-    summary_params //     map: Groovy map of the parameters used in the pipeline
+    input_type      //  string: 'sra' or 'synapse'
+    email           //  string: email address
+    email_on_fail   //  string: email address sent on pipeline failure
+    plaintext_email // boolean: Send plain-text email instead of HTML
+    outdir          //    path: Path to output directory where results will be published
+    monochrome_logs // boolean: Disable ANSI colour codes in log output
+    hook_url        //  string: hook URL for notifications
 
     main:
 
-    //
-    // MODULE: Dump software versions for all tools used in the workflow
-    //
-    pipeline_version_info = Channel.of("""\"workflow\":
-        nextflow: ${workflow.nextflow.version}
-        ${workflow.manifest.name}: ${workflow.manifest.version}
-    """.stripIndent())
-
-    versions = versions.mix(pipeline_version_info)
-    versions.collectFile(name: 'fetchngs_mqc_versions.yml', storeDir: "${params.outdir}/pipeline_info")
+    summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
 
     //
     // Completion email and summary
     //
     workflow.onComplete {
         if (email || email_on_fail) {
-            completionEmail(summary_params)
+            completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs)
         }
 
-        completionSummary()
+        completionSummary(monochrome_logs)
 
         if (hook_url) {
-            imNotification(summary_params)
+            imNotification(summary_params, hook_url)
         }
 
         if (input_type == 'sra') {
@@ -205,12 +204,12 @@ def isSynapseId(input) {
 //
 // Check and validate parameters
 //
-def sraCheckENAMetadataFields() {
+def sraCheckENAMetadataFields(ena_metadata_fields) {
     // Check minimal ENA fields are provided to download FastQ files
     def valid_ena_metadata_fields = ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
-    def ena_metadata_fields = params.ena_metadata_fields ? params.ena_metadata_fields.split(',').collect{ it.trim().toLowerCase() } : valid_ena_metadata_fields
-    if (!ena_metadata_fields.containsAll(valid_ena_metadata_fields)) {
-        error("Invalid option: '${params.ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
+    def actual_ena_metadata_fields = ena_metadata_fields ? ena_metadata_fields.split(',').collect{ it.trim().toLowerCase() } : valid_ena_metadata_fields
+    if (!actual_ena_metadata_fields.containsAll(valid_ena_metadata_fields)) {
+        error("Invalid option: '${ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
     }
 }
 

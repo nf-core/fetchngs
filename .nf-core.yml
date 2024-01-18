@@ -9,4 +9,6 @@ lint:
     - lib/nfcore_external_java_deps.jar
   files_unchanged:
     - .gitignore
+    - assets/email_template.html
+    - assets/email_template.txt
     - assets/sendmail_template.txt

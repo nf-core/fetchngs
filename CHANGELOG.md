@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Special thanks to the following for their contributions to the release:
 
+- [Adam Talbot](https://github.com/adamrtalbot)
 - [Alexandru Mizeranschi](https://github.com/nicolae06)
 - [Alexander Blaessle](https://github.com/alexblaessle)
+- [Maxime Garcia](https://github.com/maxulysse)
 - [Sebastian Uhrig](https://github.com/suhrig)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
@@ -18,9 +20,10 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 ### Enhancements & fixes
 
 - [PR #238](https://github.com/nf-core/fetchngs/pull/238) - Resolved bug when prefetching large studies ([#236](https://github.com/nf-core/fetchngs/issues/236))
-- [PR #241](https://github.com/nf-core/fetchngs/pull/241) - Download of big files time out and don't resume ([#169](https://github.com/nf-core/fetchngs/issues/169))
+- [PR #241](https://github.com/nf-core/fetchngs/pull/241) - Use wget instead of curl to download files from FTP ([#169](https://github.com/nf-core/fetchngs/issues/169), [#194](https://github.com/nf-core/fetchngs/issues/194))
 - [PR #242](https://github.com/nf-core/fetchngs/pull/242) - Template update for nf-core/tools v2.11
 - [PR #243](https://github.com/nf-core/fetchngs/pull/243) - Fixes for [PR #238](https://github.com/nf-core/fetchngs/pull/238)
+- [PR #245](https://github.com/nf-core/fetchngs/pull/246) - Refactor nf-test CI and test and other pre-release fixes ([#233](https://github.com/nf-core/fetchngs/issues/233))
 - [PR #246](https://github.com/nf-core/fetchngs/pull/246) - Handle dark/light mode for logo in GitHub README properly
 - [PR #248](https://github.com/nf-core/fetchngs/pull/248) - Update pipeline level test data path to use mirror on s3
 - [PR #249](https://github.com/nf-core/fetchngs/pull/249) - Update modules which includes absolute paths for test data, making module level test compatible within the pipeline.
