@@ -62,7 +62,16 @@ workflow {
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION ()
+    PIPELINE_INITIALISATION (
+        params.version,
+        params.help,
+        params.validate_params,
+        params.monochrome_logs,
+        params.outdir,
+        params.input,
+        params.input_type,
+        params.ena_metadata_fields
+    )
 
     //
     // WORKFLOW: Run primary workflows for the pipeline
