@@ -27,8 +27,8 @@ jobs:
     name: Check for changes
     runs-on: ubuntu-latest
     outputs:
-      n_changes: ${{ steps.changed_files.outputs.all_modified_files_count }}
-      tags: ${{ steps.changed_files.outputs.all_changed_files }}
+      changes: ${{ steps.changed_files.outputs.any_modified }}
+      tags: ${{ steps.list.outputs.tags }}
     steps:
       - name: Install Nextflow
         uses: nf-core/setup-nextflow@v1
@@ -61,8 +61,8 @@ jobs:
 
       - name: nf-test list tags
         id: list
-        if: ${{ steps.changed_files.outputs.all_modified_files_count > 0 }}
-        run: nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }} | paste -sd, -
+        if: ${{ steps.changed_files.outputs.any_modified }}
+        run: echo tags=$(nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }}) >> $GITHUB_OUTPUT
 
       - name: debug
         run: echo ${{ steps.changed_files.outputs }}
@@ -84,7 +84,7 @@ jobs:
   test:
     name: ${{ matrix.tags }} ${{ matrix.profile }} NF-${{ matrix.NXF_VER }}
     needs: [changes, define_nxf_versions]
-    if: needs.changes.outputs.n_changes > 0
+    if: needs.changes.outputs.changes
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
