@@ -3,7 +3,7 @@ nextflow_process {
     name "Test process: SRA_TO_SAMPLESHEET"
     script "../main.nf"
     process "SRA_TO_SAMPLESHEET"
-    
+
     tag "SRA_TO_SAMPLESHEET"
 
     test("Should run without failures") {
