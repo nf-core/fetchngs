@@ -59,17 +59,19 @@ jobs:
         with:
           dir_names: "true"
           output_renamed_files_as_deleted_and_added: "true"
+          # Define list of additional rules for testing paths
+          # Mostly, we define additional 'pipeline' or 'all' tests here
           files_yaml: |
-            all:
-              - .github/workflows/**
-              - nf-test.config
-              - nextflow.config
-            pipeline:
+            tests:
               - assets/*
               - bin/*
               - conf/*
               - main.nf
               - nextflow_schema.json
+            ".":
+              - .github/workflows/**
+              - nf-test.config
+              - nextflow.config
           files_ignore: |
             .git*
             .gitpod.yml
@@ -85,12 +87,12 @@ jobs:
         run: |
           echo ${{ steps.changed_files.outputs.any_modified }}
           echo ${{ steps.changed_files.outputs.all_changed_files }}
-          echo ${{ steps.changed_files.outputs.changed_keys }}}
+          echo ${{ steps.changed_files.outputs.changed_keys }}
 
       - name: nf-test list tags
         id: list
         if: ${{ steps.changed_files.outputs.any_modified }}
-        run: echo tags=$(nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }}) >> $GITHUB_OUTPUT
+        run: echo tags=$(nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }}) >> $GITHUB_OUTPUT
 
       - name: debug2
         run: |
