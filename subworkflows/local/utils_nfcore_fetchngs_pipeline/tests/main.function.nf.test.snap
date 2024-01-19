@@ -1,10 +1,22 @@
 {
     "Function sraCurateSamplesheetWarn": {
         "content": null,
-        "timestamp": "2024-01-19T13:21:43.405877"
+        "timestamp": "2024-01-19T16:37:05.668505"
     },
-    "Function synapseCurateSamplesheetWarn": {
+    "Function sraCheckENAMetadataFields [success]": {
         "content": null,
-        "timestamp": "2024-01-19T13:21:50.818169"
+        "timestamp": "2024-01-19T16:36:51.121603"
+    },
+    "Function isSraId": {
+        "content": [
+            true
+        ],
+        "timestamp": "2024-01-19T16:36:43.68958"
+    },
+    "Function isSynapseId": {
+        "content": [
+            true
+        ],
+        "timestamp": "2024-01-19T16:37:12.992364"
     }
 }
