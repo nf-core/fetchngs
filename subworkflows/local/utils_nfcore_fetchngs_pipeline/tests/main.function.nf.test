@@ -1,0 +1,35 @@
+
+nextflow_function {
+
+    name "Test Functions"
+    script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
+    tag 'subworkflows'
+    tag 'utils_nfcore_fetchngs_pipeline'
+    tag 'subworkflows/utils_nfcore_fetchngs_pipeline'
+
+// isSraId(input)
+// isSynapseId(input)
+// sraCheckENAMetadataFields(ena_metadata_fields)
+// synapseShowToMap(synapse_file)
+// synapseSampleNameFromFastQ(input_file, pattern)
+
+    test("Function sraCurateSamplesheetWarn") {
+
+        function "sraCurateSamplesheetWarn"
+
+        then {
+            assert function.success
+            assert snapshot(function.result).match()
+        }
+    }
+
+    test("Function synapseCurateSamplesheetWarn") {
+
+        function "synapseCurateSamplesheetWarn"
+
+        then {
+            assert function.success
+            assert snapshot(function.result).match()
+        }
+    }
+}
