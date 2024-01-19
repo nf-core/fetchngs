@@ -62,13 +62,14 @@ jobs:
           # Define list of additional rules for testing paths
           # Mostly, we define additional 'pipeline' or 'all' tests here
           files_yaml: |
-            tests:
+            tests: &shared
               - assets/*
               - bin/*
               - conf/*
               - main.nf
               - nextflow_schema.json
             ".":
+              - *shared
               - .github/workflows/**
               - nf-test.config
               - nextflow.config
