@@ -58,6 +58,20 @@ jobs:
         id: changed_files
         with:
           dir_names: "true"
+          files_ignore: |
+            .git*
+            .gitpod.yml
+            .prettierignore
+            .prettierrc.yml
+            **.md
+            **.png
+            pyproject.toml
+            tower.yml
+
+      - name: debug
+        run: |
+          echo ${{ steps.changed_files.outputs.any_modified }}
+          echo ${{ steps.changed_files.outputs.all_changed_files }}
 
       - name: nf-test list tags
         id: list
