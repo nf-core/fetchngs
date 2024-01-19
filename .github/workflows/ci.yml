@@ -85,6 +85,7 @@ jobs:
         run: |
           echo ${{ steps.changed_files.outputs.any_modified }}
           echo ${{ steps.changed_files.outputs.all_changed_files }}
+          echo ${{ steps.changed_files.outputs.changed_keys }}}
 
       - name: nf-test list tags
         id: list
