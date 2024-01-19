@@ -79,6 +79,10 @@ jobs:
         if: ${{ steps.changed_files.outputs.any_modified }}
         run: echo tags=$(nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }}) >> $GITHUB_OUTPUT
 
+      - name: debug2
+        run: |
+          echo ${{ steps.list.outputs.tags }}
+
   define_nxf_versions:
     name: Choose nextflow versions to test against depending on target branch
     runs-on: ubuntu-latest
