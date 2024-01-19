@@ -58,6 +58,7 @@ jobs:
         id: changed_files
         with:
           dir_names: "true"
+          output_renamed_files_as_deleted_and_added: "true"
           files_ignore: |
             .git*
             .gitpod.yml
