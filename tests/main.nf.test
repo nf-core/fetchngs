@@ -1,9 +1,8 @@
-nextflow_pipeline {
+nextflow_pipeline 
 
     name "Test pipeline"
     script "../main.nf"
-
-    tag "FETCHNGS"
+    tag "PIPELINE"
 
     tag "SRA"
 
@@ -81,4 +80,4 @@ nextflow_pipeline {
             )
         }
     }
-}
+
