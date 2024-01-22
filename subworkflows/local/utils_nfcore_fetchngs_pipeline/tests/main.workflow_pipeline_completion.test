@@ -11,7 +11,7 @@ nextflow_workflow {
 
         when {
             params {
-                outdir = "$outputDir"
+                outdir = "tests/results"
             }
             workflow {
                 """
@@ -19,17 +19,17 @@ nextflow_workflow {
                 email           = null
                 email_on_fail   = null
                 plaintext_email = false
-                outdir          = "$params.outdir"
+                outdir          = "tests/results"
                 monochrome_logs = false
                 hook_url        = null
 
-                input [0] = input_type
-                input [1] = email
-                input [2] = email_on_fail
-                input [3] = plaintext_email
-                input [4] = outdir
-                input [5] = monochrome_logs
-                input [6] = hook_url
+                input[0] = input_type
+                input[1] = email
+                input[2] = email_on_fail
+                input[3] = plaintext_email
+                input[4] = outdir
+                input[5] = monochrome_logs
+                input[6] = hook_url
                 """
             }
         }
