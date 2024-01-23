@@ -4,7 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     config "subworkflows/nf-core/utils_nextflow_pipeline/tests/nextflow.config"
     workflow "UTILS_NEXTFLOW_PIPELINE"
-
     tag "UTILS_NEXTFLOW_PIPELINE"
 
     test("Should run no inputs") {

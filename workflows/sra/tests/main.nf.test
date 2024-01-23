@@ -3,12 +3,9 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
-
-
-    // Subworkflows
     tag "SRA"
 
-    // Modules
+    // Dependencies
     tag "MULTIQC_MAPPINGS_CONFIG"
     tag "SRA_FASTQ_FTP"
     tag "SRA_IDS_TO_RUNINFO"

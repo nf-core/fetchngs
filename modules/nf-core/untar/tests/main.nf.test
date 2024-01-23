@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process UNTAR"
     script "../main.nf"
     process "UNTAR"
-
     tag "UNTAR"
 
     test("test_untar") {

@@ -3,7 +3,6 @@ nextflow_workflow {
     name "Test Workflow UTILS_NFVALIDATION_PLUGIN"
     script "../main.nf"
     workflow "UTILS_NFVALIDATION_PLUGIN"
-
     tag "UTILS_NFVALIDATION_PLUGIN"
 
     test("Should run nothing") {

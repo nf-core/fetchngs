@@ -3,7 +3,6 @@ nextflow_process {
     script "../main.nf"
     config "./nextflow.config"
     process "SRATOOLS_FASTERQDUMP"
-    
     tag "SRATOOLS_FASTERQDUMP"
 
     tag "UNTAR"

@@ -4,8 +4,6 @@ nextflow_pipeline {
     script "../main.nf"
     tag "PIPELINE"
 
-    tag "SRA"
-
     test("Run with profile test") {
 
         when {
