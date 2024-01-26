@@ -3,9 +3,7 @@ nextflow_workflow {
     name "Test Workflow PIPELINE_INITIALISATION"
     script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
     workflow "PIPELINE_INITIALISATION"
-    tag 'subworkflows'
-    tag 'utils_nfcore_fetchngs_pipeline'
-    tag 'subworkflows/utils_nfcore_fetchngs_pipeline'
+    tag 'PIPELINE_INITIALISATION'
 
     test("Should run") {
 

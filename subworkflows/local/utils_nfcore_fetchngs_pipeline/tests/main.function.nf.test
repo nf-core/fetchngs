@@ -3,9 +3,7 @@ nextflow_function {
 
     name "Test Functions"
     script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
-    tag 'subworkflows'
-    tag 'utils_nfcore_fetchngs_pipeline'
-    tag 'subworkflows/utils_nfcore_fetchngs_pipeline'
+    tag "UTILS_NFCORE_FETCHNGS_PIPELINE"
 
     test("Function isSraId") {
 
