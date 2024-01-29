@@ -8,6 +8,7 @@ include { MULTIQC_MAPPINGS_CONFIG } from '../../modules/local/multiqc_mappings_c
 include { SRA_FASTQ_FTP           } from '../../modules/local/sra_fastq_ftp'
 include { SRA_IDS_TO_RUNINFO      } from '../../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp'
+include { ASPERA_CLI              } from '../../modules/local/aspera_cli'
 include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
 include { softwareVersionsToYAML  } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
 
@@ -54,10 +55,11 @@ workflow SRA {
         .out
         .tsv
         .splitCsv(header:true, sep:'\t')
-        .map{ meta ->
-            def meta_clone = meta.clone()
-            meta_clone.single_end = meta_clone.single_end.toBoolean()
-            return meta_clone
+        .map { 
+            meta ->
+                def meta_clone = meta.clone()
+                meta_clone.single_end = meta_clone.single_end.toBoolean()
+                return meta_clone
         }
         .unique()
         .set { ch_sra_metadata }
@@ -65,15 +67,35 @@ workflow SRA {
     if (!params.skip_fastq_download) {
 
         ch_sra_metadata
-            .map {
-                meta ->
-                    [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
-            }
             .branch {
-                ftp: it[0].fastq_1  && !params.force_sratools_download
-                sra: !it[0].fastq_1 || params.force_sratools_download
+                meta ->                    
+                    def download_method = 'aspera'
+                    if (!meta.fastq_aspera || params.force_ftp_download) {
+                        if (meta.fastq_1) { 
+                            download_method = 'ftp'
+                        }
+                    }
+                    if ((!meta.fastq_aspera && !meta.fastq_1) || params.force_sratools_download) { 
+                        download_method = 'sratools' 
+                    }
+
+                    aspera: download_method == 'aspera'
+                        return [ meta, meta.fastq_aspera.tokenize(';').take(2) ]
+                    ftp: download_method == 'ftp'
+                        return [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+                    sratools: download_method == 'sratools'
+                        return [ meta, meta.run_accession ]
             }
             .set { ch_sra_reads }
+
+        //
+        // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
+        //
+        ASPERA_CLI (
+            ch_sra_reads.aspera,
+            'era-fasp'
+        )
+        ch_versions = ch_versions.mix(ASPERA_CLI.out.versions.first())
 
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
@@ -87,7 +109,7 @@ workflow SRA {
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         //
         FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
-            ch_sra_reads.sra.map { meta, reads -> [ meta, meta.run_accession ] },
+            ch_sra_reads.sratools,
             params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : []
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
@@ -156,7 +178,6 @@ workflow SRA {
     //
     softwareVersionsToYAML(ch_versions)
         .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
-
 
     emit:
     samplesheet     = ch_samplesheet

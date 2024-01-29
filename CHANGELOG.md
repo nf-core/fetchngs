@@ -40,6 +40,16 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 >
 > **NB:** Dependency has been **removed** if new version information isn't present.
 
+### Parameters
+
+| Old parameter | New parameter          |
+| ------------- | ---------------------- |
+|               | `--force_ftp_download` |
+
+> **NB:** Parameter has been **updated** if both old and new parameter information is present.
+> **NB:** Parameter has been **added** if just the new parameter information is present.
+> **NB:** Parameter has been **removed** if new parameter information isn't present.
+
 ## [[1.11.0](https://github.com/nf-core/fetchngs/releases/tag/1.11.0)] - 2023-10-18
 
 ### Credits

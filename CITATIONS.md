@@ -10,6 +10,8 @@
 
 ## Pipeline tools
 
+- [Aspera CLI](https://github.com/IBM/aspera-cli)
+
 - [Python](http://www.python.org)
 
 - [Requests](https://docs.python-requests.org/)
