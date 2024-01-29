@@ -1,31 +1,131 @@
-name: nf-core CI
 # This workflow runs the pipeline with the minimal test dataset to check that it completes without any syntax errors
+name: nf-core CI
 on:
-  push:
-    branches:
-      - dev
   pull_request:
   release:
     types: [published]
+  merge_group:
+    types:
+      - checks_requested
+    branches:
+      - master
+      - dev
 
 env:
   NXF_ANSI_LOG: false
+  NFT_VER: "0.8.3"
+  NFT_WORKDIR: "~"
+  NFT_DIFF: "pdiff"
+  NFT_DIFF_ARGS: "--line-numbers --expand-tabs=2"
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Check for changes
+    runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.changed_files.outputs.any_modified }}
+      tags: ${{ steps.list.outputs.tags }}
+    steps:
+      - name: Install Nextflow
+        uses: nf-core/setup-nextflow@v1
+
+      - name: Cache nf-test installation
+        id: cache-software
+        uses: actions/cache@v3
+        with:
+          path: |
+            /usr/local/bin/nf-test
+            /home/runner/.nf-test/nf-test.jar
+          key: ${{ runner.os }}-${{ env.NFT_VER }}-nftest
+
+      - name: Install nf-test
+        if: steps.cache-software.outputs.cache-hit != 'true'
+        run: |
+          wget -qO- https://code.askimed.com/install/nf-test | bash
+          sudo mv nf-test /usr/local/bin/
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: tj-actions/changed-files@v42
+        id: changed_files
+        with:
+          dir_names: "true"
+          output_renamed_files_as_deleted_and_added: "true"
+          # Define list of additional rules for testing paths
+          # Mostly, we define additional 'pipeline' or 'all' tests here
+          files_yaml: |
+            ".":
+              - .github/workflows/**
+              - nf-test.config
+              - nextflow.config
+            tests:
+              - assets/*
+              - bin/*
+              - conf/*
+              - main.nf
+              - nextflow_schema.json
+
+          files_ignore: |
+            .git*
+            .gitpod.yml
+            .prettierignore
+            .prettierrc.yml
+            **.md
+            **.png
+            modules.json
+            pyproject.toml
+            tower.yml
+
+      - name: debug
+        run: |
+          echo ${{ steps.changed_files.outputs.any_modified }}
+          echo ${{ steps.changed_files.outputs.all_changed_files }}
+          echo ${{ steps.changed_files.outputs.changed_keys }}
+
+      - name: nf-test list tags
+        id: list
+        if: ${{ steps.changed_files.outputs.any_modified }}
+        run: echo tags=$(nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }}) >> $GITHUB_OUTPUT
+
+      - name: debug2
+        run: |
+          echo ${{ steps.list.outputs.tags }}
+
+  # define_nxf_versions:
+  #   name: Choose nextflow versions to test against depending on target branch
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     matrix: ${{ steps.nxf_versions.outputs.matrix }}
+  #   steps:
+  #     - id: nxf_versions
+  #       run: |
+  #         if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "dev" && "${{ matrix.NXF_VER }}" != "latest-everything" ]]; then
+  #           echo matrix='["latest-everything"]' | tee -a $GITHUB_OUTPUT
+  #         else
+  #           echo matrix='["latest-everything", "23.04.0"]' | tee -a $GITHUB_OUTPUT
+  #         fi
+
   test:
-    name: Run pipeline with test data
-    # Only run on push if this is the nf-core dev branch (merged PRs)
-    if: "${{ github.event_name != 'push' || (github.event_name == 'push' && github.repository == 'nf-core/fetchngs') }}"
+    name: ${{ matrix.tags }} ${{ matrix.profile }} NF-${{ matrix.NXF_VER }}
+    needs: [changes]
+    if: needs.changes.outputs.changes
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         NXF_VER:
-          - "23.04.0"
           - "latest-everything"
+          - "23.04"
+        tags: ["${{ fromJson(needs.changes.outputs.tags) }}"]
+        profile:
+          - "docker"
+
     steps:
       - name: Check out pipeline code
         uses: actions/checkout@v4
@@ -35,9 +135,66 @@ jobs:
         with:
           version: "${{ matrix.NXF_VER }}"
 
-      - name: Run pipeline with test data
-        # TODO nf-core: You can customise CI pipeline run tests as required
-        # For example: adding multiple test runs with different parameters
-        # Remember that you can parallelise this by using strategy.matrix
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          architecture: "x64"
+
+      - name: Install pdiff to see diff between nf-test snapshots
         run: |
-          nextflow run ${GITHUB_WORKSPACE} -profile test,docker --outdir ./results
+          python -m pip install --upgrade pip
+          pip install pdiff
+
+      - name: Cache nf-test installation
+        id: cache-software
+        uses: actions/cache@v3
+        with:
+          path: |
+            /usr/local/bin/nf-test
+            /home/runner/.nf-test/nf-test.jar
+          key: ${{ runner.os }}-${{ env.NFT_VER }}-nftest
+
+      - name: Install nf-test
+        if: steps.cache-software.outputs.cache-hit != 'true'
+        run: |
+          wget -qO- https://code.askimed.com/install/nf-test | bash
+          sudo mv nf-test /usr/local/bin/
+
+      - name: Run nf-test
+        run: |
+          nf-test test --verbose --tag ${{ matrix.tags }} --profile "${{ matrix.profile }}" --junitxml=test.xml --tap=test.tap
+
+      - uses: pcolby/tap-summary@v1
+        with:
+          path: >-
+            test.tap
+
+      - name: Output log on failure
+        if: failure()
+        run: |
+          sudo apt install bat > /dev/null
+          batcat --decorations=always --color=always ${{ github.workspace }}/.nf-test/tests/*/meta/nextflow.log
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: test.xml
+
+  confirm-pass:
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ success() || !contains(needs.*.result, 'failure') }}
+        run: exit 0
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"
