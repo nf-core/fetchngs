@@ -3,7 +3,7 @@ nextflow_process {
     name "Test process: ASPERA_CLI"
     script "../main.nf"
     process "ASPERA_CLI"
-    
+
     tag "ASPERA_CLI"
 
     test("Should run without failures") {

@@ -41,7 +41,7 @@ process ASPERA_CLI {
             -i \$CONDA_PREFIX/etc/aspera/aspera_bypass_dsa.pem \\
             ${user}@${fastq[0]} \\
             ${meta.id}_1.fastq.gz
-        
+
         echo "${meta.md5_1}  ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
         md5sum -c ${meta.id}_1.fastq.gz.md5
 
