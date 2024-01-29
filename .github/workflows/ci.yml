@@ -97,20 +97,6 @@ jobs:
         run: |
           echo ${{ steps.list.outputs.tags }}
 
-  # define_nxf_versions:
-  #   name: Choose nextflow versions to test against depending on target branch
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     matrix: ${{ steps.nxf_versions.outputs.matrix }}
-  #   steps:
-  #     - id: nxf_versions
-  #       run: |
-  #         if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "dev" && "${{ matrix.NXF_VER }}" != "latest-everything" ]]; then
-  #           echo matrix='["latest-everything"]' | tee -a $GITHUB_OUTPUT
-  #         else
-  #           echo matrix='["latest-everything", "23.04.0"]' | tee -a $GITHUB_OUTPUT
-  #         fi
-
   test:
     name: ${{ matrix.tags }} ${{ matrix.profile }} NF-${{ matrix.NXF_VER }}
     needs: [changes]
