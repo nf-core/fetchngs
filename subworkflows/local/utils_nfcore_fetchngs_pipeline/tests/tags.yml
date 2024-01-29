@@ -1,2 +1,0 @@
-subworkflows/utils_nfcore_fetchngs_pipeline:
-  - subworkflows/local/utils_nfcore_fetchngs_pipeline/**

@@ -3,10 +3,15 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
-    tag "workflows"
-    tag "workflows_sra"
-    tag "multiqc_mappings_config"
-    tag "sra_default_parameters"
+    tag "SRA"
+
+    // Dependencies
+    tag "MULTIQC_MAPPINGS_CONFIG"
+    tag "SRA_FASTQ_FTP"
+    tag "SRA_IDS_TO_RUNINFO"
+    tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_TO_SAMPLESHEET"
+
 
     test("Parameters: default") {
 

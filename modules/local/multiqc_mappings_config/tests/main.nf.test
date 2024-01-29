@@ -3,9 +3,8 @@ nextflow_process {
     name "Test process: MULTIQC_MAPPINGS_CONFIG"
     script "../main.nf"
     process "MULTIQC_MAPPINGS_CONFIG"
-    tag "modules"
-    tag "modules_local"
-    tag "multiqc_mappings_config"
+
+    tag "MULTIQC_MAPPINGS_CONFIG"
 
     test("Should run without failures") {
 
