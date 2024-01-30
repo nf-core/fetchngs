@@ -54,6 +54,12 @@
                     "help_text": "The default is 'auto' which can be used with nf-core/rnaseq v3.10 onwards to auto-detect strandedness during the pipeline execution.",
                     "default": "auto"
                 },
+                "force_ftp_download": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-tools",
+                    "description": "Force download FASTQ files via FTP instead of via the Aspera CLI.",
+                    "help_text": "If the Aspera CLI is not working on your infrastructure use this flag to force the pipeline to download data via FTP."
+                },
                 "force_sratools_download": {
                     "type": "boolean",
                     "fa_icon": "fas fa-tools",
