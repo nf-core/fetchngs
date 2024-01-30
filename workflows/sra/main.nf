@@ -55,7 +55,7 @@ workflow SRA {
         .out
         .tsv
         .splitCsv(header:true, sep:'\t')
-        .map { 
+        .map {
             meta ->
                 def meta_clone = meta.clone()
                 meta_clone.single_end = meta_clone.single_end.toBoolean()
@@ -68,15 +68,15 @@ workflow SRA {
 
         ch_sra_metadata
             .branch {
-                meta ->                    
+                meta ->
                     def download_method = 'aspera'
                     if (!meta.fastq_aspera || params.force_ftp_download) {
-                        if (meta.fastq_1) { 
+                        if (meta.fastq_1) {
                             download_method = 'ftp'
                         }
                     }
-                    if ((!meta.fastq_aspera && !meta.fastq_1) || params.force_sratools_download) { 
-                        download_method = 'sratools' 
+                    if ((!meta.fastq_aspera && !meta.fastq_1) || params.force_sratools_download) {
+                        download_method = 'sratools'
                     }
 
                     aspera: download_method == 'aspera'
