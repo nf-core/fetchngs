@@ -70,6 +70,9 @@ workflow SRA {
             .branch {
                 meta ->
                     def download_method = 'aspera'
+                    // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
+                        // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
+                        // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
                     if (!meta.fastq_aspera || params.force_ftp_download) {
                         if (meta.fastq_1) {
                             download_method = 'ftp'
