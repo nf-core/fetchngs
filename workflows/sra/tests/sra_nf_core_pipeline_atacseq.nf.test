@@ -3,7 +3,7 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
-    
+
     // Subworkflows
     tag "SRA"
 

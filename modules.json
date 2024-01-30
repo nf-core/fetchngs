@@ -36,17 +36,17 @@
                     },
                     "utils_nextflow_pipeline": {
                         "branch": "master",
-                        "git_sha": "c81784b47d44464b35e04220e00051bb5be27524",
+                        "git_sha": "cd08c91373cd00a73255081340e4914485846ba1",
                         "installed_by": ["subworkflows"]
                     },
                     "utils_nfcore_pipeline": {
                         "branch": "master",
-                        "git_sha": "524ccbab145985b26eb7daa6e551af486dab2100",
+                        "git_sha": "cd08c91373cd00a73255081340e4914485846ba1",
                         "installed_by": ["subworkflows"]
                     },
                     "utils_nfvalidation_plugin": {
                         "branch": "master",
-                        "git_sha": "f0f8f4dc889970251eb251b85610f7ec2eafded9",
+                        "git_sha": "cd08c91373cd00a73255081340e4914485846ba1",
                         "installed_by": ["subworkflows"]
                     }
                 }

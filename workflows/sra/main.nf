@@ -119,7 +119,7 @@ workflow SRA {
         params.nf_core_rnaseq_strandedness ?: 'auto',
         params.sample_mapping_fields
     )
-  
+
     // Merge samplesheets and mapping files across all samples
     SRA_TO_SAMPLESHEET
         .out
