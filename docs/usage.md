@@ -66,6 +66,29 @@ You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. 
 
 From v1.9 of this pipeline the default `strandedness` in the output samplesheet will be set to `auto` when using `--nf_core_pipeline rnaseq`. This will only work with v3.10 onwards of nf-core/rnaseq which permits the auto-detection of strandedness during the pipeline execution. You can change this behaviour with the `--nf_core_rnaseq_strandedness` parameter which is set to `auto` by default.
 
+### Accessions with more than 2 FastQ files
+
+Using `SRR9320616` as an example, if we run the pipeline with default options to download via Aspera/FTP the ENA API indicates that this sample is associated with a single FastQ file:
+
+```
+run_accession	experiment_accession	sample_accession	secondary_sample_accession	study_accession	secondary_study_accession	submission_accession	run_alias	experiment_alias	sample_alias	study_alias	library_layout	library_selection	library_source	library_strategy	library_name	instrument_model	instrument_platform	base_count	read_count	tax_id	scientific_name	sample_title	experiment_title	study_title	sample_description	fastq_md5	fastq_bytes	fastq_ftp	fastq_galaxy	fastq_aspera
+SRR9320616	SRX6088086	SAMN12086751	SRS4989433	PRJNA549480	SRP201778	SRA900583	GSM3895942_r1	GSM3895942	GSM3895942	GSE132901	PAIRED	cDNA	TRANSCRIPTOMIC	RNA-Seq		Illumina HiSeq 2500	ILLUMINA	11857688850	120996825	10090	Mus musculus	Old 3 Kidney	Illumina HiSeq 2500 sequencing: GSM3895942: Old 3 Kidney Mus musculus RNA-Seq	A murine aging cell atlas reveals cell identity and tissue-specific trajectories of aging	Old 3 Kidney	98c939bbae1a1fcf9624905516485b67	7763114613	ftp.sra.ebi.ac.uk/vol1/fastq/SRR932/006/SRR9320616/SRR9320616.fastq.gz	ftp.sra.ebi.ac.uk/vol1/fastq/SRR932/006/SRR9320616/SRR9320616.fastq.gz	fasp.sra.ebi.ac.uk:/vol1/fastq/SRR932/006/SRR9320616/SRR9320616.fastq.gz
+```
+
+However, this sample actually has 2 additional FastQ files that are flagged as technical and can only be obtained by running sra-tools. This is particularly important for certain preps like 10x and others using UMI barcodes.
+
+```
+$ fasterq-dump --threads 6 --split-files --include-technical SRR9320616 --outfile SRR9320616.fastq --progress
+
+SRR9320616_1.fastq
+SRR9320616_2.fastq
+SRR9320616_3.fastq
+```
+
+This highlights that there is a discrepancy between the read data hosted on the ENA API and what can actually be fetched from sra-tools, where the latter seems to be the source of truth. If you anticipate that you may have more than 2 FastQ files per sample, it is recommended to use this pipeline with the `--force_sratools_download` parameter.
+
+See [issue #260](https://github.com/nf-core/fetchngs/issues/260) for more details.
+
 ### Bypass Aspera data download
 
 If the appropriate download links are available, the pipeline uses the Aspera CLI by default to download FastQ files. If you are having issues and prefer to use FTP or sra-tools instead, you can use the [`--force_ftp_download`](https://nf-co.re/fetchngs/parameters#force_ftp_download) and [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameters, respectively.
