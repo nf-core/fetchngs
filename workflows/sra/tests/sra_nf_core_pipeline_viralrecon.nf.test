@@ -33,7 +33,7 @@ nextflow_workflow {
             assert workflow.success
 
             assertAll(
-                { 
+                {
                     with(workflow.out.samplesheet) {
                         assert path(get(0)).readLines().size() == 4
                         assert path(get(0)).readLines()*.split(',')[0].take(4) == ['"sample"', '"fastq_1"', '"fastq_2"', '"run_accession"']
