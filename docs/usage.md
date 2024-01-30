@@ -66,6 +66,10 @@ You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. 
 
 From v1.9 of this pipeline the default `strandedness` in the output samplesheet will be set to `auto` when using `--nf_core_pipeline rnaseq`. This will only work with v3.10 onwards of nf-core/rnaseq which permits the auto-detection of strandedness during the pipeline execution. You can change this behaviour with the `--nf_core_rnaseq_strandedness` parameter which is set to `auto` by default.
 
+### Bypass Aspera data download
+
+If the appropriate download links are available, the pipeline uses the Aspera CLI by default to download FastQ files. If you are having issues and prefer to use FTP or sra-tools instead, you can use the [`--force_ftp_download`](https://nf-co.re/fetchngs/parameters#force_ftp_download) and [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameters, respectively.
+
 ### Bypass `FTP` data download
 
 If FTP connections are blocked on your network use the [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameter to force the pipeline to download data using sra-tools instead of the ENA FTP.
