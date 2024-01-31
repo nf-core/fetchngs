@@ -3,17 +3,14 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
+    tag "SRA_CUSTOM_ENA_METADATA_FIELDS"
 
-    // Subworkflows
-    tag "SRA"
-
-    // Modules
-    tag "MULTIQC_MAPPINGS_CONFIG"
-    tag "ASPERA_CLI"
-    tag "SRA_FASTQ_FTP"
+    // Dependencies
     tag "SRA_IDS_TO_RUNINFO"
     tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_FASTQ_FTP"
     tag "SRA_TO_SAMPLESHEET"
+    tag "MULTIQC_MAPPINGS_CONFIG"
 
     test("Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...") {
 
