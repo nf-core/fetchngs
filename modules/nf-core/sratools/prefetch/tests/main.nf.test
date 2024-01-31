@@ -2,7 +2,6 @@ nextflow_process {
     name "Test Process SRATOOLS_PREFETCH"
     script "../main.nf"
     process "SRATOOLS_PREFETCH"
-    tag "SRATOOLS_PREFETCH"
 
     test("sratools/prefetch") {
 

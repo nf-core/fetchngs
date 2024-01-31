@@ -4,8 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SRA_IDS_TO_RUNINFO"
 
-    tag "SRA_IDS_TO_RUNINFO"
-
     test("Should run without failures") {
 
         when {
