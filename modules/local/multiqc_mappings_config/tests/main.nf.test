@@ -4,8 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "MULTIQC_MAPPINGS_CONFIG"
 
-    tag "MULTIQC_MAPPINGS_CONFIG"
-
     test("Should run without failures") {
 
         when {

@@ -3,7 +3,6 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
-    tag "SRA"
 
     // Dependencies
     tag "MULTIQC_MAPPINGS_CONFIG"
