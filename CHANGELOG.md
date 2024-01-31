@@ -31,6 +31,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #257](https://github.com/nf-core/fetchngs/pull/257) - Template update for nf-core/tools v2.12
 - [PR #258](https://github.com/nf-core/fetchngs/pull/258) - Fixes for [PR #253](https://github.com/nf-core/fetchngs/pull/253)
 - [PR #259](https://github.com/nf-core/fetchngs/pull/259) - Add Aspera CLI download support to pipeline ([#68](https://github.com/nf-core/fetchngs/issues/68))
+- [PR ###](https://github.com/nf-core/fetchngs/pull/) - Use nf-test version v0.8.4
 
 ### Software dependencies
 
