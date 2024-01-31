@@ -1,0 +1,36 @@
+nextflow_workflow {
+
+    name "Test workflow: sra/main.nf"
+    script "../main.nf"
+    workflow "SRA"
+    tag "SRA_FORCE_FTP_DOWNLOAD"
+
+    // Dependencies
+    tag "SRA_IDS_TO_RUNINFO"
+    tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_FASTQ_FTP"
+    tag "SRA_TO_SAMPLESHEET"
+    tag "MULTIQC_MAPPINGS_CONFIG"
+
+    test("Parameters: --force_ftp_download") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                """
+            }
+            params {
+                outdir = "results"
+                force_ftp_download = true
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
