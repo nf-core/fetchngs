@@ -32,6 +32,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #258](https://github.com/nf-core/fetchngs/pull/258) - Fixes for [PR #253](https://github.com/nf-core/fetchngs/pull/253)
 - [PR #259](https://github.com/nf-core/fetchngs/pull/259) - Add Aspera CLI download support to pipeline ([#68](https://github.com/nf-core/fetchngs/issues/68))
 - [PR #261](https://github.com/nf-core/fetchngs/pull/261) - Revert sratools fasterqdump version ([#221](https://github.com/nf-core/fetchngs/issues/221))
+- [PR #262](https://github.com/nf-core/fetchngs/pull/262) - Use nf-test version v0.8.4 and remove implicit tags
 
 ### Software dependencies
 

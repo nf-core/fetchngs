@@ -4,8 +4,6 @@ nextflow_process {
     script "../main.nf"
     process "SRA_RUNINFO_TO_FTP"
 
-    tag "SRA_RUNINFO_TO_FTP"
-
     test("Should run without failures") {
 
         when {

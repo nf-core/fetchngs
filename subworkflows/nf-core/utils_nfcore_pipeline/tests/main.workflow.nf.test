@@ -4,7 +4,6 @@ nextflow_workflow {
     script "../main.nf"
     config "subworkflows/nf-core/utils_nfcore_pipeline/tests/nextflow.config"
     workflow "UTILS_NFCORE_PIPELINE"
-    tag "UTILS_NFCORE_PIPELINE"
 
     test("Should run without failures") {
 
