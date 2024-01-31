@@ -21,15 +21,35 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "results"
+                outdir = "$outputDir"
                 force_ftp_download = true
             }
         }
 
         then {
+            assert workflow.success
+
             assertAll(
-                { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                {
+                    with(workflow.out.samplesheet) {
+                        assert path(get(0)).readLines().size() == 4
+                        assert path(get(0)).readLines()*.split(',')[0].take(4) == ['"sample"', '"fastq_1"', '"fastq_2"', '"run_accession"']
+                        assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                        assert path(get(0)).text.contains('Illumina HiSeq 2500')
+                    }
+                },
+                {
+                    with(workflow.out.mappings) {
+                        assert path(get(0)).readLines().size() == 4
+                        assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                        assert path(get(0)).text.contains('Illumina HiSeq 2500')
+                    }
+                },
+                {
+                    with(workflow.out.sample_mappings) {
+                        assert path(get(0)[0]).md5 == "1ac06bb95b503703430e74660bbdd768"
+                    }
+                }
             )
         }
     }
