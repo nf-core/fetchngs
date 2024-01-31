@@ -3,7 +3,7 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
-    
+
     // Dependencies
     tag "MULTIQC_MAPPINGS_CONFIG"
     tag "ASPERA_CLI"
