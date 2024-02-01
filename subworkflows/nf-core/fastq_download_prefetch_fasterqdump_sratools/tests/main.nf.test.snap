@@ -3,7 +3,11 @@
         "content": [
             19996
         ],
-        "timestamp": "2024-01-30T18:05:15.684489"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T08:34:54.56022"
     },
     "test_pe_reads_2_lines": {
         "content": [
@@ -16,30 +20,45 @@
                 "GTGCACTCACGCAGTATAATTAATAACTAATTACTGTCGTTGACAGGACACGAGTAACTCGTCTATCTTCTGCAGGCTGCTTACGGTTTCGTCCGTGTTGCAGCCGATCATCAGCACATCTAGGTTTCGTCCGGGTGTGACCGAAAGGTAAGATGGAGAGCCTTGTCCCTGGTTTCAACGAGAAAACACACGTCCAACTCAGTTTGCCTGTTTTACAGGTTCGCGACGTGCTCGTACG"
             ]
         ],
-        "timestamp": "2024-01-30T18:05:15.670447"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T08:34:54.532626"
     },
     "test_pe_reads_2_size": {
         "content": [
             2011460
         ],
-        "timestamp": "2024-01-30T18:05:15.675771"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T08:34:54.542804"
     },
     "versions": {
         "content": [
             [
                 "versions.yml:md5,1a2218ff913fc33408bffccb081b5048",
-                "versions.yml:md5,1a2218ff913fc33408bffccb081b5048",
                 "versions.yml:md5,2f3b3a13b36dabf13f09327613d5558d",
                 "versions.yml:md5,98d78bba9f3da39a0b7db6e9c7dcc224"
             ]
         ],
-        "timestamp": "2024-01-30T18:05:15.692165"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T08:34:54.570734"
     },
     "test_pe_reads_1_size": {
         "content": [
             2013376
         ],
-        "timestamp": "2024-01-30T18:05:15.666916"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T08:34:54.525795"
     },
     "test_se_reads_lines": {
         "content": [
@@ -52,7 +71,11 @@
                 "ACGCAGGTGCCAGCAGCCGCGGTAATACGGAGGGAGCTAGCGTTGTTCGGAATTACTGGGCGTAAAGCGCACGTAGGCGGCTTTTCAAGTCAGGGGTGGAAATACCCGGGGCCGTCAACCCGACCG"
             ]
         ],
-        "timestamp": "2024-01-30T18:05:15.679779"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T08:34:54.550392"
     },
     "test_pe_reads_1_lines": {
         "content": [
@@ -65,6 +88,10 @@
                 "CGTACGAGCACGTCGCGAACCTGTAAAACAGGCAAACTGAGTTGGACGTGTGTTTTCTCGTTGAAACCAGGGACAAGGCTCTCCATCTTACCTTTCGGTCACACCCGGACGAAACCTAGATGTGCTGATGATCGGCTGCAACACGGACGAAACCGTAAGCAGCCTGCAGAAGATAGACGAGTTACTCGTGTCCTGTCAACGACAGTAATTAGTTATTAATTATACTGCGTGAGTGCAC"
             ]
         ],
-        "timestamp": "2024-01-30T18:05:15.654112"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-01T08:34:54.509486"
     }
 }

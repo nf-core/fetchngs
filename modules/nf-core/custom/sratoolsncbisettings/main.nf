@@ -8,7 +8,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
         'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
 
     input:
-    val sra_ids
+    val ids
 
     output:
     path('*.mkfg')     , emit: ncbi_settings
