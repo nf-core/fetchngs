@@ -5,6 +5,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unpublished Version / DEV]
 
+### :warning: Major enhancements
+
+- The Aspera CLI was recently added to [Bioconda](https://anaconda.org/bioconda/aspera-cli) and we have added it as another way of downloading FastQ files on top of the existing FTP and sra-tools support. In our limited benchmarks on all public Clouds we found ~50% speed-up in download times compared to FTP! We are not aware of any obvious downsides and have made this the default download method in the pipeline. You can however, revert to using FTP and sra-tools using the `--force_ftp_download` and `--force_sratools_download` parameters, respectively. We would love to have your feedback!
+- Support for Synapse ids has been dropped in this release. We haven't had any feedback from users whether it is being used or not. Users can run earlier versions of the pipeline if required.
+
 ### Credits
 
 Special thanks to the following for their contributions to the release:
@@ -48,9 +53,11 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 ### Parameters
 
-| Old parameter | New parameter          |
-| ------------- | ---------------------- |
-|               | `--force_ftp_download` |
+| Old parameter      | New parameter          |
+| ------------------ | ---------------------- |
+|                    | `--force_ftp_download` |
+| `--input_type`     |                        |
+| `--synapse_config` |                        |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.
