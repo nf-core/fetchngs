@@ -74,23 +74,4 @@ nextflow_function {
         }
     }
 
-    test("Function isSynapseId") {
-
-        function "isSynapseId"
-
-        when {
-            function {
-                """
-                input[0] = 'syn26240435'
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert function.success },
-                { assert snapshot(function.result).match() }
-            )
-        }
-    }
 }

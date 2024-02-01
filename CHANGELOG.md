@@ -3,7 +3,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unpublished Version / DEV]
+## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-02
+
+### :warning: Major enhancements
+
+- The Aspera CLI was recently added to [Bioconda](https://anaconda.org/bioconda/aspera-cli) and we have added it as another way of downloading FastQ files on top of the existing FTP and sra-tools support. In our limited benchmarks on all public Clouds we found ~50% speed-up in download times compared to FTP! We are not aware of any obvious downsides and have made this the default download method in the pipeline. You can however, revert to using FTP and sra-tools using the `--force_ftp_download` and `--force_sratools_download` parameters, respectively. We would love to have your feedback!
+- Support for Synapse ids has been dropped in this release. We haven't had any feedback from users whether it is being used or not. Users can run earlier versions of the pipeline if required.
+- We have significantly refactored and standardised the way we are using nf-test within this pipeline. This pipeline is now the current, best-practice implementation for nf-test usage on nf-core. We required a number of features to be added to nf-test and a huge shoutout to [Lukas Forer](https://github.com/lukfor) for entertaining our requests and implementing them within upstream :heart:!
 
 ### Credits
 
@@ -12,6 +18,7 @@ Special thanks to the following for their contributions to the release:
 - [Adam Talbot](https://github.com/adamrtalbot)
 - [Alexandru Mizeranschi](https://github.com/nicolae06)
 - [Alexander Blaessle](https://github.com/alexblaessle)
+- [Lukas Forer](https://github.com/lukfor)
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Sebastian Uhrig](https://github.com/suhrig)
 
@@ -34,6 +41,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #261](https://github.com/nf-core/fetchngs/pull/261) - Revert sratools fasterqdump version ([#221](https://github.com/nf-core/fetchngs/issues/221))
 - [PR #262](https://github.com/nf-core/fetchngs/pull/262) - Use nf-test version v0.8.4 and remove implicit tags
 - [PR #263](https://github.com/nf-core/fetchngs/pull/263) - Refine tags used for workflows
+- [PR #264](https://github.com/nf-core/fetchngs/pull/264) - Remove synapse workflow from pipeline
 
 ### Software dependencies
 
@@ -49,9 +57,11 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 ### Parameters
 
-| Old parameter | New parameter          |
-| ------------- | ---------------------- |
-|               | `--force_ftp_download` |
+| Old parameter      | New parameter          |
+| ------------------ | ---------------------- |
+|                    | `--force_ftp_download` |
+| `--input_type`     |                        |
+| `--synapse_config` |                        |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.

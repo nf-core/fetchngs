@@ -72,13 +72,6 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
    - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ. Use `--force_sratools_download` to force this behaviour.
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
-### Synapse ids
-
-1. Resolve Synapse directory ids to their corresponding FastQ files ids via the `synapse list` command.
-2. Retrieve FastQ file metadata including FastQ file names, md5sums, etags, annotations and other data provenance via the `synapse show` command.
-3. Download FastQ files in parallel via `synapse get`
-4. Collate paths to FastQ files in a single samplesheet
-
 ## Pipeline output
 
 The columns in the output samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines (see [usage docs](https://nf-co.re/fetchngs/usage#samplesheet-format)), these currently include:
