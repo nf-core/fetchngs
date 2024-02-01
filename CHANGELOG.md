@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The Aspera CLI was recently added to [Bioconda](https://anaconda.org/bioconda/aspera-cli) and we have added it as another way of downloading FastQ files on top of the existing FTP and sra-tools support. In our limited benchmarks on all public Clouds we found ~50% speed-up in download times compared to FTP! We are not aware of any obvious downsides and have made this the default download method in the pipeline. You can however, revert to using FTP and sra-tools using the `--force_ftp_download` and `--force_sratools_download` parameters, respectively. We would love to have your feedback!
 - Support for Synapse ids has been dropped in this release. We haven't had any feedback from users whether it is being used or not. Users can run earlier versions of the pipeline if required.
+- We have significantly refactored and standardised the way we are using nf-test within this pipeline. This pipeline is now the current, best-practice implementation for nf-test usage on nf-core. We required a number of features to be added to nf-test and a huge shoutout to [Lukas Forer](https://github.com/lukfor) for entertaining our requests and implementing them within upstream :heart:!
 
 ### Credits
 
@@ -17,6 +18,7 @@ Special thanks to the following for their contributions to the release:
 - [Adam Talbot](https://github.com/adamrtalbot)
 - [Alexandru Mizeranschi](https://github.com/nicolae06)
 - [Alexander Blaessle](https://github.com/alexblaessle)
+- [Lukas Forer](https://github.com/lukfor)
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Sebastian Uhrig](https://github.com/suhrig)
 
