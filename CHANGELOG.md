@@ -43,6 +43,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #263](https://github.com/nf-core/fetchngs/pull/263) - Refine tags used for workflows
 - [PR #264](https://github.com/nf-core/fetchngs/pull/264) - Remove synapse workflow from pipeline
 - [PR #265](https://github.com/nf-core/fetchngs/pull/265) - Use "+" syntax for profiles to accumulate profiles in nf-test
+- [PR #266](https://github.com/nf-core/fetchngs/pull/266) - Make .gitignore match template
 
 ### Software dependencies
 
