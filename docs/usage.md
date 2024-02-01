@@ -8,15 +8,15 @@
 
 The pipeline has been set-up to automatically download and process the raw FastQ files from both public and private repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
-| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      | `Synapse`   |
-| ------------ | ------------ | ------------ | ---------- | ----------- |
-| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 | syn26240435 |
-| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |             |
-| SRS6531847   | ERS4399630   | DRS090921    |            |             |
-| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |             |
-| SRP256957    | ERP120836    | DRP004793    |            |             |
-| SRA1068758   | ERA2420837   | DRA008156    |            |             |
-| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |             |
+| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      |
+| ------------ | ------------ | ------------ | ---------- |
+| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 |
+| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |
+| SRS6531847   | ERS4399630   | DRS090921    |            |
+| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |
+| SRP256957    | ERP120836    | DRP004793    |            |
+| SRA1068758   | ERA2420837   | DRA008156    |            |
+| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |
 
 ### SRR / ERR / DRR ids
 
@@ -33,25 +33,6 @@ If you have a GEO accession (found in the data availability section of published
 - Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
 This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
-
-### Synapse ids
-
-[Synapse](https://www.synapse.org/#) is a collaborative research platform created by [Sage Bionetworks](https://sagebionetworks.org/). Its aim is to promote reproducible research and responsible data sharing throughout the biomedical community. To download data from `Synapse`, the Synapse id of the _directory_ containing all files to be downloaded should be provided. The Synapse id should be an eleven-characters beginning with `syn`.
-
-This Synapse id will then be resolved to the Synapse id of the corresponding FastQ files contained within the directory. The individual FastQ files are then downloaded in parellel using the `synapse get` command. All Synapse metadata, annotations and data provenance are also downloaded using the `synapse show` command, and are outputted to a separate metadata file. By default, only the md5sums, file sizes, etags, Synapse ids, file names, and file versions are shown.
-
-In order to download data from Synapse, an account must be created and a user configuration file provided via the parameter `--synapse_config`. For more information about Synapse configuration, please see the [Synapse client configuration](https://help.synapse.org/docs/Client-Configuration.1985446156.html) documentation.
-
-The final sample information for the FastQ files used for samplesheet generation is obtained from the file name itself. The file names are parsed according to the glob pattern `*{1,2}*`, which returns the sample name, presumed to be the longest possible string matching the glob pattern, with the fewest number of wildcard insertions.
-
-<details markdown="1">
-<summary>Supported File Names</summary>
-
-- Files named `SRR493366_1.fastq` and `SRR493366_2.fastq` will have a sample name of `SRR493366`
-- Files named `SRR_493_367_1.fastq` and `SRR_493_367_2.fastq` will have a sample name of `SRR_493_367`
-- Files named `filename12_1.fastq` and `filename12_2.fastq` will have a sample name of `filename12`
-
-</details>
 
 ### Samplesheet format
 

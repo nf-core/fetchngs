@@ -17,7 +17,6 @@ nextflow_workflow {
                 validate_params     = false
                 monochrome_logs     = false
                 outdir              = "$params.outdir"
-                input_type          = 'sra'
                 ena_metadata_fields = null
 
                 input[0] = version
@@ -26,8 +25,7 @@ nextflow_workflow {
                 input[3] = monochrome_logs
                 input[4] = outdir
                 input[5] = 'https://raw.githubusercontent.com/nf-core/test-datasets/2732b911c57e607fa7aea5ba0c3d91b25bafb662/testdata/v1.12.0/sra_ids_test.csv'
-                input[6] = input_type
-                input[7] = ena_metadata_fields
+                input[6] = ena_metadata_fields
                 """
             }
         }

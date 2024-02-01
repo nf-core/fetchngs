@@ -8,9 +8,7 @@ This document describes the output produced by the pipeline. The directories lis
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data depending on the type of ids provided:
 
-- Download FastQ files and create samplesheet from:
-  1. [SRA / ENA / DDBJ / GEO ids](#sra--ena--ddbj--geo-ids)
-  2. [Synapse ids](#synapse-ids)
+- Download FastQ files and create samplesheet from [SRA / ENA / DDBJ / GEO ids](#sra--ena--ddbj--geo-ids)
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
 Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline.
@@ -35,27 +33,6 @@ Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introductio
 </details>
 
 The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP. Otherwise they are downloaded using sra-tools.
-
-### Synapse ids
-
-<details markdown="1">
-<summary>Output files</summary>
-
-- `fastq/`
-  - `*.fastq.gz`: Paired-end/single-end reads downloaded from Synapse.
-- `fastq/md5/`
-  - `*.md5`: Files containing `md5` sum for FastQ files downloaded from the Synapse platform.
-- `samplesheet/`
-  - `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
-- `metadata/`
-  - `*.metadata.txt`: Original metadata file generated using the `synapse show` command.
-  - `*.list.txt`: Original output of the `synapse list` command, containing the Synapse ids, file version numbers, file names, and other file-specific data for the Synapse directory ID provided.
-
-</details>
-
-FastQ files and corresponding sample information for `Synapse` identifiers are downloaded in parallel directly from the [Synapse](https://www.synapse.org/#) platform. A [configuration file](http://python-docs.synapse.org/build/html/Credentials.html#use-synapseconfig) containing valid login credentials is required for Synapse downloads.
-
-The final sample information for the FastQ files downloaded from `Synapse` is obtained from the file name itself. The file names are parsed according to the glob pattern `*{1,2}*`. This returns the sample name, presumed to be the longest possible string matching the glob pattern, with the fewest number of wildcard insertions. Further information on sample name parsing can be found in the [usage documentation](https://nf-co.re/fetchngs/usage#introduction).
 
 ### Pipeline information
 
