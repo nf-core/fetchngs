@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Workflow PIPELINE_COMPLETION"
     script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
     workflow "PIPELINE_COMPLETION"
+    tag "UTILS_NFCORE_FETCHNGS_PIPELINE"
 
     test("Should run") {
 
