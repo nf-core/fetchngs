@@ -28,10 +28,13 @@
   init: {
     'theme': 'base',
     'themeVariables': {
-      'fontFamily': "maven pro bold",
+      'fontFamily': "maven",
       'primaryColor': '#24B064',
       'primaryTextColor': '#fff',
-      'secondaryColor': '#006100',
+      'secondaryTextColor': '#000000',
+      'secondaryColor': '#BCDDB6',
+      'edgeLabelBackground': '#C8C8C8',
+      'noteTextColor': '#050505',
       'tertiaryColor': '#fff'
     }
   }
