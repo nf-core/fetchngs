@@ -26,8 +26,14 @@
 ```mermaid
 %%{
   init: {
-    "theme": "forest",
-    "logLevel": "info"
+    'theme': 'base',
+    'themeVariables': {
+      'fontFamily': "maven pro bold",
+      'primaryColor': '#24B064',
+      'primaryTextColor': '#fff',
+      'secondaryColor': '#006100',
+      'tertiaryColor': '#fff'
+    }
   }
 }%%
 flowchart LR
