@@ -27,13 +27,7 @@
 %%{
   init: {
     "theme": "forest",
-    "logLevel": "info",
-    "flowchart": {
-      "htmlLabels": true,
-    },
-    "sequence": {
-      "mirrorActors": true
-    }
+    "logLevel": "info"
   }
 }%%
 flowchart LR
