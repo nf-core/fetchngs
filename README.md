@@ -23,6 +23,36 @@
 
 **nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public and private databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO / Synapse ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
+```mermaid
+flowchart LR
+    IDS("`Input 
+    File`") --> SRA & GEO & ENA & DDBJ
+    subgraph SG_DBIDS[Database IDs]
+      SRA("SRA")
+      GEO("GEO")
+      ENA("ENA")
+      DDBJ("DDBJ")
+    end
+    subgraph SG_METADATA[Download Metadata]
+      SRA & GEO & ENA & DDBJ --> META("`Get 
+      Metadata`")
+      META --> LINKS("`Get 
+      Download
+      Links`")
+    end
+    subgraph SG_FETCH_FASTQ[Download FastQ]
+      LINKS --> |default| ASPERA("Aspera")
+      LINKS --> |--force_ftp_download| FTP("FTP")
+      LINKS --> |--force_sra_tools_download| SRATOOLS("sra-tools")
+    end
+    subgraph SG_FASTQ[Pipeline Outputs]
+      ASPERA & FTP & SRATOOLS --> FASTQ("FastQ")
+      FASTQ --> SAMPLESHEET("Samplesheet")
+    end
+    LINKS --> |--skip_fastq_download| SAMPLESHEET
+    
+```
+
 ## Usage
 
 > [!NOTE]
