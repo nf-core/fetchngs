@@ -27,11 +27,9 @@
 %%{
   init: {
     "theme": "forest",
-    "fontFamily": "monospace",
     "logLevel": "info",
     "flowchart": {
       "htmlLabels": true,
-      "curve": "linear"
     },
     "sequence": {
       "mirrorActors": true
