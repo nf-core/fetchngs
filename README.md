@@ -39,8 +39,8 @@
   }
 }%%
 flowchart LR
-    IDS("`Input 
-    File`") --> SRA & GEO & ENA & DDBJ
+    IDS("Input 
+    File") --> SRA & GEO & ENA & DDBJ
     subgraph SG_DBIDS[Database IDs]
       SRA("SRA")
       GEO("GEO")
@@ -48,11 +48,11 @@ flowchart LR
       DDBJ("DDBJ")
     end
     subgraph SG_METADATA[Download Metadata]
-      SRA & GEO & ENA & DDBJ --> META("`Get 
-      Metadata`")
-      META --> LINKS("`Get 
+      SRA & GEO & ENA & DDBJ --> META("Get 
+      Metadata")
+      META --> LINKS("Get 
       Download
-      Links`")
+      Links")
     end
     subgraph SG_FETCH_FASTQ[Download FastQ]
       LINKS --> |"(default)"| ASPERA("Aspera")
