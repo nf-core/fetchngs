@@ -7,7 +7,6 @@ import argparse
 import json
 import logging
 import re
-import yaml
 
 from pathlib import Path
 
@@ -106,21 +105,6 @@ def generate(
             if keyword in types:
                 result[keyword].append(name)
     return result
-
-
-def read_yaml_file(file_path: str) -> dict:
-    """
-    Read a YAML file and return its contents as a dictionary.
-
-    Args:
-        file_path (str): The path to the YAML file.
-
-    Returns:
-        dict: The contents of the YAML file as a dictionary.
-    """
-    with open(file_path, "r") as f:
-        data = yaml.safe_load(f)
-    return data
 
 
 if __name__ == "__main__":
