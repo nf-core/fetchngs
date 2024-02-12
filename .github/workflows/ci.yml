@@ -30,23 +30,33 @@ jobs:
       changes: ${{ steps.changed_files.outputs.any_modified }}
       tags: ${{ steps.list.outputs.tags }}
     steps:
-      - name: Install Nextflow
-        uses: nf-core/setup-nextflow@v1
-
-      - name: Cache nf-test installation
-        id: cache-software
-        uses: actions/cache@v3
+      - uses: actions/setup-python@v4
         with:
-          path: |
-            /usr/local/bin/nf-test
-            /home/runner/.nf-test/nf-test.jar
-          key: ${{ runner.os }}-${{ env.NFT_VER }}-nftest
+          python-version: "3.11"
+          architecture: "x64"
 
-      - name: Install nf-test
-        if: steps.cache-software.outputs.cache-hit != 'true'
+      - name: Install pdiff to see diff between nf-test snapshots
         run: |
-          wget -qO- https://code.askimed.com/install/nf-test | bash
-          sudo mv nf-test /usr/local/bin/
+          python -m pip install --upgrade pip
+          pip install pdiff
+
+      # - name: Install Nextflow
+      #   uses: nf-core/setup-nextflow@v1
+
+      # - name: Cache nf-test installation
+      #   id: cache-software
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       /usr/local/bin/nf-test
+      #       /home/runner/.nf-test/nf-test.jar
+      #     key: ${{ runner.os }}-${{ env.NFT_VER }}-nftest
+
+      # - name: Install nf-test
+      #   if: steps.cache-software.outputs.cache-hit != 'true'
+      #   run: |
+      #     wget -qO- https://code.askimed.com/install/nf-test | bash
+      #     sudo mv nf-test /usr/local/bin/
 
       - uses: actions/checkout@v3
         with:
@@ -91,7 +101,7 @@ jobs:
       - name: nf-test list tags
         id: list
         if: ${{ steps.changed_files.outputs.any_modified }}
-        run: echo tags=$(nf-test list --silent --tags --format json ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }}) >> $GITHUB_OUTPUT
+        run: echo tags=$(python .github/python/find_changed_files.py ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }}) >> $GITHUB_OUTPUT
 
       - name: debug2
         run: |
