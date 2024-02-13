@@ -40,8 +40,8 @@ def parse_args() -> argparse.Namespace:
         "-t",
         "--types",
         nargs="+",
-        choices=["function", "process", "workflow"],
-        default=["function", "process", "workflow"],
+        choices=["function", "process", "workflow", "pipeline"],
+        default=["function", "process", "workflow", "pipeline"],
         help="Types of tests to include.",
     )
     return parser.parse_args()
@@ -57,7 +57,18 @@ def find_files(paths: list[str]) -> list[Path]:
     Returns:
         list: List of files matching the pattern *.nf.test.
     """
-    return [test_file for path in paths for test_file in Path(path).rglob("*.nf.test")]
+    # this is a bit clunky
+    result = []
+    for path in paths:
+        path_obj = Path(path)
+        # If Path is the exact nf-test file add to list:
+        if path_obj.match("*.nf.test"):
+            result.append(path_obj)
+        # Else recursively search for nf-test files:
+        else:
+            for file in path_obj.rglob("*.nf.test"):
+                result.append(file)
+    return result
 
 
 def process_files(files: list[Path]) -> list[str]:
@@ -73,6 +84,7 @@ def process_files(files: list[Path]) -> list[str]:
     result = []
     for file in files:
         with open(file, "r") as f:
+            is_pipeline_test = True
             lines = f.readlines()
             for line in lines:
                 line = line.strip()
@@ -80,11 +92,18 @@ def process_files(files: list[Path]) -> list[str]:
                     words = line.split()
                     if len(words) == 2 and re.match(r'^".*"$', words[1]):
                         result.append(line)
+                        is_pipeline_test = False
+
+            # If no results included workflow, process or function
+            # Add a dummy result to fill the 'pipeline' category
+            if is_pipeline_test:
+                result.append("pipeline 'PIPELINE'")
+
     return result
 
 
 def generate(
-    lines: list[str], types: list[str] = ["function", "process", "workflow"]
+    lines: list[str], types: list[str] = ["function", "process", "workflow", "pipeline"]
 ) -> dict[str, list[str]]:
     """
     Generate a dictionary of function, process and workflow lists from the lines.
@@ -96,7 +115,12 @@ def generate(
     Returns:
         dict: Dictionary with function, process and workflow lists.
     """
-    result: dict[str, list[str]] = {"function": [], "process": [], "workflow": []}
+    result: dict[str, list[str]] = {
+        "function": [],
+        "process": [],
+        "workflow": [],
+        "pipeline": [],
+    }
     for line in lines:
         words = line.split()
         if len(words) == 2:
