@@ -8,6 +8,7 @@ import json
 import logging
 import re
 
+from itertools import chain
 from pathlib import Path
 
 
@@ -22,7 +23,11 @@ def parse_args() -> argparse.Namespace:
         description="Scan *.nf.test files for function/process/workflow name and return as a JSON list"
     )
     parser.add_argument(
-        "paths", nargs="*", default=["."], help="List of directories or files to scan"
+        "-p",
+        "--paths",
+        nargs="+",
+        default=["."],
+        help="List of directories or files to scan",
     )
     parser.add_argument(
         "-l",
@@ -35,8 +40,8 @@ def parse_args() -> argparse.Namespace:
         "-t",
         "--types",
         nargs="+",
-        choices=["function", "process", "workflow", "pipeline"],
-        default=["function", "process", "workflow", "pipeline"],
+        choices=["function", "process", "workflow"],
+        default=["function", "process", "workflow"],
         help="Types of tests to include.",
     )
     return parser.parse_args()
@@ -79,24 +84,19 @@ def process_files(files: list[Path]) -> list[str]:
 
 
 def generate(
-    lines: list[str], types: list[str] = ["function", "process", "workflow", "pipeline"]
+    lines: list[str], types: list[str] = ["function", "process", "workflow"]
 ) -> dict[str, list[str]]:
     """
-    Generate a dictionary of function, process, workflow, and pipeline lists from the lines.
+    Generate a dictionary of function, process and workflow lists from the lines.
 
     Args:
         lines (list): List of lines to process.
         types (list): List of types to include.
 
     Returns:
-        dict: Dictionary with function, process, workflow, and pipeline lists.
+        dict: Dictionary with function, process and workflow lists.
     """
-    result: dict[str, list[str]] = {
-        "function": [],
-        "process": [],
-        "workflow": [],
-        "pipeline": [],
-    }
+    result: dict[str, list[str]] = {"function": [], "process": [], "workflow": []}
     for line in lines:
         words = line.split()
         if len(words) == 2:
@@ -113,12 +113,16 @@ if __name__ == "__main__":
     args = parse_args()
     logging.basicConfig(level=args.log_level)
 
+    # Parse nf-test files for targets of tests
     files = find_files(args.paths)
     lines = process_files(files)
-    result = generate(lines, args.types)
+    result = generate(lines)
 
-    # Flatten dict to list of results
-    # Mmm ugly. Yet glorious.
-    result_flat = list(set().union(*result.values()))
+    # Get only relevant results (specified by -t)
+    # Unique using a set
+    target_results = list(
+        {item for sublist in map(result.get, args.types) for item in sublist}
+    )
+
     # Print to stdout
-    print(json.dumps(result_flat))
+    print(json.dumps(target_results))
