@@ -78,10 +78,11 @@ jobs:
       - name: nf-test list tags
         id: list
         if: ${{ steps.changed_files.outputs.any_modified }}
-        run: echo tags=$(python \
-          .github/python/find_changed_files.py \
-          -t pipeline workflow process \
-          -p ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }} \
+        run: >
+          echo tags=$(python
+            .github/python/find_changed_files.py
+            -t pipeline workflow process
+            -p ${{ steps.changed_files.outputs.all_changed_files }} ${{ steps.changed_files.outputs.changed_keys }}
           ) >> $GITHUB_OUTPUT
 
       - name: debug2
