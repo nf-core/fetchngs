@@ -45,6 +45,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #265](https://github.com/nf-core/fetchngs/pull/265) - Use "+" syntax for profiles to accumulate profiles in nf-test
 - [PR #266](https://github.com/nf-core/fetchngs/pull/266) - Make .gitignore match template
 - [PR #268](https://github.com/nf-core/fetchngs/pull/268) - Add mermaid diagram
+- [PR #273](https://github.com/nf-core/fetchngs/pull/273) - Update utility subworkflows
 
 ### Software dependencies
 
@@ -77,7 +78,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 Special thanks to the following for their contributions to the release:
 
 - [Adam Talbot](https://github.com/adamrtalbot)
-- [Edmund Miller](https://github.com/Emiller88)
+- [Edmund Miller](https://github.com/edmundmiller)
 - [Esha Joshi](https://github.com/ejseqera)
 - [Harshil Patel](https://github.com/drpatelh)
 - [Lukas Forer](https://github.com/lukfor)

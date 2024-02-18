@@ -67,7 +67,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE ()
+    UTILS_NFCORE_PIPELINE ( args )
 
     //
     // Auto-detect input id type
