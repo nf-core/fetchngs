@@ -25,7 +25,7 @@
 
 ```mermaid
 flowchart LR
-    IDS("Input 
+    IDS("Input
     File") --> SRA & GEO & ENA & DDBJ
     subgraph SG_DBIDS[Database IDs]
       SRA("SRA")
@@ -34,9 +34,9 @@ flowchart LR
       DDBJ("DDBJ")
     end
     subgraph SG_METADATA[Download Metadata]
-      SRA & GEO & ENA & DDBJ --> META("Get 
+      SRA & GEO & ENA & DDBJ --> META("Get
       Metadata")
-      META --> LINKS("Get 
+      META --> LINKS("Get
       Download
       Links")
     end
@@ -50,7 +50,7 @@ flowchart LR
       FASTQ --> SAMPLESHEET("Samplesheet")
     end
     LINKS --> |--skip_fastq_download| SAMPLESHEET
-    
+
 ```
 
 ## Usage
