@@ -8,11 +8,11 @@ nextflow_workflow {
     // Dependencies
     tag "SRA_IDS_TO_RUNINFO"
     tag "SRA_RUNINFO_TO_FTP"
-    tag "SRA_FASTQ_FTP"
+    tag "ASPERA_CLI"
     tag "SRA_TO_SAMPLESHEET"
     tag "MULTIQC_MAPPINGS_CONFIG"
 
-    test("Parameters: --force_ftp_download") {
+    test("Parameters: --force_aspera_download") {
 
         when {
             workflow {
@@ -22,7 +22,7 @@ nextflow_workflow {
             }
             params {
                 outdir = "$outputDir"
-                force_ftp_download = true
+                force_aspera_download = true
             }
         }
 
