@@ -70,13 +70,9 @@ This highlights that there is a discrepancy between the read data hosted on the 
 
 See [issue #260](https://github.com/nf-core/fetchngs/issues/260) for more details.
 
-### Bypass Aspera data download
+### Primary options for downloading data
 
-If the appropriate download links are available, the pipeline uses the Aspera CLI by default to download FastQ files. If you are having issues and prefer to use FTP or sra-tools instead, you can use the [`--force_ftp_download`](https://nf-co.re/fetchngs/parameters#force_ftp_download) and [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameters, respectively.
-
-### Bypass `FTP` data download
-
-If FTP connections are blocked on your network use the [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) parameter to force the pipeline to download data using sra-tools instead of the ENA FTP.
+If the appropriate download links are available, the pipeline uses FTP by default to download FastQ files. If you are having issues and prefer to use sra-tools or Aspera instead, you can use the [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) or [`--force_aspera_download`](https://nf-co.re/fetchngs/parameters#force_aspera_download) parameters, respectively.
 
 ### Downloading dbGAP data with JWT
 
