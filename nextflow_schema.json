@@ -30,7 +30,7 @@
                 },
                 "sample_mapping_fields": {
                     "type": "string",
-                    "fa_icon": "fas fa-globe-americas",
+                    "fa_icon": "fas fa-columns",
                     "description": "Comma-separated list of ENA metadata fields used to create a separate 'id_mappings.csv' and 'multiqc_config.yml' with selected fields that can be used to rename samples in general and in MultiQC.",
                     "default": "experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description"
                 },
@@ -42,22 +42,18 @@
                 },
                 "nf_core_rnaseq_strandedness": {
                     "type": "string",
-                    "fa_icon": "fas fa-car",
+                    "fa_icon": "fas fa-dna",
                     "description": "Value for 'strandedness' entry added to samplesheet created when using '--nf_core_pipeline rnaseq'.",
                     "help_text": "The default is 'auto' which can be used with nf-core/rnaseq v3.10 onwards to auto-detect strandedness during the pipeline execution.",
                     "default": "auto"
                 },
-                "force_aspera_download": {
-                    "type": "boolean",
-                    "fa_icon": "fas fa-tools",
-                    "description": "Force download FASTQ files via Aspera CLI instead of via FTP.",
-                    "help_text": "If FTP downloads are not working on your infrastructure use this flag to force the pipeline to download data via the Aspera CLI."
-                },
-                "force_sratools_download": {
-                    "type": "boolean",
-                    "fa_icon": "fas fa-tools",
-                    "description": "Force download FASTQ files via sra-tools instead of via the ENA FTP.",
-                    "help_text": "If FTP connections are blocked on your network use this flag to force the pipeline to download data using sra-tools instead of the ENA FTP."
+                "download_method": {
+                    "type": "string",
+                    "default": "ftp",
+                    "fa_icon": "fas fa-download",
+                    "enum": ["aspera", "ftp", "sratools"],
+                    "description": "Method to download FastQ files. Available options are 'aspera', 'ftp' or 'sratools'. Default is 'ftp'.",
+                    "help_text": "FTP and Aspera CLI download FastQ files directly from the ENA FTP whereas sratools uses sra-tools to download *.sra files and convert to FastQ."
                 },
                 "skip_fastq_download": {
                     "type": "boolean",

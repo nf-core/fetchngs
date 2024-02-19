@@ -68,9 +68,9 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 2. Fetch extensive id metadata via ENA API
 3. Download FastQ files:
    - If direct download links are available from the ENA API:
-     - Fetch in parallel via `wget` and perform `md5sum` check (default).
-     - Fetch in parallel via `aspera-cli` and perform `md5sum` check. Use `--force_aspera_download` to force this behaviour.
-   - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ. Use `--force_sratools_download` to force this behaviour.
+     - Fetch in parallel via `wget` and perform `md5sum` check (`--download_method ftp`; default).
+     - Fetch in parallel via `aspera-cli` and perform `md5sum` check. Use `--download_method aspera` to force this behaviour.
+   - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ. Use `--download_method sratools` to force this behaviour.
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ## Pipeline output

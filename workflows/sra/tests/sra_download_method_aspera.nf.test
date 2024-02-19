@@ -3,7 +3,7 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
-    tag "SRA_FORCE_FTP_DOWNLOAD"
+    tag "SRA_DOWNLOAD_METHOD_ASPERA"
 
     // Dependencies
     tag "SRA_IDS_TO_RUNINFO"
@@ -12,7 +12,7 @@ nextflow_workflow {
     tag "SRA_TO_SAMPLESHEET"
     tag "MULTIQC_MAPPINGS_CONFIG"
 
-    test("Parameters: --force_aspera_download") {
+    test("Parameters: --download_method aspera") {
 
         when {
             workflow {
@@ -22,7 +22,7 @@ nextflow_workflow {
             }
             params {
                 outdir = "$outputDir"
-                force_aspera_download = true
+                download_method = 'aspera'
             }
         }
 

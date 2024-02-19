@@ -66,13 +66,13 @@ SRR9320616_2.fastq
 SRR9320616_3.fastq
 ```
 
-This highlights that there is a discrepancy between the read data hosted on the ENA API and what can actually be fetched from sra-tools, where the latter seems to be the source of truth. If you anticipate that you may have more than 2 FastQ files per sample, it is recommended to use this pipeline with the `--force_sratools_download` parameter.
+This highlights that there is a discrepancy between the read data hosted on the ENA API and what can actually be fetched from sra-tools, where the latter seems to be the source of truth. If you anticipate that you may have more than 2 FastQ files per sample, it is recommended to use this pipeline with the `--download_method sratools` parameter.
 
 See [issue #260](https://github.com/nf-core/fetchngs/issues/260) for more details.
 
 ### Primary options for downloading data
 
-If the appropriate download links are available, the pipeline uses FTP by default to download FastQ files. If you are having issues and prefer to use sra-tools or Aspera instead, you can use the [`--force_sratools_download`](https://nf-co.re/fetchngs/parameters#force_sratools_download) or [`--force_aspera_download`](https://nf-co.re/fetchngs/parameters#force_aspera_download) parameters, respectively.
+If the appropriate download links are available, the pipeline uses FTP by default to download FastQ files by setting the `--download_method ftp` parameter. If you are having issues and prefer to use sra-tools or Aspera instead, you can set the [`--download_method`](https://nf-co.re/fetchngs/parameters#download_method) parameter to `--download_method sratools` or `--download_method aspera`, respectively.
 
 ### Downloading dbGAP data with JWT
 
