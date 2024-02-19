@@ -8,7 +8,7 @@ nextflow_workflow {
     // Dependencies
     tag "SRA_IDS_TO_RUNINFO"
     tag "SRA_RUNINFO_TO_FTP"
-    tag "ASPERA_CLI"
+    tag "SRA_FASTQ_FTP"
     tag "SRA_TO_SAMPLESHEET"
     tag "MULTIQC_MAPPINGS_CONFIG"
 

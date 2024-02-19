@@ -69,36 +69,25 @@ workflow SRA {
         ch_sra_metadata
             .branch {
                 meta ->
-                    def download_method = 'aspera'
+                    def download_method = 'ftp'
                     // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
                         // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
                         // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
-                    if (!meta.fastq_aspera || params.force_ftp_download) {
-                        if (meta.fastq_1) {
-                            download_method = 'ftp'
-                        }
+                    if (meta.fastq_aspera && params.force_aspera_download) {
+                        download_method = 'aspera'
                     }
                     if ((!meta.fastq_aspera && !meta.fastq_1) || params.force_sratools_download) {
                         download_method = 'sratools'
                     }
 
-                    aspera: download_method == 'aspera'
-                        return [ meta, meta.fastq_aspera.tokenize(';').take(2) ]
                     ftp: download_method == 'ftp'
                         return [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
                     sratools: download_method == 'sratools'
                         return [ meta, meta.run_accession ]
+                    aspera: download_method == 'aspera'
+                        return [ meta, meta.fastq_aspera.tokenize(';').take(2) ]
             }
             .set { ch_sra_reads }
-
-        //
-        // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
-        //
-        ASPERA_CLI (
-            ch_sra_reads.aspera,
-            'era-fasp'
-        )
-        ch_versions = ch_versions.mix(ASPERA_CLI.out.versions.first())
 
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
@@ -117,12 +106,21 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
+        //
+        // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
+        //
+        ASPERA_CLI (
+            ch_sra_reads.aspera,
+            'era-fasp'
+        )
+        ch_versions = ch_versions.mix(ASPERA_CLI.out.versions.first())
+
         // Isolate FASTQ channel which will be added to emit block
-        ASPERA_CLI
+        SRA_FASTQ_FTP
             .out
             .fastq
-            .mix(SRA_FASTQ_FTP.out.fastq)
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
+            .mix(ASPERA_CLI.out.fastq)
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
