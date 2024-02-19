@@ -1,3 +1,5 @@
+// Nothing to see here
+
 nextflow_workflow {
 
     name "Test workflow: fastq_download_prefetch_fasterqdump_sratools/main.nf"
