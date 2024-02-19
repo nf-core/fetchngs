@@ -7,5 +7,4 @@ lint:
     - lib/Utils.groovy
     - lib/WorkflowMain.groovy
   files_unchanged:
-    - .gitignore
     - assets/sendmail_template.txt
