@@ -73,19 +73,19 @@ workflow SRA {
                     // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
                         // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
                         // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
-                    if (meta.fastq_aspera && params.force_aspera_download) {
+                    if (meta.fastq_aspera && params.download_method == 'aspera') {
                         download_method = 'aspera'
                     }
-                    if ((!meta.fastq_aspera && !meta.fastq_1) || params.force_sratools_download) {
+                    if ((!meta.fastq_aspera && !meta.fastq_1) || params.download_method == 'sratools') {
                         download_method = 'sratools'
                     }
 
+                    aspera: download_method == 'aspera'
+                        return [ meta, meta.fastq_aspera.tokenize(';').take(2) ]
                     ftp: download_method == 'ftp'
                         return [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
                     sratools: download_method == 'sratools'
                         return [ meta, meta.run_accession ]
-                    aspera: download_method == 'aspera'
-                        return [ meta, meta.fastq_aspera.tokenize(';').take(2) ]
             }
             .set { ch_sra_reads }
 

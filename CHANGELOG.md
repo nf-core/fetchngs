@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### :warning: Major enhancements
 
-- The Aspera CLI was recently added to [Bioconda](https://anaconda.org/bioconda/aspera-cli) and we have added it as another way of downloading FastQ files on top of the existing FTP and sra-tools support. In our limited benchmarks on all public Clouds we found ~50% speed-up in download times compared to FTP! FTP downloads will still be the default download method but you can however, choose to use sra-tools or Aspera using the `--force_sratools_download` or `--force_aspera_download` parameters, respectively. We would love to have your feedback!
+- The Aspera CLI was recently added to [Bioconda](https://anaconda.org/bioconda/aspera-cli) and we have added it as another way of downloading FastQ files in addition to the existing FTP and sra-tools support. In our limited benchmarks on all public Clouds we found ~50% speed-up in download times compared to FTP! FTP downloads will still be the default download method (i.e. `--download_method ftp`) but you can choose to use sra-tools or Aspera using `--download_method sratools` or `--download_method aspera`, respectively. We would love to have your feedback!
+- The `--force_sratools_download` parameter has been deprecated in favour of using `--download_method <method>` to explicitly specify the download method; available options are `ftp`, `sratools` or `aspera`.
 - Support for Synapse ids has been dropped in this release. We haven't had any feedback from users whether it is being used or not. Users can run earlier versions of the pipeline if required.
 - We have significantly refactored and standardised the way we are using nf-test within this pipeline. This pipeline is now the current, best-practice implementation for nf-test usage on nf-core. We required a number of features to be added to nf-test and a huge shoutout to [Lukas Forer](https://github.com/lukfor) for entertaining our requests and implementing them within upstream :heart:!
 
@@ -60,11 +61,12 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 ### Parameters
 
-| Old parameter      | New parameter             |
-| ------------------ | ------------------------- |
-|                    | `--force_aspera_download` |
-| `--input_type`     |                           |
-| `--synapse_config` |                           |
+| Old parameter               | New parameter       |
+| --------------------------- | ------------------- |
+|                             | `--download_method` |
+| `--input_type`              |                     |
+| `--force_sratools_download` |                     |
+| `--synapse_config`          |                     |
 
 > **NB:** Parameter has been **updated** if both old and new parameter information is present.
 > **NB:** Parameter has been **added** if just the new parameter information is present.

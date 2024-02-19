@@ -3,7 +3,7 @@ nextflow_workflow {
     name "Test workflow: sra/main.nf"
     script "../main.nf"
     workflow "SRA"
-    tag "SRA_FORCE_SRATOOLS_DOWNLOAD"
+    tag "SRA_DOWNLOAD_METHOD_SRATOOLS"
 
     // Dependencies
     tag "FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS"
@@ -12,7 +12,7 @@ nextflow_workflow {
     tag "SRA_TO_SAMPLESHEET"
     tag "MULTIQC_MAPPINGS_CONFIG"
 
-    test("Parameters: --force_sratools_download") {
+    test("Parameters: --download_method sratools") {
 
         when {
             workflow {
@@ -22,7 +22,7 @@ nextflow_workflow {
             }
             params {
                 outdir = "$outputDir"
-                force_sratools_download = true
+                download_method = 'sratools'
             }
         }
 
