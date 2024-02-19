@@ -249,6 +249,22 @@
                     "help_text": "Allows string values that are parseable as numbers or booleans. For further information see [JSONSchema docs](https://github.com/everit-org/json-schema#lenient-mode)."
                 }
             }
+        },
+        "deprecated_options": {
+            "title": "Deprecated options",
+            "type": "object",
+            "description": "List of parameters that have been deprecated.",
+            "default": "",
+            "fa_icon": "fas fa-calendar-times",
+            "properties": {
+                "force_sratools_download": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-times-circle",
+                    "description": "This parameter has been deprecated. Please use '--download_method sratools' instead.",
+                    "enum": [false],
+                    "hidden": true
+                }
+            }
         }
     },
     "allOf": [
@@ -263,6 +279,9 @@
         },
         {
             "$ref": "#/definitions/generic_options"
+        },
+        {
+            "$ref": "#/definitions/deprecated_options"
         }
     ]
 }
