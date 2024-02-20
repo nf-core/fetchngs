@@ -68,8 +68,8 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE ( 
-        nextflow_cli_args 
+    UTILS_NFCORE_PIPELINE (
+        nextflow_cli_args
     )
 
     //
