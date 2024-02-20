@@ -37,7 +37,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - uses: tj-actions/changed-files@v42
         id: changed_files
@@ -47,21 +47,17 @@ jobs:
           output_renamed_files_as_deleted_and_added: "true"
           # Define list of additional rules for testing paths
           # Mostly, we define additional 'pipeline' or 'all' tests here
-          base_sha: ${{ github.event.pull_request.base.sha }}
           files_yaml: |
             ".":
-              - '.github/workflows/**'
-              - 'nf-test.config'
-              - 'nextflow.config'
-              - '!modules/**'
-              - '!subworkflows/**'
-              - '!workflows/**'
+              - .github/workflows/**
+              - nf-test.config
+              - nextflow.config
             tests:
-              - 'assets/*'
-              - 'bin/*'
-              - 'conf/*'
-              - 'main.nf'
-              - 'nextflow_schema.json'
+              - assets/*
+              - bin/*
+              - conf/*
+              - main.nf
+              - nextflow_schema.json
 
           files_ignore: |
             .git*
