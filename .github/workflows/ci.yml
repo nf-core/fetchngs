@@ -50,15 +50,19 @@ jobs:
           # Mostly, we define additional 'pipeline' or 'all' tests here
           files_yaml: |
             ".":
-              - .github/workflows/**
-              - nf-test.config
-              - nextflow.config
+              - '.github/workflows/**'
+              - 'nf-test.config'
+              - 'nextflow.config'
+              - '!modules/**'
+              - '!subworkflows/**'
+              - '!workflows/**'
             tests:
               - assets/**
               - bin/**
               - conf/**
               - main.nf
               - nextflow_schema.json
+
           files_ignore: |
             .git*
             .gitpod.yml
