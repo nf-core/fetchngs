@@ -47,6 +47,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #266](https://github.com/nf-core/fetchngs/pull/266) - Make .gitignore match template
 - [PR #268](https://github.com/nf-core/fetchngs/pull/268) - Add mermaid diagram
 - [PR #273](https://github.com/nf-core/fetchngs/pull/273) - Update utility subworkflows
+- [PR #283](https://github.com/nf-core/fetchngs/pull/283) - Template update for nf-core/tools v2.13
 
 ### Software dependencies
 
