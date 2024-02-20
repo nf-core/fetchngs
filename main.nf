@@ -17,22 +17,9 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { FETCHNGS  } from './workflows/fetchngs'
+include { SRA                     } from './workflows/sra'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
-
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-params.fasta = getGenomeAttribute('fasta')
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,26 +28,22 @@ params.fasta = getGenomeAttribute('fasta')
 */
 
 //
-// WORKFLOW: Run main analysis pipeline depending on type of input
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    ids // channel: database ids read in from --input
 
     main:
 
     //
-    // WORKFLOW: Run pipeline
+    // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
-    FETCHNGS (
-        samplesheet
-    )
-
-    emit:
-    multiqc_report = FETCHNGS.out.multiqc_report // channel: /path/to/multiqc_report.html
+    SRA ( ids )
 
 }
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -68,8 +51,6 @@ workflow NFCORE_FETCHNGS {
 */
 
 workflow {
-
-    main:
 
     //
     // SUBWORKFLOW: Run initialisation tasks
@@ -81,14 +62,15 @@ workflow {
         params.monochrome_logs,
         args,
         params.outdir,
-        params.input
+        params.input,
+        params.ena_metadata_fields
     )
 
     //
-    // WORKFLOW: Run main workflow
+    // WORKFLOW: Run primary workflows for the pipeline
     //
     NFCORE_FETCHNGS (
-        PIPELINE_INITIALISATION.out.samplesheet
+        PIPELINE_INITIALISATION.out.ids
     )
 
     //
@@ -100,8 +82,7 @@ workflow {
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        params.hook_url,
-        NFCORE_FETCHNGS.out.multiqc_report
+        params.hook_url
     )
 }
 
