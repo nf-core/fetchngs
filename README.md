@@ -41,16 +41,15 @@ flowchart LR
       Links")
     end
     subgraph SG_FETCH_FASTQ[Download FastQ]
-      LINKS --> |"(default)"| FTP("FTP")
-      LINKS --> |--force_aspera_download| ASPERA("Aspera")
-      LINKS --> |--force_sra_tools_download| SRATOOLS("sra-tools")
+      LINKS --> |--download_method 'ftp' | FTP("FTP")
+      LINKS --> |--download_method 'aspera' | ASPERA("Aspera")
+      LINKS --> |--download_method 'sratools' | SRATOOLS("sra-tools")
     end
     subgraph SG_FASTQ[Pipeline Outputs]
       ASPERA & FTP & SRATOOLS --> FASTQ("FastQ")
       FASTQ --> SAMPLESHEET("Samplesheet")
     end
     LINKS --> |--skip_fastq_download| SAMPLESHEET
-
 ```
 
 ## Usage
