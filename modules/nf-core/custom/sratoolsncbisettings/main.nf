@@ -1,5 +1,3 @@
-// Fake change to test the workflow
-
 process CUSTOM_SRATOOLSNCBISETTINGS {
     tag 'ncbi-settings'
     label 'process_low'

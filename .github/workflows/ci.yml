@@ -44,7 +44,8 @@ jobs:
         with:
           base_sha: ${{ github.event.pull_request.base.sha }}
           dir_names: "true"
-          output_renamed_files_as_deleted_and_added: "true"
+          output_renamed_files_as_deleted_and_added: true
+          dir_names_exclude_current_dir: true
           # Define list of additional rules for testing paths
           # Mostly, we define additional 'pipeline' or 'all' tests here
           files_yaml: |
@@ -58,7 +59,6 @@ jobs:
               - conf/**
               - main.nf
               - nextflow_schema.json
-
           files_ignore: |
             .git*
             .gitpod.yml
