@@ -45,7 +45,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #264](https://github.com/nf-core/fetchngs/pull/264) - Remove synapse workflow from pipeline
 - [PR #265](https://github.com/nf-core/fetchngs/pull/265) - Use "+" syntax for profiles to accumulate profiles in nf-test
 - [PR #266](https://github.com/nf-core/fetchngs/pull/266) - Make .gitignore match template
-- [PR #273](https://github.com/nf-core/fetchngs/pull/273) - Update subworkflows
+- [PR #268](https://github.com/nf-core/fetchngs/pull/268) - Add mermaid diagram
+- [PR #273](https://github.com/nf-core/fetchngs/pull/273) - Update utility subworkflows
 
 ### Software dependencies
 
