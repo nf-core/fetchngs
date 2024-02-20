@@ -53,9 +53,9 @@ jobs:
               - nf-test.config
               - nextflow.config
             tests:
-              - assets/*
-              - bin/*
-              - conf/*
+              - assets/**
+              - bin/**
+              - conf/**
               - main.nf
               - nextflow_schema.json
 
