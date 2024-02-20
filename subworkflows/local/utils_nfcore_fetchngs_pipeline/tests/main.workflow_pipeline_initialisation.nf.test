@@ -17,7 +17,7 @@ nextflow_workflow {
                 help                = false
                 validate_params     = false
                 monochrome_logs     = false
-                nextflow_cli_args   = ''
+                nextflow_cli_args   = []
                 outdir              = "$params.outdir"
                 ena_metadata_fields = null
 
