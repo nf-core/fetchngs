@@ -44,10 +44,10 @@ jobs:
         with:
           base_sha: ${{ github.event.pull_request.base.sha }}
           dir_names: "true"
-          output_renamed_files_as_deleted_and_added: true
-          since_last_remote_commit: true
+          output_renamed_files_as_deleted_and_added: "true"
           # Define list of additional rules for testing paths
           # Mostly, we define additional 'pipeline' or 'all' tests here
+          base_sha: ${{ github.event.pull_request.base.sha }}
           files_yaml: |
             ".":
               - '.github/workflows/**'
@@ -57,11 +57,11 @@ jobs:
               - '!subworkflows/**'
               - '!workflows/**'
             tests:
-              - assets/**
-              - bin/**
-              - conf/**
-              - main.nf
-              - nextflow_schema.json
+              - 'assets/*'
+              - 'bin/*'
+              - 'conf/*'
+              - 'main.nf'
+              - 'nextflow_schema.json'
 
           files_ignore: |
             .git*
