@@ -39,10 +39,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: get-common-commit-hash
+        id: hash
+        run: |
+          echo commit=$(git merge-base --fork-point ${{ github.head_ref }} ${{ github.base_ref }}) >> $GITHUB_OUTPUT
+
       - uses: tj-actions/changed-files@v42
         id: changed_files
         with:
-          base_sha: ${{ github.event.pull_request.head.sha }}
+          base_sha: ${{ steps.hash.outputs.commit }}
           dir_names: "true"
           output_renamed_files_as_deleted_and_added: "true"
           # Define list of additional rules for testing paths
@@ -58,7 +63,6 @@ jobs:
               - conf/*
               - main.nf
               - nextflow_schema.json
-
           files_ignore: |
             .git*
             .gitpod.yml
