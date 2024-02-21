@@ -37,13 +37,12 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - uses: tj-actions/changed-files@v42
         id: changed_files
         with:
-          fetch_depth: 2
-          base_sha: ${{ github.event.pull_request.base.sha }}
+          base_sha: ${{ github.event.pull_request.head.sha }}
           dir_names: "true"
           output_renamed_files_as_deleted_and_added: "true"
           # Define list of additional rules for testing paths
