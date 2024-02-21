@@ -37,7 +37,7 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: get-common-commit-hash
         id: hash
