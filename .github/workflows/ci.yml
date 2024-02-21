@@ -42,6 +42,7 @@ jobs:
       - uses: tj-actions/changed-files@v42
         id: changed_files
         with:
+          fetch_depth: 2
           base_sha: ${{ github.event.pull_request.base.sha }}
           dir_names: "true"
           output_renamed_files_as_deleted_and_added: "true"
