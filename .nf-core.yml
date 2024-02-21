@@ -3,8 +3,5 @@ lint:
   actions_ci: false
   files_exist:
     - conf/modules.config
-    - lib/NfcoreTemplate.groovy
-    - lib/Utils.groovy
-    - lib/WorkflowMain.groovy
   files_unchanged:
     - assets/sendmail_template.txt

@@ -33,6 +33,7 @@ workflow PIPELINE_INITIALISATION {
     help                // boolean: Display help text
     validate_params     // boolean: Boolean whether to validate parameters against the schema at runtime
     monochrome_logs     // boolean: Do not use coloured log outputs
+    nextflow_cli_args   //   array: List of positional nextflow CLI args
     outdir              //  string: The output directory where the results will be saved
     input               //  string: File containing SRA/ENA/GEO/DDBJ identifiers one per line to download their associated metadata and FastQ files
     ena_metadata_fields //  string: Comma-separated list of ENA metadata fields to fetch before downloading data
@@ -52,8 +53,8 @@ workflow PIPELINE_INITIALISATION {
     //
     // Validate parameters and generate parameter summary to stdout
     //
-    def pre_help_text = nfCoreLogo(monochrome_logs)
-    def post_help_text = '\n' + workflowCitation() + '\n' + dashedLine(monochrome_logs)
+    pre_help_text = nfCoreLogo(monochrome_logs)
+    post_help_text = '\n' + workflowCitation() + '\n' + dashedLine(monochrome_logs)
     def String workflow_command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input ids.csv --outdir <OUTDIR>"
     UTILS_NFVALIDATION_PLUGIN (
         help,
@@ -67,7 +68,9 @@ workflow PIPELINE_INITIALISATION {
     //
     // Check config provided to the pipeline
     //
-    UTILS_NFCORE_PIPELINE ( args )
+    UTILS_NFCORE_PIPELINE (
+        nextflow_cli_args
+    )
 
     //
     // Auto-detect input id type
