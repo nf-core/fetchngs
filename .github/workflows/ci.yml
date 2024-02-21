@@ -45,7 +45,7 @@ jobs:
           git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
           export COMMIT=$(git merge-base --fork-point HEAD ${{ github.base_ref }})
           echo commit=$COMMIT >> $GITHUB_OUTPUT
-          git diff --dirstat=files,0 $COMMIT | sed 's/[ 0-9.%]//g'
+          git diff --dirstat=files,0 $COMMIT | sed 's/[ 0-9.%]//g' | jq -Rsc 'split("\n")[:-1]'
 
       - uses: tj-actions/changed-files@v42
         id: changed_files
