@@ -18,7 +18,7 @@
 
 ## Introduction
 
-**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public and private databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO / Synapse ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
+**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
 ```mermaid
 flowchart LR
@@ -114,7 +114,7 @@ For more details about the output files and reports, please refer to the
 
 ## Credits
 
-nf-core/fetchngs was originally written by Harshil Patel ([@drpatelh](https://github.com/drpatelh)) from [Seqera Labs, Spain](https://seqera.io/) and Jose Espinosa-Carrasco ([@JoseEspinosa](https://github.com/JoseEspinosa)) from [The Comparative Bioinformatics Group](https://www.crg.eu/en/cedric_notredame) at [The Centre for Genomic Regulation, Spain](https://www.crg.eu/). Support for download of sequencing reads without FTP links via sra-tools was added by Moritz E. Beber ([@Midnighter](https://github.com/Midnighter)) from [Unseen Bio ApS, Denmark](https://unseenbio.com). The Synapse workflow was added by Daisy Han [@daisyhan97](https://github.com/daisyhan97) and Bruno Grande [@BrunoGrandePhD](https://github.com/BrunoGrandePhD) from [Sage Bionetworks, Seattle](https://sagebionetworks.org/).
+nf-core/fetchngs was originally written by Harshil Patel ([@drpatelh](https://github.com/drpatelh)) from [Seqera Labs, Spain](https://seqera.io/) and Jose Espinosa-Carrasco ([@JoseEspinosa](https://github.com/JoseEspinosa)) from [The Comparative Bioinformatics Group](https://www.crg.eu/en/cedric_notredame) at [The Centre for Genomic Regulation, Spain](https://www.crg.eu/). Support for download of sequencing reads without FTP links via sra-tools was added by Moritz E. Beber ([@Midnighter](https://github.com/Midnighter)) from [Unseen Bio ApS, Denmark](https://unseenbio.com).
 
 ## Contributions and Support
 
