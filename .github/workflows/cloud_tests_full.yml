@@ -36,6 +36,7 @@ on:
 
 jobs:
   run-tests:
+    name: ${{ matrix.profile }}-${{ matrix.method }}-${{ matrix.cloud }}
     if: ${{ github.repository == 'nf-core/fetchngs' }}
     runs-on: ubuntu-latest
     strategy:
@@ -62,9 +63,9 @@ jobs:
         # If inputs item contains the enabled profile (test or test_full)
         # If inputs item contains the cloud provider (aws or azure)
         # If is false, we negate and run the job
-        if: ( !contains(inputs[matrix.profile], 'false') && !contains(inputs[matrix.cloud], 'false') )
+        if: ( !contains(inputs[matrix.profile], 'false') && !contains(inputs[matrix.cloud], 'false') && !contains(inputs[matrix.method], 'false') )
         with:
-          run_name: "fetchngs_${{ matrix.profile }}_${{ matrix.method }}-${{ matrix.cloud}}"
+          run_name: "fetchngs_${{ matrix.profile }}_${{ matrix.method }}_${{ matrix.cloud}}"
           profiles: ${{ matrix.profile }}
           revision: ${{ github.sha }}
           workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
@@ -73,7 +74,8 @@ jobs:
           parameters: |
             {
               "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
-              "outdir": "${{ secrets[matrix.workdir] }}/fetchngs/results-${{ github.sha }}/${{ matrix.profile }}/"
+              "outdir": "${{ secrets[matrix.workdir] }}/fetchngs/results-${{ github.sha }}/${{ matrix.profile }}/",
+              ""
             }
           access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
 
