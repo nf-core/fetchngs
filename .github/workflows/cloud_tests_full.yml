@@ -5,82 +5,85 @@ on:
     types: [published]
   workflow_dispatch:
     inputs:
-      platform:
-        description: "Platform to run test"
-        required: true
-        default: "all"
-        type: choice
-        options:
-          - all
-          - aws
-          - azure
-          - gcp
+      test:
+        description: "Test profile (smaller)"
+        type: boolean
+        default: true
+      test_full:
+        description: "Full sized test"
+        type: boolean
+        default: false
+      aws:
+        description: "AWS Batch"
+        type: boolean
+        default: true
+      azure:
+        description: "Azure Batch"
+        type: boolean
+        default: true
+      aspera:
+        description: "Use Aspera to download"
+        type: boolean
+        default: true
+      ftp:
+        description: "Use FTP to download"
+        type: boolean
+        default: true
+      sratools:
+        description: "Use SRA tools to download"
+        type: boolean
+        default: true
+
 jobs:
-  run-full-tests-on-aws:
-    if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'aws' || !github.event.inputs }}
+  run-tests:
+    name: ${{ matrix.profile }}-${{ matrix.method }}-${{ matrix.cloud }}
+    if: ${{ github.repository == 'nf-core/fetchngs' }}
     runs-on: ubuntu-latest
-    steps:
-      - uses: seqeralabs/action-tower-launch@v2
-        with:
-          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
-          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
-          compute_env: ${{ secrets.TOWER_CE_AWS_CPU }}
-          workdir: "${{ secrets.TOWER_BUCKET_AWS }}/work/fetchngs/work-${{ github.sha }}"
-          run_name: "aws_fetchngs_full"
-          revision: ${{ github.sha }}
-          profiles: test_full
-          parameters: |
-            {
-                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
-                "outdir": "${{ secrets.TOWER_BUCKET_AWS }}/fetchngs/results-${{ github.sha }}/"
-            }
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Tower debug log file
-          path: tower_action_*.log
+    strategy:
+      fail-fast: false
+      matrix:
+        profile:
+          - test
+          - test_full
+        method:
+          - aspera
+          - ftp
+          - sratools
+        include:
+          - cloud: aws
+            compute_env: TOWER_COMPUTE_ENV
+            workdir: TOWER_BUCKET_AWS
+          - cloud: azure
+            compute_env: TOWER_CE_AZURE_CPU
+            workdir: TOWER_BUCKET_AZURE
 
-  run-full-tests-on-azure:
-    if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'azure' || !github.event.inputs }}
-    runs-on: ubuntu-latest
     steps:
-      - uses: seqeralabs/action-tower-launch@v2
+      - name: Launch
+        uses: seqeralabs/action-tower-launch@v2
+        # If inputs item contains the enabled profile (test or test_full)
+        # If inputs item contains the cloud provider (aws or azure)
+        # If is false, we negate and run the job
+        if: ( !contains(inputs[matrix.profile], 'false') && !contains(inputs[matrix.cloud], 'false') && !contains(inputs[matrix.method], 'false') )
         with:
-          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
-          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
-          compute_env: ${{ secrets.TOWER_CE_AZURE_CPU }}
-          workdir: "${{ secrets.TOWER_BUCKET_AZURE }}/work/fetchngs/work-${{ github.sha }}"
-          run_name: "azure_fetchngs_full"
+          run_name: "fetchngs_${{ matrix.profile }}_${{ matrix.method }}_${{ matrix.cloud}}"
+          profiles: ${{ matrix.profile }}
           revision: ${{ github.sha }}
-          profiles: test_full
+          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
+          compute_env: ${{ secrets[matrix.compute_env] }}
+          workdir: ${{ secrets[matrix.workdir] }}/work/fetchngs/work-${{ github.sha }}/${{ matrix.profile }}
           parameters: |
             {
-                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
-                "outdir": "${{ secrets.TOWER_BUCKET_AZURE }}/fetchngs/results-${{ github.sha }}/"
+              "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
+              "outdir": "${{ secrets[matrix.workdir] }}/fetchngs/results-${{ github.sha }}/${{ matrix.profile }}/",
+              ""
             }
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Tower debug log file
-          path: tower_action_*.log
+          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
 
-  run-full-tests-on-gcp:
-    if: ${{ github.event.inputs.platform == 'gcp' || !github.event.inputs }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: seqeralabs/action-tower-launch@v2
-        with:
-          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
-          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
-          compute_env: ${{ secrets.TOWER_CE_GCP_CPU }}
-          workdir: "${{ secrets.TOWER_BUCKET_GCP }}/work/fetchngs/work-${{ github.sha }}"
-          run_name: "gcp_fetchngs_full"
-          revision: ${{ github.sha }}
-          profiles: test_full
-          parameters: |
-            {
-                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
-                "outdir": "${{ secrets.TOWER_BUCKET_GCP }}/fetchngs/results-${{ github.sha }}/"
-            }
       - uses: actions/upload-artifact@v3
+        name: Save Logs
+        if: success() || failure()
         with:
-          name: Tower debug log file
-          path: tower_action_*.log
+          name: tower-${{ matrix.profile }}-${{ matrix.cloud }}-${{ matrix.method }}-log
+          path: |
+            tower_action_*.log
+            tower_action_*.json
