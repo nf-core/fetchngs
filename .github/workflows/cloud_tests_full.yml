@@ -21,6 +21,18 @@ on:
         description: "Azure Batch"
         type: boolean
         default: true
+      aspera:
+        description: "Use Aspera to download"
+        type: boolean
+        default: true
+      ftp:
+        description: "Use FTP to download"
+        type: boolean
+        default: true
+      sratools:
+        description: "Use SRA tools to download"
+        type: boolean
+        default: true
 
 jobs:
   run-tests:
@@ -29,21 +41,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        profile:
+          - test
+          - test_full
+        method:
+          - aspera
+          - ftp
+          - sratools
         include:
-          - profile: test
-            cloud: aws
+          - cloud: aws
             compute_env: TOWER_COMPUTE_ENV
             workdir: TOWER_BUCKET_AWS
-          - profile: test
-            cloud: azure
+          - cloud: azure
             compute_env: TOWER_CE_AZURE_CPU
             workdir: TOWER_BUCKET_AZURE
-          - profile: test_full
-            cloud: aws
+          - cloud: aws
             compute_env: TOWER_COMPUTE_ENV
             workdir: TOWER_BUCKET_AWS
-          - profile: test_full
-            cloud: azure
+          - cloud: azure
             compute_env: TOWER_CE_AZURE_CPU
             workdir: TOWER_BUCKET_AZURE
 
@@ -55,7 +70,7 @@ jobs:
         # If is false, we negate and run the job
         if: ( !contains(inputs[matrix.profile], 'false') && !contains(inputs[matrix.cloud], 'false') )
         with:
-          run_name: "fetchngs_${{ matrix.profile }}_${{ matrix.cloud}}"
+          run_name: "fetchngs_${{ matrix.profile }}_${{ matrix.method }}-${{ matrix.cloud}}"
           profiles: ${{ matrix.profile }}
           revision: ${{ github.sha }}
           workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
@@ -67,3 +82,12 @@ jobs:
               "outdir": "${{ secrets[matrix.workdir] }}/fetchngs/results-${{ github.sha }}/${{ matrix.profile }}/"
             }
           access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
+
+      - uses: actions/upload-artifact@v3
+        name: Save Logs
+        if: success() || failure()
+        with:
+          name: tower-${{ matrix.profile }}-${{ matrix.cloud }}-${{ matrix.method }}-log
+          path: |
+            tower_action_*.log
+            tower_action_*.json
