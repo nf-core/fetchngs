@@ -55,12 +55,6 @@ jobs:
           - cloud: azure
             compute_env: TOWER_CE_AZURE_CPU
             workdir: TOWER_BUCKET_AZURE
-          - cloud: aws
-            compute_env: TOWER_COMPUTE_ENV
-            workdir: TOWER_BUCKET_AWS
-          - cloud: azure
-            compute_env: TOWER_CE_AZURE_CPU
-            workdir: TOWER_BUCKET_AZURE
 
     steps:
       - name: Launch
