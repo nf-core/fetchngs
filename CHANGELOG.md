@@ -49,6 +49,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #273](https://github.com/nf-core/fetchngs/pull/273) - Update utility subworkflows
 - [PR #283](https://github.com/nf-core/fetchngs/pull/283) - Template update for nf-core/tools v2.13
 - [PR #288](https://github.com/nf-core/fetchngs/pull/288) - Update Github Action to run full-sized test for all 3 download methods
+- [PR #290](https://github.com/nf-core/fetchngs/pull/290) - Remove mentions of deprecated Synapse functionality in pipeline
 
 ### Software dependencies
 

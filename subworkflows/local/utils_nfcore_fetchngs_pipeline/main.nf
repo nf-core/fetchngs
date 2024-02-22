@@ -158,7 +158,7 @@ def isSraId(input) {
         if (num_match == total_ids) {
             is_sra = true
         } else {
-            error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / GEO / DDBJ or Synapse ids!")
+            error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / GEO / DDBJ ids!")
         }
     }
     return is_sra

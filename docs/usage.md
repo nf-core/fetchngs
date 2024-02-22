@@ -6,7 +6,7 @@
 
 ## Introduction
 
-The pipeline has been set-up to automatically download and process the raw FastQ files from both public and private repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
+The pipeline has been set-up to automatically download and process the raw FastQ files from public repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
 | `SRA`        | `ENA`        | `DDBJ`       | `GEO`      |
 | ------------ | ------------ | ------------ | ---------- |
