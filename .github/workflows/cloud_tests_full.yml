@@ -73,8 +73,9 @@ jobs:
   run-full-tests-on-gcp:
     if: ${{ github.event.inputs.platform == 'gcp' || !github.event.inputs }}
     runs-on: ubuntu-latest
-    matrix:
-      download_method: ["aspera", "ftp", "sratools"]
+    strategy:
+      matrix:
+        download_method: ["aspera", "ftp", "sratools"]
     steps:
       - uses: seqeralabs/action-tower-launch@v2
         with:
