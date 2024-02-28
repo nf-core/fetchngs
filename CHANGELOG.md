@@ -51,6 +51,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #288](https://github.com/nf-core/fetchngs/pull/288) - Update Github Action to run full-sized test for all 3 download methods
 - [PR #290](https://github.com/nf-core/fetchngs/pull/290) - Remove mentions of deprecated Synapse functionality in pipeline
 - [PR #294](https://github.com/nf-core/fetchngs/pull/294) - Replace mermaid diagram with subway map
+- [PR #295](https://github.com/nf-core/fetchngs/pull/295) - Be less stringent with test expectations for CI
 - [PR #296](https://github.com/nf-core/fetchngs/pull/296) - Remove params.outdir from tests where required and update snapshots
 
 ### Software dependencies
