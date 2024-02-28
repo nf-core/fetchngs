@@ -83,6 +83,46 @@ workflow {
     )
 }
 
+output {
+    path params.outdir
+
+    collect('fastq') {
+        select('ASPERA_CLI|SRA_FASTQ_FTP|SRATOOLS_FASTERQDUMP') {
+            path 'fastq'
+            pattern '*.fastq.gz'
+        }
+
+        select('ASPERA_CLI|SRA_FASTQ_FTP') {
+            path 'fastq/md5'
+            pattern '*.md5'
+        }
+    }
+
+    collect('metadata') {
+        path 'metadata'
+        select('SRA_RUNINFO_TO_FTP') {
+            pattern '*.tsv'
+        }
+    }
+
+    collect('samplesheet') {
+        path 'samplesheet'
+        select('MULTIQC_MAPPINGS_CONFIG') {
+            pattern 'multiqc_config.yml'
+        }
+
+        // index {
+        //     format 'csv'
+        //     path 'id_mappings.csv'
+        // }
+
+        // index {
+        //     format 'csv'
+        //     path 'samplesheet.csv'
+        // }
+    }
+}
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     THE END
