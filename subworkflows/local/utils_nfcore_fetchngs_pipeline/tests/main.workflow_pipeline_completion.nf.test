@@ -8,9 +8,6 @@ nextflow_workflow {
     test("Should run") {
 
         when {
-            params {
-                outdir = "tests/results"
-            }
             workflow {
                 """
                 email           = null
