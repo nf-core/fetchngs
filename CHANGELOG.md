@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-23
+## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 
 ### :warning: Major enhancements
 
@@ -50,6 +50,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #283](https://github.com/nf-core/fetchngs/pull/283) - Template update for nf-core/tools v2.13
 - [PR #288](https://github.com/nf-core/fetchngs/pull/288) - Update Github Action to run full-sized test for all 3 download methods
 - [PR #290](https://github.com/nf-core/fetchngs/pull/290) - Remove mentions of deprecated Synapse functionality in pipeline
+- [PR #294](https://github.com/nf-core/fetchngs/pull/294) - Replace mermaid diagram with subway map
 - [PR #295](https://github.com/nf-core/fetchngs/pull/295) - Be less stringent with test expectations for CI
 
 ### Software dependencies
