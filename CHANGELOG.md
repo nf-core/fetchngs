@@ -50,7 +50,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #283](https://github.com/nf-core/fetchngs/pull/283) - Template update for nf-core/tools v2.13
 - [PR #288](https://github.com/nf-core/fetchngs/pull/288) - Update Github Action to run full-sized test for all 3 download methods
 - [PR #290](https://github.com/nf-core/fetchngs/pull/290) - Remove mentions of deprecated Synapse functionality in pipeline
-- [PR #291](https://github.com/nf-core/fetchngs/pull/291) - Replace mermaid diagram with subway map
+- [PR #294](https://github.com/nf-core/fetchngs/pull/294) - Replace mermaid diagram with subway map
 
 ### Software dependencies
 
