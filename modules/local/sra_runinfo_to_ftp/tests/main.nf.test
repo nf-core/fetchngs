@@ -7,10 +7,6 @@ nextflow_process {
     test("Should run without failures") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
-
             process {
                 """
                 input[0] = file(params.pipelines_testdata_base_path + 'tsv/SRR13191702.runinfo.tsv', checkIfExists: true)
