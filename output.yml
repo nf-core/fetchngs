@@ -1,0 +1,110 @@
+$schema: 'http://json-schema.org/draft-07/schema'
+$id: 'https://raw.githubusercontent.com/nf-core/fetchngs/master/output.yml'
+title: 'nf-core/fetchngs pipeline outputs'
+description: ''
+type: object
+properties:
+  id_mappings:
+    type: array
+    items:
+      type: object
+      properties:
+        sample:
+          type: string
+        experiment_accession:
+          type: string
+        run_accession:
+          type: string
+        sample_accession:
+          type: string
+        experiment_alias:
+          type: string
+        run_alias:
+          type: string
+        sample_alias:
+          type: string
+        experiment_title:
+          type: string
+        sample_title:
+          type: string
+        sample_description:
+          type: string
+  samplesheet:
+    type: array
+    items:
+      type: object
+      properties:
+        sample:
+          type: string
+        fastq_1:
+          type: string
+          format: file-path
+          pattern: '^\\S+\\.f(ast)?q\\.gz$'
+        fastq_2:
+          type: string
+          format: file-path
+          pattern: '^\\S+\\.f(ast)?q\\.gz$'
+        run_accession:
+          type: string
+        experiment_accession:
+          type: string
+        sample_accession:
+          type: string
+        secondary_sample_accession:
+          type: string
+        study_accession:
+          type: string
+        secondary_study_accession:
+          type: string
+        submission_accession:
+          type: string
+        run_alias:
+          type: string
+        experiment_alias:
+          type: string
+        sample_alias:
+          type: string
+        study_alias:
+          type: string
+        library_layout:
+          type: string
+        library_selection:
+          type: string
+        library_source:
+          type: string
+        library_strategy:
+          type: string
+        library_name:
+          type: string
+        instrument_model:
+          type: string
+        instrument_platform:
+          type: string
+        base_count:
+          type: integer
+        read_count:
+          type: integer
+        tax_id:
+          type: string
+        scientific_name:
+          type: string
+        sample_title:
+          type: string
+        experiment_title:
+          type: string
+        study_title:
+          type: string
+        sample_description:
+          type: string
+        fastq_md5:
+          type: string
+          pattern: '^[0-9a-f]{32}$'
+        fastq_bytes:
+          type: integer
+        fastq_ftp:
+          type: string
+        fastq_galaxy:
+          type: string
+        fastq_aspera:
+          type: string
+      required: ['sample', 'fastq_1']
