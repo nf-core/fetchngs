@@ -84,42 +84,23 @@ workflow {
 }
 
 output {
-    path params.outdir
+    path(params.outdir) {
+        path('fastq') {
+            select 'ASPERA_CLI|SRA_FASTQ_FTP|SRATOOLS_FASTERQDUMP', pattern: '*.fastq.gz'
 
-    collect('fastq') {
-        select('ASPERA_CLI|SRA_FASTQ_FTP|SRATOOLS_FASTERQDUMP') {
-            path 'fastq'
-            pattern '*.fastq.gz'
+            path('md5') {
+                select 'ASPERA_CLI|SRA_FASTQ_FTP', pattern: '*.md5'
+            }
         }
 
-        select('ASPERA_CLI|SRA_FASTQ_FTP') {
-            path 'fastq/md5'
-            pattern '*.md5'
-        }
-    }
-
-    collect('metadata') {
-        path 'metadata'
-        select('SRA_RUNINFO_TO_FTP') {
-            pattern '*.tsv'
-        }
-    }
-
-    collect('samplesheet') {
-        path 'samplesheet'
-        select('MULTIQC_MAPPINGS_CONFIG') {
-            pattern 'multiqc_config.yml'
+        path('metadata') {
+            select 'SRA_RUNINFO_TO_FTP', pattern: '*.csv'
         }
 
-        // index {
-        //     format 'csv'
-        //     path 'id_mappings.csv'
-        // }
-
-        // index {
-        //     format 'csv'
-        //     path 'samplesheet.csv'
-        // }
+        path('samplesheet') {
+            select 'SRA_TO_SAMPLESHEET'
+            select 'MULTIQC_MAPPINGS_CONFIG', pattern: 'multiqc_config.yml'
+        }
     }
 }
 
