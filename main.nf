@@ -94,7 +94,7 @@ output {
         }
 
         path('metadata') {
-            select 'SRA_RUNINFO_TO_FTP', pattern: '*.csv'
+            select 'SRA_RUNINFO_TO_FTP', pattern: '*.tsv'
         }
 
         path('samplesheet') {
