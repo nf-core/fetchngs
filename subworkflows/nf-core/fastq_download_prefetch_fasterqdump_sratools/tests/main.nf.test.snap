@@ -7,7 +7,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-01T08:34:54.56022"
+        "timestamp": "2024-02-28T12:02:56.176292"
     },
     "test_pe_reads_2_lines": {
         "content": [
@@ -24,7 +24,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-01T08:34:54.532626"
+        "timestamp": "2024-02-28T12:02:56.166207"
     },
     "test_pe_reads_2_size": {
         "content": [
@@ -34,7 +34,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-01T08:34:54.542804"
+        "timestamp": "2024-02-28T12:02:56.168869"
     },
     "versions": {
         "content": [
@@ -48,7 +48,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-01T08:34:54.570734"
+        "timestamp": "2024-02-28T12:02:56.17931"
     },
     "test_pe_reads_1_size": {
         "content": [
@@ -58,7 +58,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-01T08:34:54.525795"
+        "timestamp": "2024-02-28T12:02:56.163669"
     },
     "test_se_reads_lines": {
         "content": [
@@ -75,7 +75,7 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-01T08:34:54.550392"
+        "timestamp": "2024-02-28T12:02:56.171227"
     },
     "test_pe_reads_1_lines": {
         "content": [
@@ -92,6 +92,6 @@
             "nf-test": "0.8.4",
             "nextflow": "23.10.1"
         },
-        "timestamp": "2024-02-01T08:34:54.509486"
+        "timestamp": "2024-02-28T12:02:56.161354"
     }
 }
