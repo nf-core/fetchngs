@@ -87,10 +87,10 @@ output {
     path(params.outdir) {
         path('fastq') {
             select 'ASPERA_CLI|SRA_FASTQ_FTP|SRATOOLS_FASTERQDUMP', pattern: '*.fastq.gz'
+        }
 
-            path('md5') {
-                select 'ASPERA_CLI|SRA_FASTQ_FTP', pattern: '*.md5'
-            }
+        path('fastq/md5') {
+            select 'ASPERA_CLI|SRA_FASTQ_FTP', pattern: '*.md5'
         }
 
         path('metadata') {
