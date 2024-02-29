@@ -84,7 +84,7 @@ workflow {
 }
 
 output {
-    path(params.outdir) {
+    path(params.outdir, mode: params.publish_dir_mode) {
         path('fastq') {
             select 'ASPERA_CLI|SRA_FASTQ_FTP|SRATOOLS_FASTERQDUMP', pattern: '*.fastq.gz'
         }
