@@ -21,6 +21,7 @@ Special thanks to the following for their contributions to the release:
 - [Alexander Blaessle](https://github.com/alexblaessle)
 - [Lukas Forer](https://github.com/lukfor)
 - [Maxime Garcia](https://github.com/maxulysse)
+- [Sateesh Peri](https://github.com/sateeshperi)
 - [Sebastian Uhrig](https://github.com/suhrig)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
