@@ -1,4 +1,20 @@
 
+/**
+ * Save a list of records to a samplesheet file.
+ *
+ * @param records
+ * @param path
+ */
+def toSamplesheet(List<Map> records, Path path) {
+    def lines = []
+    lines << records.first().keySet().collect{ '"' + it + '"'}.join(",")
+    records.each { record ->
+        lines << record.values().collect{ '"' + it + '"'}.join(",")
+    }
+
+    path.text = lines.join('\n')
+}
+
 process SRA_TO_SAMPLESHEET {
     executor 'local'
     memory 100.MB
@@ -42,35 +58,26 @@ process SRA_TO_SAMPLESHEET {
             }
         }
         record << meta_clone
+        record
     }
 
     //
     // Create samplesheet containing metadata
     //
-    def samplesheet_lines = []
-    samplesheet_lines << records.first().keySet().collect{ '"' + it + '"'}.join(",")
-    records.each { record ->
-        samplesheet_lines << record.values().collect{ '"' + it + '"'}.join(",")
-    }
-
     def samplesheet_file = task.workDir.resolve("samplesheet.csv")
-    samplesheet_file.text = samplesheet_lines.join('\n')
+    toSamplesheet(records, samplesheet_file)
 
     //
     // Create sample id mappings file
     //
     def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect{ it.trim().toLowerCase() } : []
-
-    def mapping_lines = []
-    mapping_lines << fields.collect{ '"' + it + '"'}.join(",")
-    records.each { record ->
-        def mappings_map = record.clone()
-        if ((mappings_map.keySet() + fields).unique().size() != mappings_map.keySet().size()) {
-            error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${mappings_map.keySet().join(', ')}")
+    def mapping_records = records.collect { record ->
+        if ((record.keySet() + fields).unique().size() != record.keySet().size()) {
+            error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${record.keySet().join(', ')}")
         }
-        mapping_lines << mappings_map.subMap(fields).values().collect{ '"' + it + '"'}.join(",")
+        record.subMap(fields)
     }
 
     def mappings_file = task.workDir.resolve("id_mappings.csv")
-    mappings_file.text = mapping_lines.join('\n')
+    toSamplesheet(mapping_records, mappings_file)
 }
