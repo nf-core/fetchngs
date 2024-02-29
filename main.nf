@@ -98,7 +98,8 @@ output {
         }
 
         path('samplesheet') {
-            select 'SRA_TO_SAMPLESHEET'
+            select 'SRA_TO_SAMPLESHEET', pattern: 'samplesheet.csv', schema: 'assets/schema_samplesheet.yml'
+            select 'SRA_TO_SAMPLESHEET', pattern: 'id_mappings.csv', schema: 'assets/schema_mappings.yml'
             select 'MULTIQC_MAPPINGS_CONFIG', pattern: 'multiqc_config.yml'
         }
     }
