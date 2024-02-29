@@ -11,8 +11,8 @@
                             "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
                         },
                         [
-                            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
-                            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98"
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32"
                         ]
                     ]
                 ],
@@ -31,7 +31,7 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,6b9d69dea1c1305f74a65197ee871f1b"
+                    "versions.yml:md5,6b60ed6d5805271a1b97798e29c0635c"
                 ],
                 "fastq": [
                     [
@@ -42,8 +42,8 @@
                             "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
                         },
                         [
-                            "SRX9626017_SRR13191702_1.fastq.gz:md5,89c5be920021a035084d8aeb74f32df7",
-                            "SRX9626017_SRR13191702_2.fastq.gz:md5,56271be38a80db78ef3bdfc5d9909b98"
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32"
                         ]
                     ]
                 ],
@@ -62,10 +62,14 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,6b9d69dea1c1305f74a65197ee871f1b"
+                    "versions.yml:md5,6b60ed6d5805271a1b97798e29c0635c"
                 ]
             }
         ],
-        "timestamp": "2023-09-22T10:58:46.998421"
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T11:51:51.301654"
     }
 }

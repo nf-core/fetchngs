@@ -16,18 +16,11 @@
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
+                    "schema": "assets/schema_input.json",
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.(csv|tsv|txt)$",
-                    "schema": "assets/schema_input.json",
                     "fa_icon": "fas fa-file-excel",
                     "description": "File containing SRA/ENA/GEO/DDBJ identifiers one per line to download their associated metadata and FastQ files."
-                },
-                "input_type": {
-                    "type": "string",
-                    "default": "sra",
-                    "description": "Specifies the type of identifier provided via `--input` - available options are 'sra' and 'synapse'.",
-                    "fa_icon": "fas fa-keyboard",
-                    "enum": ["sra", "synapse"]
                 },
                 "ena_metadata_fields": {
                     "type": "string",
@@ -37,7 +30,7 @@
                 },
                 "sample_mapping_fields": {
                     "type": "string",
-                    "fa_icon": "fas fa-globe-americas",
+                    "fa_icon": "fas fa-columns",
                     "description": "Comma-separated list of ENA metadata fields used to create a separate 'id_mappings.csv' and 'multiqc_config.yml' with selected fields that can be used to rename samples in general and in MultiQC.",
                     "default": "experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description"
                 },
@@ -49,16 +42,18 @@
                 },
                 "nf_core_rnaseq_strandedness": {
                     "type": "string",
-                    "fa_icon": "fas fa-car",
+                    "fa_icon": "fas fa-dna",
                     "description": "Value for 'strandedness' entry added to samplesheet created when using '--nf_core_pipeline rnaseq'.",
                     "help_text": "The default is 'auto' which can be used with nf-core/rnaseq v3.10 onwards to auto-detect strandedness during the pipeline execution.",
                     "default": "auto"
                 },
-                "force_sratools_download": {
-                    "type": "boolean",
-                    "fa_icon": "fas fa-tools",
-                    "description": "Force download FASTQ files via sra-tools instead of via the ENA FTP.",
-                    "help_text": "If FTP connections are blocked on your network use this flag to force the pipeline to download data using sra-tools instead of the ENA FTP."
+                "download_method": {
+                    "type": "string",
+                    "default": "ftp",
+                    "fa_icon": "fas fa-download",
+                    "enum": ["aspera", "ftp", "sratools"],
+                    "description": "Method to download FastQ files. Available options are 'aspera', 'ftp' or 'sratools'. Default is 'ftp'.",
+                    "help_text": "FTP and Aspera CLI download FastQ files directly from the ENA FTP whereas sratools uses sra-tools to download *.sra files and convert to FastQ."
                 },
                 "skip_fastq_download": {
                     "type": "boolean",
@@ -84,12 +79,6 @@
                     "fa_icon": "fas fa-envelope",
                     "help_text": "Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.",
                     "pattern": "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$"
-                },
-                "synapse_config": {
-                    "type": "string",
-                    "description": "Path to Synapse configuration file",
-                    "fa_icon": "fas fa-users-cog",
-                    "hidden": true
                 }
             }
         },
@@ -260,6 +249,22 @@
                     "help_text": "Allows string values that are parseable as numbers or booleans. For further information see [JSONSchema docs](https://github.com/everit-org/json-schema#lenient-mode)."
                 }
             }
+        },
+        "deprecated_options": {
+            "title": "Deprecated options",
+            "type": "object",
+            "description": "List of parameters that have been deprecated.",
+            "default": "",
+            "fa_icon": "fas fa-calendar-times",
+            "properties": {
+                "force_sratools_download": {
+                    "type": "boolean",
+                    "fa_icon": "fas fa-times-circle",
+                    "description": "This parameter has been deprecated. Please use '--download_method sratools' instead.",
+                    "enum": [false],
+                    "hidden": true
+                }
+            }
         }
     },
     "allOf": [
@@ -274,6 +279,9 @@
         },
         {
             "$ref": "#/definitions/generic_options"
+        },
+        {
+            "$ref": "#/definitions/deprecated_options"
         }
     ]
 }
