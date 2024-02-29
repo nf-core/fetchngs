@@ -6,9 +6,6 @@ nextflow_process {
     test("sratools/prefetch") {
 
         when {
-            params {
-                outdir = "output"
-            }
             process {
                 """
                 input[0] = Channel.of([ [ id:'test', single_end:false ], 'DRR000774' ])
@@ -29,9 +26,6 @@ nextflow_process {
     test("sratools/prefetch with sralite") {
 
         when {
-            params {
-                outdir = "output"
-            }
             process {
                 """
                 input[0] = Channel.of([ [ id:'test', single_end:false ], 'SRR1170046' ])

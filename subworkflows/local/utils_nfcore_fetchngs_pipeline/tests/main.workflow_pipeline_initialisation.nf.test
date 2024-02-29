@@ -8,9 +8,6 @@ nextflow_workflow {
     test("Should run") {
 
         when {
-            params {
-                outdir = "tests/results"
-            }
             workflow {
                 """
                 version             = false
@@ -18,7 +15,7 @@ nextflow_workflow {
                 validate_params     = false
                 monochrome_logs     = false
                 nextflow_cli_args   = []
-                outdir              = "$params.outdir"
+                outdir              = 'results'
                 ena_metadata_fields = null
 
                 input[0] = version

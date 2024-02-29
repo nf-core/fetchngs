@@ -8,15 +8,12 @@ nextflow_workflow {
     test("Should run") {
 
         when {
-            params {
-                outdir = "tests/results"
-            }
             workflow {
                 """
                 email           = null
                 email_on_fail   = null
                 plaintext_email = false
-                outdir          = "tests/results"
+                outdir          = 'results'
                 monochrome_logs = false
                 hook_url        = null
 

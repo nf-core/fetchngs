@@ -21,7 +21,6 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "$outputDir"
                 nf_core_pipeline = "rnaseq"
             }
         }

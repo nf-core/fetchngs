@@ -38,7 +38,7 @@ Changes in module 'nf-core/sratools/fasterqdump'
 
 --- modules/nf-core/sratools/fasterqdump/tests/main.nf.test
 +++ modules/nf-core/sratools/fasterqdump/tests/main.nf.test
-@@ -3,11 +3,9 @@
+@@ -3,11 +3,8 @@
      script "../main.nf"
      config "./nextflow.config"
      process "SRATOOLS_FASTERQDUMP"
@@ -47,7 +47,6 @@ Changes in module 'nf-core/sratools/fasterqdump'
 -    tag "untar"
 -    tag "sratools"
 -    tag "sratools/fasterqdump"
-+    tag "SRATOOLS_FASTERQDUMP"
 +
 +    tag "UNTAR"
  
