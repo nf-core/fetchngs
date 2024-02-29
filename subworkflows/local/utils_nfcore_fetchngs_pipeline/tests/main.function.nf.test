@@ -1,0 +1,79 @@
+
+nextflow_function {
+
+    name "Test Functions"
+    script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
+    tag "UTILS_NFCORE_FETCHNGS_PIPELINE"
+
+    test("Function isSraId") {
+
+        function "isSraId"
+
+        when {
+            function {
+                """
+                input[0] = 'DRR000774'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
+        }
+    }
+
+    test("Function sraCheckENAMetadataFields [success]") {
+
+        function "sraCheckENAMetadataFields"
+
+        when {
+            function {
+                """
+                input[0] = 'run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
+        }
+    }
+
+    test("Function sraCheckENAMetadataFields [failure]") {
+
+        function "sraCheckENAMetadataFields"
+
+        when {
+            function {
+                """
+                input[0] = 'run_accession,experiment_accession,library_layout,fastq_ftp'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !function.success }
+            )
+        }
+    }
+
+    test("Function sraCurateSamplesheetWarn") {
+
+        function "sraCurateSamplesheetWarn"
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
+        }
+    }
+
+}

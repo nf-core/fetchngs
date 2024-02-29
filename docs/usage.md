@@ -6,58 +6,93 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+The pipeline has been set-up to automatically download and process the raw FastQ files from public repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
 
-## Samplesheet input
+| `SRA`        | `ENA`        | `DDBJ`       | `GEO`      |
+| ------------ | ------------ | ------------ | ---------- |
+| SRR11605097  | ERR4007730   | DRR171822    | GSM4432381 |
+| SRX8171613   | ERX4009132   | DRX162434    | GSE147507  |
+| SRS6531847   | ERS4399630   | DRS090921    |            |
+| SAMN14689442 | SAMEA6638373 | SAMD00114846 |            |
+| SRP256957    | ERP120836    | DRP004793    |            |
+| SRA1068758   | ERA2420837   | DRA008156    |            |
+| PRJNA625551  | PRJEB37513   | PRJDB4176    |            |
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+### SRR / ERR / DRR ids
 
-```bash
---input '[path to samplesheet file]'
+If `SRR`/`ERR`/`DRR` run ids are provided then these will be resolved back to their appropriate `SRX`/`ERX`/`DRX` ids to be able to merge multiple runs from the same experiment. This is conceptually the same as merging multiple libraries sequenced from the same sample.
+
+The final sample information for all identifiers is obtained from the ENA which provides direct download links for FastQ files as well as their associated md5 sums. If download links exist, the files will be downloaded in parallel by FTP. Otherwise they are downloaded using sra-tools.
+
+All of the sample metadata obtained from the ENA will be appended as additional columns to help you manually curate the generated samplesheet before you run the pipeline. You can customise the metadata fields that are appended to the samplesheet via the `--ena_metadata_fields` parameter. The default list of fields used by the pipeline can be found at the top of the [`bin/sra_ids_to_runinfo.py`](https://github.com/nf-core/fetchngs/blob/master/bin/sra_ids_to_runinfo.py) script within the pipeline repo. However, this pipeline requires a minimal set of fields to download FastQ files i.e. `'run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5'`. A comprehensive list of accepted metadata fields can be obtained from the [ENA API](https://www.ebi.ac.uk/ena/portal/api/returnFields?dataPortal=ena&format=tsv&result=read_run).
+
+If you have a GEO accession (found in the data availability section of published papers) you can directly download a text file containing the appropriate SRA ids to pass to the pipeline:
+
+- Search for your GEO accession on [GEO](https://www.ncbi.nlm.nih.gov/geo)
+- Click `SRA Run Selector` at the bottom of the GEO accession page
+- Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
+
+This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
+
+### Samplesheet format
+
+As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include:
+
+- [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/atacseq](https://nf-co.re/atacseq/usage#samplesheet-input)
+- Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
+- [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)
+
+You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers required by the downstream nf-core pipeline are accurately represented in the samplesheet. For example, the nf-core/atacseq pipeline requires a `replicate` column to be provided in it's input samplehsheet, however, public databases don't reliably hold information regarding replicates so you may need to amend these entries if your samplesheet was created by providing `--nf_core_pipeline atacseq`.
+
+From v1.9 of this pipeline the default `strandedness` in the output samplesheet will be set to `auto` when using `--nf_core_pipeline rnaseq`. This will only work with v3.10 onwards of nf-core/rnaseq which permits the auto-detection of strandedness during the pipeline execution. You can change this behaviour with the `--nf_core_rnaseq_strandedness` parameter which is set to `auto` by default.
+
+### Accessions with more than 2 FastQ files
+
+Using `SRR9320616` as an example, if we run the pipeline with default options to download via Aspera/FTP the ENA API indicates that this sample is associated with a single FastQ file:
+
+```
+run_accession	experiment_accession	sample_accession	secondary_sample_accession	study_accession	secondary_study_accession	submission_accession	run_alias	experiment_alias	sample_alias	study_alias	library_layout	library_selection	library_source	library_strategy	library_name	instrument_model	instrument_platform	base_count	read_count	tax_id	scientific_name	sample_title	experiment_title	study_title	sample_description	fastq_md5	fastq_bytes	fastq_ftp	fastq_galaxy	fastq_aspera
+SRR9320616	SRX6088086	SAMN12086751	SRS4989433	PRJNA549480	SRP201778	SRA900583	GSM3895942_r1	GSM3895942	GSM3895942	GSE132901	PAIRED	cDNA	TRANSCRIPTOMIC	RNA-Seq		Illumina HiSeq 2500	ILLUMINA	11857688850	120996825	10090	Mus musculus	Old 3 Kidney	Illumina HiSeq 2500 sequencing: GSM3895942: Old 3 Kidney Mus musculus RNA-Seq	A murine aging cell atlas reveals cell identity and tissue-specific trajectories of aging	Old 3 Kidney	98c939bbae1a1fcf9624905516485b67	7763114613	ftp.sra.ebi.ac.uk/vol1/fastq/SRR932/006/SRR9320616/SRR9320616.fastq.gz	ftp.sra.ebi.ac.uk/vol1/fastq/SRR932/006/SRR9320616/SRR9320616.fastq.gz	fasp.sra.ebi.ac.uk:/vol1/fastq/SRR932/006/SRR9320616/SRR9320616.fastq.gz
 ```
 
-### Multiple runs of the same sample
+However, this sample actually has 2 additional FastQ files that are flagged as technical and can only be obtained by running sra-tools. This is particularly important for certain preps like 10x and others using UMI barcodes.
 
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
+```
+$ fasterq-dump --threads 6 --split-files --include-technical SRR9320616 --outfile SRR9320616.fastq --progress
 
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+SRR9320616_1.fastq
+SRR9320616_2.fastq
+SRR9320616_3.fastq
 ```
 
-### Full samplesheet
+This highlights that there is a discrepancy between the read data hosted on the ENA API and what can actually be fetched from sra-tools, where the latter seems to be the source of truth. If you anticipate that you may have more than 2 FastQ files per sample, it is recommended to use this pipeline with the `--download_method sratools` parameter.
 
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
+See [issue #260](https://github.com/nf-core/fetchngs/issues/260) for more details.
 
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
+### Primary options for downloading data
 
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
-```
+If the appropriate download links are available, the pipeline uses FTP by default to download FastQ files by setting the `--download_method ftp` parameter. If you are having issues and prefer to use sra-tools or Aspera instead, you can set the [`--download_method`](https://nf-co.re/fetchngs/parameters#download_method) parameter to `--download_method sratools` or `--download_method aspera`, respectively.
 
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
+### Downloading dbGAP data with JWT
 
-An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+As of v1.10.0, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/) on a supported cloud computing environment (Amazon Web Services or Google Cloud Platform). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`.
+
+Note that due to the way the pipeline resolves SRA IDs down to the experiment to be able to merge multiple runs, your JWT cart file must be generated for _all_ runs in an experiment. Otherwise, upon running `prefetch` and `fasterq-dump`, the pipeline will return a `403 Error` when trying to download data for other runs under an experiment that are not authenticated for with the provided JWT cart file.
+
+Users can log into the [SRA Run Selector](https://www.ncbi.nlm.nih.gov/Traces/study/), search for the dbGAP study they have been granted access to using the phs identifier, and select all available runs to activate the `JWT Cart` button to download the file.
+
+To test this functionality in your cloud computing environment, you can use the protected dbGAP cloud testing study with experiment accession `SRX512039`:
+
+- On the [SRA Run Selector page for `SRX512039`](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=SRX512039&o=acc_s%3Aa), select the two available runs (`SRR1219865` and `SRR1219902`) and click on `JWT Cart` to download a key file called `cart.jwt` that can be directly provided to the pipeline with `--dbgap_key cart.jwt`
+- Click on `Accession List` to download a text file called `SRR_Acc_List.txt` with the SRR IDs that can be directly provided to the pipeline with `--input SRR_Acc_List.txt`
 
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/fetchngs --input ./samplesheet.csv --outdir ./results --genome GRCh37 -profile docker
+nextflow run nf-core/fetchngs --input ./ids.csv --outdir ./results -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
@@ -88,9 +123,8 @@ nextflow run nf-core/fetchngs -profile docker -params-file params.yaml
 with `params.yaml` containing:
 
 ```yaml
-input: './samplesheet.csv'
+input: './ids.csv'
 outdir: './results/'
-genome: 'GRCh37'
 <...>
 ```
 
@@ -179,7 +213,7 @@ To change the resource requests, please see the [max resources](https://nf-co.re
 
 ### Custom Containers
 
-In some cases you may wish to change which container or conda environment a step of the pipeline uses for a particular tool. By default nf-core pipelines use containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However in some cases the pipeline specified version maybe out of date.
+In some cases you may wish to change which container or conda environment a step of the pipeline uses for a particular tool. By default nf-core pipelines use containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However in some cases the pipeline specified version may be out of date.
 
 To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/usage/configuration#updating-tool-versions) section of the nf-core website.
 

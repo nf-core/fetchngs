@@ -1,0 +1,25 @@
+nextflow_process {
+
+    name "Test process: SRA_IDS_TO_RUNINFO"
+    script "../main.nf"
+    process "SRA_IDS_TO_RUNINFO"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = 'SRR13191702'
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

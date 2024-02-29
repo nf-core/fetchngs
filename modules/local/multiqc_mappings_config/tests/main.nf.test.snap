@@ -1,0 +1,31 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    [
+                        "multiqc_config.yml:md5,7f3cb10fff83ba9eb3e8fa6862d1290a",
+                        "versions.yml:md5,dd4c66f0551d15510b36bb2e2b2fdd73"
+                    ]
+                ],
+                "1": [
+                    "versions.yml:md5,dd4c66f0551d15510b36bb2e2b2fdd73"
+                ],
+                "versions": [
+                    "versions.yml:md5,dd4c66f0551d15510b36bb2e2b2fdd73"
+                ],
+                "yml": [
+                    [
+                        "multiqc_config.yml:md5,7f3cb10fff83ba9eb3e8fa6862d1290a",
+                        "versions.yml:md5,dd4c66f0551d15510b36bb2e2b2fdd73"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T11:52:12.65888"
+    }
+}

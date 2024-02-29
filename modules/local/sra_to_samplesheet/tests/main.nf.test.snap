@@ -1,0 +1,117 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "ERX1188904_ERR1109373",
+                            "run_accession": "ERR1109373",
+                            "experiment_accession": "ERX1188904",
+                            "sample_accession": "SAMEA3643867",
+                            "experiment_alias": "ena-EXPERIMENT-CAM-03-11-2015-17:01:52:847-7",
+                            "run_alias": "ena-RUN-CAM-03-11-2015-17:01:52:847-7",
+                            "sample_alias": "sample_56",
+                            "study_alias": "ena-STUDY-CAM-02-11-2015-17:42:24:189-13",
+                            "library_layout": "PAIRED",
+                            "experiment_title": "Illumina HiSeq 2500 paired end sequencing",
+                            "sample_title": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "sample_description": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "fastq_1": "./results/fastq/ERX1188904_ERR1109373_1.fastq.gz",
+                            "fastq_2": "./results/fastq/ERX1188904_ERR1109373_2.fastq.gz",
+                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
+                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
+                            "single_end": false
+                        },
+                        "ERX1188904_ERR1109373.samplesheet.csv:md5,e7898191d57258e049ee7129d36f5c08"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "ERX1188904_ERR1109373",
+                            "run_accession": "ERR1109373",
+                            "experiment_accession": "ERX1188904",
+                            "sample_accession": "SAMEA3643867",
+                            "experiment_alias": "ena-EXPERIMENT-CAM-03-11-2015-17:01:52:847-7",
+                            "run_alias": "ena-RUN-CAM-03-11-2015-17:01:52:847-7",
+                            "sample_alias": "sample_56",
+                            "study_alias": "ena-STUDY-CAM-02-11-2015-17:42:24:189-13",
+                            "library_layout": "PAIRED",
+                            "experiment_title": "Illumina HiSeq 2500 paired end sequencing",
+                            "sample_title": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "sample_description": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "fastq_1": "./results/fastq/ERX1188904_ERR1109373_1.fastq.gz",
+                            "fastq_2": "./results/fastq/ERX1188904_ERR1109373_2.fastq.gz",
+                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
+                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
+                            "single_end": false
+                        },
+                        "ERX1188904_ERR1109373.mappings.csv:md5,d09ddb4f0709675e5dfe1eadf12c608f"
+                    ]
+                ],
+                "mappings": [
+                    [
+                        {
+                            "id": "ERX1188904_ERR1109373",
+                            "run_accession": "ERR1109373",
+                            "experiment_accession": "ERX1188904",
+                            "sample_accession": "SAMEA3643867",
+                            "experiment_alias": "ena-EXPERIMENT-CAM-03-11-2015-17:01:52:847-7",
+                            "run_alias": "ena-RUN-CAM-03-11-2015-17:01:52:847-7",
+                            "sample_alias": "sample_56",
+                            "study_alias": "ena-STUDY-CAM-02-11-2015-17:42:24:189-13",
+                            "library_layout": "PAIRED",
+                            "experiment_title": "Illumina HiSeq 2500 paired end sequencing",
+                            "sample_title": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "sample_description": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "fastq_1": "./results/fastq/ERX1188904_ERR1109373_1.fastq.gz",
+                            "fastq_2": "./results/fastq/ERX1188904_ERR1109373_2.fastq.gz",
+                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
+                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
+                            "single_end": false
+                        },
+                        "ERX1188904_ERR1109373.mappings.csv:md5,d09ddb4f0709675e5dfe1eadf12c608f"
+                    ]
+                ],
+                "samplesheet": [
+                    [
+                        {
+                            "id": "ERX1188904_ERR1109373",
+                            "run_accession": "ERR1109373",
+                            "experiment_accession": "ERX1188904",
+                            "sample_accession": "SAMEA3643867",
+                            "experiment_alias": "ena-EXPERIMENT-CAM-03-11-2015-17:01:52:847-7",
+                            "run_alias": "ena-RUN-CAM-03-11-2015-17:01:52:847-7",
+                            "sample_alias": "sample_56",
+                            "study_alias": "ena-STUDY-CAM-02-11-2015-17:42:24:189-13",
+                            "library_layout": "PAIRED",
+                            "experiment_title": "Illumina HiSeq 2500 paired end sequencing",
+                            "sample_title": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "sample_description": "RNA-Seq reads mapped onto L. Boulardi Toti-like virus genome",
+                            "fastq_md5": "8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9",
+                            "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz",
+                            "fastq_1": "./results/fastq/ERX1188904_ERR1109373_1.fastq.gz",
+                            "fastq_2": "./results/fastq/ERX1188904_ERR1109373_2.fastq.gz",
+                            "md5_1": "9fd57225d6c07a31843276d6df9b15c0",
+                            "md5_2": "5a62e8f785687dce890cfb4fe3e607f9",
+                            "single_end": false
+                        },
+                        "ERX1188904_ERR1109373.samplesheet.csv:md5,e7898191d57258e049ee7129d36f5c08"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T11:51:38.244046"
+    }
+}

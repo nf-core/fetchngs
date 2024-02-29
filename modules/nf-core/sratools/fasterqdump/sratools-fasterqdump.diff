@@ -1,0 +1,62 @@
+Changes in module 'nf-core/sratools/fasterqdump'
+--- modules/nf-core/sratools/fasterqdump/main.nf
++++ modules/nf-core/sratools/fasterqdump/main.nf
+@@ -4,8 +4,8 @@
+ 
+     conda "${moduleDir}/environment.yml"
+     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+-        'https://depot.galaxyproject.org/singularity/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:2f4a4c900edd6801ff0068c2b3048b4459d119eb-0' :
+-        'biocontainers/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:2f4a4c900edd6801ff0068c2b3048b4459d119eb-0' }"
++        'https://depot.galaxyproject.org/singularity/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:6a9ff0e76ec016c3d0d27e0c0d362339f2d787e6-0' :
++        'quay.io/biocontainers/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:6a9ff0e76ec016c3d0d27e0c0d362339f2d787e6-0' }"
+ 
+     input:
+     tuple val(meta), path(sra)
+
+--- /dev/null
++++ modules/nf-core/sratools/fasterqdump/nextflow.config
+@@ -0,0 +1,10 @@
++process {
++    withName: SRATOOLS_FASTERQDUMP {
++        ext.args = '--split-files --include-technical'
++        publishDir = [
++            path: { "${params.outdir}/fastq" },
++            mode: params.publish_dir_mode,
++            pattern: "*.fastq.gz"
++        ]
++    }
++}
+--- modules/nf-core/sratools/fasterqdump/environment.yml
++++ modules/nf-core/sratools/fasterqdump/environment.yml
+@@ -4,5 +4,5 @@
+   - bioconda
+   - defaults
+ dependencies:
+-  - bioconda::sra-tools=3.0.8
++  - bioconda::sra-tools=2.11.0
+   - conda-forge::pigz=2.6
+
+--- modules/nf-core/sratools/fasterqdump/tests/main.nf.test
++++ modules/nf-core/sratools/fasterqdump/tests/main.nf.test
+@@ -3,11 +3,8 @@
+     script "../main.nf"
+     config "./nextflow.config"
+     process "SRATOOLS_FASTERQDUMP"
+-    tag "modules"
+-    tag "modules_nfcore"
+-    tag "untar"
+-    tag "sratools"
+-    tag "sratools/fasterqdump"
++
++    tag "UNTAR"
+ 
+     test("Single-end") {
+ 
+
+--- modules/nf-core/sratools/fasterqdump/tests/tags.yml
++++ /dev/null
+@@ -1,2 +0,0 @@
+-sratools/fasterqdump:
+-  - modules/nf-core/sratools/fasterqdump/**
+
+************************************************************

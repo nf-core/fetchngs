@@ -1,0 +1,39 @@
+nextflow_workflow {
+
+    name "Test Workflow PIPELINE_INITIALISATION"
+    script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
+    workflow "PIPELINE_INITIALISATION"
+    tag "UTILS_NFCORE_FETCHNGS_PIPELINE"
+
+    test("Should run") {
+
+        when {
+            workflow {
+                """
+                version             = false
+                help                = false
+                validate_params     = false
+                monochrome_logs     = false
+                nextflow_cli_args   = []
+                outdir              = 'results'
+                ena_metadata_fields = null
+
+                input[0] = version
+                input[1] = help
+                input[2] = validate_params
+                input[3] = monochrome_logs
+                input[4] = nextflow_cli_args
+                input[5] = outdir
+                input[6] = 'https://raw.githubusercontent.com/nf-core/test-datasets/2732b911c57e607fa7aea5ba0c3d91b25bafb662/testdata/v1.12.0/sra_ids_test.csv'
+                input[7] = ena_metadata_fields
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success }
+            )
+        }
+    }
+}

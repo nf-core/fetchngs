@@ -1,0 +1,24 @@
+nextflow_process {
+
+    name "Test process: SRA_RUNINFO_TO_FTP"
+    script "../main.nf"
+    process "SRA_RUNINFO_TO_FTP"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.pipelines_testdata_base_path + 'tsv/SRR13191702.runinfo.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
