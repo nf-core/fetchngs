@@ -18,8 +18,11 @@ process ASPERA_CLI {
 
     script:
     def args = task.ext.args ?: ''
+    def conda_prefix = ['singularity', 'apptainer'].contains(workflow.containerEngine) ? "export CONDA_PREFIX=/usr/local" : ""
     if (meta.single_end) {
         """
+        $conda_prefix
+
         ascp \\
             $args \\
             -i \$CONDA_PREFIX/etc/aspera/aspera_bypass_dsa.pem \\
@@ -36,6 +39,8 @@ process ASPERA_CLI {
         """
     } else {
         """
+        $conda_prefix
+
         ascp \\
             $args \\
             -i \$CONDA_PREFIX/etc/aspera/aspera_bypass_dsa.pem \\

@@ -20,6 +20,7 @@ Special thanks to the following for their contributions to the release:
 - [Alexandru Mizeranschi](https://github.com/nicolae06)
 - [Alexander Blaessle](https://github.com/alexblaessle)
 - [Lukas Forer](https://github.com/lukfor)
+- [Matt Niederhuber](https://github.com/mniederhuber)
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Sateesh Peri](https://github.com/sateeshperi)
 - [Sebastian Uhrig](https://github.com/suhrig)
@@ -54,6 +55,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #294](https://github.com/nf-core/fetchngs/pull/294) - Replace mermaid diagram with subway map
 - [PR #295](https://github.com/nf-core/fetchngs/pull/295) - Be less stringent with test expectations for CI
 - [PR #296](https://github.com/nf-core/fetchngs/pull/296) - Remove params.outdir from tests where required and update snapshots
+- [PR #298](https://github.com/nf-core/fetchngs/pull/298) - `export CONDA_PREFIX` into container when using Singularity and Apptainer
 
 ### Software dependencies
 
