@@ -149,7 +149,7 @@ def detect_nf_test_files(changed_files: list[Path]) -> list[Path]:
     for path in changed_files:
         path_obj = Path(path)
         # If Path is the exact nf-test file add to list:
-        if path_obj.match("*.nf.test"):
+        if path_obj.match("*.nf.test") and path_obj.exists():
             result.append(path_obj)
         # Else recursively search for nf-test files:
         else:
