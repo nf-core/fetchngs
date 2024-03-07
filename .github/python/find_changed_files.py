@@ -97,7 +97,9 @@ def read_yaml_inverted(file_path: str) -> dict:
 
 
 def find_changed_files(
-    branch1: str, branch2: str, ignore: list[str], include_files: dict[str, str]
+    branch1: str,
+    branch2: str,
+    ignore: list[str],
 ) -> list[Path]:
     """
     Find all *.nf.tests that are associated with files that have been changed between two specified branches.
@@ -106,7 +108,6 @@ def find_changed_files(
         branch1 (str)      : The first branch being compared
         branch2 (str)      : The second branch being compared
         ignore  (list)     : List of files or file substrings to ignore.
-        include_files (dict): Key value pairs to return if a certain file has changed, i.e. if a file in a directory has changed point to a different directory.
 
     Returns:
         list: List of files matching the pattern *.nf.test that have changed between branch2 and branch1.
@@ -119,20 +120,42 @@ def find_changed_files(
     branch2_commit = repo.commit(branch2)
     # compare two branches
     diff_index = branch1_commit.diff(branch2_commit)
-    # collect changed files
-    changed_files = []
-    for file in diff_index:
-        changed_files.append(Path(file.a_path))
-    # remove ignored files
-    for file in changed_files:
-        for ignored_substring in ignore:
-            if file.match(ignored_substring):
-                changed_files.remove(file)
-        for include_path, include_key in include_files.items():
-            if file.match(include_path):
-                changed_files.append(Path(include_key))
 
-    return changed_files
+    # Start empty list of changed files
+    changed_files = []
+
+    # For every file that has changed between commits
+    for file in diff_index:
+        # Get pathlib.Path object
+        filepath = Path(file.a_path)
+        # If file does not match any in the ignore list, add containing directory to changed_files
+        if not any(filepath.match(ignored_path) for ignored_path in ignore):
+            changed_files.append(filepath)
+
+    # Uniqueify the results before returning for efficiency
+    return list(set(changed_files))
+
+
+def detect_include_files(
+    changed_files: list[Path], include_files: dict[str, str]
+) -> list[Path]:
+    """
+    Detects the include files based on the changed files.
+
+    Args:
+        changed_files (list[Path]): List of paths to the changed files.
+        include_files (dict[str, str]): Key-value pairs to return if a certain file has changed. If a file in a directory has changed, it points to a different directory.
+
+    Returns:
+        list[Path]: List of paths to representing the keys of the include_files dictionary, where a value matched a path in changed_files.
+    """
+    new_changed_files = []
+    for filepath in changed_files:
+        # If file is in the include_files, we return the key instead of the value
+        for include_path, include_key in include_files.items():
+            if filepath.match(include_path):
+                new_changed_files.append(Path(include_key))
+    return new_changed_files
 
 
 def detect_nf_test_files(changed_files: list[Path]) -> list[Path]:
@@ -147,13 +170,17 @@ def detect_nf_test_files(changed_files: list[Path]) -> list[Path]:
     """
     result: list[Path] = []
     for path in changed_files:
-        path_obj = Path(path)
         # If Path is the exact nf-test file add to list:
-        if path_obj.match("*.nf.test") and path_obj.exists():
-            result.append(path_obj)
+        if path.match("*.nf.test") and path.exists():
+            result.append(path)
         # Else recursively search for nf-test files:
         else:
-            for file in path_obj.rglob("*.nf.test"):
+            # Get the enclosing dir so files in the same dir can be found.
+            # e.g.
+            # dir/
+            # ├─ main.nf
+            # ├─ main.nf.test
+            for file in path.parent.rglob("*.nf.test"):
                 result.append(file)
     return result
 
@@ -189,7 +216,7 @@ def process_files(files: list[Path]) -> list[str]:
     return result
 
 
-def generate(
+def convert_nf_test_files_to_test_types(
     lines: list[str], types: list[str] = ["function", "process", "workflow", "pipeline"]
 ) -> dict[str, list[str]]:
     """
@@ -261,14 +288,17 @@ if __name__ == "__main__":
     logging.basicConfig(level=args.log_level)
 
     # Parse nf-test files for target test tags
+    changed_files = find_changed_files(args.head_ref, args.base_ref, args.ignored_files)
+
+    # If an additional include YAML is added, we detect additional changed dirs to include
     if args.include:
         include_files = read_yaml_inverted(args.include)
-    changed_files = find_changed_files(
-        args.head_ref, args.base_ref, args.ignored_files, include_files
-    )
+        changed_files = changed_files + detect_include_files(
+            changed_files, include_files
+        )
     nf_test_files = detect_nf_test_files(changed_files)
     lines = process_files(nf_test_files)
-    result = generate(lines)
+    result = convert_nf_test_files_to_test_types(lines)
 
     # Get only relevant results (specified by -t)
     # Unique using a set
