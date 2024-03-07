@@ -229,15 +229,12 @@ def convert_nf_test_files_to_test_types(
     Returns:
         dict: Dictionary with function, process and workflow lists.
     """
-    result: dict[str, list[str]] = {
-        "function": [],
-        "process": [],
-        "workflow": [],
-        "pipeline": [],
-    }
+    # Populate empty dict from types
+    result: dict[str, list[str]] = {key: [] for key in types}
+
     for line in lines:
         words = line.split()
-        if len(words) == 2:
+        if len(words) == 2 and re.match(r'^".*"$', words[1]):
             keyword = words[0]
             name = words[1].strip("'\"")  # Strip both single and double quotes
             if keyword in types:
@@ -256,29 +253,23 @@ def find_changed_dependencies(paths: list[Path], tags: list[str]) -> list[Path]:
     Returns:
         list: List of *.nf.test files with changed dependencies.
     """
-    # this is a bit clunky
-    result = []
-    for path in paths:
-        # find all *.nf-test files
-        nf_test_files = []
-        for file in path.rglob("*.nf.test"):
-            nf_test_files.append(file)
-        # find nf-test files with changed dependencies
-        for nf_test_file in nf_test_files:
-            with open(nf_test_file, "r") as f:
-                lines = f.readlines()
-                for line in lines:
-                    line = line.strip()
-                    if line.startswith("tag"):
-                        words = line.split()
-                        if len(words) == 2 and re.match(r'^".*"$', words[1]):
-                            name = words[1].strip(
-                                "'\""
-                            )  # Strip both single and double quotes
-                            if name in tags:
-                                result.append(nf_test_file)
 
-    return list(set(result))
+    result: list[Path] = []
+
+    nf_test_files = detect_nf_test_files(paths)
+
+    # find nf-test files with changed dependencies
+    for nf_test_file in nf_test_files:
+        with open(nf_test_file, "r") as f:
+            lines = f.readlines()
+            tags_in_nf_test_file = convert_nf_test_files_to_test_types(
+                lines, types=["tag"]
+            )
+            # Check if tag in nf-test file appears in a tag
+            if any(tag in tags_in_nf_test_file["tag"] for tag in tags):
+                result.append(nf_test_file)
+
+    return result
 
 
 if __name__ == "__main__":
