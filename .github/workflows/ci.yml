@@ -43,7 +43,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install gitpython pyyaml
 
-      - name: nf-test list nf_test_files
+      - name: List nf-test files
         id: list
         run: |
           echo nf_test_files=$(python \
@@ -53,7 +53,7 @@ jobs:
             --base_ref origin/${{ github.base_ref }} \
           ) >> $GITHUB_OUTPUT
 
-      - name: debug
+      - name: print list of nf-test files
         run: |
           echo ${{ steps.list.outputs.nf_test_files }}
 
