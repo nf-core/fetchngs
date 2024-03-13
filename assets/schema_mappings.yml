@@ -1,0 +1,28 @@
+$schema: 'http://json-schema.org/draft-07/schema'
+$id: 'https://raw.githubusercontent.com/nf-core/fetchngs/master/assets/schema_mappings.yml'
+title: 'nf-core/fetchngs pipeline - id_mappings.csv schema'
+description: 'Schema for the mappings file produced by fetchngs'
+type: array
+items:
+  type: object
+  properties:
+    sample:
+      type: string
+    experiment_accession:
+      type: string
+    run_accession:
+      type: string
+    sample_accession:
+      type: string
+    experiment_alias:
+      type: string
+    run_alias:
+      type: string
+    sample_alias:
+      type: string
+    experiment_title:
+      type: string
+    sample_title:
+      type: string
+    sample_description:
+      type: string

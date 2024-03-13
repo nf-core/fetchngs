@@ -1,0 +1,16 @@
+$schema: 'http://json-schema.org/draft-07/schema'
+$id: 'https://raw.githubusercontent.com/nf-core/fetchngs/master/output.yml'
+title: 'nf-core/fetchngs pipeline outputs'
+description: ''
+type: object
+properties:
+  id_mappings:
+    type: string
+    format: file-path
+    mimetype: text/csv
+    schema: assets/schema_mappings.yml
+  samplesheet:
+    type: string
+    format: file-path
+    mimetype: text/csv
+    schema: assets/schema_samplesheet.yml
