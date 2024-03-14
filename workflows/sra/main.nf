@@ -54,6 +54,7 @@ workflow SRA {
     SRA_RUNINFO_TO_FTP
         .out
         .tsv
+        .tap { ch_runinfo_tsv }
         .splitCsv(header:true, sep:'\t')
         .map {
             meta ->
@@ -123,6 +124,13 @@ workflow SRA {
             .fastq
             .mix(SRA_FASTQ_FTP.out.fastq)
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
+            .set { ch_fastq_records }
+
+        ch_fastq_records
+            .flatMap { meta, fastq -> fastq }
+            .set { ch_fastq }
+
+        ch_fastq_records
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
@@ -134,6 +142,18 @@ workflow SRA {
                     return meta_clone
             }
             .set { ch_sra_metadata }
+
+        // Isolate MD5 channel which will be added to emit block
+        ASPERA_CLI
+            .out
+            .md5
+            .mix(SRA_FASTQ_FTP.out.md5)
+            .flatMap { meta, md5 -> md5 }
+            .set { ch_fastq_md5 }
+    }
+    else {
+        ch_fastq = Channel.empty()
+        ch_fastq_md5 = Channel.empty()
     }
 
     //
@@ -153,7 +173,7 @@ workflow SRA {
         .map { it[1] }
         .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
-        .collectFile(name:'samplesheet.csv', storeDir: "${params.outdir}/samplesheet")
+        .collectFile(name:'samplesheet.csv')
         .set { ch_samplesheet }
 
     SRA_TO_SAMPLESHEET
@@ -162,7 +182,7 @@ workflow SRA {
         .map { it[1] }
         .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
-        .collectFile(name:'id_mappings.csv', storeDir: "${params.outdir}/samplesheet")
+        .collectFile(name:'id_mappings.csv')
         .set { ch_mappings }
 
     //
@@ -184,6 +204,9 @@ workflow SRA {
         .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
 
     emit:
+    runinfo_tsv     = ch_runinfo_tsv
+    fastq           = ch_fastq
+    fastq_md5       = ch_fastq_md5
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml

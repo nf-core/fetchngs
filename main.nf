@@ -34,6 +34,15 @@ workflow NFCORE_FETCHNGS {
     //
     SRA ( ids )
 
+    emit:
+    runinfo_tsv     = SRA.out.runinfo_tsv
+    fastq           = SRA.out.fastq
+    fastq_md5       = SRA.out.fastq_md5
+    samplesheet     = SRA.out.samplesheet
+    mappings        = SRA.out.mappings
+    sample_mappings = SRA.out.sample_mappings
+    sra_metadata    = SRA.out.sra_metadata
+
 }
 
 /*
@@ -81,6 +90,28 @@ workflow {
         params.monochrome_logs,
         params.hook_url
     )
+
+    output:
+    path(params.outdir, mode: params.publish_dir_mode) {
+        path('fastq') {
+            select NFCORE_FETCHNGS.out.fastq
+        }
+
+        path('fastq/md5') {
+            select NFCORE_FETCHNGS.out.fastq_md5
+        }
+
+        path('metadata') {
+            select NFCORE_FETCHNGS.out.runinfo_tsv
+        }
+
+        path('samplesheet') {
+            select NFCORE_FETCHNGS.out.samplesheet, schema: 'assets/schema_samplesheet.yml'
+            select NFCORE_FETCHNGS.out.mappings, schema: 'assets/schema_mappings.yml'
+            select NFCORE_FETCHNGS.out.sample_mappings
+        }
+    }
+
 }
 
 /*
