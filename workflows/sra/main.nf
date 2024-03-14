@@ -201,7 +201,8 @@ workflow SRA {
     // Collate and save software versions
     //
     softwareVersionsToYAML(ch_versions)
-        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+        .collectFile(name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+        .set { ch_versions_yml }
 
     emit:
     runinfo_tsv     = ch_runinfo_tsv
@@ -211,7 +212,7 @@ workflow SRA {
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
-    versions        = ch_versions.unique()
+    versions_yml    = ch_versions_yml
 }
 
 /*

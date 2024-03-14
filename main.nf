@@ -42,6 +42,7 @@ workflow NFCORE_FETCHNGS {
     mappings        = SRA.out.mappings
     sample_mappings = SRA.out.sample_mappings
     sra_metadata    = SRA.out.sra_metadata
+    versions_yml    = SRA.out.versions_yml
 
 }
 
@@ -103,6 +104,10 @@ workflow {
 
         path('metadata') {
             select NFCORE_FETCHNGS.out.runinfo_tsv
+        }
+
+        path('pipeline_info') {
+            select NFCORE_FETCHNGS.out.versions_yml
         }
 
         path('samplesheet') {
