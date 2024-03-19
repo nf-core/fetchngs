@@ -54,6 +54,7 @@ workflow SRA {
     SRA_RUNINFO_TO_FTP
         .out
         .tsv
+        .tap { ch_runinfo_tsv }
         .splitCsv(header:true, sep:'\t')
         .map {
             meta ->
@@ -123,6 +124,7 @@ workflow SRA {
             .fastq
             .mix(SRA_FASTQ_FTP.out.fastq)
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
+            .tap { ch_fastq }
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
@@ -134,19 +136,42 @@ workflow SRA {
                     return meta_clone
             }
             .set { ch_sra_metadata }
+
+        ASPERA_CLI
+            .out
+            .md5
+            .mix(SRA_FASTQ_FTP.out.md5)
+            .set { ch_fastq_md5 }
     }
 
     //
     // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
     //
     SRA_TO_SAMPLESHEET (
-        ch_sra_metadata.collect(),
+        ch_sra_metadata,
         params.nf_core_pipeline ?: '',
         params.nf_core_rnaseq_strandedness ?: 'auto',
         params.sample_mapping_fields
     )
-    ch_samplesheet = SRA_TO_SAMPLESHEET.out.samplesheet
-    ch_mappings = SRA_TO_SAMPLESHEET.out.mappings
+
+    // Merge samplesheets and mapping files across all samples
+    SRA_TO_SAMPLESHEET
+        .out
+        .samplesheet
+        .map { it[1] }
+        .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: { it.baseName })
+        .map { it.text.tokenize('\n').join('\n') }
+        .collectFile(name:'samplesheet.csv')
+        .set { ch_samplesheet }
+
+    SRA_TO_SAMPLESHEET
+        .out
+        .mappings
+        .map { it[1] }
+        .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: { it.baseName })
+        .map { it.text.tokenize('\n').join('\n') }
+        .collectFile(name:'id_mappings.csv')
+        .set { ch_mappings }
 
     //
     // MODULE: Create a MutiQC config file with sample name mappings
@@ -164,14 +189,19 @@ workflow SRA {
     // Collate and save software versions
     //
     softwareVersionsToYAML(ch_versions)
-        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+        .collectFile(name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+        .set { ch_versions_yml }
 
     emit:
+    runinfo_tsv     = ch_runinfo_tsv
+    fastq           = ch_fastq
+    fastq_md5       = ch_fastq_md5
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
     versions        = ch_versions.unique()
+    versions_yml    = ch_versions_yml
 }
 
 /*
