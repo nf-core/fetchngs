@@ -68,7 +68,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| `wget`     |             | 1.20.1      |
+| `wget`     | 1.20.1      | 1.21.4      |
 
 > **NB:** Dependency has been **updated** if both old and new version information is present.
 >
