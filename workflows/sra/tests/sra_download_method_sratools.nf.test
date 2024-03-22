@@ -21,7 +21,6 @@ nextflow_workflow {
                 """
             }
             params {
-                outdir = "$outputDir"
                 download_method = 'sratools'
             }
         }

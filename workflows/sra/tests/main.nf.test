@@ -20,9 +20,6 @@ nextflow_workflow {
                 input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
                 """
             }
-            params {
-                outdir = "$outputDir"
-            }
         }
 
         then {

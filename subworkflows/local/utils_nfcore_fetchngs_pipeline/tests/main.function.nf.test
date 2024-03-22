@@ -69,8 +69,10 @@ nextflow_function {
         function "sraCurateSamplesheetWarn"
 
         then {
-            assert function.success
-            assert snapshot(function.result).match()
+            assertAll(
+                { assert function.success },
+                { assert snapshot(function.result).match() }
+            )
         }
     }
 
