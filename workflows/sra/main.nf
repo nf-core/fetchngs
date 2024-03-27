@@ -54,7 +54,7 @@ workflow SRA {
     SRA_RUNINFO_TO_FTP
         .out
         .tsv
-        .tap { ch_runinfo_tsv }
+        // .topic('runinfo-tsv')
         .splitCsv(header:true, sep:'\t')
         .map {
             meta ->
@@ -124,7 +124,7 @@ workflow SRA {
             .fastq
             .mix(SRA_FASTQ_FTP.out.fastq)
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
-            .tap { ch_fastq }
+            // .topic('fastq')
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
@@ -137,11 +137,8 @@ workflow SRA {
             }
             .set { ch_sra_metadata }
 
-        ASPERA_CLI
-            .out
-            .md5
-            .mix(SRA_FASTQ_FTP.out.md5)
-            .set { ch_fastq_md5 }
+        ASPERA_CLI.out.md5.topic('md5')
+        SRA_FASTQ_FTP.out.md5.topic('md5')
     }
 
     //
@@ -190,18 +187,14 @@ workflow SRA {
     //
     softwareVersionsToYAML(ch_versions)
         .collectFile(name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
-        .set { ch_versions_yml }
+        .topic('versions-yml')
 
     emit:
-    runinfo_tsv     = ch_runinfo_tsv
-    fastq           = ch_fastq
-    fastq_md5       = ch_fastq_md5
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
     versions        = ch_versions.unique()
-    versions_yml    = ch_versions_yml
 }
 
 /*

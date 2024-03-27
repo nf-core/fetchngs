@@ -10,6 +10,7 @@
 */
 
 nextflow.enable.dsl = 2
+nextflow.preview.topic = true
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,15 +36,11 @@ workflow NFCORE_FETCHNGS {
     SRA ( ids )
 
     emit:
-    runinfo_tsv     = SRA.out.runinfo_tsv
-    fastq           = SRA.out.fastq
-    fastq_md5       = SRA.out.fastq_md5
     samplesheet     = SRA.out.samplesheet
     mappings        = SRA.out.mappings
     sample_mappings = SRA.out.sample_mappings
     sra_metadata    = SRA.out.sra_metadata
     versions        = SRA.out.versions
-    versions_yml    = SRA.out.versions_yml
 
 }
 
@@ -95,28 +92,28 @@ workflow {
 }
 
 output {
-    path(params.outdir, mode: params.publish_dir_mode) {
-        path('fastq') {
-            select NFCORE_FETCHNGS.out.fastq
-        }
+    directory params.outdir, mode: params.publish_dir_mode
 
-        path('fastq/md5') {
-            select NFCORE_FETCHNGS.out.fastq_md5
-        }
+    'fastq' {
+        topic 'fastq'
+    }
 
-        path('metadata') {
-            select NFCORE_FETCHNGS.out.runinfo_tsv
-        }
+    'fastq/md5' {
+        topic 'md5'
+    }
 
-        path('pipeline_info') {
-            select NFCORE_FETCHNGS.out.versions_yml
-        }
+    'metadata' {
+        topic 'runinfo-tsv'
+    }
 
-        path('samplesheet') {
-            select NFCORE_FETCHNGS.out.samplesheet, schema: 'assets/schema_samplesheet.yml'
-            select NFCORE_FETCHNGS.out.mappings, schema: 'assets/schema_mappings.yml'
-            select NFCORE_FETCHNGS.out.sample_mappings
-        }
+    'pipeline_info' {
+        topic 'versions-yml'
+    }
+
+    'samplesheet' {
+        select NFCORE_FETCHNGS.out.samplesheet, schema: 'assets/schema_samplesheet.yml'
+        select NFCORE_FETCHNGS.out.mappings, schema: 'assets/schema_mappings.yml'
+        select NFCORE_FETCHNGS.out.sample_mappings
     }
 }
 
