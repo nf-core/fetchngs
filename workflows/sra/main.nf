@@ -54,7 +54,11 @@ workflow SRA {
     SRA_RUNINFO_TO_FTP
         .out
         .tsv
-        // .topic('runinfo-tsv')
+        .topic('runinfo-tsv')
+
+    SRA_RUNINFO_TO_FTP
+        .out
+        .tsv
         .splitCsv(header:true, sep:'\t')
         .map {
             meta ->
@@ -124,7 +128,12 @@ workflow SRA {
             .fastq
             .mix(SRA_FASTQ_FTP.out.fastq)
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
-            // .topic('fastq')
+            .set { ch_fastq }
+
+        ch_fastq
+            .topic('fastq')
+
+        ch_fastq
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]

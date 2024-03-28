@@ -111,8 +111,8 @@ output {
     }
 
     'samplesheet' {
-        select NFCORE_FETCHNGS.out.samplesheet, schema: 'assets/schema_samplesheet.yml'
-        select NFCORE_FETCHNGS.out.mappings, schema: 'assets/schema_mappings.yml'
+        select NFCORE_FETCHNGS.out.samplesheet // , schema: 'assets/schema_samplesheet.yml'
+        select NFCORE_FETCHNGS.out.mappings // , schema: 'assets/schema_mappings.yml'
         select NFCORE_FETCHNGS.out.sample_mappings
     }
 }
