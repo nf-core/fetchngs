@@ -95,25 +95,25 @@ output {
     directory params.outdir, mode: params.publish_dir_mode
 
     'fastq' {
-        topic 'fastq'
+        from 'fastq'
     }
 
     'fastq/md5' {
-        topic 'md5'
+        from 'md5'
     }
 
     'metadata' {
-        topic 'runinfo-tsv'
+        from 'runinfo-tsv'
     }
 
     'pipeline_info' {
-        topic 'versions-yml'
+        from 'versions-yml'
     }
 
     'samplesheet' {
-        select NFCORE_FETCHNGS.out.samplesheet // , schema: 'assets/schema_samplesheet.yml'
-        select NFCORE_FETCHNGS.out.mappings // , schema: 'assets/schema_mappings.yml'
-        select NFCORE_FETCHNGS.out.sample_mappings
+        from NFCORE_FETCHNGS.out.samplesheet // , schema: 'assets/schema_samplesheet.yml'
+        from NFCORE_FETCHNGS.out.mappings // , schema: 'assets/schema_mappings.yml'
+        from NFCORE_FETCHNGS.out.sample_mappings
     }
 }
 
