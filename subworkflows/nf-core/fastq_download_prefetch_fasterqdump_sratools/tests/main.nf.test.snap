@@ -28,7 +28,7 @@
     },
     "test_pe_reads_2_size": {
         "content": [
-            2011460
+            2013376
         ],
         "meta": {
             "nf-test": "0.8.4",
@@ -52,7 +52,7 @@
     },
     "test_pe_reads_1_size": {
         "content": [
-            2011460
+            2013376
         ],
         "meta": {
             "nf-test": "0.8.4",
