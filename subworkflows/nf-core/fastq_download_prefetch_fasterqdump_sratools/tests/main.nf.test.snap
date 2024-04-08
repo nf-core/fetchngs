@@ -28,7 +28,7 @@
     },
     "test_pe_reads_2_size": {
         "content": [
-            2013376
+            2011460
         ],
         "meta": {
             "nf-test": "0.8.4",
