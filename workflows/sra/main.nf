@@ -185,19 +185,22 @@ workflow SRA {
         .collectFile(name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
         .set { ch_versions_yml }
 
-    topic:
-    SRA_RUNINFO_TO_FTP.out.tsv >> 'runinfo-tsv'
-    ch_fastq >> 'fastq'
-    ASPERA_CLI.out.md5 >> 'md5'
-    SRA_FASTQ_FTP.out.md5 >> 'md5'
-    ch_versions_yml >> 'versions-yml'
-
     emit:
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
     versions        = ch_versions.unique()
+
+    publish:
+    ch_fastq                    >> 'fastq/'
+    ASPERA_CLI.out.md5          >> 'fastq/md5/'
+    SRA_FASTQ_FTP.out.md5       >> 'fastq/md5/'
+    SRA_RUNINFO_TO_FTP.out.tsv  >> 'metadata/'
+    ch_versions_yml             >> 'pipeline_info/'
+    ch_samplesheet              >> 'samplesheet/'
+    ch_mappings                 >> 'samplesheet/'
+    ch_sample_mappings_yml      >> 'samplesheet/'
 }
 
 /*

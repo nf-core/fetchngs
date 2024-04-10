@@ -10,7 +10,6 @@
 */
 
 nextflow.enable.dsl = 2
-nextflow.preview.topic = true
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,13 +33,6 @@ workflow NFCORE_FETCHNGS {
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
     SRA ( ids )
-
-    emit:
-    samplesheet     = SRA.out.samplesheet
-    mappings        = SRA.out.mappings
-    sample_mappings = SRA.out.sample_mappings
-    sra_metadata    = SRA.out.sra_metadata
-    versions        = SRA.out.versions
 
 }
 
@@ -92,29 +84,8 @@ workflow {
 }
 
 output {
-    directory params.outdir, mode: params.publish_dir_mode
-
-    'fastq' {
-        from 'fastq'
-    }
-
-    'fastq/md5' {
-        from 'md5'
-    }
-
-    'metadata' {
-        from 'runinfo-tsv'
-    }
-
-    'pipeline_info' {
-        from 'versions-yml'
-    }
-
-    'samplesheet' {
-        from NFCORE_FETCHNGS.out.samplesheet // , schema: 'assets/schema_samplesheet.yml'
-        from NFCORE_FETCHNGS.out.mappings // , schema: 'assets/schema_mappings.yml'
-        from NFCORE_FETCHNGS.out.sample_mappings
-    }
+    directory params.outdir
+    mode params.publish_dir_mode
 }
 
 /*
