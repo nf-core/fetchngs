@@ -83,7 +83,7 @@ workflow {
     )
 }
 
-output {
+publish {
     directory params.outdir
     mode params.publish_dir_mode
 }
