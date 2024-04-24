@@ -11,6 +11,7 @@ process SRA_FASTQ_FTP {
 
     input:
     tuple val(meta), val(fastq)
+    val args
 
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
@@ -18,7 +19,6 @@ process SRA_FASTQ_FTP {
     path "versions.yml"               , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
     if (meta.single_end) {
         """
         wget \\

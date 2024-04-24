@@ -93,7 +93,8 @@ workflow SRA {
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
         //
         SRA_FASTQ_FTP (
-            ch_sra_reads.ftp
+            ch_sra_reads.ftp,
+            params.sra_fastq_ftp_args ?: ''
         )
         ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
@@ -111,7 +112,8 @@ workflow SRA {
         //
         ASPERA_CLI (
             ch_sra_reads.aspera,
-            'era-fasp'
+            'era-fasp',
+            params.aspera_cli_args ?: ''
         )
         ch_versions = ch_versions.mix(ASPERA_CLI.out.versions.first())
 
