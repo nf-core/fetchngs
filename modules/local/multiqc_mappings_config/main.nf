@@ -11,17 +11,12 @@ process MULTIQC_MAPPINGS_CONFIG {
 
     output:
     path "*yml"        , emit: yml
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //g'"), topic: versions
 
     script:
     """
     multiqc_mappings_config.py \\
         $csv \\
         multiqc_config.yml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python --version | sed 's/Python //g')
-    END_VERSIONS
     """
 }

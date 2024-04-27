@@ -32,8 +32,6 @@ workflow SRA {
     ids // channel: [ ids ]
 
     main:
-    ch_versions = Channel.empty()
-
     //
     // MODULE: Get SRA run information for public database ids
     //
@@ -41,7 +39,6 @@ workflow SRA {
         ids,
         params.ena_metadata_fields ?: ''
     )
-    ch_versions = ch_versions.mix(SRA_IDS_TO_RUNINFO.out.versions.first())
 
     //
     // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
@@ -49,7 +46,6 @@ workflow SRA {
     SRA_RUNINFO_TO_FTP (
         SRA_IDS_TO_RUNINFO.out.tsv
     )
-    ch_versions = ch_versions.mix(SRA_RUNINFO_TO_FTP.out.versions.first())
 
     SRA_RUNINFO_TO_FTP
         .out
@@ -96,7 +92,6 @@ workflow SRA {
             ch_sra_reads.ftp,
             params.sra_fastq_ftp_args
         )
-        ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
@@ -107,7 +102,6 @@ workflow SRA {
             params.sratools_fasterqdump_args,
             params.sratools_pigz_args
         )
-        ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
         //
         // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
@@ -117,7 +111,6 @@ workflow SRA {
             'era-fasp',
             params.aspera_cli_args
         )
-        ch_versions = ch_versions.mix(ASPERA_CLI.out.versions.first())
 
         // Isolate FASTQ channel which will be added to emit block
         SRA_FASTQ_FTP
@@ -176,22 +169,21 @@ workflow SRA {
         MULTIQC_MAPPINGS_CONFIG (
             ch_mappings
         )
-        ch_versions = ch_versions.mix(MULTIQC_MAPPINGS_CONFIG.out.versions)
         ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
     }
 
     //
     // Collate and save software versions
     //
-    softwareVersionsToYAML(ch_versions)
+    softwareVersionsToYAML(Channel.topic('versions'))
         .collectFile(name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+        .set { ch_versions_yml }
 
     emit:
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
-    versions        = ch_versions.unique()
 
     publish:
     ch_fastq                    >> 'fastq/'

@@ -15,7 +15,7 @@ process ASPERA_CLI {
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
     tuple val(meta), path("*md5")     , emit: md5
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('aspera_cli'), eval('ascli --version'), topic: versions
 
     script:
     def conda_prefix = ['singularity', 'apptainer'].contains(workflow.containerEngine) ? "export CONDA_PREFIX=/usr/local" : ""
@@ -31,11 +31,6 @@ process ASPERA_CLI {
 
         echo "${meta.md5_1}  ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            aspera_cli: \$(ascli --version)
-        END_VERSIONS
         """
     } else {
         """
@@ -58,11 +53,6 @@ process ASPERA_CLI {
 
         echo "${meta.md5_2}  ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            aspera_cli: \$(ascli --version)
-        END_VERSIONS
         """
     }
 }

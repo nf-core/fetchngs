@@ -14,7 +14,7 @@ process SRATOOLS_PREFETCH {
 
     output:
     tuple val(meta), path(id), emit: sra
-    path 'versions.yml'      , emit: versions
+    tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when

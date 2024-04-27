@@ -14,7 +14,7 @@ process SRA_IDS_TO_RUNINFO {
 
     output:
     path "*.tsv"       , emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //g'"), topic: versions
 
     script:
     def metadata_fields = fields ? "--ena_metadata_fields ${fields}" : ''
@@ -24,10 +24,5 @@ process SRA_IDS_TO_RUNINFO {
         id.txt \\
         ${id}.runinfo.tsv \\
         $metadata_fields
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python --version | sed 's/Python //g')
-    END_VERSIONS
     """
 }
