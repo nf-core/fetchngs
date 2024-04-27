@@ -10,6 +10,7 @@ process ASPERA_CLI {
     input:
     tuple val(meta), val(fastq)
     val user
+    var args
 
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
@@ -17,7 +18,6 @@ process ASPERA_CLI {
     path "versions.yml"               , emit: versions
 
     script:
-    def args = task.ext.args ?: ''
     def conda_prefix = ['singularity', 'apptainer'].contains(workflow.containerEngine) ? "export CONDA_PREFIX=/usr/local" : ""
     if (meta.single_end) {
         """

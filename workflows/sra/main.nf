@@ -93,7 +93,8 @@ workflow SRA {
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
         //
         SRA_FASTQ_FTP (
-            ch_sra_reads.ftp
+            ch_sra_reads.ftp,
+            params.sra_fastq_ftp_args
         )
         ch_versions = ch_versions.mix(SRA_FASTQ_FTP.out.versions.first())
 
@@ -102,7 +103,9 @@ workflow SRA {
         //
         FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
             ch_sra_reads.sratools,
-            params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : []
+            params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : [],
+            params.sratools_fasterqdump_args,
+            params.sratools_pigz_args
         )
         ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
@@ -111,7 +114,8 @@ workflow SRA {
         //
         ASPERA_CLI (
             ch_sra_reads.aspera,
-            'era-fasp'
+            'era-fasp',
+            params.aspera_cli_args
         )
         ch_versions = ch_versions.mix(ASPERA_CLI.out.versions.first())
 
@@ -121,6 +125,7 @@ workflow SRA {
             .fastq
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
             .mix(ASPERA_CLI.out.fastq)
+            .tap { ch_fastq }
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
@@ -151,7 +156,7 @@ workflow SRA {
         .map { it[1] }
         .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
-        .collectFile(name:'samplesheet.csv', storeDir: "${params.outdir}/samplesheet")
+        .collectFile(name:'samplesheet.csv')
         .set { ch_samplesheet }
 
     SRA_TO_SAMPLESHEET
@@ -160,7 +165,7 @@ workflow SRA {
         .map { it[1] }
         .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
-        .collectFile(name:'id_mappings.csv', storeDir: "${params.outdir}/samplesheet")
+        .collectFile(name:'id_mappings.csv')
         .set { ch_mappings }
 
     //
@@ -179,7 +184,7 @@ workflow SRA {
     // Collate and save software versions
     //
     softwareVersionsToYAML(ch_versions)
-        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
+        .collectFile(name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
 
     emit:
     samplesheet     = ch_samplesheet
@@ -187,6 +192,16 @@ workflow SRA {
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
     versions        = ch_versions.unique()
+
+    publish:
+    ch_fastq                    >> 'fastq/'
+    ASPERA_CLI.out.md5          >> 'fastq/md5/'
+    SRA_FASTQ_FTP.out.md5       >> 'fastq/md5/'
+    SRA_RUNINFO_TO_FTP.out.tsv  >> 'metadata/'
+    ch_versions_yml             >> 'pipeline_info/'
+    ch_samplesheet              >> 'samplesheet/'
+    ch_mappings                 >> 'samplesheet/'
+    ch_sample_mappings_yml      >> 'samplesheet/'
 }
 
 /*
