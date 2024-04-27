@@ -1,3 +1,4 @@
+include { Sample } from '../../types/types'
 
 process SRA_FASTQ_FTP {
     tag "$meta.id"
@@ -10,15 +11,20 @@ process SRA_FASTQ_FTP {
         'biocontainers/wget:1.20.1' }"
 
     input:
-    tuple val(meta), val(fastq)
-    val args
+    Sample input
+    String args
 
     output:
-    tuple val(meta), path("*fastq.gz"), emit: fastq
-    tuple val(meta), path("*md5")     , emit: md5
-    tuple val("${task.process}"), val('wget'), eval("echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//')"), topic: versions
+    Sample fastq    = new Sample(meta, path("*fastq.gz"))
+    Sample md5      = new Sample(meta, path("*md5"))
+
+    topic:
+    [ task.process, 'wget', eval("echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//')") ] >> 'versions'
 
     script:
+    meta = input.meta
+    fastq = input.files
+
     if (meta.single_end) {
         """
         wget \\

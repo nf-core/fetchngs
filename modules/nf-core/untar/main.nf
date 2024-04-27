@@ -1,3 +1,5 @@
+include { Sample } from '../../types/types'
+
 process UNTAR {
     tag "$archive"
     label 'process_single'
@@ -8,20 +10,22 @@ process UNTAR {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    tuple val(meta), path(archive)
+    Sample input
+    String args = ''
+    String args2 = ''
+    String prefix = ''
 
     output:
-    tuple val(meta), path("$prefix"), emit: untar
-    tuple val("${task.process}"), val('untar'), eval("echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//'"), topic: versions
+    Sample untar = new Sample(meta, path("$prefix"))
 
-    when:
-    task.ext.when == null || task.ext.when
+    topic:
+    [ task.process, 'untar', eval("echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//'") ] >> 'versions'
 
     script:
-    def args  = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
-
+    meta = input.meta
+    archive = input.files.first()
+    if( !prefix )
+        prefix = meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, "")
     """
     mkdir $prefix
 
@@ -45,7 +49,8 @@ process UNTAR {
     """
 
     stub:
-    prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.toString().replaceFirst(/\.[^\.]+(.gz)?$/, ""))
+    if( !prefix )
+        prefix = meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, "")
     """
     mkdir $prefix
     touch ${prefix}/file.txt

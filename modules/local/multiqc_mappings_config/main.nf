@@ -7,11 +7,13 @@ process MULTIQC_MAPPINGS_CONFIG {
         'biocontainers/python:3.9--1' }"
 
     input:
-    path csv
+    Path csv
 
     output:
-    path "*yml"        , emit: yml
-    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //g'"), topic: versions
+    Path yml = path("multiqc_config.yml")
+
+    topic:
+    [ task.process, 'python', eval("python --version | sed 's/Python //g'") ] >> 'versions'
 
     script:
     """

@@ -1,3 +1,5 @@
+include { Sample } from '../../types/types'
+
 process ASPERA_CLI {
     tag "$meta.id"
     label 'process_medium'
@@ -8,16 +10,21 @@ process ASPERA_CLI {
         'biocontainers/aspera-cli:4.14.0--hdfd78af_1' }"
 
     input:
-    tuple val(meta), val(fastq)
-    val user
-    var args
+    Sample input
+    String user
+    String args
 
     output:
-    tuple val(meta), path("*fastq.gz"), emit: fastq
-    tuple val(meta), path("*md5")     , emit: md5
-    tuple val("${task.process}"), val('aspera_cli'), eval('ascli --version'), topic: versions
+    Sample fastq    = new Sample(meta, path("*fastq.gz"))
+    Sample md5      = new Sample(meta, path("*md5"))
+
+    topic:
+    [ task.process, 'aspera_cli', eval('ascli --version') ] >> 'versions'
 
     script:
+    meta = input.meta
+    fastq = input.files
+
     def conda_prefix = ['singularity', 'apptainer'].contains(workflow.containerEngine) ? "export CONDA_PREFIX=/usr/local" : ""
     if (meta.single_end) {
         """

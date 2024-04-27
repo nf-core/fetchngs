@@ -6,14 +6,14 @@ process SRA_TO_SAMPLESHEET {
     memory 100.MB
 
     input:
-    val meta
-    val pipeline
-    val strandedness
-    val mapping_fields
+    Map meta
+    String pipeline
+    String strandedness
+    String mapping_fields
 
     output:
-    tuple val(meta), path("*samplesheet.csv"), emit: samplesheet
-    tuple val(meta), path("*mappings.csv")   , emit: mappings
+    Sample samplesheet  = new Sample(meta, path("*samplesheet.csv"))
+    Sample mappings     = new Sample(meta, path("*mappings.csv"))
 
     exec:
     //

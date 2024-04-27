@@ -1,3 +1,5 @@
+include { Sample } from '../../types/types'
+
 process SRATOOLS_FASTERQDUMP {
     tag "$meta.id"
     label 'process_medium'
@@ -8,22 +10,26 @@ process SRATOOLS_FASTERQDUMP {
         'quay.io/biocontainers/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:6a9ff0e76ec016c3d0d27e0c0d362339f2d787e6-0' }"
 
     input:
-    tuple val(meta), path(sra)
-    path ncbi_settings
-    path certificate
-    val fasterqdump_args    // = '--split-files --include-technical'
-    val pigz_args           // = ''
+    Tuple2<Map,String> input
+    Path ncbi_settings
+    Path certificate
+    String fasterqdump_args = '--split-files --include-technical'
+    String pigz_args = ''
+    String prefix = ''
 
     output:
-    tuple val(meta), path('*.fastq.gz'), emit: reads
-    tuple val("${task.process}"), val('sratools'), eval("fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions
-    tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //g'"), topic: versions
+    Sample reads = new Sample(meta, path('*.fastq.gz'))
 
-    when:
-    task.ext.when == null || task.ext.when
+    topic:
+    [ task.process, 'sratools', eval("fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+'") ] >> 'versions'
+    [ task.process, 'pigz', eval("pigz --version 2>&1 | sed 's/pigz //g'") ] >> 'versions'
 
     script:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    meta = input.v1
+    sra = input.v2
+    if( !prefix )
+        prefix = "${meta.id}"
+
     def outfile = meta.single_end ? "${prefix}.fastq" : prefix
     def key_file = ''
     if (certificate.toString().endsWith('.jwt')) {

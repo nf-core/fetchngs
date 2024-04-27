@@ -22,6 +22,14 @@ include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflow
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT RECORD TYPES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+include { Sample } from '../../types/types'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
@@ -77,11 +85,11 @@ workflow SRA {
                     }
 
                     aspera: download_method == 'aspera'
-                        return [ meta, meta.fastq_aspera.tokenize(';').take(2) ]
+                        return new Sample( meta, meta.fastq_aspera.tokenize(';').take(2).collect( name -> file(name) ) )
                     ftp: download_method == 'ftp'
-                        return [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
+                        return new Sample( meta, [ file(meta.fastq_1), file(meta.fastq_2) ] )
                     sratools: download_method == 'sratools'
-                        return [ meta, meta.run_accession ]
+                        return new Tuple2<Map,String>( meta, meta.run_accession )
             }
             .set { ch_sra_reads }
 
@@ -120,14 +128,12 @@ workflow SRA {
             .mix(ASPERA_CLI.out.fastq)
             .tap { ch_fastq }
             .map {
-                meta, fastq ->
-                    def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
-                    def meta_clone = meta.clone()
-
-                    meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
-                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
-
-                    return meta_clone
+                sample ->
+                    def reads = sample.files
+                    def meta = sample.meta.clone()
+                    meta.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
+                    meta.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
+                    return meta
             }
             .set { ch_sra_metadata }
     }
@@ -146,7 +152,7 @@ workflow SRA {
     SRA_TO_SAMPLESHEET
         .out
         .samplesheet
-        .map { it[1] }
+        .map { sample -> sample.files.first() }
         .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
         .collectFile(name:'samplesheet.csv')
@@ -155,7 +161,7 @@ workflow SRA {
     SRA_TO_SAMPLESHEET
         .out
         .mappings
-        .map { it[1] }
+        .map { sample -> sample.files.first() }
         .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: { it.baseName })
         .map { it.text.tokenize('\n').join('\n') }
         .collectFile(name:'id_mappings.csv')
