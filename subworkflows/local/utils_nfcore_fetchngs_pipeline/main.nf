@@ -75,23 +75,22 @@ workflow PIPELINE_INITIALISATION {
     //
     // Auto-detect input id type
     //
-    ch_input = file(input)
-    if (isSraId(ch_input)) {
-        sraCheckENAMetadataFields(ena_metadata_fields)
-    } else {
+    input = file(input)
+    if (!isSraId(input))
         error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ ids!')
-    }
+    sraCheckENAMetadataFields(ena_metadata_fields)
 
     // Read in ids from --input file
-    Channel
-        .from(ch_input)
-        .splitCsv(header:false, sep:'', strip:true)
-        .map { it[0] }
-        .unique()
-        .set { ch_ids }
+    input                                                   // Path
+        |> Channel.of                                       // Channel<Path>
+        |> flatMap { csv ->
+            splitCsv(csv, header: false, schema: 'assets/schema_input.yml')
+        }                                                   // Channel<String>
+        |> unique                                           // Channel<String>
+        |> set { ids }                                      // Channel<String>
 
     emit:
-    ids = ch_ids
+    ids     // Channel<String>
 }
 
 /*

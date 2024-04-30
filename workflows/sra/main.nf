@@ -37,181 +37,171 @@ include { Sample } from '../../types/types'
 workflow SRA {
 
     take:
-    ids                         // channel: [ ids ]
-    ena_metadata_fields         // string
-    sample_mapping_fields       // string
-    nf_core_pipeline            // string
-    nf_core_rnaseq_strandedness // string
-    download_method             // enum: 'aspera' | 'ftp' | 'sratools'
+    ids                         // List<String>
+    ena_metadata_fields         // String
+    sample_mapping_fields       // String
+    nf_core_pipeline            // String
+    nf_core_rnaseq_strandedness // String
+    download_method             // String enum: 'aspera' | 'ftp' | 'sratools'
     skip_fastq_download         // boolean
-    dbgap_key                   // string
-    aspera_cli_args             // string
-    sra_fastq_ftp_args          // string
-    sratools_fasterqdump_args   // string
-    sratools_pigz_args          // string
-    outdir                      // string
+    dbgap_key                   // String
+    aspera_cli_args             // String
+    sra_fastq_ftp_args          // String
+    sratools_fasterqdump_args   // String
+    sratools_pigz_args          // String
+    outdir                      // String
 
     main:
-    //
-    // MODULE: Get SRA run information for public database ids
-    //
-    SRA_IDS_TO_RUNINFO (
-        ids,
-        ena_metadata_fields
-    )
-
-    //
-    // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
-    //
-    SRA_RUNINFO_TO_FTP (
-        SRA_IDS_TO_RUNINFO.out.tsv
-    )
-
-    SRA_RUNINFO_TO_FTP
-        .out
-        .tsv
-        .splitCsv(header:true, sep:'\t')
-        .map {
-            meta ->
-                def meta_clone = meta.clone()
-                meta_clone.single_end = meta_clone.single_end.toBoolean()
-                return meta_clone
-        }
-        .unique()
-        .set { ch_sra_metadata }
+    ids                                                         // Channel<String>
+        //
+        // MODULE: Get SRA run information for public database ids
+        //
+        |> map { id ->
+            SRA_IDS_TO_RUNINFO ( id, ena_metadata_fields )
+        }                                                       // Channel<Path>
+        //
+        // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
+        //
+        |> map(SRA_RUNINFO_TO_FTP)                              // Channel<Path>
+        |> set { runinfo_ftp }                                  // Channel<Path>
+        |> flatMap { tsv ->
+            splitCsv(tsv, header:true, sep:'\t')
+        }                                                       // Channel<Map>
+        |> map { meta ->
+            meta + [single_end: meta.single_end.toBoolean()]
+        }                                                       // Channel<Map>
+        |> unique                                               // Channel<Map>
+        |> set { sra_metadata }                                 // Channel<Map>
 
     if (!skip_fastq_download) {
-
-        ch_sra_metadata
-            .branch {
-                meta ->
-                    def method = 'ftp'
-                    // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
-                        // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
-                        // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
-                    if (meta.fastq_aspera && download_method == 'aspera') {
-                        method = 'aspera'
-                    }
-                    if ((!meta.fastq_aspera && !meta.fastq_1) || download_method == 'sratools') {
-                        method = 'sratools'
-                    }
-
-                    aspera: method == 'aspera'
-                        return new Sample( meta, meta.fastq_aspera.tokenize(';').take(2).collect( name -> file(name) ) )
-                    ftp: method == 'ftp'
-                        return new Sample( meta, [ file(meta.fastq_1), file(meta.fastq_2) ] )
-                    sratools: method == 'sratools'
-                        return new Tuple2<Map,String>( meta, meta.run_accession )
-            }
-            .set { ch_sra_reads }
 
         //
         // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
         //
-        SRA_FASTQ_FTP (
-            ch_sra_reads.ftp,
-            sra_fastq_ftp_args
-        )
+        sra_metadata
+            |> filter { meta ->
+                getDownloadMethod(meta, download_method) == 'ftp'
+            }                                                   // Channel<Map>
+            |> map { meta ->
+                def sample = new Sample( meta, [ file(meta.fastq_1), file(meta.fastq_2) ] )
+                SRA_FASTQ_FTP ( sample, sra_fastq_ftp_args )
+            }                                                   // fastq: Channel<Sample>, md5: Channel<Sample>
+            |> set { ftp_samples }                              // fastq: Channel<Sample>, md5: Channel<Sample>
 
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
         //
-        FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
-            ch_sra_reads.sratools,
-            dbgap_key ? file(dbgap_key, checkIfExists: true) : [],
-            sratools_fasterqdump_args,
-            sratools_pigz_args
-        )
-
+        sra_metadata
+            |> filter { meta ->
+                getDownloadMethod(meta, download_method) == 'sratools'
+            }                                                   // Channel<Map>
+            |> map { meta ->
+                new Tuple2<Map,String>( meta, meta.run_accession )
+            }                                                   // Channel<Tuple2<Map,String>>
+            |> FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
+                dbgap_key ? file(dbgap_key, checkIfExists: true) : [],
+                sratools_fasterqdump_args,
+                sratools_pigz_args )                            // Channel<Sample>
+            |> set { sratools_samples }                         // Channel<Sample>
+ 
         //
         // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
         //
-        ASPERA_CLI (
-            ch_sra_reads.aspera,
-            'era-fasp',
-            aspera_cli_args
-        )
+        sra_metadata
+            |> filter { meta ->
+                getDownloadMethod(meta, download_method) == 'aspera'
+            }                                                   // Channel<Map>
+            |> map { meta ->
+                def sample = new Sample( meta, meta.fastq_aspera.tokenize(';').take(2).collect( name -> file(name) ) )
+                ASPERA_CLI ( sample, 'era-fasp', aspera_cli_args )
+            }                                                   // fastq: Channel<Sample>, md5: Channel<Sample>
+            |> set { aspera_samples }                           // fastq: Channel<Sample>, md5: Channel<Sample>
 
         // Isolate FASTQ channel which will be added to emit block
-        SRA_FASTQ_FTP
-            .out
-            .fastq
-            .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
-            .mix(ASPERA_CLI.out.fastq)
-            .tap { ch_fastq }
-            .map {
-                sample ->
-                    def reads = sample.files
-                    def meta = sample.meta.clone()
-                    meta.fastq_1 = reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : ''
-                    meta.fastq_2 = reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : ''
-                    return meta
-            }
-            .set { ch_sra_metadata }
+        fastq = mix(ftp_samples.fastq, sratools_samples.reads, aspera_samples.fastq)
+        md5 = mix(ftp_samples.md5, aspera_samples.md5)
+
+        fastq                                                   // Channel<Sample>
+            |> map { sample ->
+                def reads = sample.files
+                def meta = sample.meta
+                meta + [
+                    fastq_1: reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : '',
+                    fastq_2: reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : ''
+                ]
+            }                                                   // Channel<Map>
+            |> set { sra_metadata }                             // Channel<Map>
     }
 
     //
     // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
     //
-    SRA_TO_SAMPLESHEET (
-        ch_sra_metadata,
-        nf_core_pipeline,
-        nf_core_rnaseq_strandedness,
-        sample_mapping_fields
-    )
+    sra_metadata                                            // Channel<Map>
+        |> collect                                          // List<Map>
+        |> { sra_metadata ->
+            SRA_TO_SAMPLESHEET (
+                sra_metadata,
+                nf_core_pipeline,
+                nf_core_rnaseq_strandedness,
+                sample_mapping_fields )
+        }                                                   // samplesheet: Path, mappings: Path
+        |> set { index_files }                              // samplesheet: Path, mappings: Path
 
-    // Merge samplesheets and mapping files across all samples
-    SRA_TO_SAMPLESHEET
-        .out
-        .samplesheet
-        .map { sample -> sample.files.first() }
-        .collectFile(name:'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: { it.baseName })
-        .map { it.text.tokenize('\n').join('\n') }
-        .collectFile(name:'samplesheet.csv')
-        .set { ch_samplesheet }
-
-    SRA_TO_SAMPLESHEET
-        .out
-        .mappings
-        .map { sample -> sample.files.first() }
-        .collectFile(name:'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: { it.baseName })
-        .map { it.text.tokenize('\n').join('\n') }
-        .collectFile(name:'id_mappings.csv')
-        .set { ch_mappings }
+    samplesheet = index_files.samplesheet                   // Path
+    mappings    = index_files.mappings                      // Path
 
     //
     // MODULE: Create a MutiQC config file with sample name mappings
     //
-    ch_sample_mappings_yml = Channel.empty()
-    if (sample_mapping_fields) {
-        MULTIQC_MAPPINGS_CONFIG (
-            ch_mappings
-        )
-        ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
-    }
+    sample_mappings = sample_mapping_fields
+        ? MULTIQC_MAPPINGS_CONFIG ( mappings )              // Path
+        : null
 
     //
     // Collate and save software versions
     //
-    softwareVersionsToYAML(Channel.topic('versions'))
-        .collectFile(name: 'nf_core_fetchngs_software_mqc_versions.yml', sort: true, newLine: true)
-        .set { ch_versions_yml }
+    'versions'                                              // String
+        |> Channel.topic                                    // Channel<Tuple3<String,String,String>>
+        |> softwareVersionsToYAML                           // Channel<String>
+        |> collect(sort: true)                              // List<String>
+        |> exec('SOFTWARE_VERIONS') { versions ->
+            def path = task.workDir.resolve('nf_core_fetchngs_software_mqc_versions.yml')
+            mergeText(versions, path, newLine: true)
+            return path
+        }                                                   // Path
+        |> set { versions_yml }                             // Path
 
     emit:
-    samplesheet     = ch_samplesheet
-    mappings        = ch_mappings
-    sample_mappings = ch_sample_mappings_yml
-    sra_metadata    = ch_sra_metadata
+    samplesheet
+    mappings
+    sample_mappings
+    sra_metadata
 
     publish:
-    ch_fastq                    >> 'fastq/'
-    ASPERA_CLI.out.md5          >> 'fastq/md5/'
-    SRA_FASTQ_FTP.out.md5       >> 'fastq/md5/'
-    SRA_RUNINFO_TO_FTP.out.tsv  >> 'metadata/'
-    ch_versions_yml             >> 'pipeline_info/'
-    ch_samplesheet              >> 'samplesheet/'
-    ch_mappings                 >> 'samplesheet/'
-    ch_sample_mappings_yml      >> 'samplesheet/'
+    fastq           >> 'fastq/'
+    md5             >> 'fastq/md5/'
+    runinfo_ftp     >> 'metadata/'
+    versions_yml    >> 'pipeline_info/'
+    samplesheet     >> 'samplesheet/'
+    mappings        >> 'samplesheet/'
+    sample_mappings >> 'samplesheet/'
+}
+
+/*
+========================================================================================
+    FUNCTIONS
+========================================================================================
+*/
+
+def getDownloadMethod(Map meta, String download_method) {
+    // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
+        // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
+        // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
+    if (meta.fastq_aspera && download_method == 'aspera')
+        return 'aspera'
+    if ((!meta.fastq_aspera && !meta.fastq_1) || download_method == 'sratools')
+        return 'sratools'
+    return 'ftp'
 }
 
 /*

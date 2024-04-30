@@ -105,17 +105,25 @@ def workflowVersionToYAML() {
 //
 // Get channel of software versions used in pipeline in YAML format
 //
-def softwareVersionsToYAML(ch_versions) {
-    return ch_versions
-        .unique()
-        .map { process, name, version ->
+workflow softwareVersionsToYAML {
+    take:
+    versions
+
+    main:
+    versions                                                // Channel<Tuple3<String,String,String>>
+        |> unique                                           // Channel<Tuple3<String,String,String>>
+        |> map { process, name, version ->
             """
             ${process.tokenize(':').last()}:
                 ${name}: ${version}
             """.stripIndent().trim()
-        }
-        .unique()
-        .mix(Channel.of(workflowVersionToYAML()))
+        }                                                   // Channel<String>
+        |> unique                                           // Channel<String>
+        |> mix( workflowVersionToYAML() )                   // Channel<String>
+        |> set { versions_yml }
+
+    emit:
+    versions_yml
 }
 
 //

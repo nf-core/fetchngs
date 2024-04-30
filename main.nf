@@ -9,7 +9,7 @@
 ----------------------------------------------------------------------------------------
 */
 
-nextflow.enable.dsl = 2
+nextflow.preview.dsl = 3
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,7 +33,8 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetc
 workflow NFCORE_FETCHNGS {
 
     take:
-    ids // channel: database ids read in from --input
+    ids     // Channel<String>
+    params  // ParamsMap
 
     main:
 
@@ -69,7 +70,7 @@ workflow {
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION (
+    ids = PIPELINE_INITIALISATION (
         params.version,
         params.help,
         params.validate_params,
@@ -84,7 +85,8 @@ workflow {
     // WORKFLOW: Run primary workflows for the pipeline
     //
     NFCORE_FETCHNGS (
-        PIPELINE_INITIALISATION.out.ids
+        ids,
+        params,
     )
 
     //
