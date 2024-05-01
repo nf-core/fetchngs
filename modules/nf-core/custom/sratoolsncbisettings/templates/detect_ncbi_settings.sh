@@ -38,8 +38,3 @@ else
     fi
     cp "${NCBI_SETTINGS}" ./
 fi
-
-cat <<-END_VERSIONS > versions.yml
-"!{task.process}":
-    sratools: $(vdb-config --version 2>&1 | grep -Eo '[0-9.]+')
-END_VERSIONS

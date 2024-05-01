@@ -9,7 +9,7 @@
 ----------------------------------------------------------------------------------------
 */
 
-nextflow.enable.dsl = 2
+nextflow.preview.dsl = 3
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -33,14 +33,29 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetc
 workflow NFCORE_FETCHNGS {
 
     take:
-    ids // channel: database ids read in from --input
+    ids     // Channel<String>
+    params  // ParamsMap
 
     main:
 
     //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
-    SRA ( ids )
+    SRA (
+        ids,
+        params.ena_metadata_fields ?: '',
+        params.sample_mapping_fields,
+        params.nf_core_pipeline ?: '',
+        params.nf_core_rnaseq_strandedness ?: 'auto',
+        params.download_method,
+        params.skip_fastq_download,
+        params.dbgap_key,
+        params.aspera_cli_args,
+        params.sra_fastq_ftp_args,
+        params.sratools_fasterqdump_args,
+        params.sratools_pigz_args,
+        params.outdir
+    )
 
 }
 
@@ -55,7 +70,7 @@ workflow {
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION (
+    ids = PIPELINE_INITIALISATION (
         params.version,
         params.help,
         params.validate_params,
@@ -70,7 +85,8 @@ workflow {
     // WORKFLOW: Run primary workflows for the pipeline
     //
     NFCORE_FETCHNGS (
-        PIPELINE_INITIALISATION.out.ids
+        ids,
+        params,
     )
 
     //
@@ -84,6 +100,11 @@ workflow {
         params.monochrome_logs,
         params.hook_url
     )
+}
+
+publish {
+    directory params.outdir
+    mode params.publish_dir_mode
 }
 
 /*

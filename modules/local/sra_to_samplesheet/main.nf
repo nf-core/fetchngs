@@ -1,25 +1,39 @@
 
 process SRA_TO_SAMPLESHEET {
-    tag "$meta.id"
-
     executor 'local'
     memory 100.MB
 
     input:
-    val meta
-    val pipeline
-    val strandedness
-    val mapping_fields
+    List<Map> sra_metadata
+    String pipeline
+    String strandedness
+    String mapping_fields
 
     output:
-    tuple val(meta), path("*samplesheet.csv"), emit: samplesheet
-    tuple val(meta), path("*mappings.csv")   , emit: mappings
+    Path samplesheet  = path("samplesheet.csv")
+    Path mappings     = path("mappings.csv")
 
     exec:
     //
     // Create samplesheet containing metadata
     //
 
+    def records = sra_metadata.collect { meta ->
+        getSraRecord(meta, pipeline, strandedness, mappings)
+    }
+
+    def samplesheet = records
+        .collect { pipeline_map, mappings_map -> pipeline_map }
+        .sort { record -> record.id }
+    mergeCsv(samplesheet, task.workDir.resolve('samplesheet.csv'))
+
+    def mappings = records
+        .collect { pipeline_map, mappings_map -> mappings_map }
+        .sort { record -> record.id }
+    mergeCsv(mappings, task.workDir.resolve('id_mappings.csv'))
+}
+
+def getSraRecord(Map meta, String pipeline, String strandedness, String mapping_fields) {
     //  Remove custom keys needed to download the data
     def meta_clone = meta.clone()
     meta_clone.remove("id")
@@ -30,7 +44,7 @@ process SRA_TO_SAMPLESHEET {
     meta_clone.remove("single_end")
 
     // Add relevant fields to the beginning of the map
-    pipeline_map = [
+    def pipeline_map = [
         sample  : "${meta.id.split('_')[0..-2].join('_')}",
         fastq_1 : meta.fastq_1,
         fastq_2 : meta.fastq_2
@@ -48,28 +62,16 @@ process SRA_TO_SAMPLESHEET {
     }
     pipeline_map << meta_clone
 
-    // Create a samplesheet
-    samplesheet  = pipeline_map.keySet().collect{ '"' + it + '"'}.join(",") + '\n'
-    samplesheet += pipeline_map.values().collect{ '"' + it + '"'}.join(",")
-
-    // Write samplesheet to file
-    def samplesheet_file = task.workDir.resolve("${meta.id}.samplesheet.csv")
-    samplesheet_file.text = samplesheet
-
     //
     // Create sample id mappings file
     //
-    mappings_map = pipeline_map.clone()
-    def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect{ it.trim().toLowerCase() } : []
+    def mappings_map = pipeline_map.clone()
+    def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect{ v -> v.trim().toLowerCase() } : []
     if ((mappings_map.keySet() + fields).unique().size() != mappings_map.keySet().size()) {
         error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${mappings_map.keySet().join(', ')}")
     }
 
-    // Create mappings
-    mappings  = fields.collect{ '"' + it + '"'}.join(",") + '\n'
-    mappings += mappings_map.subMap(fields).values().collect{ '"' + it + '"'}.join(",")
+    mappings_map = mappings_map.subMap(fields)
 
-    // Write mappings to file
-    def mappings_file = task.workDir.resolve("${meta.id}.mappings.csv")
-    mappings_file.text = mappings
+    return [ pipeline_map, mappings_map ]
 }

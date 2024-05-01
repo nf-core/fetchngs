@@ -7,21 +7,18 @@ process SRA_RUNINFO_TO_FTP {
         'biocontainers/python:3.9--1' }"
 
     input:
-    path runinfo
+    Path runinfo
 
     output:
-    path "*.tsv"       , emit: tsv
-    path "versions.yml", emit: versions
+    Path tsv = path("*.runinfo_ftp.tsv")
+
+    topic:
+    [ task.process, 'python', eval("python --version | sed 's/Python //g'") ] >> 'versions'
 
     script:
     """
     sra_runinfo_to_ftp.py \\
         ${runinfo.join(',')} \\
         ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python --version | sed 's/Python //g')
-    END_VERSIONS
     """
 }

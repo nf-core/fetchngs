@@ -7,33 +7,39 @@ include { SRATOOLS_FASTERQDUMP        } from '../../../modules/nf-core/sratools/
 //
 workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
     take:
-    ch_sra_ids   // channel: [ val(meta), val(id) ]
-    ch_dbgap_key // channel: [ path(dbgap_key) ]
+    sra_ids                     // Channel<Tuple2<Map,String>>
+    dbgap_key                   // Path
+    sratools_fasterqdump_args   // String
+    sratools_pigz_args          // String
 
     main:
-
-    ch_versions = Channel.empty()
-
     //
     // Detect existing NCBI user settings or create new ones.
     //
-    CUSTOM_SRATOOLSNCBISETTINGS ( ch_sra_ids.collect() )
-    ch_ncbi_settings = CUSTOM_SRATOOLSNCBISETTINGS.out.ncbi_settings
-    ch_versions = ch_versions.mix(CUSTOM_SRATOOLSNCBISETTINGS.out.versions)
+    sra_ids                                                 // Channel<Tuple2<Map,String>>
+        |> collect                                          // List<Tuple2<Map,String>>
+        |> CUSTOM_SRATOOLSNCBISETTINGS                      // Path
+        |> set { ncbi_settings }                            // Path
 
-    //
-    // Prefetch sequencing reads in SRA format.
-    //
-    SRATOOLS_PREFETCH ( ch_sra_ids, ch_ncbi_settings, ch_dbgap_key )
-    ch_versions = ch_versions.mix(SRATOOLS_PREFETCH.out.versions.first())
+    sra_ids                                                 // Channel<Tuple2<Map,String>>
+        |> map { input ->
+            //
+            // Prefetch sequencing reads in SRA format.
+            //
+            input = SRATOOLS_PREFETCH ( input, ncbi_settings, dbgap_key )
 
-    //
-    // Convert the SRA format into one or more compressed FASTQ files.
-    //
-    SRATOOLS_FASTERQDUMP ( SRATOOLS_PREFETCH.out.sra, ch_ncbi_settings, ch_dbgap_key )
-    ch_versions = ch_versions.mix(SRATOOLS_FASTERQDUMP.out.versions.first())
+            //
+            // Convert the SRA format into one or more compressed FASTQ files.
+            //
+            SRATOOLS_FASTERQDUMP (
+                input,
+                ncbi_settings,
+                dbgap_key,
+                sratools_fasterqdump_args,
+                sratools_pigz_args )
+        }                                                   // Channel<Sample>
+        |> set { reads }                                    // Channel<Sample>
 
     emit:
-    reads    = SRATOOLS_FASTERQDUMP.out.reads // channel: [ val(meta), [ reads ] ]
-    versions = ch_versions                    // channel: [ versions.yml ]
+    reads   // Channel<Sample>
 }

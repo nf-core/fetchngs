@@ -2,7 +2,6 @@
 // Subworkflow with utility functions specific to the nf-core pipeline template
 //
 
-import org.yaml.snakeyaml.Yaml
 import nextflow.extension.FilesEx
 
 /*
@@ -93,15 +92,6 @@ def getWorkflowVersion() {
 }
 
 //
-// Get software versions for pipeline
-//
-def processVersionsFromYAML(yaml_file) {
-    Yaml yaml = new Yaml()
-    versions = yaml.load(yaml_file).collectEntries { k, v -> [ k.tokenize(':')[-1], v ] }
-    return yaml.dumpAsMap(versions).trim()
-}
-
-//
 // Get workflow version for pipeline
 //
 def workflowVersionToYAML() {
@@ -115,12 +105,25 @@ def workflowVersionToYAML() {
 //
 // Get channel of software versions used in pipeline in YAML format
 //
-def softwareVersionsToYAML(ch_versions) {
-    return ch_versions
-                .unique()
-                .map { processVersionsFromYAML(it) }
-                .unique()
-                .mix(Channel.of(workflowVersionToYAML()))
+workflow softwareVersionsToYAML {
+    take:
+    versions
+
+    main:
+    versions                                                // Channel<Tuple3<String,String,String>>
+        |> unique                                           // Channel<Tuple3<String,String,String>>
+        |> map { process, name, version ->
+            """
+            ${process.tokenize(':').last()}:
+                ${name}: ${version}
+            """.stripIndent().trim()
+        }                                                   // Channel<String>
+        |> unique                                           // Channel<String>
+        |> mix( workflowVersionToYAML() )                   // Channel<String>
+        |> set { versions_yml }
+
+    emit:
+    versions_yml
 }
 
 //
@@ -358,13 +361,13 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     // Write summary e-mail HTML to a file
     def output_hf = new File(workflow.launchDir.toString(), ".pipeline_report.html")
     output_hf.withWriter { w -> w << email_html }
-    FilesEx.copyTo(output_hf.toPath(), "${outdir}/pipeline_info/pipeline_report.html");
+    output_hf.toPath().copyTo("${outdir}/pipeline_info/pipeline_report.html");
     output_hf.delete()
 
     // Write summary e-mail TXT to a file
     def output_tf = new File(workflow.launchDir.toString(), ".pipeline_report.txt")
     output_tf.withWriter { w -> w << email_txt }
-    FilesEx.copyTo(output_tf.toPath(), "${outdir}/pipeline_info/pipeline_report.txt");
+    output_tf.toPath().copyTo("${outdir}/pipeline_info/pipeline_report.txt");
     output_tf.delete()
 }
 

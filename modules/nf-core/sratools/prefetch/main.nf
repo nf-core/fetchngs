@@ -8,26 +8,28 @@ process SRATOOLS_PREFETCH {
         'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
 
     input:
-    tuple val(meta), val(id)
-    path ncbi_settings
-    path certificate
+    Tuple2<Map,String> input
+    Path ncbi_settings
+    Path certificate
+    String prefetch_args = ''
+    String retry_args = '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
 
     output:
-    tuple val(meta), path(id), emit: sra
-    path 'versions.yml'      , emit: versions
+    Tuple2<Map,String> sra = input
 
-    when:
-    task.ext.when == null || task.ext.when
+    topic:
+    [ task.process, 'sratools', eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'") ] >> 'versions'
 
     shell:
-    args = task.ext.args ?: ''
-    args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
+    meta = input.v1
+    id = input.v2
+
     if (certificate) {
         if (certificate.toString().endsWith('.jwt')) {
-            args += " --perm ${certificate}"
+            prefetch_args += " --perm ${certificate}"
         }
         else if (certificate.toString().endsWith('.ngc')) {
-            args += " --ngc ${certificate}"
+            prefetch_args += " --ngc ${certificate}"
         }
     }
 

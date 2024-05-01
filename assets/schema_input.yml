@@ -1,0 +1,12 @@
+$schema: http://json-schema.org/draft-07/schema
+$id: https://raw.githubusercontent.com/nf-core/fetchngs/master/assets/schema_input.yml
+title: nf-core/fetchngs pipeline - params.input schema
+description: Schema for the file provided with params.input
+type: array
+items:
+  type: object
+  properties:
+    '':
+      type: string
+      pattern: ^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM]))(\\d+)$
+      errorMessage: Please provide a valid SRA, ENA, DDBJ or GEO identifier

@@ -42,14 +42,9 @@ retry_with_backoff() {
 
 export NCBI_SETTINGS="$PWD/!{ncbi_settings}"
 
-retry_with_backoff !{args2} \
+retry_with_backoff !{retry_args} \
     prefetch \
-    !{args} \
+    !{prefetch_args} \
     !{id}
 
 [ -f !{id}.sralite ] && vdb-validate !{id}.sralite || vdb-validate !{id}
-
-cat <<-END_VERSIONS > versions.yml
-"!{task.process}":
-    sratools: $(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
-END_VERSIONS
