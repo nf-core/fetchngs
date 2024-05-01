@@ -10,7 +10,7 @@ process ASPERA_CLI {
     input:
     tuple val(meta), val(fastq)
     val user
-    var args
+    val args
 
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
