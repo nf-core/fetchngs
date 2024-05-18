@@ -8,11 +8,11 @@ process UNTAR {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    Map meta
-    Path archive
-    String args = ''
-    String args2 = ''
-    String prefix = ''
+    meta    : Map
+    archive : Path
+    args    : String = ''
+    args2   : String = ''
+    prefix  : String = ''
 
     output:
     meta

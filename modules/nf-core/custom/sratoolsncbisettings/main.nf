@@ -8,10 +8,10 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
         'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
 
     input:
-    List ids
+    ids             : List
 
     output:
-    Path ncbi_settings = path('*.mkfg')
+    ncbi_settings   : Path = path('*.mkfg')
 
     topic:
     tuple( task.process, 'sratools', eval("vdb-config --version 2>&1 | grep -Eo '[0-9.]+'") ) >> 'versions'

@@ -8,13 +8,13 @@ process SRATOOLS_FASTERQDUMP {
         'quay.io/biocontainers/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:6a9ff0e76ec016c3d0d27e0c0d362339f2d787e6-0' }"
 
     input:
-    Map meta
-    Path sra
-    Path ncbi_settings
-    Path certificate
-    String fasterqdump_args = '--split-files --include-technical'
-    String pigz_args = ''
-    String prefix = ''
+    meta            : Map
+    sra             : Path
+    ncbi_settings   : Path
+    certificate     : Path
+    fasterqdump_args: String = '--split-files --include-technical'
+    pigz_args       : String = ''
+    prefix          : String = ''
 
     output:
     meta
@@ -27,8 +27,8 @@ process SRATOOLS_FASTERQDUMP {
     script:
     if( !prefix )
         prefix = "${meta.id}"
-    def outfile = meta.single_end ? "${prefix}.fastq" : prefix
-    def key_file = ''
+    let outfile = meta.single_end ? "${prefix}.fastq" : prefix
+    var key_file = ''
     if (certificate.toString().endsWith('.jwt')) {
         key_file += " --perm ${certificate}"
     } else if (certificate.toString().endsWith('.ngc')) {

@@ -8,11 +8,11 @@ process SRATOOLS_PREFETCH {
         'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
 
     input:
-    Map meta
-    Path ncbi_settings
-    Path certificate
-    String prefetch_args = ''
-    String retry_args = '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
+    meta            : Map
+    ncbi_settings   : Path
+    certificate     : Path
+    prefetch_args   : String = ''
+    retry_args      : String = '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
 
     output:
     sra = path(id)

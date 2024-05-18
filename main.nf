@@ -33,8 +33,8 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetc
 workflow NFCORE_FETCHNGS {
 
     take:
-    ids     // Channel<String>
-    params  // ParamsMap
+    ids     : Channel<String>
+    params  : ParamsMap
 
     main:
 
@@ -70,7 +70,7 @@ workflow {
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    ids = PIPELINE_INITIALISATION (
+    let ids = PIPELINE_INITIALISATION (
         params.version,
         params.help,
         params.validate_params,

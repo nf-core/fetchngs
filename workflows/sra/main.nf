@@ -37,19 +37,19 @@ include { Sample } from '../../types/types'
 workflow SRA {
 
     take:
-    ids                         // List<String>
-    ena_metadata_fields         // String
-    sample_mapping_fields       // String
-    nf_core_pipeline            // String
-    nf_core_rnaseq_strandedness // String
-    download_method             // String enum: 'aspera' | 'ftp' | 'sratools'
-    skip_fastq_download         // boolean
-    dbgap_key                   // String
-    aspera_cli_args             // String
-    sra_fastq_ftp_args          // String
-    sratools_fasterqdump_args   // String
-    sratools_pigz_args          // String
-    outdir                      // String
+    ids                         : Channel<String>
+    ena_metadata_fields         : String
+    sample_mapping_fields       : String
+    nf_core_pipeline            : String
+    nf_core_rnaseq_strandedness : String
+    download_method             : String // enum: 'aspera' | 'ftp' | 'sratools'
+    skip_fastq_download         : boolean
+    dbgap_key                   : String
+    aspera_cli_args             : String
+    sra_fastq_ftp_args          : String
+    sratools_fasterqdump_args   : String
+    sratools_pigz_args          : String
+    outdir                      : String
 
     main:
     ids                                                         // Channel<String>
@@ -83,7 +83,7 @@ workflow SRA {
                 getDownloadMethod(meta, download_method) == 'ftp'
             }                                                   // Channel<Map>
             |> map { meta ->
-                def fastq = [ file(meta.fastq_1), file(meta.fastq_2) ]
+                let fastq = [ file(meta.fastq_1), file(meta.fastq_2) ]
                 SRA_FASTQ_FTP ( meta, fastq, sra_fastq_ftp_args )
             }                                                   // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
             |> set { ftp_samples }                              // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
@@ -109,7 +109,7 @@ workflow SRA {
                 getDownloadMethod(meta, download_method) == 'aspera'
             }                                                   // Channel<Map>
             |> map { meta ->
-                def fastq = meta.fastq_aspera.tokenize(';').take(2).collect { name -> file(name) }
+                let fastq = meta.fastq_aspera.tokenize(';').take(2).collect { name -> file(name) }
                 ASPERA_CLI ( meta, fastq, 'era-fasp', aspera_cli_args )
             }                                                   // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
             |> set { aspera_samples }                           // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
@@ -128,8 +128,8 @@ workflow SRA {
 
         fastq                                                   // Channel<Sample>
             |> map { sample ->
-                def reads = sample.files
-                def meta = sample.meta
+                let reads = sample.files
+                let meta = sample.meta
                 meta + [
                     fastq_1: reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : '',
                     fastq_2: reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : ''
@@ -170,7 +170,7 @@ workflow SRA {
         |> softwareVersionsToYAML                           // Channel<String>
         |> collect(sort: true)                              // List<String>
         |> exec('SOFTWARE_VERIONS') { versions ->
-            def path = task.workDir.resolve('nf_core_fetchngs_software_mqc_versions.yml')
+            let path = task.workDir.resolve('nf_core_fetchngs_software_mqc_versions.yml')
             mergeText(versions, path, newLine: true)
             return path
         }                                                   // Path
@@ -198,7 +198,7 @@ workflow SRA {
 ========================================================================================
 */
 
-def getDownloadMethod(Map meta, String download_method) {
+fn getDownloadMethod(meta: Map, download_method: String) -> String {
     // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
         // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
         // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'

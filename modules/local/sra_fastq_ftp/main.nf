@@ -10,9 +10,9 @@ process SRA_FASTQ_FTP {
         'biocontainers/wget:1.20.1' }"
 
     input:
-    Map meta
-    List<Path> fastq
-    String args
+    meta    : Map
+    fastq   : List<Path>
+    args    : String
 
     output:
     meta    = meta

@@ -15,10 +15,10 @@ import nextflow.extension.FilesEx
 workflow UTILS_NEXTFLOW_PIPELINE {
 
     take:
-    print_version        // boolean: print version
-    dump_parameters      // boolean: dump parameters
-    outdir               //    path: base directory used to publish pipeline results
-    check_conda_channels // boolean: check conda channels
+    print_version       : boolean // print version
+    dump_parameters     : boolean // dump parameters
+    outdir              : String  // base directory used to publish pipeline results
+    check_conda_channels: boolean // check conda channels
 
     main:
 
@@ -45,7 +45,7 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     }
 
     emit:
-    dummy_emit = true
+    true
 }
 
 /*
@@ -57,15 +57,15 @@ workflow UTILS_NEXTFLOW_PIPELINE {
 //
 // Generate version string
 //
-def getWorkflowVersion() {
-    String version_string = ""
+fn getWorkflowVersion() -> String {
+    var version_string = ""
     if (workflow.manifest.version) {
-        def prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
+        let prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
         version_string += "${prefix_v}${workflow.manifest.version}"
     }
 
     if (workflow.commitId) {
-        def git_shortsha = workflow.commitId.substring(0, 7)
+        let git_shortsha = workflow.commitId.substring(0, 7)
         version_string += "-g${git_shortsha}"
     }
 
@@ -75,11 +75,11 @@ def getWorkflowVersion() {
 //
 // Dump pipeline parameters to a JSON file
 //
-def dumpParametersToJSON(outdir) {
-    def timestamp  = new java.util.Date().format( 'yyyy-MM-dd_HH-mm-ss')
-    def filename   = "params_${timestamp}.json"
-    def temp_pf    = new File(workflow.launchDir.toString(), ".${filename}")
-    def jsonStr    = JsonOutput.toJson(params)
+fn dumpParametersToJSON(outdir: String) {
+    let timestamp  = new java.util.Date().format( 'yyyy-MM-dd_HH-mm-ss')
+    let filename   = "params_${timestamp}.json"
+    let temp_pf    = new File(workflow.launchDir.toString(), ".${filename}")
+    let jsonStr    = JsonOutput.toJson(params)
     temp_pf.text   = JsonOutput.prettyPrint(jsonStr)
 
     FilesEx.copyTo(temp_pf.toPath(), "${outdir}/pipeline_info/params_${timestamp}.json")
@@ -89,11 +89,11 @@ def dumpParametersToJSON(outdir) {
 //
 // When running with -profile conda, warn if channels have not been set-up appropriately
 //
-def checkCondaChannels() {
-    Yaml parser = new Yaml()
-    def channels = []
+fn checkCondaChannels() {
+    let parser = new Yaml()
+    var channels: Set = []
     try {
-        def config = parser.load("conda config --show channels".execute().text)
+        let config = parser.load("conda config --show channels".execute().text)
         channels = config.channels
     } catch(NullPointerException | IOException e) {
         log.warn "Could not verify conda channel configuration."
@@ -102,12 +102,12 @@ def checkCondaChannels() {
 
     // Check that all channels are present
     // This channel list is ordered by required channel priority.
-    def required_channels_in_order = ['conda-forge', 'bioconda', 'defaults']
-    def channels_missing = ((required_channels_in_order as Set) - (channels as Set)) as Boolean
+    let required_channels_in_order: Set = ['conda-forge', 'bioconda', 'defaults']
+    let channels_missing = !(required_channels_in_order - channels).isEmpty()
 
     // Check that they are in the right order
-    def channel_priority_violation = false
-    def n = required_channels_in_order.size()
+    let channel_priority_violation = false
+    let n = required_channels_in_order.size()
     for (int i = 0; i < n - 1; i++) {
         channel_priority_violation |= !(channels.indexOf(required_channels_in_order[i]) < channels.indexOf(required_channels_in_order[i+1]))
     }

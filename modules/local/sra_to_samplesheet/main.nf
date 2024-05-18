@@ -4,38 +4,38 @@ process SRA_TO_SAMPLESHEET {
     memory 100.MB
 
     input:
-    List<Map> sra_metadata
-    String pipeline
-    String strandedness
-    String mapping_fields
+    sra_metadata    : List<Map>
+    pipeline        : String
+    strandedness    : String
+    mapping_fields  : String
 
     output:
-    Path samplesheet  = path("samplesheet.csv")
-    Path mappings     = path("mappings.csv")
+    samplesheet     : Path = path("samplesheet.csv")
+    mappings        : Path = path("mappings.csv")
 
     exec:
     //
     // Create samplesheet containing metadata
     //
 
-    def records = sra_metadata.collect { meta ->
+    let records = sra_metadata.collect { meta ->
         getSraRecord(meta, pipeline, strandedness, mappings)
     }
 
-    def samplesheet = records
+    let samplesheet = records
         .collect { pipeline_map, mappings_map -> pipeline_map }
         .sort { record -> record.id }
     mergeCsv(samplesheet, task.workDir.resolve('samplesheet.csv'))
 
-    def mappings = records
+    let mappings = records
         .collect { pipeline_map, mappings_map -> mappings_map }
         .sort { record -> record.id }
     mergeCsv(mappings, task.workDir.resolve('id_mappings.csv'))
 }
 
-def getSraRecord(Map meta, String pipeline, String strandedness, String mapping_fields) {
+fn getSraRecord(meta: Map, pipeline: String, strandedness: String, mapping_fields: String) -> Tuple2<Map,Map> {
     //  Remove custom keys needed to download the data
-    def meta_clone = meta.clone()
+    let meta_clone = meta.clone()
     meta_clone.remove("id")
     meta_clone.remove("fastq_1")
     meta_clone.remove("fastq_2")
@@ -44,7 +44,7 @@ def getSraRecord(Map meta, String pipeline, String strandedness, String mapping_
     meta_clone.remove("single_end")
 
     // Add relevant fields to the beginning of the map
-    def pipeline_map = [
+    let pipeline_map = [
         sample  : "${meta.id.split('_')[0..-2].join('_')}",
         fastq_1 : meta.fastq_1,
         fastq_2 : meta.fastq_2
@@ -65,13 +65,12 @@ def getSraRecord(Map meta, String pipeline, String strandedness, String mapping_
     //
     // Create sample id mappings file
     //
-    def mappings_map = pipeline_map.clone()
-    def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect{ v -> v.trim().toLowerCase() } : []
-    if ((mappings_map.keySet() + fields).unique().size() != mappings_map.keySet().size()) {
-        error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${mappings_map.keySet().join(', ')}")
+    let fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect{ v -> v.trim().toLowerCase() } : []
+    if ((pipeline_map.keySet() + fields).unique().size() != pipeline_map.keySet().size()) {
+        error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${pipeline_map.keySet().join(', ')}")
     }
 
-    mappings_map = mappings_map.subMap(fields)
+    let mappings_map = pipeline_map.subMap(fields)
 
-    return [ pipeline_map, mappings_map ]
+    return tuple( pipeline_map, mappings_map )
 }

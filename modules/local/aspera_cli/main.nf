@@ -8,10 +8,10 @@ process ASPERA_CLI {
         'biocontainers/aspera-cli:4.14.0--hdfd78af_1' }"
 
     input:
-    Map meta
-    List<Path> fastq
-    String user
-    String args
+    meta    : Map
+    fastq   : List<Path>
+    user    : String
+    args    : String
 
     output:
     meta    = meta
@@ -22,7 +22,7 @@ process ASPERA_CLI {
     tuple( task.process, 'aspera_cli', eval('ascli --version') ) >> 'versions'
 
     script:
-    def conda_prefix = ['singularity', 'apptainer'].contains(workflow.containerEngine) ? "export CONDA_PREFIX=/usr/local" : ""
+    let conda_prefix = ['singularity', 'apptainer'].contains(workflow.containerEngine) ? "export CONDA_PREFIX=/usr/local" : ""
     if (meta.single_end) {
         """
         $conda_prefix

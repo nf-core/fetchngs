@@ -7,10 +7,10 @@ process SRA_RUNINFO_TO_FTP {
         'biocontainers/python:3.9--1' }"
 
     input:
-    Path runinfo
+    runinfo : Path
 
     output:
-    Path tsv = path("*.runinfo_ftp.tsv")
+    tsv     : Path = path("*.runinfo_ftp.tsv")
 
     topic:
     tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
