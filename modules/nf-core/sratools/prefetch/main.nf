@@ -15,7 +15,7 @@ process SRATOOLS_PREFETCH {
     retry_args      : String = '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
 
     output:
-    sra = path(id)
+    path(id)
 
     topic:
     tuple( task.process, 'sratools', eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'") ) >> 'versions'

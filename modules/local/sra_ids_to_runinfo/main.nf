@@ -13,7 +13,7 @@ process SRA_IDS_TO_RUNINFO {
     fields  : String
 
     output:
-    tsv     : Path = path("*.runinfo.tsv")
+    path("${id}.runinfo.tsv")
 
     topic:
     tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'

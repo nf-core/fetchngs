@@ -11,7 +11,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     ids             : List
 
     output:
-    ncbi_settings   : Path = path('*.mkfg')
+    path('*.mkfg')
 
     topic:
     tuple( task.process, 'sratools', eval("vdb-config --version 2>&1 | grep -Eo '[0-9.]+'") ) >> 'versions'
