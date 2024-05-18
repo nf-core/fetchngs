@@ -13,7 +13,7 @@ process MULTIQC_MAPPINGS_CONFIG {
     Path yml = path("multiqc_config.yml")
 
     topic:
-    [ task.process, 'python', eval("python --version | sed 's/Python //g'") ] >> 'versions'
+    tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
 
     script:
     """

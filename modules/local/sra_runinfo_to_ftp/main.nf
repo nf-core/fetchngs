@@ -13,7 +13,7 @@ process SRA_RUNINFO_TO_FTP {
     Path tsv = path("*.runinfo_ftp.tsv")
 
     topic:
-    [ task.process, 'python', eval("python --version | sed 's/Python //g'") ] >> 'versions'
+    tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
 
     script:
     """

@@ -1,5 +1,3 @@
-include { Sample } from '../../types/types'
-
 process UNTAR {
     tag "$archive"
     label 'process_single'
@@ -10,22 +8,23 @@ process UNTAR {
         'nf-core/ubuntu:20.04' }"
 
     input:
-    Sample input
+    Map meta
+    Path archive
     String args = ''
     String args2 = ''
     String prefix = ''
 
     output:
-    Sample untar = new Sample(meta, path("$prefix"))
+    meta
+    untar = path("$prefix")
 
     topic:
-    [ task.process, 'untar', eval("echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//'") ] >> 'versions'
+    tuple( task.process, 'untar', eval("echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//'") ) >> 'versions'
 
     script:
-    meta = input.meta
-    archive = input.files.first()
     if( !prefix )
         prefix = meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, "")
+
     """
     mkdir $prefix
 

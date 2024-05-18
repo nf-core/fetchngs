@@ -16,7 +16,7 @@ process SRA_IDS_TO_RUNINFO {
     Path tsv = path("*.runinfo.tsv")
 
     topic:
-    [ task.process, 'python', eval("python --version | sed 's/Python //g'") ] >> 'versions'
+    tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
 
     script:
     def metadata_fields = fields ? "--ena_metadata_fields ${fields}" : ''

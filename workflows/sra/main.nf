@@ -83,10 +83,10 @@ workflow SRA {
                 getDownloadMethod(meta, download_method) == 'ftp'
             }                                                   // Channel<Map>
             |> map { meta ->
-                def sample = new Sample( meta, [ file(meta.fastq_1), file(meta.fastq_2) ] )
-                SRA_FASTQ_FTP ( sample, sra_fastq_ftp_args )
-            }                                                   // fastq: Channel<Sample>, md5: Channel<Sample>
-            |> set { ftp_samples }                              // fastq: Channel<Sample>, md5: Channel<Sample>
+                def fastq = [ file(meta.fastq_1), file(meta.fastq_2) ]
+                SRA_FASTQ_FTP ( meta, fastq, sra_fastq_ftp_args )
+            }                                                   // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
+            |> set { ftp_samples }                              // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
 
         //
         // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
@@ -95,14 +95,11 @@ workflow SRA {
             |> filter { meta ->
                 getDownloadMethod(meta, download_method) == 'sratools'
             }                                                   // Channel<Map>
-            |> map { meta ->
-                new Tuple2<Map,String>( meta, meta.run_accession )
-            }                                                   // Channel<Tuple2<Map,String>>
             |> FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
                 dbgap_key ? file(dbgap_key, checkIfExists: true) : [],
                 sratools_fasterqdump_args,
-                sratools_pigz_args )                            // Channel<Sample>
-            |> set { sratools_samples }                         // Channel<Sample>
+                sratools_pigz_args )                            // Channel<ProcessOut(meta: Map, fastq: List<Path>)>
+            |> set { sratools_samples }                         // Channel<ProcessOut(meta: Map, fastq: List<Path>)>
  
         //
         // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
@@ -112,14 +109,22 @@ workflow SRA {
                 getDownloadMethod(meta, download_method) == 'aspera'
             }                                                   // Channel<Map>
             |> map { meta ->
-                def sample = new Sample( meta, meta.fastq_aspera.tokenize(';').take(2).collect( name -> file(name) ) )
-                ASPERA_CLI ( sample, 'era-fasp', aspera_cli_args )
-            }                                                   // fastq: Channel<Sample>, md5: Channel<Sample>
-            |> set { aspera_samples }                           // fastq: Channel<Sample>, md5: Channel<Sample>
+                def fastq = meta.fastq_aspera.tokenize(';').take(2).collect { name -> file(name) }
+                ASPERA_CLI ( meta, fastq, 'era-fasp', aspera_cli_args )
+            }                                                   // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
+            |> set { aspera_samples }                           // Channel<ProcessOut(meta: Map, fastq: List<Path>, md5: List<Path>)>
 
         // Isolate FASTQ channel which will be added to emit block
-        fastq = mix(ftp_samples.fastq, sratools_samples.reads, aspera_samples.fastq)
-        md5 = mix(ftp_samples.md5, aspera_samples.md5)
+        fastq = mix(
+            ftp_samples         |> map { out -> new Sample(out.meta, out.fastq) },
+            sratools_samples    |> map { out -> new Sample(out.meta, out.fastq) },
+            aspera_samples      |> map { out -> new Sample(out.meta, out.fastq) }
+        )
+
+        md5 = mix(
+            ftp_samples         |> map { out -> new Sample(out.meta, out.md5) },
+            aspera_samples      |> map { out -> new Sample(out.meta, out.md5) }
+        )
 
         fastq                                                   // Channel<Sample>
             |> map { sample ->
@@ -144,8 +149,8 @@ workflow SRA {
                 nf_core_pipeline,
                 nf_core_rnaseq_strandedness,
                 sample_mapping_fields )
-        }                                                   // samplesheet: Path, mappings: Path
-        |> set { index_files }                              // samplesheet: Path, mappings: Path
+        }                                                   // ProcessOut(samplesheet: Path, mappings: Path)
+        |> set { index_files }                              // ProcessOut(samplesheet: Path, mappings: Path)
 
     samplesheet = index_files.samplesheet                   // Path
     mappings    = index_files.mappings                      // Path

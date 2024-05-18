@@ -2,8 +2,6 @@
 // Subworkflow with utility functions specific to the nf-core pipeline template
 //
 
-import nextflow.extension.FilesEx
-
 /*
 ========================================================================================
     SUBWORKFLOW DEFINITION
