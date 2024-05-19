@@ -40,7 +40,21 @@ workflow NFCORE_FETCHNGS {
     //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
-    SRA ( ids )
+    SRA (
+        ids,
+        params.ena_metadata_fields ?: '',
+        params.sample_mapping_fields,
+        params.nf_core_pipeline ?: '',
+        params.nf_core_rnaseq_strandedness ?: 'auto',
+        params.download_method,
+        params.skip_fastq_download,
+        params.dbgap_key,
+        params.aspera_cli_args,
+        params.sra_fastq_ftp_args,
+        params.sratools_fasterqdump_args,
+        params.sratools_pigz_args,
+        params.outdir
+    )
 
 }
 

@@ -29,7 +29,19 @@ include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../subworkflow
 workflow SRA {
 
     take:
-    ids // channel: [ ids ]
+    ids                         // channel: [ ids ]
+    ena_metadata_fields         // string
+    sample_mapping_fields       // string
+    nf_core_pipeline            // string
+    nf_core_rnaseq_strandedness // string
+    download_method             // enum: 'aspera' | 'ftp' | 'sratools'
+    skip_fastq_download         // boolean
+    dbgap_key                   // string
+    aspera_cli_args             // string
+    sra_fastq_ftp_args          // string
+    sratools_fasterqdump_args   // string
+    sratools_pigz_args          // string
+    outdir                      // string
 
     main:
     //
@@ -37,7 +49,7 @@ workflow SRA {
     //
     SRA_IDS_TO_RUNINFO (
         ids,
-        params.ena_metadata_fields ?: ''
+        ena_metadata_fields
     )
 
     //
@@ -60,27 +72,27 @@ workflow SRA {
         .unique()
         .set { ch_sra_metadata }
 
-    if (!params.skip_fastq_download) {
+    if (!skip_fastq_download) {
 
         ch_sra_metadata
             .branch {
                 meta ->
-                    def download_method = 'ftp'
+                    def method = 'ftp'
                     // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
                         // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
                         // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
-                    if (meta.fastq_aspera && params.download_method == 'aspera') {
-                        download_method = 'aspera'
+                    if (meta.fastq_aspera && download_method == 'aspera') {
+                        method = 'aspera'
                     }
-                    if ((!meta.fastq_aspera && !meta.fastq_1) || params.download_method == 'sratools') {
-                        download_method = 'sratools'
+                    if ((!meta.fastq_aspera && !meta.fastq_1) || download_method == 'sratools') {
+                        method = 'sratools'
                     }
 
-                    aspera: download_method == 'aspera'
+                    aspera: method == 'aspera'
                         return [ meta, meta.fastq_aspera.tokenize(';').take(2) ]
-                    ftp: download_method == 'ftp'
+                    ftp: method == 'ftp'
                         return [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
-                    sratools: download_method == 'sratools'
+                    sratools: method == 'sratools'
                         return [ meta, meta.run_accession ]
             }
             .set { ch_sra_reads }
@@ -90,7 +102,7 @@ workflow SRA {
         //
         SRA_FASTQ_FTP (
             ch_sra_reads.ftp,
-            params.sra_fastq_ftp_args
+            sra_fastq_ftp_args
         )
 
         //
@@ -98,9 +110,9 @@ workflow SRA {
         //
         FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS (
             ch_sra_reads.sratools,
-            params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : [],
-            params.sratools_fasterqdump_args,
-            params.sratools_pigz_args
+            dbgap_key ? file(dbgap_key, checkIfExists: true) : [],
+            sratools_fasterqdump_args,
+            sratools_pigz_args
         )
 
         //
@@ -109,7 +121,7 @@ workflow SRA {
         ASPERA_CLI (
             ch_sra_reads.aspera,
             'era-fasp',
-            params.aspera_cli_args
+            aspera_cli_args
         )
 
         // Isolate FASTQ channel which will be added to emit block
@@ -124,8 +136,8 @@ workflow SRA {
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
                     def meta_clone = meta.clone()
 
-                    meta_clone.fastq_1 = reads[0] ? "${params.outdir}/fastq/${reads[0].getName()}" : ''
-                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${params.outdir}/fastq/${reads[1].getName()}" : ''
+                    meta_clone.fastq_1 = reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : ''
+                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : ''
 
                     return meta_clone
             }
@@ -137,9 +149,9 @@ workflow SRA {
     //
     SRA_TO_SAMPLESHEET (
         ch_sra_metadata,
-        params.nf_core_pipeline ?: '',
-        params.nf_core_rnaseq_strandedness ?: 'auto',
-        params.sample_mapping_fields
+        nf_core_pipeline,
+        nf_core_rnaseq_strandedness,
+        sample_mapping_fields
     )
 
     // Merge samplesheets and mapping files across all samples
@@ -165,7 +177,7 @@ workflow SRA {
     // MODULE: Create a MutiQC config file with sample name mappings
     //
     ch_sample_mappings_yml = Channel.empty()
-    if (params.sample_mapping_fields) {
+    if (sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG (
             ch_mappings
         )
