@@ -198,14 +198,14 @@ workflow SRA {
     sra_metadata    = ch_sra_metadata
 
     publish:
-    ch_fastq                    >> 'fastq/'
-    ASPERA_CLI.out.md5          >> 'fastq/md5/'
-    SRA_FASTQ_FTP.out.md5       >> 'fastq/md5/'
-    SRA_RUNINFO_TO_FTP.out.tsv  >> 'metadata/'
-    ch_versions_yml             >> 'pipeline_info/'
-    ch_samplesheet              >> 'samplesheet/'
-    ch_mappings                 >> 'samplesheet/'
-    ch_sample_mappings_yml      >> 'samplesheet/'
+    ch_fastq                    >> 'fastq'
+    ASPERA_CLI.out.md5          >> 'fastq/md5'
+    SRA_FASTQ_FTP.out.md5       >> 'fastq/md5'
+    SRA_RUNINFO_TO_FTP.out.tsv  >> 'metadata'
+    ch_versions_yml             >> 'pipeline_info'
+    ch_samplesheet              >> 'samplesheet'
+    ch_mappings                 >> 'samplesheet'
+    ch_sample_mappings_yml      >> 'samplesheet'
 }
 
 /*
