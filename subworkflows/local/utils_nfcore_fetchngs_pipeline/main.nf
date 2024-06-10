@@ -62,7 +62,7 @@ workflow PIPELINE_INITIALISATION {
         pre_help_text,
         post_help_text,
         validate_params,
-        "schema_params.yml"
+        "schema_inputs.yml"
     )
 
     //
@@ -112,7 +112,7 @@ workflow PIPELINE_COMPLETION {
 
     main:
 
-    summary_params = paramsSummaryMap(workflow, parameters_schema: "schema_params.yml")
+    summary_params = paramsSummaryMap(workflow, parameters_schema: "schema_inputs.yml")
 
     //
     // Completion email and summary
