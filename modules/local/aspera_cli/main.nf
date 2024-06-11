@@ -10,7 +10,7 @@ process ASPERA_CLI {
     input:
     tuple val(meta), val(fastq)
     val user
-    var args
+    val args
 
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
@@ -55,4 +55,22 @@ process ASPERA_CLI {
         md5sum -c ${meta.id}_2.fastq.gz.md5
         """
     }
+}
+
+workflow {
+    input = [
+        [ id:'SRX9626017_SRR13191702', single_end:false, md5_1: '89c5be920021a035084d8aeb74f32df7', md5_2: '56271be38a80db78ef3bdfc5d9909b98' ],
+        [
+            'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_1.fastq.gz',
+            'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_2.fastq.gz'
+        ]
+    ]
+    user = 'era-fasp'
+    args = ''
+
+    ASPERA_CLI (
+        input,
+        user,
+        args
+    )
 }
