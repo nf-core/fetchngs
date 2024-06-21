@@ -72,6 +72,7 @@ workflow SRA {
         .unique()
         .set { ch_sra_metadata }
 
+    ch_fastq = Channel.empty()
     if (!skip_fastq_download) {
 
         ch_sra_metadata
