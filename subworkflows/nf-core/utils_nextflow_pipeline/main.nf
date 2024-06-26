@@ -2,10 +2,6 @@
 // Subworkflow with functionality that may be useful for any Nextflow pipeline
 //
 
-import org.yaml.snakeyaml.Yaml
-import groovy.json.JsonOutput
-import nextflow.extension.FilesEx
-
 /*
 ========================================================================================
     SUBWORKFLOW DEFINITION
@@ -79,10 +75,10 @@ def dumpParametersToJSON(outdir) {
     def timestamp  = new java.util.Date().format( 'yyyy-MM-dd_HH-mm-ss')
     def filename   = "params_${timestamp}.json"
     def temp_pf    = new File(workflow.launchDir.toString(), ".${filename}")
-    def jsonStr    = JsonOutput.toJson(params)
-    temp_pf.text   = JsonOutput.prettyPrint(jsonStr)
+    def jsonStr    = groovy.json.JsonOutput.toJson(params)
+    temp_pf.text   = groovy.json.JsonOutput.prettyPrint(jsonStr)
 
-    FilesEx.copyTo(temp_pf.toPath(), "${outdir}/pipeline_info/params_${timestamp}.json")
+    temp_pf.toPath().copyTo("${outdir}/pipeline_info/params_${timestamp}.json")
     temp_pf.delete()
 }
 
@@ -90,7 +86,7 @@ def dumpParametersToJSON(outdir) {
 // When running with -profile conda, warn if channels have not been set-up appropriately
 //
 def checkCondaChannels() {
-    Yaml parser = new Yaml()
+    def parser = new org.yaml.snakeyaml.Yaml()
     def channels = []
     try {
         def config = parser.load("conda config --show channels".execute().text)

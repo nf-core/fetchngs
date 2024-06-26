@@ -2,8 +2,6 @@
 // Subworkflow with utility functions specific to the nf-core pipeline template
 //
 
-import nextflow.extension.FilesEx
-
 /*
 ========================================================================================
     SUBWORKFLOW DEFINITION
@@ -336,7 +334,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     Map colors = logColours(monochrome_logs)
     if (email_address) {
         try {
-            if (plaintext_email) { throw GroovyException('Send plaintext e-mail, not HTML') }
+            if (plaintext_email) { throw new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML') }
             // Try to send HTML e-mail using sendmail
             def sendmail_tf = new File(workflow.launchDir.toString(), ".sendmail_tmp.html")
             sendmail_tf.withWriter { w -> w << sendmail_html }
