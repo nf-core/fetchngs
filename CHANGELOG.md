@@ -3,6 +3,24 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unpublished Version / DEV]
+
+### Enhancements & fixes
+
+- [PR #319](https://github.com/nf-core/fetchngs/pull/319) - Update subworkflows and modules to be TES compliance.
+
+### :warning: Major enhancements
+- All the subworkflows and modules have been updated to newest main branch of `nf-core/modules`
+- Add support for tags
+- Updated `multiqc_mappings_config` to have different matching pattern for `config.yml` vs `versions.yml`
+
+### Credits
+
+Special thanks to the following for their contributions to the release:
+
+- [Venkat Malladi](https://github.com/vsmalladi)
+
+
 ## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 
 ### :warning: Major enhancements
