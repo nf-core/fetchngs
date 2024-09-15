@@ -31,7 +31,7 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,6b60ed6d5805271a1b97798e29c0635c"
+                    "versions.yml:md5,7bfc86ca1f3e3236dbb91eb85c1d7af0"
                 ],
                 "fastq": [
                     [
@@ -62,7 +62,7 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,6b60ed6d5805271a1b97798e29c0635c"
+                    "versions.yml:md5,7bfc86ca1f3e3236dbb91eb85c1d7af0"
                 ]
             }
         ],

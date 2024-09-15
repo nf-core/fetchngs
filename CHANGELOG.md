@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhancements & fixes
 
+- [PR #299](https://github.com/nf-core/fetchngs/pull/299) - Template update for nf-core/tools v2.13.1
+- [PR #300](https://github.com/nf-core/fetchngs/pull/300) - Use file paths instead of tags for testing matrix, should make matrices more efficient
+- [PR #303](https://github.com/nf-core/fetchngs/pull/303) - Update wget container for SRA_FASTQ_FTP from 1.20.1 to 1.21.4
+- [PR #305](https://github.com/nf-core/fetchngs/pull/305) - Update module sratools/prefetch for reliable download integrity check
 - [PR #319](https://github.com/nf-core/fetchngs/pull/319) - Update subworkflows and modules to be TES compliance.
 
 ### :warning: Major enhancements
@@ -14,12 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add support for tags
 - Updated `multiqc_mappings_config` to have different matching pattern for `config.yml` vs `versions.yml`
 
-### Credits
 
-Special thanks to the following for their contributions to the release:
+### Software dependencies
 
-- [Venkat Malladi](https://github.com/vsmalladi)
-
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| `wget`     | 1.20.1      | 1.21.4      |
+| `sratools` | 3.0.8       | 3.1.0       |
 
 ## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 
