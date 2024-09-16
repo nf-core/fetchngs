@@ -14,7 +14,7 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,83d1b23f5ff5b2ad1b96d17d7d7594ee"
+                    "versions.yml:md5,afc103d69e2f31782637d7d91eba69b0"
                 ],
                 "sra": [
                     [
@@ -28,92 +28,60 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,83d1b23f5ff5b2ad1b96d17d7d7594ee"
+                    "versions.yml:md5,afc103d69e2f31782637d7d91eba69b0"
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nextflow": "24.04.4"
         },
-        "timestamp": "2024-05-17T20:07:31.627115"
+        "timestamp": "2024-09-16T05:23:51.982828628"
     },
     "sratools/prefetch with sralite": {
         "content": [
             {
                 "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "SRR1170046.sralite:md5,7acfce556ca0951aff49d780899c105b"
-                        ]
-                    ]
+                    
                 ],
                 "1": [
-                    "versions.yml:md5,83d1b23f5ff5b2ad1b96d17d7d7594ee"
+                    
                 ],
                 "sra": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "SRR1170046.sralite:md5,7acfce556ca0951aff49d780899c105b"
-                        ]
-                    ]
+                    
                 ],
                 "versions": [
-                    "versions.yml:md5,83d1b23f5ff5b2ad1b96d17d7d7594ee"
+                    
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nextflow": "24.04.4"
         },
-        "timestamp": "2024-02-28T11:49:02.309737"
+        "timestamp": "2024-09-16T04:49:40.146972356"
     },
     "sratools/prefetch": {
         "content": [
             {
                 "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "DRR000774.sra:md5,7647dba20c89c0e3d7ad13842f060eb0"
-                        ]
-                    ]
+                    
                 ],
                 "1": [
-                    "versions.yml:md5,83d1b23f5ff5b2ad1b96d17d7d7594ee"
+                    
                 ],
                 "sra": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "DRR000774.sra:md5,7647dba20c89c0e3d7ad13842f060eb0"
-                        ]
-                    ]
+                    
                 ],
                 "versions": [
-                    "versions.yml:md5,83d1b23f5ff5b2ad1b96d17d7d7594ee"
+                    
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nextflow": "24.04.4"
         },
-        "timestamp": "2024-02-28T11:48:37.428307"
+        "timestamp": "2024-09-16T04:49:13.529179115"
     }
 }

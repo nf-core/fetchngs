@@ -6,20 +6,20 @@
                     "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
                 ],
                 "1": [
-                    "versions.yml:md5,e95f8185f665127a73622a19d321bcca"
+                    "versions.yml:md5,87be2d8760490c5b0329a8710644b4e3"
                 ],
                 "tsv": [
                     "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
                 ],
                 "versions": [
-                    "versions.yml:md5,e95f8185f665127a73622a19d321bcca"
+                    "versions.yml:md5,87be2d8760490c5b0329a8710644b4e3"
                 ]
             }
         ],
         "meta": {
             "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nextflow": "24.04.4"
         },
-        "timestamp": "2024-02-28T11:51:45.748227"
+        "timestamp": "2024-09-16T04:48:35.453829086"
     }
 }
