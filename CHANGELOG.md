@@ -19,7 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add support for tags
 - Updated `multiqc_mappings_config` to have different matching pattern for `config.yml` vs `versions.yml`
 
-
 ### Software dependencies
 
 | Dependency | Old version | New version |
