@@ -14,7 +14,7 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,afc103d69e2f31782637d7d91eba69b0"
+                    "versions.yml:md5,c4e05d768270116a7245de847f18ad5a"
                 ],
                 "sra": [
                     [
@@ -28,7 +28,7 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,afc103d69e2f31782637d7d91eba69b0"
+                    "versions.yml:md5,c4e05d768270116a7245de847f18ad5a"
                 ]
             }
         ],
@@ -36,7 +36,7 @@
             "nf-test": "0.8.4",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-09-16T05:23:51.982828628"
+        "timestamp": "2024-09-16T16:48:51.621717763"
     },
     "sratools/prefetch with sralite": {
         "content": [
