@@ -2,13 +2,13 @@
     "Should run without failures": {
         "content": [
             [
-                "versions.yml:md5,bc8238c8fcfbd7d5d4d32614fcf0027a"
+                "versions.yml:md5,3d6ee88cce1ee517e198633f062589a8"
             ]
         ],
         "meta": {
-            "nf-test": "0.8.4",
+            "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-09-16T16:47:47.694358192"
+        "timestamp": "2024-09-17T09:17:35.745689"
     }
 }

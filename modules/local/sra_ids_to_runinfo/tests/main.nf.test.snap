@@ -6,20 +6,20 @@
                     "SRR13191702.runinfo.tsv:md5,3a1be35781ca6e8a28d8fd4d2f3bbe85"
                 ],
                 "1": [
-                    "versions.yml:md5,452af3b6d74d1de88f851d78473df8d4"
+                    "versions.yml:md5,1c14442e9b494b586eafe41e77300fae"
                 ],
                 "tsv": [
                     "SRR13191702.runinfo.tsv:md5,3a1be35781ca6e8a28d8fd4d2f3bbe85"
                 ],
                 "versions": [
-                    "versions.yml:md5,452af3b6d74d1de88f851d78473df8d4"
+                    "versions.yml:md5,1c14442e9b494b586eafe41e77300fae"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
+            "nf-test": "0.9.0",
             "nextflow": "24.04.4"
         },
-        "timestamp": "2024-09-16T04:47:54.693964769"
+        "timestamp": "2024-09-17T09:17:11.040523"
     }
 }
