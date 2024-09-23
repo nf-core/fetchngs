@@ -53,8 +53,7 @@ workflow NFCORE_FETCHNGS {
         params.aspera_cli_args,
         params.sra_fastq_ftp_args,
         params.sratools_fasterqdump_args,
-        params.sratools_pigz_args,
-        params.outdir
+        params.sratools_pigz_args
     )
 
 }
@@ -99,11 +98,6 @@ workflow {
         params.monochrome_logs,
         params.hook_url
     )
-}
-
-output {
-    directory params.outdir
-    mode params.publish_dir_mode
 }
 
 /*

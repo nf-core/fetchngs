@@ -41,7 +41,6 @@ workflow SRA {
     sra_fastq_ftp_args          // string
     sratools_fasterqdump_args   // string
     sratools_pigz_args          // string
-    outdir                      // string
 
     main:
     //
@@ -137,8 +136,8 @@ workflow SRA {
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
                     def meta_clone = meta.clone()
 
-                    meta_clone.fastq_1 = reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : ''
-                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : ''
+                    meta_clone.fastq_1 = reads[0] ? "${workflow.outputDir}/fastq/${reads[0].getName()}" : ''
+                    meta_clone.fastq_2 = reads[1] && !meta.single_end ? "${workflow.outputDir}/fastq/${reads[1].getName()}" : ''
 
                     return meta_clone
             }
