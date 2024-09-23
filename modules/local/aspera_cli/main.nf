@@ -58,15 +58,15 @@ process ASPERA_CLI {
 }
 
 workflow {
-    input = [
+    def input = [
         [ id:'SRX9626017_SRR13191702', single_end:false, md5_1: '89c5be920021a035084d8aeb74f32df7', md5_2: '56271be38a80db78ef3bdfc5d9909b98' ],
         [
             'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_1.fastq.gz',
             'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_2.fastq.gz'
         ]
     ]
-    user = 'era-fasp'
-    args = ''
+    def user = 'era-fasp'
+    def args = ''
 
     ASPERA_CLI (
         input,
