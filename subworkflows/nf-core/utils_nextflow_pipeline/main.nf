@@ -2,9 +2,9 @@
 // Subworkflow with functionality that may be useful for any Nextflow pipeline
 //
 
-import org.yaml.snakeyaml.Yaml
-import groovy.json.JsonOutput
-import nextflow.extension.FilesEx
+// import org.yaml.snakeyaml.Yaml
+// import groovy.json.JsonOutput
+// import nextflow.extension.FilesEx
 
 /*
 ========================================================================================
@@ -108,9 +108,9 @@ fn checkCondaChannels() {
     // Check that they are in the right order
     let channel_priority_violation = false
     let n = required_channels_in_order.size()
-    for (int i = 0; i < n - 1; i++) {
-        channel_priority_violation |= !(channels.indexOf(required_channels_in_order[i]) < channels.indexOf(required_channels_in_order[i+1]))
-    }
+    // for (int i = 0; i < n - 1; i++) {
+    //     channel_priority_violation |= !(channels.indexOf(required_channels_in_order[i]) < channels.indexOf(required_channels_in_order[i+1]))
+    // }
 
     if (channels_missing | channel_priority_violation) {
         log.warn "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +

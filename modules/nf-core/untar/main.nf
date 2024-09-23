@@ -14,13 +14,6 @@ process UNTAR {
     args2   : String = ''
     prefix  : String = ''
 
-    output:
-    meta
-    untar = path("$prefix")
-
-    topic:
-    tuple( task.process, 'untar', eval("echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//'") ) >> 'versions'
-
     script:
     if( !prefix )
         prefix = meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, "")
@@ -54,4 +47,11 @@ process UNTAR {
     mkdir $prefix
     touch ${prefix}/file.txt
     """
+
+    output:
+    meta
+    untar = path("$prefix")
+
+    topic:
+    ( task.process, 'untar', eval("echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//'") ) >> 'versions'
 }

@@ -4,14 +4,10 @@ process SRA_TO_SAMPLESHEET {
     memory 100.MB
 
     input:
-    sra_metadata    : List<Map>
+    sra_metadata    : List<Map<String,String>>
     pipeline        : String
     strandedness    : String
     mapping_fields  : String
-
-    output:
-    samplesheet     : Path = path("samplesheet.csv")
-    mappings        : Path = path("mappings.csv")
 
     exec:
     //
@@ -19,7 +15,7 @@ process SRA_TO_SAMPLESHEET {
     //
 
     let records = sra_metadata.collect { meta ->
-        getSraRecord(meta, pipeline, strandedness, mappings)
+        getSraRecord(meta, pipeline, strandedness, mapping_fields)
     }
 
     let samplesheet = records
@@ -31,6 +27,10 @@ process SRA_TO_SAMPLESHEET {
         .collect { pipeline_map, mappings_map -> mappings_map }
         .sort { record -> record.id }
     mergeCsv(mappings, task.workDir.resolve('id_mappings.csv'))
+
+    output:
+    samplesheet     : Path = path("samplesheet.csv")
+    mappings        : Path = path("mappings.csv")
 }
 
 fn getSraRecord(meta: Map, pipeline: String, strandedness: String, mapping_fields: String) -> Tuple2<Map,Map> {
@@ -72,5 +72,8 @@ fn getSraRecord(meta: Map, pipeline: String, strandedness: String, mapping_field
 
     let mappings_map = pipeline_map.subMap(fields)
 
-    return tuple( pipeline_map, mappings_map )
+    return ( pipeline_map, mappings_map )
+}
+
+fn mergeCsv() {
 }

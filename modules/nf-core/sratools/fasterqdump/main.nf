@@ -16,14 +16,6 @@ process SRATOOLS_FASTERQDUMP {
     pigz_args       : String = ''
     prefix          : String = ''
 
-    output:
-    meta
-    fastq = path('*.fastq.gz')
-
-    topic:
-    tuple( task.process, 'sratools', eval("fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+'") ) >> 'versions'
-    tuple( task.process, 'pigz',     eval("pigz --version 2>&1 | sed 's/pigz //g'") )           >> 'versions'
-
     script:
     if( !prefix )
         prefix = "${meta.id}"
@@ -50,4 +42,12 @@ process SRATOOLS_FASTERQDUMP {
         --processes $task.cpus \\
         *.fastq
     """
+
+    output:
+    meta
+    fastq = path('*.fastq.gz')
+
+    topic:
+    ( task.process, 'sratools', eval("fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+'") ) >> 'versions'
+    ( task.process, 'pigz',     eval("pigz --version 2>&1 | sed 's/pigz //g'") )           >> 'versions'
 }

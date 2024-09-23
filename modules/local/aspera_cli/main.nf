@@ -13,14 +13,6 @@ process ASPERA_CLI {
     user    : String
     args    : String
 
-    output:
-    meta    = meta
-    fastq   = path("*fastq.gz")
-    md5     = path("*md5")
-
-    topic:
-    tuple( task.process, 'aspera_cli', eval('ascli --version') ) >> 'versions'
-
     script:
     let conda_prefix = ['singularity', 'apptainer'].contains(workflow.containerEngine) ? "export CONDA_PREFIX=/usr/local" : ""
     if (meta.single_end) {
@@ -59,4 +51,12 @@ process ASPERA_CLI {
         md5sum -c ${meta.id}_2.fastq.gz.md5
         """
     }
+
+    output:
+    meta    = meta
+    fastq   = path("*fastq.gz")
+    md5     = path("*md5")
+
+    topic:
+    ( task.process, 'aspera_cli', eval('ascli --version') ) >> 'versions'
 }

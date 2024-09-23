@@ -12,12 +12,6 @@ process SRA_IDS_TO_RUNINFO {
     id      : String
     fields  : String
 
-    output:
-    path("${id}.runinfo.tsv")
-
-    topic:
-    tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
-
     script:
     let metadata_fields = fields ? "--ena_metadata_fields ${fields}" : ''
     """
@@ -27,4 +21,10 @@ process SRA_IDS_TO_RUNINFO {
         ${id}.runinfo.tsv \\
         $metadata_fields
     """
+
+    output:
+    path("${id}.runinfo.tsv")
+
+    topic:
+    ( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
 }

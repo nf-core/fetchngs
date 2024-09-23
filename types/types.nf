@@ -1,5 +1,5 @@
 
 record Sample {
-    meta    : Map<String,?>
+    meta    : Map<String,Object>
     files   : List<Path>
 }

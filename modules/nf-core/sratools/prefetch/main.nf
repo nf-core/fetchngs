@@ -14,12 +14,6 @@ process SRATOOLS_PREFETCH {
     prefetch_args   : String = ''
     retry_args      : String = '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
 
-    output:
-    path(id)
-
-    topic:
-    tuple( task.process, 'sratools', eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'") ) >> 'versions'
-
     shell:
     id = meta.run_accession
     if (certificate) {
@@ -32,4 +26,10 @@ process SRATOOLS_PREFETCH {
     }
 
     template 'retry_with_backoff.sh'
+
+    output:
+    path(id)
+
+    topic:
+    ( task.process, 'sratools', eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'") ) >> 'versions'
 }

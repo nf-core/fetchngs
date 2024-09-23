@@ -14,14 +14,6 @@ process SRA_FASTQ_FTP {
     fastq   : List<Path>
     args    : String
 
-    output:
-    meta    = meta
-    fastq   = path("*fastq.gz")
-    md5     = path("*md5")
-
-    topic:
-    tuple( task.process, 'wget', eval("echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//')") ) >> 'versions'
-
     script:
     if (meta.single_end) {
         """
@@ -52,4 +44,12 @@ process SRA_FASTQ_FTP {
         md5sum -c ${meta.id}_2.fastq.gz.md5
         """
     }
+
+    output:
+    meta    = meta
+    fastq   = path("*fastq.gz")
+    md5     = path("*md5")
+
+    topic:
+    ( task.process, 'wget', eval("echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//')") ) >> 'versions'
 }

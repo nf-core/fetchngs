@@ -9,12 +9,6 @@ process SRA_RUNINFO_TO_FTP {
     input:
     runinfo : Path
 
-    output:
-    path("${prefix}.runinfo_ftp.tsv")
-
-    topic:
-    tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
-
     script:
     prefix = runinfo.toString().tokenize(".")[0]
     """
@@ -22,4 +16,10 @@ process SRA_RUNINFO_TO_FTP {
         ${runinfo.join(',')} \\
         ${prefix}.runinfo_ftp.tsv
     """
+
+    output:
+    path("${prefix}.runinfo_ftp.tsv")
+
+    topic:
+    ( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
 }

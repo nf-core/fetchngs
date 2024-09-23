@@ -9,16 +9,16 @@ process MULTIQC_MAPPINGS_CONFIG {
     input:
     csv : Path
 
-    output:
-    path("multiqc_config.yml")
-
-    topic:
-    tuple( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
-
     script:
     """
     multiqc_mappings_config.py \\
         $csv \\
         multiqc_config.yml
     """
+
+    output:
+    path("multiqc_config.yml")
+
+    topic:
+    ( task.process, 'python', eval("python --version | sed 's/Python //g'") ) >> 'versions'
 }

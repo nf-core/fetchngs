@@ -26,7 +26,7 @@ workflow FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS {
             //
             // Prefetch sequencing reads in SRA format.
             //
-            sra = SRATOOLS_PREFETCH ( meta, ncbi_settings, dbgap_key )
+            let sra = SRATOOLS_PREFETCH ( meta, ncbi_settings, dbgap_key )
 
             //
             // Convert the SRA format into one or more compressed FASTQ files.
