@@ -32,7 +32,7 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args   //   array: List of positional nextflow CLI args
     outdir              //  string: The output directory where the results will be saved
     input               //  string: File containing SRA/ENA/GEO/DDBJ identifiers one per line to download their associated metadata and FastQ files
-    ena_metadata_fields // string: Comma-separated list of ENA metadata fields to fetch before downloading data
+    ena_metadata_fields //  string: Comma-separated list of ENA metadata fields to fetch before downloading data
 
     main:
 

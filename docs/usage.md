@@ -123,7 +123,7 @@ nextflow run nf-core/fetchngs -profile docker -params-file params.yaml
 with:
 
 ```yaml title="params.yaml"
-input: './samplesheet.csv'
+input: './ids.csv'
 outdir: './results/'
 <...>
 ```
