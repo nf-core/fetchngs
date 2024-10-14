@@ -2,9 +2,15 @@ bump_version: null
 lint:
   actions_ci: false
   files_exist:
+    - .github/workflows/awsfulltest.yml
+    - .github/workflows/awstest.yml
+    - assets/multiqc_config.yml
+    - conf/igenomes.config
+    - conf/igenomes_ignored.config
     - conf/modules.config
   files_unchanged:
     - assets/sendmail_template.txt
+  multiqc_config: False
 nf_core_version: 3.0.2
 org_path: null
 repository_type: pipeline
