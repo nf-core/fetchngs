@@ -10,6 +10,7 @@ lint:
     - conf/modules.config
   files_unchanged:
     - assets/sendmail_template.txt
+  modules_config: False
   multiqc_config: False
 nf_core_version: 3.0.2
 org_path: null
