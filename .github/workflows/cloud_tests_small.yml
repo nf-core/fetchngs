@@ -1,4 +1,6 @@
-name: small-sized tests on cloud providers
+name: nf-core cloud tests
+# This workflow can be triggered manually with the GitHub actions workflow dispatch button.
+# It runs the -profile 'test' on cloud
 run-name: Submitting workflow to all cloud providers using small sized data
 on:
   workflow_dispatch:

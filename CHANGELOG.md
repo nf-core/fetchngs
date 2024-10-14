@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unpublished Version / DEV]
+## v1.13.0dev - [date]
 
 ### Enhancements & fixes
 
@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #303](https://github.com/nf-core/fetchngs/pull/303) - Update wget container for SRA_FASTQ_FTP from 1.20.1 to 1.21.4
 - [PR #305](https://github.com/nf-core/fetchngs/pull/305) - Update module sratools/prefetch for reliable download integrity check
 - [PR #316](https://github.com/nf-core/fetchngs/pull/316) - Use nf-core/setup-nf-test to install nf-test from cache during CI/CD
+- [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
 
 ### Software dependencies
 
