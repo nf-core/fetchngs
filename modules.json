@@ -8,7 +8,7 @@
                     "custom/sratoolsncbisettings": {
                         "branch": "master",
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
-                        "installed_by": ["modules"]
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools", "modules"]
                     },
                     "sratools/fasterqdump": {
                         "branch": "master",

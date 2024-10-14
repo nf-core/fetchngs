@@ -1,0 +1,2 @@
+pipeline_info/*.{html,json,txt,yml}
+samplesheet/samplesheet.csv
