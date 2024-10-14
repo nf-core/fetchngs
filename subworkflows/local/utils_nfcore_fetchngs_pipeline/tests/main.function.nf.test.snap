@@ -1,0 +1,28 @@
+{
+    "Function sraCurateSamplesheetWarn": {
+        "content": null,
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T11:55:41.001798"
+    },
+    "Function sraCheckENAMetadataFields [success]": {
+        "content": null,
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T11:55:33.679255"
+    },
+    "Function isSraId": {
+        "content": [
+            true
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T11:55:29.999289"
+    }
+}

@@ -1,0 +1,57 @@
+nextflow_workflow {
+
+    name "Test workflow: sra/main.nf"
+    script "../main.nf"
+    workflow "SRA"
+    tag "SRA_CUSTOM_ENA_METADATA_FIELDS"
+
+    // Dependencies
+    tag "SRA_IDS_TO_RUNINFO"
+    tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_FASTQ_FTP"
+    tag "SRA_TO_SAMPLESHEET"
+    tag "MULTIQC_MAPPINGS_CONFIG"
+
+    test("Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                """
+            }
+            params {
+                nf_core_pipeline = "rnaseq"
+                ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
+                sample_mapping_fields = "run_accession,library_layout"
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            assertAll(
+                {
+                    with(workflow.out.samplesheet) {
+                        assert path(get(0)).readLines().size() == 4
+                        assert path(get(0)).readLines()*.split(',')[0].take(5) == ['"sample"', '"fastq_1"', '"fastq_2"', '"strandedness"' , '"run_accession"']
+                        assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                        assert path(get(0)).text.contains('SINGLE')
+                    }
+                },
+                {
+                    with(workflow.out.mappings) {
+                        assert path(get(0)).readLines().size() == 4
+                        assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                        assert path(get(0)).text.contains('SINGLE')
+                    }
+                },
+                {
+                    with(workflow.out.sample_mappings) {
+                        assert path(get(0)[0]).md5 == "3b70bc9658eab4ba2f4ec98cb749ac9d"
+                    }
+                }
+            )
+        }
+    }
+}

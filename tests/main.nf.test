@@ -1,0 +1,81 @@
+nextflow_pipeline {
+
+    name "Test pipeline"
+    script "../main.nf"
+    tag "PIPELINE"
+
+    test("Run with profile test") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                input = 'https://raw.githubusercontent.com/nf-core/test-datasets/2732b911c57e607fa7aea5ba0c3d91b25bafb662/testdata/v1.12.0/sra_ids_test.csv'
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            assertAll(
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").readLines().size() == 15 },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").readLines()*.split(',')[0].take(4) == ['"sample"', '"fastq_1"', '"fastq_2"', '"run_accession"'] },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX024467"', '"DRX026011"', '"ERX1234253"', '"SRX10940790"', '"SRX11047067"', '"SRX17709227"', '"SRX17709228"', '"SRX6725035"', '"SRX9315476"', '"SRX9504942"', '"SRX9504942"', '"SRX9504942"', '"SRX9504942"', '"SRX9626017"'] },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").text.contains('Illumina HiSeq 2500') },
+                { assert new File("$outputDir/custom/user-settings.mkfg").exists() },
+                { assert new File("$outputDir/fastq/md5/DRX024467_DRR026872.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/DRX026011_DRR028935_1.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/DRX026011_DRR028935_2.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/ERX1234253_ERR1160846.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX17709227_SRR21711856.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX17709228_SRR21711855.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX6725035_SRR9984183.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055517_1.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055517_2.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055518_1.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055518_2.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055519_1.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055519_2.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055520_1.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9504942_SRR13055520_2.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9626017_SRR13191702_1.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/md5/SRX9626017_SRR13191702_2.fastq.gz.md5").exists() },
+                { assert new File("$outputDir/fastq/DRX024467_DRR026872.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/DRX026011_DRR028935_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/DRX026011_DRR028935_2.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/ERX1234253_ERR1160846.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX10940790_SRR14593545_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX10940790_SRR14593545_2.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX11047067_SRR14709033.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX17709227_SRR21711856.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX17709228_SRR21711855.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX6725035_SRR9984183.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9315476_SRR12848126_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9315476_SRR12848126_2.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055517_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055517_2.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055518_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055518_2.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055519_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055519_2.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055520_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9504942_SRR13055520_2.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9626017_SRR13191702_1.fastq.gz").exists() },
+                { assert new File("$outputDir/fastq/SRX9626017_SRR13191702_2.fastq.gz").exists() },
+                { assert new File("$outputDir/metadata/DRR026872.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/DRR028935.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/ERR1160846.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/GSE214215.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/GSM4907283.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/SRR12848126.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/SRR13191702.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/SRR14593545.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/SRR14709033.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/metadata/SRR9984183.runinfo_ftp.tsv").exists() },
+                { assert new File("$outputDir/pipeline_info/nf_core_fetchngs_software_mqc_versions.yml").exists() },
+                { assert new File("$outputDir/samplesheet/id_mappings.csv").exists() },
+                { assert new File("$outputDir/samplesheet/multiqc_config.yml").exists() },
+                { assert new File("$outputDir/samplesheet/samplesheet.csv").exists() }
+            )
+        }
+    }
+}

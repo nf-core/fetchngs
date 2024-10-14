@@ -1,0 +1,25 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
+                ],
+                "1": [
+                    "versions.yml:md5,e95f8185f665127a73622a19d321bcca"
+                ],
+                "tsv": [
+                    "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
+                ],
+                "versions": [
+                    "versions.yml:md5,e95f8185f665127a73622a19d321bcca"
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        },
+        "timestamp": "2024-02-28T11:51:45.748227"
+    }
+}

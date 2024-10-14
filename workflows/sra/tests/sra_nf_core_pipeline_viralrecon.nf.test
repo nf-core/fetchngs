@@ -1,0 +1,55 @@
+nextflow_workflow {
+
+    name "Test workflow: sra/main.nf"
+    script "../main.nf"
+    workflow "SRA"
+    tag "SRA_NF_CORE_PIPELINE_VIRALRECON"
+
+    // Dependencies
+    tag "SRA_IDS_TO_RUNINFO"
+    tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_FASTQ_FTP"
+    tag "SRA_TO_SAMPLESHEET"
+    tag "MULTIQC_MAPPINGS_CONFIG"
+
+    test("Parameters: --nf_core_pipeline viralrecon") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                """
+            }
+            params {
+                nf_core_pipeline = "viralrecon"
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            assertAll(
+                {
+                    with(workflow.out.samplesheet) {
+                        assert path(get(0)).readLines().size() == 4
+                        assert path(get(0)).readLines()*.split(',')[0].take(4) == ['"sample"', '"fastq_1"', '"fastq_2"', '"run_accession"']
+                        assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                        assert path(get(0)).text.contains('Illumina HiSeq 2500')
+                    }
+                },
+                {
+                    with(workflow.out.mappings) {
+                        assert path(get(0)).readLines().size() == 4
+                        assert path(get(0)).readLines()*.split(',').collect { it[0] } == ['"sample"', '"DRX026011"', '"ERX1234253"', '"SRX6725035"']
+                        assert path(get(0)).text.contains('Illumina HiSeq 2500')
+                    }
+                },
+                {
+                    with(workflow.out.sample_mappings) {
+                        assert path(get(0)[0]).md5 == "1ac06bb95b503703430e74660bbdd768"
+                    }
+                }
+            )
+        }
+    }
+}

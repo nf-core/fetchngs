@@ -1,0 +1,146 @@
+name: nf-core cloud full size tests
+# This workflow is triggered on PRs opened against the master branch.
+# It can be additionally triggered manually with GitHub actions workflow dispatch button.
+# It runs the -profile 'test_full' on Cloud
+run-name: Submitting workflow to all cloud providers using full sized data
+on:
+  pull_request:
+    branches:
+      - master
+  pull_request_review:
+    types: [submitted]
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Platform to run test"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - aws
+          - azure
+          - gcp
+jobs:
+  run-full-tests-on-aws:
+    name: Run AWS full tests
+    if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'aws' || !github.event.inputs }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        download_method: ["aspera", "ftp", "sratools"]
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: check_approvals
+        with:
+          route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: test_variables
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          JSON_RESPONSE='${{ steps.check_approvals.outputs.data }}'
+          CURRENT_APPROVALS_COUNT=$(echo $JSON_RESPONSE | jq -c '[.[] | select(.state | contains("APPROVED")) ] | length')
+          test $CURRENT_APPROVALS_COUNT -ge 2 || exit 1 # At least 2 approvals are required
+      - name: Launch workflow via Seqera Platform
+        uses: seqeralabs/action-tower-launch@v2
+        with:
+          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
+          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
+          compute_env: ${{ secrets.TOWER_CE_AWS_CPU }}
+          workdir: "${{ secrets.TOWER_BUCKET_AWS }}/work/fetchngs/work-${{ github.sha }}"
+          run_name: "aws_fetchngs_full_${{ matrix.download_method }}"
+          revision: ${{ github.sha }}
+          profiles: test_full
+          parameters: |
+            {
+                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
+                "download_method": "${{ matrix.download_method }}",
+                "outdir": "${{ secrets.TOWER_BUCKET_AWS }}/fetchngs/results-${{ github.sha }}/download_method_${{ matrix.download_method }}/"
+            }
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Tower debug log file
+          path: tower_action_*.log
+
+  run-full-tests-on-azure:
+    name: Run Azure full tests
+    if: ${{ github.event.inputs.platform == 'all' || github.event.inputs.platform == 'azure' || !github.event.inputs }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        download_method: ["aspera", "ftp", "sratools"]
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: check_approvals
+        with:
+          route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: test_variables
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          JSON_RESPONSE='${{ steps.check_approvals.outputs.data }}'
+          CURRENT_APPROVALS_COUNT=$(echo $JSON_RESPONSE | jq -c '[.[] | select(.state | contains("APPROVED")) ] | length')
+          test $CURRENT_APPROVALS_COUNT -ge 2 || exit 1 # At least 2 approvals are required
+      - name: Launch workflow via Seqera Platform
+        uses: seqeralabs/action-tower-launch@v2
+        with:
+          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
+          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
+          compute_env: ${{ secrets.TOWER_CE_AZURE_CPU }}
+          workdir: "${{ secrets.TOWER_BUCKET_AZURE }}/work/fetchngs/work-${{ github.sha }}"
+          run_name: "azure_fetchngs_full_${{ matrix.download_method }}"
+          revision: ${{ github.sha }}
+          profiles: test_full
+          parameters: |
+            {
+                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
+                "download_method": "${{ matrix.download_method }}",
+                "outdir": "${{ secrets.TOWER_BUCKET_AZURE }}/fetchngs/results-${{ github.sha }}/download_method_${{ matrix.download_method }}/"
+            }
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Tower debug log file
+          path: tower_action_*.log
+
+  run-full-tests-on-gcp:
+    name: Run GCP full tests
+    if: ${{ github.event.inputs.platform == 'gcp' || !github.event.inputs }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        download_method: ["aspera", "ftp", "sratools"]
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: check_approvals
+        with:
+          route: GET /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: test_variables
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          JSON_RESPONSE='${{ steps.check_approvals.outputs.data }}'
+          CURRENT_APPROVALS_COUNT=$(echo $JSON_RESPONSE | jq -c '[.[] | select(.state | contains("APPROVED")) ] | length')
+          test $CURRENT_APPROVALS_COUNT -ge 2 || exit 1 # At least 2 approvals are required
+      - name: Launch workflow via Seqera Platform
+        uses: seqeralabs/action-tower-launch@v2
+        with:
+          workspace_id: ${{ secrets.TOWER_WORKSPACE_ID }}
+          access_token: ${{ secrets.TOWER_ACCESS_TOKEN }}
+          compute_env: ${{ secrets.TOWER_CE_GCP_CPU }}
+          workdir: "${{ secrets.TOWER_BUCKET_GCP }}/work/fetchngs/work-${{ github.sha }}"
+          run_name: "gcp_fetchngs_full_${{ matrix.download_method }}"
+          revision: ${{ github.sha }}
+          profiles: test_full
+          parameters: |
+            {
+                "hook_url": "${{ secrets.MEGATESTS_ALERTS_SLACK_HOOK_URL }}",
+                "download_method": "${{ matrix.download_method }}",
+                "outdir": "${{ secrets.TOWER_BUCKET_GCP }}/fetchngs/results-${{ github.sha }}/download_method_${{ matrix.download_method }}/"
+            }
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Tower debug log file
+          path: tower_action_*.log

@@ -16,6 +16,9 @@ template:
   name: fetchngs
   org: nf-core
   outdir: .
-  skip_features: null
+  skip_features:
+    - fastqc
+    - igenomes
+    - multiqc
   version: 1.13.0dev
 update: null

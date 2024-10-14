@@ -7,3 +7,7 @@ testing/
 testing*
 *.pyc
 null/
+.nf-test.log
+nf-test
+.nf-test*
+test.xml

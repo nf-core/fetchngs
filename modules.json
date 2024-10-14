@@ -5,20 +5,36 @@
         "https://github.com/nf-core/modules.git": {
             "modules": {
                 "nf-core": {
-                    "fastqc": {
+                    "custom/sratoolsncbisettings": {
                         "branch": "master",
                         "git_sha": "666652151335353eef2fcd58880bcef5bc2928e1",
                         "installed_by": ["modules"]
                     },
-                    "multiqc": {
+                    "sratools/fasterqdump": {
                         "branch": "master",
-                        "git_sha": "cf17ca47590cc578dfb47db1c2a44ef86f89976d",
+                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"],
+                        "patch": "modules/nf-core/sratools/fasterqdump/sratools-fasterqdump.diff"
+                    },
+                    "sratools/prefetch": {
+                        "branch": "master",
+                        "git_sha": "1fc29f92e439d5631fdf34b8ac4687297d70f5ec",
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
+                    },
+                    "untar": {
+                        "branch": "master",
+                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
                         "installed_by": ["modules"]
                     }
                 }
             },
             "subworkflows": {
                 "nf-core": {
+                    "fastq_download_prefetch_fasterqdump_sratools": {
+                        "branch": "master",
+                        "git_sha": "1fc29f92e439d5631fdf34b8ac4687297d70f5ec",
+                        "installed_by": ["subworkflows"]
+                    },
                     "utils_nextflow_pipeline": {
                         "branch": "master",
                         "git_sha": "3aa0aec1d52d492fe241919f0c6100ebf0074082",

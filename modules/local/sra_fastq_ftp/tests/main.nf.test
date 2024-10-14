@@ -1,0 +1,30 @@
+nextflow_process {
+
+    name "Test process: SRA_FASTQ_FTP"
+    script "../main.nf"
+    process "SRA_FASTQ_FTP"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX9626017_SRR13191702', single_end:false, md5_1: '89c5be920021a035084d8aeb74f32df7', md5_2: '56271be38a80db78ef3bdfc5d9909b98' ], // meta map
+                    [
+                        'ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_1.fastq.gz',
+                        'ftp.sra.ebi.ac.uk/vol1/fastq/SRR131/002/SRR13191702/SRR13191702_2.fastq.gz'
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

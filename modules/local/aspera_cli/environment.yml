@@ -1,0 +1,5 @@
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconda::aspera-cli=4.14.0
