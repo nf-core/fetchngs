@@ -11,7 +11,6 @@ nextflow_workflow {
             workflow {
                 """
                 version             = false
-                help                = false
                 validate_params     = false
                 monochrome_logs     = false
                 nextflow_cli_args   = []
@@ -19,13 +18,12 @@ nextflow_workflow {
                 ena_metadata_fields = null
 
                 input[0] = version
-                input[1] = help
-                input[2] = validate_params
-                input[3] = monochrome_logs
-                input[4] = nextflow_cli_args
-                input[5] = outdir
-                input[6] = 'https://raw.githubusercontent.com/nf-core/test-datasets/2732b911c57e607fa7aea5ba0c3d91b25bafb662/testdata/v1.12.0/sra_ids_test.csv'
-                input[7] = ena_metadata_fields
+                input[1] = validate_params
+                input[2] = monochrome_logs
+                input[3] = nextflow_cli_args
+                input[4] = outdir
+                input[5] = 'https://raw.githubusercontent.com/nf-core/test-datasets/2732b911c57e607fa7aea5ba0c3d91b25bafb662/testdata/v1.12.0/sra_ids_test.csv'
+                input[6] = ena_metadata_fields
                 """
             }
         }

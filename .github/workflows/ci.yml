@@ -51,7 +51,7 @@ jobs:
           echo ${{ steps.list.outputs.components }}
 
   test:
-    name: "Test | ${{ matrix.nf_test_files }} | ${{ matrix.NXF_VER }} | ${{ matrix.profile }}"
+    name: "${{ matrix.nf_test_files }} | ${{ matrix.NXF_VER }} | ${{ matrix.profile }}"
     if: needs.changes.outputs.nf_test_files != '[]'
     needs: [changes]
     runs-on: ubuntu-latest
