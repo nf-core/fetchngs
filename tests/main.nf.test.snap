@@ -1,0 +1,137 @@
+{
+    "Run with profile test": {
+        "content": [
+            53,
+            {
+                "CUSTOM_SRATOOLSNCBISETTINGS": {
+                    "sratools": "3.0.8"
+                },
+                "MULTIQC_MAPPINGS_CONFIG": {
+                    "python": "3.9.5"
+                },
+                "SRA_FASTQ_FTP": {
+                    "wget": "1.21.4"
+                },
+                "SRA_IDS_TO_RUNINFO": {
+                    "python": "3.9.5"
+                },
+                "SRA_RUNINFO_TO_FTP": {
+                    "python": "3.9.5"
+                },
+                "Workflow": {
+                    "nf-core/fetchngs": "v1.13.0dev"
+                }
+            },
+            [
+                "custom",
+                "custom/user-settings.mkfg",
+                "fastq",
+                "fastq/DRX024467_DRR026872.fastq.gz",
+                "fastq/DRX026011_DRR028935_1.fastq.gz",
+                "fastq/DRX026011_DRR028935_2.fastq.gz",
+                "fastq/ERX1234253_ERR1160846.fastq.gz",
+                "fastq/SRX10940790_SRR14593545_1.fastq.gz",
+                "fastq/SRX10940790_SRR14593545_2.fastq.gz",
+                "fastq/SRX11047067_SRR14709033.fastq.gz",
+                "fastq/SRX17709227_SRR21711856.fastq.gz",
+                "fastq/SRX17709228_SRR21711855.fastq.gz",
+                "fastq/SRX6725035_SRR9984183.fastq.gz",
+                "fastq/SRX9315476_SRR12848126_1.fastq.gz",
+                "fastq/SRX9315476_SRR12848126_2.fastq.gz",
+                "fastq/SRX9504942_SRR13055517_1.fastq.gz",
+                "fastq/SRX9504942_SRR13055517_2.fastq.gz",
+                "fastq/SRX9504942_SRR13055518_1.fastq.gz",
+                "fastq/SRX9504942_SRR13055518_2.fastq.gz",
+                "fastq/SRX9504942_SRR13055519_1.fastq.gz",
+                "fastq/SRX9504942_SRR13055519_2.fastq.gz",
+                "fastq/SRX9504942_SRR13055520_1.fastq.gz",
+                "fastq/SRX9504942_SRR13055520_2.fastq.gz",
+                "fastq/SRX9626017_SRR13191702_1.fastq.gz",
+                "fastq/SRX9626017_SRR13191702_2.fastq.gz",
+                "fastq/md5",
+                "fastq/md5/DRX024467_DRR026872.fastq.gz.md5",
+                "fastq/md5/DRX026011_DRR028935_1.fastq.gz.md5",
+                "fastq/md5/DRX026011_DRR028935_2.fastq.gz.md5",
+                "fastq/md5/ERX1234253_ERR1160846.fastq.gz.md5",
+                "fastq/md5/SRX17709227_SRR21711856.fastq.gz.md5",
+                "fastq/md5/SRX17709228_SRR21711855.fastq.gz.md5",
+                "fastq/md5/SRX6725035_SRR9984183.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055517_1.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055517_2.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055518_1.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055518_2.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055519_1.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055519_2.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055520_1.fastq.gz.md5",
+                "fastq/md5/SRX9504942_SRR13055520_2.fastq.gz.md5",
+                "fastq/md5/SRX9626017_SRR13191702_1.fastq.gz.md5",
+                "fastq/md5/SRX9626017_SRR13191702_2.fastq.gz.md5",
+                "metadata",
+                "metadata/DRR026872.runinfo_ftp.tsv",
+                "metadata/DRR028935.runinfo_ftp.tsv",
+                "metadata/ERR1160846.runinfo_ftp.tsv",
+                "metadata/GSE214215.runinfo_ftp.tsv",
+                "metadata/GSM4907283.runinfo_ftp.tsv",
+                "metadata/SRR12848126.runinfo_ftp.tsv",
+                "metadata/SRR13191702.runinfo_ftp.tsv",
+                "metadata/SRR14593545.runinfo_ftp.tsv",
+                "metadata/SRR14709033.runinfo_ftp.tsv",
+                "metadata/SRR9984183.runinfo_ftp.tsv",
+                "pipeline_info",
+                "pipeline_info/nf_core_fetchngs_software_mqc_versions.yml",
+                "samplesheet",
+                "samplesheet/id_mappings.csv",
+                "samplesheet/multiqc_config.yml",
+                "samplesheet/samplesheet.csv"
+            ],
+            [
+                "DRX024467_DRR026872.fastq.gz:md5,ac42080f2d134330889c8546faaf95db",
+                "DRX026011_DRR028935_1.fastq.gz:md5,f9b4a5d25aa7d6ab4050dbe0764eb04d",
+                "DRX026011_DRR028935_2.fastq.gz:md5,dc0d2e1fc46f4d4581a477f87ec3ff15",
+                "ERX1234253_ERR1160846.fastq.gz:md5,b1de59f829fbd2d60a1ed4bc3da55709",
+                "SRX10940790_SRR14593545_1.fastq.gz:md5,6bf7bbc2a0d59864f7098d8495785b9a",
+                "SRX10940790_SRR14593545_2.fastq.gz:md5,7b29e29f2ef09fc2a9fe196601ce81ea",
+                "SRX11047067_SRR14709033.fastq.gz:md5,a4cff668556d1f63ab9b4114d72fc6be",
+                "SRX17709227_SRR21711856.fastq.gz:md5,1fe5e87cc11c2af1584da9a75e49c4d2",
+                "SRX17709228_SRR21711855.fastq.gz:md5,3a4b64f005eba3923da57a5e61131c2a",
+                "SRX6725035_SRR9984183.fastq.gz:md5,c9b4c2c4abf19da7082caf442fdefea7",
+                "SRX9315476_SRR12848126_1.fastq.gz:md5,9629d3ace6ac9b5903659c33c5eb9155",
+                "SRX9315476_SRR12848126_2.fastq.gz:md5,35adb08340d978463b0cb5e6445fad3e",
+                "SRX9504942_SRR13055517_1.fastq.gz:md5,d28e744271fb20660ab94a912c1540a2",
+                "SRX9504942_SRR13055517_2.fastq.gz:md5,7e6144c926693a4d3d5078fc24e83968",
+                "SRX9504942_SRR13055518_1.fastq.gz:md5,c865addbbb95b4056bd2f6c8cce4ad56",
+                "SRX9504942_SRR13055518_2.fastq.gz:md5,e1aadf8fe32798eed1d8067e6d083115",
+                "SRX9504942_SRR13055519_1.fastq.gz:md5,ac8e52c9facd5b3f7e360f44e22a8aca",
+                "SRX9504942_SRR13055519_2.fastq.gz:md5,e3e163ec69dcf28c3562b10bfb4a4914",
+                "SRX9504942_SRR13055520_1.fastq.gz:md5,57d4a13387dec3780ead9af0675ff3fe",
+                "SRX9504942_SRR13055520_2.fastq.gz:md5,13b8a9acc657b55482acda148e33368f",
+                "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
+                "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32",
+                "DRX024467_DRR026872.fastq.gz.md5:md5,dacaeba3498fb8f405411a22cdb4b40d",
+                "DRX026011_DRR028935_1.fastq.gz.md5:md5,a47018c5972ba4c11539d0d6bc25eda9",
+                "DRX026011_DRR028935_2.fastq.gz.md5:md5,f477bbef548fbed665734ebf084eea2f",
+                "ERX1234253_ERR1160846.fastq.gz.md5:md5,513a8437ad331fc512b088b3750aa1ff",
+                "SRX17709227_SRR21711856.fastq.gz.md5:md5,13a38fbef27c3e15867d80887145ae75",
+                "SRX17709228_SRR21711855.fastq.gz.md5:md5,1e871ddd9e92e1866e0c64d36eb5ec85",
+                "SRX6725035_SRR9984183.fastq.gz.md5:md5,84f59dbb76c9b5eab7e14d90ced352c4",
+                "SRX9504942_SRR13055517_1.fastq.gz.md5:md5,a03f7f374dc401047b6f6ccaec3885cc",
+                "SRX9504942_SRR13055517_2.fastq.gz.md5:md5,facaf207753e977327e7b7df7bb8ace0",
+                "SRX9504942_SRR13055518_1.fastq.gz.md5:md5,5cf412cd62aadaa4838d9eabb5b44368",
+                "SRX9504942_SRR13055518_2.fastq.gz.md5:md5,93292b826afc72b23be93df26dd710c8",
+                "SRX9504942_SRR13055519_1.fastq.gz.md5:md5,f6ad6e2610397147a0a55c651de3992f",
+                "SRX9504942_SRR13055519_2.fastq.gz.md5:md5,2fe7dd4bcc1e7e61c6f54ef50cf961f3",
+                "SRX9504942_SRR13055520_1.fastq.gz.md5:md5,ab195b37746a3424a1099d9f8cc58de8",
+                "SRX9504942_SRR13055520_2.fastq.gz.md5:md5,10c448e23f1f7e7af61ec1204f8fc882",
+                "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
+                "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945",
+                "id_mappings.csv:md5,33c5e095dbbb15def4e3b402eba6ade2",
+                "multiqc_config.yml:md5,bb99e81ddd360988338c10ecbdbce65a"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.09.1"
+        },
+        "timestamp": "2024-10-14T12:05:34.473179"
+    }
+}

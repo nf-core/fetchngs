@@ -1,7 +1,32 @@
-repository_type: pipeline
+bump_version: null
 lint:
   actions_ci: false
   files_exist:
+    - .github/workflows/awsfulltest.yml
+    - .github/workflows/awstest.yml
+    - assets/multiqc_config.yml
+    - conf/igenomes.config
+    - conf/igenomes_ignored.config
     - conf/modules.config
   files_unchanged:
+    - .github/PULL_REQUEST_TEMPLATE.md
     - assets/sendmail_template.txt
+  modules_config: False
+  multiqc_config: False
+nf_core_version: 3.0.2
+org_path: null
+repository_type: pipeline
+template:
+  author: Harshil Patel, Moritz E. Beber and Jose Espinosa-Carrasco
+  description: Pipeline to fetch metadata and raw FastQ files from public databases
+  force: false
+  is_nfcore: true
+  name: fetchngs
+  org: nf-core
+  outdir: .
+  skip_features:
+    - fastqc
+    - igenomes
+    - multiqc
+  version: 1.13.0dev
+update: null
