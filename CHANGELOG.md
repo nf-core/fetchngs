@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #305](https://github.com/nf-core/fetchngs/pull/305) - Update module sratools/prefetch for reliable download integrity check
 - [PR #316](https://github.com/nf-core/fetchngs/pull/316) - Use nf-core/setup-nf-test to install nf-test from cache during CI/CD
 - [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Update module multiqc_mappings_config and sratools/prefetch for TES compliance
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Refactor workflow tests
 - [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
 
 ### Software dependencies
