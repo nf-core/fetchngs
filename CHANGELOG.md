@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #303](https://github.com/nf-core/fetchngs/pull/303) - Update wget container for SRA_FASTQ_FTP from 1.20.1 to 1.21.4
 - [PR #305](https://github.com/nf-core/fetchngs/pull/305) - Update module sratools/prefetch for reliable download integrity check
 - [PR #316](https://github.com/nf-core/fetchngs/pull/316) - Use nf-core/setup-nf-test to install nf-test from cache during CI/CD
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Update module multiqc_mappings_config and sratools/prefetch for TES compliance
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Refactor workflow tests
 - [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
 
 ### Software dependencies
@@ -42,6 +44,7 @@ Special thanks to the following for their contributions to the release:
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Sateesh Peri](https://github.com/sateeshperi)
 - [Sebastian Uhrig](https://github.com/suhrig)
+- [Venkat Malladi](https://github.com/vsmalladi)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 

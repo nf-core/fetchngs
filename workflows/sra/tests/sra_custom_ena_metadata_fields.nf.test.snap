@@ -1,0 +1,65 @@
+{
+    "Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...": {
+        "content": [
+            "samplesheet.csv",
+            [
+                "id_mappings.csv:md5,7345715e7db0a160efb8dd3be9ce58ac"
+            ],
+            [
+                "multiqc_config.yml:md5,3b70bc9658eab4ba2f4ec98cb749ac9d"
+            ],
+            [
+                {
+                    "experiment_accession": "DRX026011",
+                    "fastq_1": "DRX026011_DRR028935_1.fastq.gz:md5,f9b4a5d25aa7d6ab4050dbe0764eb04d",
+                    "fastq_2": "DRX026011_DRR028935_2.fastq.gz:md5,dc0d2e1fc46f4d4581a477f87ec3ff15",
+                    "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/DRR028/DRR028935/DRR028935_2.fastq.gz",
+                    "fastq_md5": "cc01df82a9354bb6b3be93483b20c35a;941c9998d746416dad53c94c480ddf30",
+                    "id": "DRX026011_DRR028935",
+                    "library_layout": "PAIRED",
+                    "md5_1": "cc01df82a9354bb6b3be93483b20c35a",
+                    "md5_2": "941c9998d746416dad53c94c480ddf30",
+                    "run_accession": "DRR028935",
+                    "single_end": false
+                },
+                {
+                    "experiment_accession": "ERX1234253",
+                    "fastq_1": "ERX1234253_ERR1160846.fastq.gz:md5,b1de59f829fbd2d60a1ed4bc3da55709",
+                    "fastq_2": "",
+                    "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz",
+                    "fastq_md5": "5924f20ef547ebdfed7cad795bbab6e6",
+                    "id": "ERX1234253_ERR1160846",
+                    "library_layout": "SINGLE",
+                    "md5_1": "5924f20ef547ebdfed7cad795bbab6e6",
+                    "md5_2": "",
+                    "run_accession": "ERR1160846",
+                    "single_end": true
+                },
+                {
+                    "experiment_accession": "SRX6725035",
+                    "fastq_1": "SRX6725035_SRR9984183.fastq.gz:md5,c9b4c2c4abf19da7082caf442fdefea7",
+                    "fastq_2": "",
+                    "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR998/003/SRR9984183/SRR9984183.fastq.gz",
+                    "fastq_md5": "0b512d2dc31685983456bd56fd836544",
+                    "id": "SRX6725035_SRR9984183",
+                    "library_layout": "SINGLE",
+                    "md5_1": "0b512d2dc31685983456bd56fd836544",
+                    "md5_2": "",
+                    "run_accession": "SRR9984183",
+                    "single_end": true
+                }
+            ],
+            [
+                "versions.yml:md5,1496d1cbc9041e07ab8a0c25f0b054d9",
+                "versions.yml:md5,9b17045ca8bdc272cb3f9d349a81d206",
+                "versions.yml:md5,b52279f7d6b891a6523d9321f3f85b47",
+                "versions.yml:md5,c19fc0f920e57875881761cc944a46d7"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.0",
+            "nextflow": "24.09.2"
+        },
+        "timestamp": "2024-10-15T13:35:58.788293"
+    }
+}
