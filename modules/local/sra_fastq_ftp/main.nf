@@ -4,10 +4,10 @@ process SRA_FASTQ_FTP {
     label 'process_low'
     label 'error_retry'
 
-    conda "conda-forge::wget=1.20.1"
+    conda "conda-forge::wget=1.21.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wget:1.20.1' :
-        'biocontainers/wget:1.20.1' }"
+        'biocontainers/wget:1.21.4' }"
 
     input:
     tuple val(meta), val(fastq)
@@ -24,7 +24,7 @@ process SRA_FASTQ_FTP {
         wget \\
             $args \\
             -O ${meta.id}.fastq.gz \\
-            ${fastq[0]}
+            ftp://${fastq[0]}
 
         echo "${meta.md5_1}  ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
@@ -39,7 +39,7 @@ process SRA_FASTQ_FTP {
         wget \\
             $args \\
             -O ${meta.id}_1.fastq.gz \\
-            ${fastq[0]}
+            ftp://${fastq[0]}
 
         echo "${meta.md5_1}  ${meta.id}_1.fastq.gz" > ${meta.id}_1.fastq.gz.md5
         md5sum -c ${meta.id}_1.fastq.gz.md5
@@ -47,7 +47,7 @@ process SRA_FASTQ_FTP {
         wget \\
             $args \\
             -O ${meta.id}_2.fastq.gz \\
-            ${fastq[1]}
+            ftp://${fastq[1]}
 
         echo "${meta.md5_2}  ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5
