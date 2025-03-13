@@ -122,10 +122,11 @@ workflow SRA {
             .join(ch_md5, remainder: true)
             .map {
                 meta, fastq, md5 ->
-                    def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]
+                    fastq = fastq instanceof List ? fastq.flatten() : [ fastq ]
+                    md5 = md5 instanceof List ? md5.flatten() : [ md5 ]
                     meta + [
-                        fastq_1: reads[0],
-                        fastq_2: reads[1] && !meta.single_end ? reads[1] : null,
+                        fastq_1: fastq[0],
+                        fastq_2: fastq[1] && !meta.single_end ? fastq[1] : null,
                         md5_1: md5[0],
                         md5_2: md5[1] && !meta.single_end ? md5[1] : null,
                     ]
@@ -137,9 +138,7 @@ workflow SRA {
 
     emit:
     samples = ch_samples
-
-    publish:
-    SRA_RUNINFO_TO_FTP.out.tsv  >> 'metadata'
+    metadata = SRA_RUNINFO_TO_FTP.out.tsv
 }
 
 /*

@@ -52,6 +52,7 @@ workflow NFCORE_FETCHNGS {
 
     emit:
     samples = SRA.out.samples
+    metadata = SRA.out.metadata
 }
 
 /*
@@ -95,26 +96,27 @@ workflow {
     )
 
     publish:
-    NFCORE_FETCHNGS.out.samples >> 'samples'
-    softwareVersionsToYAML() >> 'versions'
+    samples = NFCORE_FETCHNGS.out.samples
+    metadata = NFCORE_FETCHNGS.out.metadata
+    versions = softwareVersionsToYAML()
 }
 
 
 output {
     samples {
-        path { _sample ->
-            def dirs = [
-                'fastq': 'fastq',
-                'md5': 'fastq/md5'
-            ]
-            return { filename ->
-                def ext = filename.tokenize('.').last()
-                "${dirs[ext]}/${filename}"
-            }
+        path { sample ->
+            sample.fastq_1 >> 'fastq/'
+            sample.fastq_2 >> 'fastq/'
+            sample.md5_1 >> 'fastq/md5/'
+            sample.md5_2 >> 'fastq/md5/'
         }
         index {
             path 'samplesheet/samplesheet.json'
         }
+    }
+
+    metadata {
+        path 'metadata'
     }
 
     versions {
