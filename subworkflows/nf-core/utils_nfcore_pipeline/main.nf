@@ -1,6 +1,7 @@
 //
 // Subworkflow with utility functions specific to the nf-core pipeline template
 //
+include { fromYaml ; toYaml ; request ; template } from 'plugin/nf-boost'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,9 +94,8 @@ def getWorkflowVersion() {
 // Get software versions for pipeline
 //
 def processVersionsFromYAML(yaml_file) {
-    def yaml = new org.yaml.snakeyaml.Yaml()
-    def versions = yaml.load(yaml_file).collectEntries { k, v -> [k.tokenize(':')[-1], v] }
-    return yaml.dumpAsMap(versions).trim()
+    def versions = fromYaml(yaml_file).collectEntries { k, v -> [k.tokenize(':')[-1], v] }
+    return toYaml(versions).trim()
 }
 
 //
@@ -329,31 +329,28 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     }
 
     // Render the TXT template
-    def engine       = new groovy.text.GStringTemplateEngine()
-    def tf           = new File("${workflow.projectDir}/assets/email_template.txt")
-    def txt_template = engine.createTemplate(tf).make(email_fields)
-    def email_txt    = txt_template.toString()
+    def tf           = file("${workflow.projectDir}/assets/email_template.txt")
+    def email_txt    = template(tf, email_fields)
 
     // Render the HTML template
-    def hf            = new File("${workflow.projectDir}/assets/email_template.html")
-    def html_template = engine.createTemplate(hf).make(email_fields)
-    def email_html    = html_template.toString()
+    def hf            = file("${workflow.projectDir}/assets/email_template.html")
+    def email_html    = template(hf, email_fields)
 
     // Render the sendmail template
-    def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as nextflow.util.MemoryUnit
+    def max_multiqc_email_size = (params.containsKey('max_multiqc_email_size') ? params.max_multiqc_email_size : 0) as MemoryUnit
     def smail_fields           = [email: email_address, subject: subject, email_txt: email_txt, email_html: email_html, projectDir: "${workflow.projectDir}", mqcFile: mqc_report, mqcMaxSize: max_multiqc_email_size.toBytes()]
-    def sf                     = new File("${workflow.projectDir}/assets/sendmail_template.txt")
-    def sendmail_template      = engine.createTemplate(sf).make(smail_fields)
-    def sendmail_html          = sendmail_template.toString()
+    def sf                     = file("${workflow.projectDir}/assets/sendmail_template.txt")
+    def sendmail_html          = template(sf, smail_fields)
 
     // Send the HTML e-mail
     def colors = logColours(monochrome_logs) as Map
     if (email_address) {
         try {
             if (plaintext_email) {
-new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')            }
+                throw new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')
+            }
             // Try to send HTML e-mail using sendmail
-            def sendmail_tf = new File(workflow.launchDir.toString(), ".sendmail_tmp.html")
+            def sendmail_tf = file(".sendmail_tmp.html")
             sendmail_tf.withWriter { w -> w << sendmail_html }
             ['sendmail', '-t'].execute() << sendmail_html
             log.info("-${colors.purple}[${workflow.manifest.name}]${colors.green} Sent summary e-mail to ${email_address} (sendmail)-")
@@ -367,15 +364,15 @@ new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')      
     }
 
     // Write summary e-mail HTML to a file
-    def output_hf = new File(workflow.launchDir.toString(), ".pipeline_report.html")
+    def output_hf = file(".pipeline_report.html")
     output_hf.withWriter { w -> w << email_html }
-    nextflow.extension.FilesEx.copyTo(output_hf.toPath(), "${outdir}/pipeline_info/pipeline_report.html")
+    output_hf.copyTo("${outdir}/pipeline_info/pipeline_report.html")
     output_hf.delete()
 
     // Write summary e-mail TXT to a file
-    def output_tf = new File(workflow.launchDir.toString(), ".pipeline_report.txt")
+    def output_tf = file(".pipeline_report.txt")
     output_tf.withWriter { w -> w << email_txt }
-    nextflow.extension.FilesEx.copyTo(output_tf.toPath(), "${outdir}/pipeline_info/pipeline_report.txt")
+    output_tf.copyTo("${outdir}/pipeline_info/pipeline_report.txt")
     output_tf.delete()
 }
 
@@ -441,20 +438,14 @@ def imNotification(summary_params, hook_url) {
     msg_fields['summary']      = summary << misc_fields
 
     // Render the JSON template
-    def engine       = new groovy.text.GStringTemplateEngine()
     // Different JSON depending on the service provider
     // Defaults to "Adaptive Cards" (https://adaptivecards.io), except Slack which has its own format
     def json_path     = hook_url.contains("hooks.slack.com") ? "slackreport.json" : "adaptivecard.json"
-    def hf            = new File("${workflow.projectDir}/assets/${json_path}")
-    def json_template = engine.createTemplate(hf).make(msg_fields)
-    def json_message  = json_template.toString()
+    def hf            = file("${workflow.projectDir}/assets/${json_path}")
+    def json_message  = template(hf, msg_fields)
 
     // POST
-    def post = new URL(hook_url).openConnection()
-    post.setRequestMethod("POST")
-    post.setDoOutput(true)
-    post.setRequestProperty("Content-Type", "application/json")
-    post.getOutputStream().write(json_message.getBytes("UTF-8"))
+    def post = request(hook_url, method: "POST", headers: ["Content-Type": "application/json"], body: json_message)
     def postRC = post.getResponseCode()
     if (!postRC.equals(200)) {
         log.warn(post.getErrorStream().getText())

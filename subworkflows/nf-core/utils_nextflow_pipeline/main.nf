@@ -1,6 +1,7 @@
 //
 // Subworkflow with functionality that may be useful for any Nextflow pipeline
 //
+include { fromYaml ; toJson } from 'plugin/nf-boost'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,12 +73,10 @@ def getWorkflowVersion() {
 //
 def dumpParametersToJSON(outdir) {
     def timestamp = new java.util.Date().format('yyyy-MM-dd_HH-mm-ss')
-    def filename  = "params_${timestamp}.json"
-    def temp_pf   = new File(workflow.launchDir.toString(), ".${filename}")
-    def jsonStr   = groovy.json.JsonOutput.toJson(params)
-    temp_pf.text  = groovy.json.JsonOutput.prettyPrint(jsonStr)
+    def temp_pf   = file(".params_${timestamp}.json")
+    temp_pf.text  = toJson(params, true)
 
-    nextflow.extension.FilesEx.copyTo(temp_pf.toPath(), "${outdir}/pipeline_info/params_${timestamp}.json")
+    temp_pf.copyTo("${outdir}/pipeline_info/params_${timestamp}.json")
     temp_pf.delete()
 }
 
@@ -85,10 +84,9 @@ def dumpParametersToJSON(outdir) {
 // When running with -profile conda, warn if channels have not been set-up appropriately
 //
 def checkCondaChannels() {
-    def parser = new org.yaml.snakeyaml.Yaml()
     def channels = []
     try {
-        def config = parser.load("conda config --show channels".execute().text)
+        def config = fromYaml("conda config --show channels".execute().text)
         channels = config.channels
     }
     catch (NullPointerException e) {
