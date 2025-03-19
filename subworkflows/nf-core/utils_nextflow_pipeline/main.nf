@@ -73,11 +73,8 @@ def getWorkflowVersion() {
 //
 def dumpParametersToJSON(outdir) {
     def timestamp = new java.util.Date().format('yyyy-MM-dd_HH-mm-ss')
-    def temp_pf   = file(".params_${timestamp}.json")
-    temp_pf.text  = toJson(params, true)
-
-    temp_pf.copyTo("${outdir}/pipeline_info/params_${timestamp}.json")
-    temp_pf.delete()
+    def params_file = file("${outdir}/pipeline_info/params_${timestamp}.json")
+    params_file.text = toJson(params, true)
 }
 
 //

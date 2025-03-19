@@ -350,8 +350,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
                 throw new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')
             }
             // Try to send HTML e-mail using sendmail
-            def sendmail_tf = file(".sendmail_tmp.html")
-            sendmail_tf.withWriter { w -> w << sendmail_html }
+            file(".sendmail_tmp.html").text = sendmail_html
             ['sendmail', '-t'].execute() << sendmail_html
             log.info("-${colors.purple}[${workflow.manifest.name}]${colors.green} Sent summary e-mail to ${email_address} (sendmail)-")
         }
@@ -364,16 +363,10 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     }
 
     // Write summary e-mail HTML to a file
-    def output_hf = file(".pipeline_report.html")
-    output_hf.withWriter { w -> w << email_html }
-    output_hf.copyTo("${outdir}/pipeline_info/pipeline_report.html")
-    output_hf.delete()
+    file("${outdir}/pipeline_info/pipeline_report.html").text = email_html
 
     // Write summary e-mail TXT to a file
-    def output_tf = file(".pipeline_report.txt")
-    output_tf.withWriter { w -> w << email_txt }
-    output_tf.copyTo("${outdir}/pipeline_info/pipeline_report.txt")
-    output_tf.delete()
+    file("${outdir}/pipeline_info/pipeline_report.txt").text = email_txt
 }
 
 //
