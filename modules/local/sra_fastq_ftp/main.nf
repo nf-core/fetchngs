@@ -15,7 +15,7 @@ process SRA_FASTQ_FTP {
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
     tuple val(meta), path("*md5")     , emit: md5
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('wget'), eval("echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//')"), topic: versions
 
     script:
     def args = task.ext.args ?: ''
@@ -28,11 +28,6 @@ process SRA_FASTQ_FTP {
 
         echo "${meta.md5_1}  ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            wget: \$(echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//'))
-        END_VERSIONS
         """
     } else {
         """
@@ -51,11 +46,6 @@ process SRA_FASTQ_FTP {
 
         echo "${meta.md5_2}  ${meta.id}_2.fastq.gz" > ${meta.id}_2.fastq.gz.md5
         md5sum -c ${meta.id}_2.fastq.gz.md5
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            wget: \$(echo \$(wget --version | head -n 1 | sed 's/^GNU Wget //; s/ .*\$//'))
-        END_VERSIONS
         """
     }
 }

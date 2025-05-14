@@ -57,9 +57,3 @@ if grep -q "checksums missing" vdb-validate_result.txt; then
         exit 1
     fi
 fi
-
-cat <<-END_VERSIONS > versions.yml
-"!{task.process}":
-    sratools: $(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
-    curl: $(curl --version | head -n 1 | sed 's/^curl //; s/ .*$//')
-END_VERSIONS

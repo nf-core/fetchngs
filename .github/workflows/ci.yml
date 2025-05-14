@@ -59,7 +59,7 @@ jobs:
       fail-fast: false
       matrix:
         NXF_VER:
-          - "24.04.2"
+          - "25.04.0"
           - "latest-everything"
         profile:
           - "conda"

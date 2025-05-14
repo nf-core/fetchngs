@@ -12,7 +12,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
 
     output:
     path('*.mkfg')     , emit: ncbi_settings
-    path 'versions.yml', emit: versions
+    tuple val("${task.process}"), val('sratools'), eval("vdb-config --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when

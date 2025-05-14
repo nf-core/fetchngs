@@ -9,6 +9,8 @@
 ----------------------------------------------------------------------------------------
 */
 
+nextflow.preview.output = true
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
@@ -18,6 +20,7 @@
 include { SRA                     } from './workflows/sra'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
+include { softwareVersionsToYAML  } from './subworkflows/nf-core/utils_nfcore_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,6 +43,9 @@ workflow NFCORE_FETCHNGS {
     //
     SRA ( ids )
 
+    emit:
+    samples = SRA.out.samples
+    metadata = SRA.out.metadata
 }
 
 /*
@@ -81,6 +87,36 @@ workflow {
         params.monochrome_logs,
         params.hook_url
     )
+
+    publish:
+    samples = NFCORE_FETCHNGS.out.samples
+    metadata = NFCORE_FETCHNGS.out.metadata
+    versions = softwareVersionsToYAML()
+}
+
+output {
+    samples {
+        path { sample ->
+            sample.fastq_1 >> 'fastq/'
+            sample.fastq_2 >> 'fastq/'
+            sample.md5_1 >> 'fastq/md5/'
+            sample.md5_2 >> 'fastq/md5/'
+        }
+        index {
+            path 'samplesheet/samplesheet.json'
+        }
+    }
+
+    metadata {
+        path 'metadata'
+    }
+
+    versions {
+        path '.'
+        index {
+            path 'nf_core_fetchngs_software_mqc_versions.yml'
+        }
+    }
 }
 
 /*
