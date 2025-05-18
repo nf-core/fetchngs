@@ -8,14 +8,18 @@
 ========================================================================================
 */
 
-include { completionEmail           } from '../../nf-core/utils_nfcore_pipeline'
-include { completionSummary         } from '../../nf-core/utils_nfcore_pipeline'
-include { imNotification            } from '../../nf-core/utils_nfcore_pipeline'
-include { paramsSummaryMap          } from 'plugin/nf-schema'
-include { samplesheetToList         } from 'plugin/nf-schema'
-include { UTILS_NEXTFLOW_PIPELINE   } from '../../nf-core/utils_nextflow_pipeline'
-include { UTILS_NFCORE_PIPELINE     } from '../../nf-core/utils_nfcore_pipeline'
-include { UTILS_NFSCHEMA_PLUGIN     } from '../../nf-core/utils_nfschema_plugin'
+include { completionEmail      } from 'plugin/nf-utils'
+include { completionSummary    } from 'plugin/nf-utils'
+include { imNotification       } from 'plugin/nf-utils'
+include { paramsSummaryMap     } from 'plugin/nf-schema'
+include { samplesheetToList    } from 'plugin/nf-schema'
+include { getWorkflowVersion   } from 'plugin/nf-utils'
+include { dumpParametersToJSON } from 'plugin/nf-utils'
+include { checkCondaChannels   } from 'plugin/nf-utils'
+include { checkConfigProvided  } from 'plugin/nf-utils'
+include { checkProfileProvided } from 'plugin/nf-utils'
+include { paramsSummaryLog     } from 'plugin/nf-schema'
+include { validateParameters   } from 'plugin/nf-schema'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -24,7 +28,6 @@ include { UTILS_NFSCHEMA_PLUGIN     } from '../../nf-core/utils_nfschema_plugin'
 */
 
 workflow PIPELINE_INITIALISATION {
-
     take:
     version             // boolean: Display version and exit
     validate_params     // boolean: Boolean whether to validate parameters against the schema at runtime
@@ -36,31 +39,41 @@ workflow PIPELINE_INITIALISATION {
 
     main:
 
-    //
-    // Print version and exit if required and dump pipeline parameters to JSON file
-    //
-    UTILS_NEXTFLOW_PIPELINE (
-        version,
-        true,
-        outdir,
-        workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1
-    )
+    ch_versions = Channel.empty()
+
+    // Plugin-based parameter dump and version info
+    if (outdir) {
+        dumpParametersToJSON(outdir, params)
+    }
+    def version_str = getWorkflowVersion(workflow.manifest.version, workflow.commitId)
+    println("Pipeline version: ${version_str}")
+    if (workflow.profile && workflow.profile.contains('conda')) {
+        if (!checkCondaChannels()) {
+            log.warn("Conda channels are not configured correctly!")
+        }
+    }
 
     //
     // Validate parameters and generate parameter summary to stdout
     //
-    UTILS_NFSCHEMA_PLUGIN (
-        workflow,
-        validate_params,
-        null
-    )
+    if (validate_params) {
+        // Print parameter summary to stdout. This will display the parameters
+        // that differ from the default given in the JSON schema
+        // TODO log.info(paramsSummaryLog(workflow, parameters_schema: parameters_schema))
+        log.info(paramsSummaryLog(workflow))
 
-    //
+        // Validate the parameters using nextflow_schema.json or the schema
+        // given via the validation.parametersSchema configuration option
+        // TODO if (parameters_schema) { validateParameters(parameters_schema: parameters_schema)
+        validateParameters()
+    }
+    else {
+        log.info(paramsSummaryLog(workflow))
+    }
+
     // Check config provided to the pipeline
-    //
-    UTILS_NFCORE_PIPELINE (
-        nextflow_cli_args
-    )
+    valid_config = checkConfigProvided()
+    checkProfileProvided(nextflow_cli_args)
 
     //
     // Create channel from input file provided through params.input
@@ -68,14 +81,14 @@ workflow PIPELINE_INITIALISATION {
     ch_input = file(input)
     if (isSraId(ch_input)) {
         sraCheckENAMetadataFields(ena_metadata_fields)
-    } else {
+    }
+    else {
         error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ ids!')
     }
 
     // Read in ids from --input file
-    Channel
-        .from(ch_input)
-        .splitCsv(header:false, sep:'', strip:true)
+    Channel.from(ch_input)
+        .splitCsv(header: false, sep: '', strip: true)
         .map { it[0] }
         .unique()
         .set { ch_ids }
@@ -91,7 +104,6 @@ workflow PIPELINE_INITIALISATION {
 */
 
 workflow PIPELINE_COMPLETION {
-
     take:
     email           //  string: email address
     email_on_fail   //  string: email address sent on pipeline failure
@@ -115,7 +127,7 @@ workflow PIPELINE_COMPLETION {
                 plaintext_email,
                 outdir,
                 monochrome_logs,
-                []
+                [],
             )
         }
 
@@ -128,7 +140,7 @@ workflow PIPELINE_COMPLETION {
     }
 
     workflow.onError {
-        log.error "Pipeline failed. Please refer to troubleshooting docs: https://nf-co.re/docs/usage/troubleshooting"
+        log.error("Pipeline failed. Please refer to troubleshooting docs: https://nf-co.re/docs/usage/troubleshooting")
     }
 }
 
@@ -157,7 +169,8 @@ def isSraId(input) {
     if (num_match > 0) {
         if (num_match == total_ids) {
             is_sra = true
-        } else {
+        }
+        else {
             error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / GEO / DDBJ ids!")
         }
     }
@@ -170,7 +183,7 @@ def isSraId(input) {
 def sraCheckENAMetadataFields(ena_metadata_fields) {
     // Check minimal ENA fields are provided to download FastQ files
     def valid_ena_metadata_fields = ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
-    def actual_ena_metadata_fields = ena_metadata_fields ? ena_metadata_fields.split(',').collect{ it.trim().toLowerCase() } : valid_ena_metadata_fields
+    def actual_ena_metadata_fields = ena_metadata_fields ? ena_metadata_fields.split(',').collect { it.trim().toLowerCase() } : valid_ena_metadata_fields
     if (!actual_ena_metadata_fields.containsAll(valid_ena_metadata_fields)) {
         error("Invalid option: '${ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
     }
@@ -179,12 +192,16 @@ def sraCheckENAMetadataFields(ena_metadata_fields) {
 // Print a warning after pipeline has completed
 //
 def sraCurateSamplesheetWarn() {
-    log.warn "=============================================================================\n" +
-        "  Please double-check the samplesheet that has been auto-created by the pipeline.\n\n" +
-        "  Public databases don't reliably hold information such as strandedness\n" +
-        "  information, controls etc\n\n" +
-        "  All of the sample metadata obtained from the ENA has been appended\n" +
-        "  as additional columns to help you manually curate the samplesheet before\n" +
-        "  running nf-core/other pipelines.\n" +
-        "==================================================================================="
+    log.warn(
+        """=============================================================================
+  Please double-check the samplesheet that has been auto-created by the pipeline.
+
+  Public databases don't reliably hold information such as strandedness
+  information, controls etc
+
+  All of the sample metadata obtained from the ENA has been appended
+  as additional columns to help you manually curate the samplesheet before
+  running nf-core/other pipelines.
+============================================================================="""
+    )
 }
