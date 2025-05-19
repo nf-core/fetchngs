@@ -63,7 +63,7 @@ workflow PIPELINE_INITIALISATION {
     )
 
     //
-    // Auto-detect input id type
+    // Create channel from input file provided through params.input
     //
     ch_input = file(input)
     if (isSraId(ch_input)) {
@@ -114,7 +114,8 @@ workflow PIPELINE_COMPLETION {
                 email_on_fail,
                 plaintext_email,
                 outdir,
-                monochrome_logs
+                monochrome_logs,
+                []
             )
         }
 
@@ -187,4 +188,3 @@ def sraCurateSamplesheetWarn() {
         "  running nf-core/other pipelines.\n" +
         "==================================================================================="
 }
-
