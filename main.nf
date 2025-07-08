@@ -9,43 +9,40 @@
 ----------------------------------------------------------------------------------------
 */
 
-nextflow.preview.output = true
+nextflow.preview.operators = true
+nextflow.preview.typeChecking = true
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS / TYPES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
 include { SRA                     } from './workflows/sra'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
-include { softwareVersionsToYAML  } from './subworkflows/nf-core/utils_nfcore_pipeline'
+include { SOFTWARE_VERSIONS       } from './subworkflows/nf-core/utils_nfcore_pipeline'
+include { Sample                  } from './workflows/sra'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOWS FOR PIPELINE
+    WORKFLOW INPUTS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-//
-// WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
-//
-workflow NFCORE_FETCHNGS {
+params {
 
-    take:
-    ids // channel: database ids read in from --input
+    // List of SRA/ENA/GEO/DDBJ identifiers to download their associated metadata and FastQ files
+    input: Path
 
-    main:
+    // Comma-separated list of ENA metadata fields to fetch before downloading data
+    ena_metadata_fields: String = ''
 
-    //
-    // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
-    //
-    SRA ( ids )
+    // Only download metadata for public data database ids and don't download the FastQ files
+    skip_fastq_download: Boolean = false
 
-    emit:
-    samples = SRA.out.samples
-    metadata = SRA.out.metadata
+    // dbGaP repository key
+    dbgap_key: Path?
 }
 
 /*
@@ -60,12 +57,12 @@ workflow {
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION (
+    ids = PIPELINE_INITIALISATION (
         params.version,
         params.validate_params,
         params.monochrome_logs,
         args,
-        params.outdir,
+        workflow.outputDir,
         params.input,
         params.ena_metadata_fields
     )
@@ -73,9 +70,20 @@ workflow {
     //
     // WORKFLOW: Run primary workflows for the pipeline
     //
-    NFCORE_FETCHNGS (
-        PIPELINE_INITIALISATION.out.ids
+    sra = SRA (
+        channel.fromList(ids),
+        [
+            ena_metadata_fields: params.ena_metadata_fields,
+            skip_fastq_download: params.skip_fastq_download,
+            dbgap_key: params.dbgap_key
+        ]
     )
+
+    //
+    // SUBWORKFLOW: Collect software versions
+    //
+    versions = SOFTWARE_VERSIONS()
+
     //
     // SUBWORKFLOW: Run completion tasks
     //
@@ -83,19 +91,27 @@ workflow {
         params.email,
         params.email_on_fail,
         params.plaintext_email,
-        params.outdir,
+        workflow.outputDir,
         params.monochrome_logs,
         params.hook_url
     )
 
     publish:
-    samples = NFCORE_FETCHNGS.out.samples
-    metadata = NFCORE_FETCHNGS.out.metadata
-    versions = softwareVersionsToYAML()
+    samples = sra.samples
+    runinfo_ftp = sra.runinfo_ftp
+    versions = versions
 }
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    WORKFLOW OUTPUTS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
 output {
-    samples {
+
+    // List of FASTQ samples with optional MD5 checksums
+    samples: Channel<Sample> {
         path { sample ->
             sample.fastq_1 >> 'fastq/'
             sample.fastq_2 >> 'fastq/'
@@ -107,12 +123,13 @@ output {
         }
     }
 
-    metadata {
+    // List of download links for the given sample ids
+    runinfo_ftp: Channel<Path> {
         path 'metadata'
     }
 
-    versions {
-        path '.'
+    // Manifest of tool versions used by the pipeline for MultiQC
+    versions: Map<String,Map> {
         index {
             path 'nf_core_fetchngs_software_mqc_versions.yml'
         }

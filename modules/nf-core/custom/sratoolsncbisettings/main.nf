@@ -8,14 +8,13 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
         'biocontainers/sra-tools:3.0.8--h9f5acd7_0' }"
 
     input:
-    val ids
+    ids : Bag<Map<String,String>>
 
     output:
-    path('*.mkfg')     , emit: ncbi_settings
-    tuple val("${task.process}"), val('sratools'), eval("vdb-config --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions
+    file('*.mkfg')
 
-    when:
-    task.ext.when == null || task.ext.when
+    topic:
+    [process: task.process, name: 'sratools', version: eval("vdb-config --version 2>&1 | grep -Eo '[0-9.]+'")] >> 'versions'
 
     shell:
     config = "/LIBS/GUID = \"${UUID.randomUUID().toString()}\"\\n/libs/cloud/report_instance_identity = \"true\"\\n"

@@ -1,0 +1,53 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/fetchngs/master/nextflow_output.json",
+    "title": "nf-core/fetchngs pipeline outputs",
+    "description": "Pipeline to fetch metadata and raw FastQ files from public databases",
+    "type": "object",
+    "properties": {
+        "samples": {
+            "description": "List of FASTQ samples with optional MD5 checksums",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "fastq_1": {
+                        "type": "string",
+                        "format": "file-path"
+                    },
+                    "fastq_2": {
+                        "type": "string",
+                        "format": "file-path"
+                    },
+                    "md5_1": {
+                        "type": "string",
+                        "format": "file-path"
+                    },
+                    "md5_2": {
+                        "type": "string",
+                        "format": "file-path"
+                    }
+                },
+                "required": ["id", "fastq_1"]
+            },
+            "path": "samplesheet/samplesheet.json"
+        },
+        "runinfo_ftp": {
+            "description": "List of download links for the given sample ids",
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "file-path"
+            },
+            "path": "metadata"
+        },
+        "versions": {
+            "description": "Manifest of tool versions used by the pipeline for MultiQC",
+            "type": "object",
+            "path": "nf_core_fetchngs_software_mqc_versions.yml"
+        }
+    }
+}

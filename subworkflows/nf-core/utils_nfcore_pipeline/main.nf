@@ -10,7 +10,7 @@
 
 workflow UTILS_NFCORE_PIPELINE {
     take:
-    nextflow_cli_args
+    nextflow_cli_args   : List<String>
 
     main:
     valid_config = checkConfigProvided()
@@ -18,6 +18,38 @@ workflow UTILS_NFCORE_PIPELINE {
 
     emit:
     valid_config
+}
+
+//
+// Get channel of software versions used in pipeline
+//
+workflow SOFTWARE_VERSIONS {
+    main:
+    processVersions = channel.topic('versions')
+    workflowVersions = channel.of(
+        [process: 'Workflow', name: workflow.manifest.name, version: getWorkflowVersion()],
+        [process: 'Workflow', name: 'Nextflow', version: workflow.nextflow.version]
+    )
+
+    emit:
+    processVersions
+        .mix(workflowVersions)
+        .gather { t: ToolVersion ->
+            [key: t.process, value: [name: t.name, version: t.version]]
+        }
+        .map { g ->
+            def simpleName = g.process.tokenize(':').last()
+            def toolsMap = g.tools.toUnique().inject([:]) { acc, tool ->
+                acc + [ (tool.name): tool.version ]
+            }
+            return [ (simpleName): toolsMap ]
+        }
+}
+
+record ToolVersion {
+    process : String
+    name    : String
+    version : String
 }
 
 /*
@@ -29,21 +61,20 @@ workflow UTILS_NFCORE_PIPELINE {
 //
 //  Warn if a -profile or Nextflow config has not been provided to run the pipeline
 //
-def checkConfigProvided() {
-    def valid_config = true as Boolean
+def checkConfigProvided() -> Boolean {
     if (workflow.profile == 'standard' && workflow.configFiles.size() <= 1) {
         log.warn(
             "[${workflow.manifest.name}] You are attempting to run the pipeline without any custom configuration!\n\n" + "This will be dependent on your local compute environment but can be achieved via one or more of the following:\n" + "   (1) Using an existing pipeline profile e.g. `-profile docker` or `-profile singularity`\n" + "   (2) Using an existing nf-core/configs for your Institution e.g. `-profile crick` or `-profile uppmax`\n" + "   (3) Using your own local custom config e.g. `-c /path/to/your/custom.config`\n\n" + "Please refer to the quick start section and usage docs for the pipeline.\n "
         )
-        valid_config = false
+        return false
     }
-    return valid_config
+    return true
 }
 
 //
 // Exit pipeline if --profile contains spaces
 //
-def checkProfileProvided(nextflow_cli_args) {
+def checkProfileProvided(nextflow_cli_args: List<String>) {
     if (workflow.profile.endsWith(',')) {
         error(
             "The `-profile` option cannot end with a trailing comma, please remove it and re-run the pipeline!\n" + "HINT: A common mistake is to provide multiple values separated by spaces e.g. `-profile test, docker`.\n"
@@ -59,7 +90,7 @@ def checkProfileProvided(nextflow_cli_args) {
 //
 // Citation string for pipeline
 //
-def workflowCitation() {
+def workflowCitation() -> String {
     def temp_doi_ref = ""
     def manifest_doi = workflow.manifest.doi.tokenize(",")
     // Handling multiple DOIs
@@ -74,8 +105,8 @@ def workflowCitation() {
 //
 // Generate workflow version string
 //
-def getWorkflowVersion() {
-    def version_string = "" as String
+def getWorkflowVersion() -> String {
+    def version_string = ""
     if (workflow.manifest.version) {
         def prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
         version_string += "${prefix_v}${workflow.manifest.version}"
@@ -90,35 +121,9 @@ def getWorkflowVersion() {
 }
 
 //
-// Get workflow version for pipeline
-//
-def workflowVersionToYAML() {
-    return Channel.of(
-        [ 'Workflow', workflow.manifest.name, getWorkflowVersion() ],
-        [ 'Workflow', 'Nextflow', workflow.nextflow.version ]
-    )
-}
-
-//
-// Get channel of software versions used in pipeline in YAML format
-//
-def softwareVersionsToYAML() {
-    return Channel.topic('versions')
-        .unique()
-        .mix(workflowVersionToYAML())
-        .map { process, name, version ->
-            [
-                (process.tokenize(':').last()): [
-                    (name): version
-                ]
-            ]
-        }
-}
-
-//
 // Get workflow summary for MultiQC
 //
-def paramsSummaryMultiqc(summary_params) {
+def paramsSummaryMultiqc(summary_params: Map) -> String {
     def summary_section = ''
     summary_params
         .keySet()
@@ -152,8 +157,8 @@ def paramsSummaryMultiqc(summary_params) {
 //
 // nf-core logo
 //
-def nfCoreLogo(monochrome_logs=true) {
-    def colors = logColours(monochrome_logs) as Map
+def nfCoreLogo(monochrome_logs: boolean = true) -> String {
+    def colors = logColours(monochrome_logs)
     String.format(
         """\n
         ${dashedLine(monochrome_logs)}
@@ -171,16 +176,16 @@ def nfCoreLogo(monochrome_logs=true) {
 //
 // Return dashed line
 //
-def dashedLine(monochrome_logs=true) {
-    def colors = logColours(monochrome_logs) as Map
+def dashedLine(monochrome_logs: boolean = true) -> String {
+    def colors = logColours(monochrome_logs)
     return "-${colors.dim}----------------------------------------------------${colors.reset}-"
 }
 
 //
 // ANSII colours used for terminal logging
 //
-def logColours(monochrome_logs=true) {
-    def colorcodes = [:] as Map
+def logColours(monochrome_logs: boolean = true) -> Map<String,String> {
+    def colorcodes = [:]
 
     // Reset / Meta
     colorcodes['reset']      = monochrome_logs ? '' : "\033[0m"
@@ -245,33 +250,16 @@ def logColours(monochrome_logs=true) {
 }
 
 //
-// Attach the multiqc report to email
-//
-def attachMultiqcReport(multiqc_report) {
-    def mqc_report = null
-    try {
-        if (workflow.success) {
-            mqc_report = multiqc_report.getVal()
-            if (mqc_report.getClass() == ArrayList && mqc_report.size() >= 1) {
-                if (mqc_report.size() > 1) {
-                    log.warn("[${workflow.manifest.name}] Found multiple reports from process 'MULTIQC', will use only one")
-                }
-                mqc_report = mqc_report[0]
-            }
-        }
-    }
-    catch (Exception all) {
-        if (multiqc_report) {
-            log.warn("[${workflow.manifest.name}] Could not attach MultiQC report to summary email")
-        }
-    }
-    return mqc_report
-}
-
-//
 // Construct and send completion email
 //
-def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs=true, multiqc_report=null) {
+def completionEmail(
+        summary_params: Map,
+        email: String,
+        email_on_fail: String,
+        plaintext_email: boolean,
+        outdir: String,
+        monochrome_logs: boolean = true,
+        multiqc_report: Path = null) {
 
     // Set up the e-mail variables
     def subject = "[${workflow.manifest.name}] Successful: ${workflow.runName}"
@@ -319,13 +307,14 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     email_fields['summary']      = summary << misc_fields
 
     // On success try attach the multiqc report
-    def mqc_report = attachMultiqcReport(multiqc_report)
+    def mqc_report = workflow.success
+        ? multiqc_report
+        : null
 
     // Check if we are only sending emails on failure
-    def email_address = email
-    if (!email && email_on_fail && !workflow.success) {
-        email_address = email_on_fail
-    }
+    def email_address = !email && email_on_fail && !workflow.success
+        ? email_on_fail
+        : email
 
     // Render the TXT template
     def engine       = new groovy.text.GStringTemplateEngine()
@@ -346,7 +335,7 @@ def completionEmail(summary_params, email, email_on_fail, plaintext_email, outdi
     def sendmail_html          = sendmail_template.toString()
 
     // Send the HTML e-mail
-    def colors = logColours(monochrome_logs) as Map
+    def colors = logColours(monochrome_logs)
     if (email_address) {
         try {
             if (plaintext_email) {
@@ -381,8 +370,8 @@ new org.codehaus.groovy.GroovyException('Send plaintext e-mail, not HTML')      
 //
 // Print pipeline summary on completion
 //
-def completionSummary(monochrome_logs=true) {
-    def colors = logColours(monochrome_logs) as Map
+def completionSummary(monochrome_logs: boolean = true) {
+    def colors = logColours(monochrome_logs)
     if (workflow.success) {
         if (workflow.stats.ignoredCount == 0) {
             log.info("-${colors.purple}[${workflow.manifest.name}]${colors.green} Pipeline completed successfully${colors.reset}-")
@@ -399,7 +388,7 @@ def completionSummary(monochrome_logs=true) {
 //
 // Construct and send a notification to a web server as JSON e.g. Microsoft Teams and Slack
 //
-def imNotification(summary_params, hook_url) {
+def imNotification(summary_params: Map, hook_url: String) {
     def summary = [:]
     summary_params
         .keySet()
