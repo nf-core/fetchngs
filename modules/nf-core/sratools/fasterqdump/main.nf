@@ -1,5 +1,5 @@
 process SRATOOLS_FASTERQDUMP {
-    tag "$meta.id"
+    tag "$id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -8,41 +8,44 @@ process SRATOOLS_FASTERQDUMP {
         'quay.io/biocontainers/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:6a9ff0e76ec016c3d0d27e0c0d362339f2d787e6-0' }"
 
     input:
-    tuple val(meta), path(sra)
-    path ncbi_settings
-    path certificate
+    id              : String
+    single_end      : Boolean
+    sra             : Path
+    ncbi_settings   : Path
+    certificate     : Path?
 
     output:
-    tuple val(meta), path('*.fastq.gz'), emit: reads
-    tuple val("${task.process}"), val('sratools'), eval("fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions
-    tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //g'"), topic: versions
+    id      : String = id
+    fastq_1 : Path = files('*.fastq.gz').toSorted()[0]
+    fastq_2 : Path? = !single_end ? files('*.fastq.gz').toSorted()[1] : null
 
-    when:
-    task.ext.when == null || task.ext.when
+    topic:
+    [process: task.process, name: 'sratools', version: eval("fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+'")] >> 'versions'
+    [process: task.process, name: 'pigz',     version: eval("pigz --version 2>&1 | sed 's/pigz //g'")]           >> 'versions'
 
     script:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def outfile = meta.single_end ? "${prefix}.fastq" : prefix
+    def args_fasterqdump = task.ext.args_fasterqdump ?: ''
+    def args_pigz = task.ext.args_pigz ?: ''
+    def prefix = task.ext.prefix ?: "${id}"
+    def outfile = single_end ? "${prefix}.fastq" : prefix
     def key_file = ''
-    if (certificate.toString().endsWith('.jwt')) {
+    if (certificate.baseName.endsWith('.jwt')) {
         key_file += " --perm ${certificate}"
-    } else if (certificate.toString().endsWith('.ngc')) {
+    } else if (certificate.baseName.endsWith('.ngc')) {
         key_file += " --ngc ${certificate}"
     }
     """
     export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
 
     fasterq-dump \\
-        $args \\
+        $args_fasterqdump \\
         --threads $task.cpus \\
         --outfile $outfile \\
         ${key_file} \\
         ${sra}
 
     pigz \\
-        $args2 \\
+        $args_pigz \\
         --no-name \\
         --processes $task.cpus \\
         *.fastq

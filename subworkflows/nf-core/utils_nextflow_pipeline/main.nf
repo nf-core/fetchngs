@@ -10,10 +10,10 @@
 
 workflow UTILS_NEXTFLOW_PIPELINE {
     take:
-    print_version        // boolean: print version
-    dump_parameters      // boolean: dump parameters
-    outdir               //    path: base directory used to publish pipeline results
-    check_conda_channels // boolean: check conda channels
+    print_version       : boolean // print version
+    dump_parameters     : boolean // dump parameters
+    outdir              : String  // base directory used to publish pipeline results
+    check_conda_channels: boolean // check conda channels
 
     main:
 
@@ -52,8 +52,8 @@ workflow UTILS_NEXTFLOW_PIPELINE {
 //
 // Generate version string
 //
-def getWorkflowVersion() {
-    def version_string = "" as String
+def getWorkflowVersion() -> String {
+    def version_string = ""
     if (workflow.manifest.version) {
         def prefix_v = workflow.manifest.version[0] != 'v' ? 'v' : ''
         version_string += "${prefix_v}${workflow.manifest.version}"
@@ -70,7 +70,7 @@ def getWorkflowVersion() {
 //
 // Dump pipeline parameters to a JSON file
 //
-def dumpParametersToJSON(outdir) {
+def dumpParametersToJSON(outdir: String) {
     def timestamp = new java.util.Date().format('yyyy-MM-dd_HH-mm-ss')
     def filename  = "params_${timestamp}.json"
     def temp_pf   = new File(workflow.launchDir.toString(), ".${filename}")

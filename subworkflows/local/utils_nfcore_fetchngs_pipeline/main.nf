@@ -26,13 +26,13 @@ include { UTILS_NFSCHEMA_PLUGIN     } from '../../nf-core/utils_nfschema_plugin'
 workflow PIPELINE_INITIALISATION {
 
     take:
-    version             // boolean: Display version and exit
-    validate_params     // boolean: Boolean whether to validate parameters against the schema at runtime
-    monochrome_logs     // boolean: Do not use coloured log outputs
-    nextflow_cli_args   //   array: List of positional nextflow CLI args
-    outdir              //  string: The output directory where the results will be saved
-    input               //  string: File containing SRA/ENA/GEO/DDBJ identifiers one per line to download their associated metadata and FastQ files
-    ena_metadata_fields //  string: Comma-separated list of ENA metadata fields to fetch before downloading data
+    version             : boolean       // Display version and exit
+    validate_params     : boolean       // Validate parameters against the schema at runtime
+    monochrome_logs     : boolean       // Do not use coloured log outputs
+    nextflow_cli_args   : List<String>  // List of positional nextflow CLI args
+    outdir              : String        // The output directory where the results will be saved
+    input               : Path          // File containing SRA/ENA/GEO/DDBJ identifiers one per line to download their associated metadata and FastQ files
+    ena_metadata_fields : String        // Comma-separated list of ENA metadata fields to fetch before downloading data
 
     main:
 
@@ -65,23 +65,19 @@ workflow PIPELINE_INITIALISATION {
     //
     // Auto-detect input id type
     //
-    ch_input = file(input)
-    if (isSraId(ch_input)) {
-        sraCheckENAMetadataFields(ena_metadata_fields)
-    } else {
+    ids = input
+        .splitCsv(header:false, sep:'', strip:true)
+        .collect { row -> row[0] }
+        .toUnique()
+    if (!isSraId(ids)) {
         error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ ids!')
     }
-
-    // Read in ids from --input file
-    Channel
-        .from(ch_input)
-        .splitCsv(header:false, sep:'', strip:true)
-        .map { it[0] }
-        .unique()
-        .set { ch_ids }
+    if (!sraCheckENAMetadataFields(ena_metadata_fields)) {
+        error("Invalid option: '${ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
+    }
 
     emit:
-    ids = ch_ids
+    ids : List<String>
 }
 
 /*
@@ -93,12 +89,12 @@ workflow PIPELINE_INITIALISATION {
 workflow PIPELINE_COMPLETION {
 
     take:
-    email           //  string: email address
-    email_on_fail   //  string: email address sent on pipeline failure
-    plaintext_email // boolean: Send plain-text email instead of HTML
-    outdir          //    path: Path to output directory where results will be published
-    monochrome_logs // boolean: Disable ANSI colour codes in log output
-    hook_url        //  string: hook URL for notifications
+    email           : String    // email address
+    email_on_fail   : String    // email address sent on pipeline failure
+    plaintext_email : boolean   // Send plain-text email instead of HTML
+    outdir          : Path      // Path to output directory where results will be published
+    monochrome_logs : boolean   // Disable ANSI colour codes in log output
+    hook_url        : String    // hook URL for notifications
 
     main:
     summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
@@ -140,39 +136,29 @@ workflow PIPELINE_COMPLETION {
 //
 // Check if input ids are from the SRA
 //
-def isSraId(input) {
-    def is_sra = false
+def isSraId(ids: List<String>) -> boolean {
     def total_ids = 0
     def no_match_ids = []
     def pattern = /^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM]))(\d+)$/
-    input.eachLine { line ->
+    ids.each { id ->
         total_ids += 1
-        if (!(line =~ pattern)) {
-            no_match_ids << line
+        if (!(id =~ pattern)) {
+            no_match_ids << id
         }
     }
 
     def num_match = total_ids - no_match_ids.size()
-    if (num_match > 0) {
-        if (num_match == total_ids) {
-            is_sra = true
-        } else {
-            error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / GEO / DDBJ ids!")
-        }
-    }
-    return is_sra
+    return num_match > 0 && num_match == total_ids
 }
 
 //
 // Check and validate parameters
 //
-def sraCheckENAMetadataFields(ena_metadata_fields) {
+def sraCheckENAMetadataFields(ena_metadata_fields: List<String>) -> boolean {
     // Check minimal ENA fields are provided to download FastQ files
     def valid_ena_metadata_fields = ['run_accession', 'experiment_accession', 'library_layout', 'fastq_ftp', 'fastq_md5']
     def actual_ena_metadata_fields = ena_metadata_fields ? ena_metadata_fields.split(',').collect{ it.trim().toLowerCase() } : valid_ena_metadata_fields
-    if (!actual_ena_metadata_fields.containsAll(valid_ena_metadata_fields)) {
-        error("Invalid option: '${ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
-    }
+    return actual_ena_metadata_fields.containsAll(valid_ena_metadata_fields)
 }
 //
 // Print a warning after pipeline has completed

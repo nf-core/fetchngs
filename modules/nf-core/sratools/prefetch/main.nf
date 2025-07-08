@@ -8,26 +8,26 @@ process SRATOOLS_PREFETCH {
         'biocontainers/sra-tools:3.1.0--h9f5acd7_0' }"
 
     input:
-    tuple val(meta), val(id)
-    path ncbi_settings
-    path certificate
+    id              : String
+    ncbi_settings   : Path
+    certificate     : Path?
 
     output:
-    tuple val(meta), path(id, type: 'dir'), emit: sra
-    tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions
+    id  : String = id
+    sra : Path = file(id)
 
-    when:
-    task.ext.when == null || task.ext.when
+    topic:
+    [process: task.process, name: 'sratools', version: eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'")] >> 'versions'
 
     shell:
-    args = task.ext.args ?: ''
-    args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
+    args_prefetch = task.ext.args_prefetch ?: ''
+    args_retry = task.ext.args_retry ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
     if (certificate) {
-        if (certificate.toString().endsWith('.jwt')) {
-            args += " --perm ${certificate}"
+        if (certificate.baseName.endsWith('.jwt')) {
+            args_prefetch += " --perm ${certificate}"
         }
-        else if (certificate.toString().endsWith('.ngc')) {
-            args += " --ngc ${certificate}"
+        else if (certificate.baseName.endsWith('.ngc')) {
+            args_prefetch += " --ngc ${certificate}"
         }
     }
 

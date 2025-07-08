@@ -9,12 +9,14 @@ process SRA_IDS_TO_RUNINFO {
         'biocontainers/python:3.9--1' }"
 
     input:
-    val id
-    val fields
+    id      : String
+    fields  : String
 
     output:
-    path "*.tsv"       , emit: tsv
-    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //g'"), topic: versions
+    file('*.runinfo.tsv')
+
+    topic:
+    [process: task.process, name: 'python', version: eval("python --version | sed 's/Python //g'")] >> 'versions'
 
     script:
     def metadata_fields = fields ? "--ena_metadata_fields ${fields}" : ''

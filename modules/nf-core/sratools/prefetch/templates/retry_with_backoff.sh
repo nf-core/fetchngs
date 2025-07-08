@@ -42,9 +42,9 @@ retry_with_backoff() {
 
 export NCBI_SETTINGS="$PWD/!{ncbi_settings}"
 
-retry_with_backoff !{args2} \
+retry_with_backoff !{args_retry} \
     prefetch \
-    !{args} \
+    !{args_prefetch} \
     !{id}
 
 # check file integrity using vdb-validate or (when archive contains no checksums) md5sum
