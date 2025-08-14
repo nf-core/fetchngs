@@ -11,6 +11,7 @@ include { SRA_RUNINFO_TO_FTP      } from '../../modules/local/sra_runinfo_to_ftp
 include { ASPERA_CLI              } from '../../modules/local/aspera_cli'
 include { SRA_TO_SAMPLESHEET      } from '../../modules/local/sra_to_samplesheet'
 include { softwareVersionsToYAML  } from '../../subworkflows/nf-core/utils_nfcore_pipeline'
+include { FASTQ_DOWNLOAD_AWS_SRATOOLS } from '../../subworkflows/local/fastq_download_aws_sratools'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,6 +77,9 @@ workflow SRA {
                     if (meta.fastq_aspera && params.download_method == 'aspera') {
                         download_method = 'aspera'
                     }
+                    if (params.download_method == 'aws') {
+                        download_method = 'aws'
+                    }
                     if ((!meta.fastq_aspera && !meta.fastq_1) || params.download_method == 'sratools') {
                         download_method = 'sratools'
                     }
@@ -85,6 +89,8 @@ workflow SRA {
                     ftp: download_method == 'ftp'
                         return [ meta, [ meta.fastq_1, meta.fastq_2 ] ]
                     sratools: download_method == 'sratools'
+                        return [ meta, meta.run_accession ]
+                    aws: download_method == 'aws'
                         return [ meta, meta.run_accession ]
             }
             .set { ch_sra_reads }
@@ -115,12 +121,22 @@ workflow SRA {
         )
         ch_versions = ch_versions.mix(ASPERA_CLI.out.versions.first())
 
+        //
+        // SUBWORKFLOW: Download sequencing reads from AWS S3 SRA mirror
+        //
+        FASTQ_DOWNLOAD_AWS_SRATOOLS (
+            ch_sra_reads.aws,
+            params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : []
+        )
+        ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_AWS_SRATOOLS.out.versions.first())
+
         // Isolate FASTQ channel which will be added to emit block
         SRA_FASTQ_FTP
             .out
             .fastq
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
             .mix(ASPERA_CLI.out.fastq)
+            .mix(FASTQ_DOWNLOAD_AWS_SRATOOLS.out.reads)
             .map {
                 meta, fastq ->
                     def reads = fastq instanceof List ? fastq.flatten() : [ fastq ]

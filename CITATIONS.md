@@ -12,6 +12,8 @@
 
 - [Aspera CLI](https://github.com/IBM/aspera-cli)
 
+- [AWS CLI](https://aws.amazon.com/cli/)
+
 - [Python](http://www.python.org)
 
 - [Requests](https://docs.python-requests.org/)
@@ -19,6 +21,10 @@
 - [sra-tools](https://github.com/ncbi/sra-tools)
 
 ## Pipeline resources
+
+- [AWS Open Data Program - SRA](https://registry.opendata.aws/ncbi-sra/)
+
+  > The Sequence Read Archive (SRA) is mirrored on AWS S3 as part of the AWS Open Data Program, providing free access to SRA data.
 
 - [ENA](https://pubmed.ncbi.nlm.nih.gov/33175160/)
 
