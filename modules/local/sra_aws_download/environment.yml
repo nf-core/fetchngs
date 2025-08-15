@@ -1,0 +1,7 @@
+name: sra_aws_download
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - conda-forge::awscli=2.15.0

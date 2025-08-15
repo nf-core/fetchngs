@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process SRA_AWS_DOWNLOAD"
+    script "../main.nf"
+    process "SRA_AWS_DOWNLOAD"
+    tag "modules"
+    tag "modules_local"
+    tag "sra_aws_download"
+
+    test("Should download SRA file from AWS") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    'DRR028935'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("Should download SRA file from AWS - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    'DRR028935'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

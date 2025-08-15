@@ -1,0 +1,42 @@
+nextflow_workflow {
+
+    name "Test workflow: sra/main.nf"
+    script "../main.nf"
+    workflow "SRA"
+    tag "SRA_DOWNLOAD_METHOD_AWS"
+
+    // Dependencies
+    tag "FASTQ_DOWNLOAD_AWS_SRATOOLS"
+    tag "SRA_IDS_TO_RUNINFO"
+    tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_TO_SAMPLESHEET"
+    tag "MULTIQC_MAPPINGS_CONFIG"
+
+    test("Parameters: --download_method aws") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                download_method = 'aws'
+            }
+            workflow {
+                """
+                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(
+                    file(workflow.out.samplesheet[0]).name,
+                    workflow.out.mappings,
+                    workflow.out.sample_mappings,
+                    workflow.out.sra_metadata,
+                    workflow.out.versions
+                ).match() }
+            )
+        }
+    }
+}
