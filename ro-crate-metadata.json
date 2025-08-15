@@ -1,0 +1,364 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "GithubService": "https://w3id.org/ro/terms/test#GithubService",
+            "JenkinsService": "https://w3id.org/ro/terms/test#JenkinsService",
+            "PlanemoEngine": "https://w3id.org/ro/terms/test#PlanemoEngine",
+            "TestDefinition": "https://w3id.org/ro/terms/test#TestDefinition",
+            "TestInstance": "https://w3id.org/ro/terms/test#TestInstance",
+            "TestService": "https://w3id.org/ro/terms/test#TestService",
+            "TestSuite": "https://w3id.org/ro/terms/test#TestSuite",
+            "TravisService": "https://w3id.org/ro/terms/test#TravisService",
+            "definition": "https://w3id.org/ro/terms/test#definition",
+            "engineVersion": "https://w3id.org/ro/terms/test#engineVersion",
+            "instance": "https://w3id.org/ro/terms/test#instance",
+            "resource": "https://w3id.org/ro/terms/test#resource",
+            "runsOn": "https://w3id.org/ro/terms/test#runsOn"
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "creativeWorkStatus": "InProgress",
+            "datePublished": "2025-07-22T11:09:37+00:00",
+            "description": "<h1>\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"docs/images/nf-core-fetchngs_logo_dark.png\">\n    <img alt=\"nf-core/fetchngs\" src=\"docs/images/nf-core-fetchngs_logo_light.png\">\n  </picture>\n</h1>\n\n[![GitHub Actions CI Status](https://github.com/nf-core/fetchngs/actions/workflows/nf-test.yml/badge.svg)](https://github.com/nf-core/fetchngs/actions/workflows/nf-test.yml)\n[![GitHub Actions Linting Status](https://github.com/nf-core/fetchngs/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/fetchngs/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/fetchngs/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.5070524-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.5070524)\n[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)\n\n[![Nextflow](https://img.shields.io/badge/version-%E2%89%A524.10.5-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)\n[![nf-core template version](https://img.shields.io/badge/nf--core_template-3.3.2-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/3.3.2)\n[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)\n[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)\n[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)\n[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/launch?pipeline=https://github.com/nf-core/fetchngs)\n\n[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23fetchngs-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/fetchngs)[![Follow on Bluesky](https://img.shields.io/badge/bluesky-%40nf__core-1185fe?labelColor=000000&logo=bluesky)](https://bsky.app/profile/nf-co.re)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)\n\n## Introduction\n\n**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).\n\n![nf-core/fetchngs metro map](docs/images/nf-core-fetchngs_metro_map_grey.png)\n\n## Usage\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.\n\nFirst, prepare a samplesheet with your input data that looks as follows:\n\n`ids.csv`:\n\n```csv\nSRR9984183\nSRR13191702\nERR1160846\nERR1109373\nDRR028935\nDRR026872\n```\n\nEach line represents a database id. Please see next section for supported ids.\n\nNow, you can run the pipeline using:\n\n```bash\nnextflow run nf-core/fetchngs \\\n   -profile <docker/singularity/.../institute> \\\n   --input ids.csv \\\n   --outdir <OUTDIR>\n```\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).\n\nFor more details and further functionality, please refer to the [usage documentation](https://nf-co.re/fetchngs/usage) and the [parameter documentation](https://nf-co.re/fetchngs/parameters).\n\n## Supported ids\n\nVia a single file of ids, provided one-per-line (see [example input file](https://raw.githubusercontent.com/nf-core/test-datasets/fetchngs/sra_ids_test.csv)) the pipeline performs the following steps:\n\n### SRA / ENA / DDBJ / GEO ids\n\n1. Resolve database ids back to appropriate experiment-level ids and to be compatible with the [ENA API](https://ena-docs.readthedocs.io/en/latest/retrieval/programmatic-access.html)\n2. Fetch extensive id metadata via ENA API\n3. Download FastQ files:\n   - If direct download links are available from the ENA API:\n     - Fetch in parallel via `wget` and perform `md5sum` check (`--download_method ftp`; default).\n     - Fetch in parallel via `aspera-cli` and perform `md5sum` check. Use `--download_method aspera` to force this behaviour.\n   - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ. Use `--download_method sratools` to force this behaviour.\n4. Collate id metadata and paths to FastQ files in a single samplesheet\n\n## Pipeline output\n\nThe columns in the output samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines (see [usage docs](https://nf-co.re/fetchngs/usage#samplesheet-format)), these currently include:\n\n- [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)\n- [nf-core/atacseq](https://nf-co.re/atacseq/usage#samplesheet-input)\n- Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)\n- [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)\n\nTo see the the results of a test run with a full size dataset refer to the [results](https://nf-co.re/fetchngs/results) tab on the nf-core website pipeline page.\nFor more details about the output files and reports, please refer to the\n[output documentation](https://nf-co.re/fetchngs/output).\n\n## Credits\n\nnf-core/fetchngs was originally written by Harshil Patel ([@drpatelh](https://github.com/drpatelh)) from [Seqera Labs, Spain](https://seqera.io/) and Jose Espinosa-Carrasco ([@JoseEspinosa](https://github.com/JoseEspinosa)) from [The Comparative Bioinformatics Group](https://www.crg.eu/en/cedric_notredame) at [The Centre for Genomic Regulation, Spain](https://www.crg.eu/). Support for download of sequencing reads without FTP links via sra-tools was added by Moritz E. Beber ([@Midnighter](https://github.com/Midnighter)) from [Unseen Bio ApS, Denmark](https://unseenbio.com).\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).\n\nFor further information or help, don't hesitate to get in touch on the [Slack `#fetchngs` channel](https://nfcore.slack.com/channels/fetchngs) (you can join with [this invite](https://nf-co.re/join/slack)).\n\n## Citations\n\nIf you use nf-core/fetchngs for your analysis, please cite it using the following doi: [10.5281/zenodo.5070524](https://doi.org/10.5281/zenodo.5070524)\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nYou can cite the `nf-core` publication as follows:\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n",
+            "hasPart": [
+                {
+                    "@id": "main.nf"
+                },
+                {
+                    "@id": "docs/images/nf-core-fetchngs_metro_map_grey.png"
+                },
+                {
+                    "@id": "assets/"
+                },
+                {
+                    "@id": "bin/"
+                },
+                {
+                    "@id": "conf/"
+                },
+                {
+                    "@id": "docs/"
+                },
+                {
+                    "@id": "docs/images/"
+                },
+                {
+                    "@id": "modules/"
+                },
+                {
+                    "@id": "modules/local/"
+                },
+                {
+                    "@id": "modules/nf-core/"
+                },
+                {
+                    "@id": "workflows/"
+                },
+                {
+                    "@id": "subworkflows/"
+                },
+                {
+                    "@id": "nextflow.config"
+                },
+                {
+                    "@id": "README.md"
+                },
+                {
+                    "@id": "nextflow_schema.json"
+                },
+                {
+                    "@id": "CHANGELOG.md"
+                },
+                {
+                    "@id": "LICENSE"
+                },
+                {
+                    "@id": "CODE_OF_CONDUCT.md"
+                },
+                {
+                    "@id": "CITATIONS.md"
+                },
+                {
+                    "@id": "modules.json"
+                },
+                {
+                    "@id": "docs/usage.md"
+                },
+                {
+                    "@id": "docs/output.md"
+                },
+                {
+                    "@id": ".nf-core.yml"
+                },
+                {
+                    "@id": ".pre-commit-config.yaml"
+                },
+                {
+                    "@id": ".prettierignore"
+                }
+            ],
+            "isBasedOn": "https://github.com/nf-core/fetchngs",
+            "license": "MIT",
+            "mainEntity": {
+                "@id": "main.nf"
+            },
+            "mentions": [
+                {
+                    "@id": "#5c7821f5-7b22-4483-b10c-a0a8a0ba770a"
+                }
+            ],
+            "name": "nf-core/fetchngs"
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": [
+                {
+                    "@id": "https://w3id.org/ro/crate/1.1"
+                },
+                {
+                    "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+                }
+            ]
+        },
+        {
+            "@id": "main.nf",
+            "@type": [
+                "File",
+                "SoftwareSourceCode",
+                "ComputationalWorkflow"
+            ],
+            "creator": [
+                {
+                    "@id": "#drpatelhh@gmail.com"
+                }
+            ],
+            "dateCreated": "",
+            "dateModified": "2025-07-22T13:09:37Z",
+            "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
+            "image": {
+                "@id": "docs/images/nf-core-fetchngs_metro_map_grey.png"
+            },
+            "keywords": [
+                "nf-core",
+                "nextflow",
+                "ddbj",
+                "download",
+                "ena",
+                "fastq",
+                "geo",
+                "sra",
+                "synapse"
+            ],
+            "license": [
+                "MIT"
+            ],
+            "maintainer": [
+                {
+                    "@id": "#drpatelhh@gmail.com"
+                }
+            ],
+            "name": [
+                "nf-core/fetchngs"
+            ],
+            "programmingLanguage": {
+                "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow"
+            },
+            "sdPublisher": {
+                "@id": "https://nf-co.re/"
+            },
+            "url": [
+                "https://github.com/nf-core/fetchngs",
+                "https://nf-co.re/fetchngs/dev/"
+            ],
+            "version": [
+                "1.13.0dev"
+            ]
+        },
+        {
+            "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow",
+            "@type": "ComputerLanguage",
+            "identifier": {
+                "@id": "https://www.nextflow.io/"
+            },
+            "name": "Nextflow",
+            "url": {
+                "@id": "https://www.nextflow.io/"
+            },
+            "version": "!>=24.10.5"
+        },
+        {
+            "@id": "docs/images/nf-core-fetchngs_metro_map_grey.png",
+            "@type": [
+                "File",
+                "ImageObject"
+            ],
+            "name": "Workflow diagram"
+        },
+        {
+            "@id": "#5c7821f5-7b22-4483-b10c-a0a8a0ba770a",
+            "@type": "TestSuite",
+            "instance": [
+                {
+                    "@id": "#6df843dd-f98c-4301-bdfb-c364a4ed238d"
+                }
+            ],
+            "mainEntity": {
+                "@id": "main.nf"
+            },
+            "name": "Test suite for nf-core/fetchngs"
+        },
+        {
+            "@id": "#6df843dd-f98c-4301-bdfb-c364a4ed238d",
+            "@type": "TestInstance",
+            "name": "GitHub Actions workflow for testing nf-core/fetchngs",
+            "resource": "repos/nf-core/fetchngs/actions/workflows/nf-test.yml",
+            "runsOn": {
+                "@id": "https://w3id.org/ro/terms/test#GithubService"
+            },
+            "url": "https://api.github.com"
+        },
+        {
+            "@id": "https://w3id.org/ro/terms/test#GithubService",
+            "@type": "TestService",
+            "name": "Github Actions",
+            "url": {
+                "@id": "https://github.com"
+            }
+        },
+        {
+            "@id": "assets/",
+            "@type": "Dataset",
+            "description": "Additional files"
+        },
+        {
+            "@id": "bin/",
+            "@type": "Dataset",
+            "description": "Scripts that must be callable from a pipeline process"
+        },
+        {
+            "@id": "conf/",
+            "@type": "Dataset",
+            "description": "Configuration files"
+        },
+        {
+            "@id": "docs/",
+            "@type": "Dataset",
+            "description": "Markdown files for documenting the pipeline"
+        },
+        {
+            "@id": "docs/images/",
+            "@type": "Dataset",
+            "description": "Images for the documentation files"
+        },
+        {
+            "@id": "modules/",
+            "@type": "Dataset",
+            "description": "Modules used by the pipeline"
+        },
+        {
+            "@id": "modules/local/",
+            "@type": "Dataset",
+            "description": "Pipeline-specific modules"
+        },
+        {
+            "@id": "modules/nf-core/",
+            "@type": "Dataset",
+            "description": "nf-core modules"
+        },
+        {
+            "@id": "workflows/",
+            "@type": "Dataset",
+            "description": "Main pipeline workflows to be executed in main.nf"
+        },
+        {
+            "@id": "subworkflows/",
+            "@type": "Dataset",
+            "description": "Smaller subworkflows"
+        },
+        {
+            "@id": "nextflow.config",
+            "@type": "File",
+            "description": "Main Nextflow configuration file"
+        },
+        {
+            "@id": "README.md",
+            "@type": "File",
+            "description": "Basic pipeline usage information"
+        },
+        {
+            "@id": "nextflow_schema.json",
+            "@type": "File",
+            "description": "JSON schema for pipeline parameter specification"
+        },
+        {
+            "@id": "CHANGELOG.md",
+            "@type": "File",
+            "description": "Information on changes made to the pipeline"
+        },
+        {
+            "@id": "LICENSE",
+            "@type": "File",
+            "description": "The license - should be MIT"
+        },
+        {
+            "@id": "CODE_OF_CONDUCT.md",
+            "@type": "File",
+            "description": "The nf-core code of conduct"
+        },
+        {
+            "@id": "CITATIONS.md",
+            "@type": "File",
+            "description": "Citations needed when using the pipeline"
+        },
+        {
+            "@id": "modules.json",
+            "@type": "File",
+            "description": "Version information for modules from nf-core/modules"
+        },
+        {
+            "@id": "docs/usage.md",
+            "@type": "File",
+            "description": "Usage documentation"
+        },
+        {
+            "@id": "docs/output.md",
+            "@type": "File",
+            "description": "Output documentation"
+        },
+        {
+            "@id": ".nf-core.yml",
+            "@type": "File",
+            "description": "nf-core configuration file, configuring template features and linting rules"
+        },
+        {
+            "@id": ".pre-commit-config.yaml",
+            "@type": "File",
+            "description": "Configuration file for pre-commit hooks"
+        },
+        {
+            "@id": ".prettierignore",
+            "@type": "File",
+            "description": "Ignore file for prettier"
+        },
+        {
+            "@id": "https://nf-co.re/",
+            "@type": "Organization",
+            "name": "nf-core",
+            "url": "https://nf-co.re/"
+        },
+        {
+            "@id": "#drpatelhh@gmail.com",
+            "@type": "Person",
+            "email": "drpatelhh@gmail.com",
+            "name": "Harshil Patel"
+        }
+    ]
+}

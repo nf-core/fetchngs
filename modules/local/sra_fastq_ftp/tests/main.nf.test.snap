@@ -31,7 +31,7 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,6b60ed6d5805271a1b97798e29c0635c"
+                    "versions.yml:md5,7bfc86ca1f3e3236dbb91eb85c1d7af0"
                 ],
                 "fastq": [
                     [
@@ -62,14 +62,14 @@
                     ]
                 ],
                 "versions": [
-                    "versions.yml:md5,6b60ed6d5805271a1b97798e29c0635c"
+                    "versions.yml:md5,7bfc86ca1f3e3236dbb91eb85c1d7af0"
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
+            "nf-test": "0.9.0",
+            "nextflow": "24.04.4"
         },
-        "timestamp": "2024-02-28T11:51:51.301654"
+        "timestamp": "2024-09-17T09:16:57.715689"
     }
 }

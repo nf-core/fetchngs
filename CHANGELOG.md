@@ -3,6 +3,27 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.13.0dev - [date]
+
+### Enhancements & fixes
+
+- [PR #299](https://github.com/nf-core/fetchngs/pull/299) - Template update for nf-core/tools v2.13.1
+- [PR #300](https://github.com/nf-core/fetchngs/pull/300) - Use file paths instead of tags for testing matrix, should make matrices more efficient
+- [PR #303](https://github.com/nf-core/fetchngs/pull/303) - Update wget container for SRA_FASTQ_FTP from 1.20.1 to 1.21.4
+- [PR #305](https://github.com/nf-core/fetchngs/pull/305) - Update module sratools/prefetch for reliable download integrity check
+- [PR #316](https://github.com/nf-core/fetchngs/pull/316) - Use nf-core/setup-nf-test to install nf-test from cache during CI/CD
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Update module multiqc_mappings_config and sratools/prefetch for TES compliance
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Refactor workflow tests
+- [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
+- [PR #333](https://github.com/nf-core/fetchngs/pull/333) - Add logo
+
+### Software dependencies
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| `wget`     | 1.20.1      | 1.21.4      |
+| `sratools` | 3.0.8       | 3.1.0       |
+
 ## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 
 ### :warning: Major enhancements
@@ -24,6 +45,7 @@ Special thanks to the following for their contributions to the release:
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Sateesh Peri](https://github.com/sateeshperi)
 - [Sebastian Uhrig](https://github.com/suhrig)
+- [Venkat Malladi](https://github.com/vsmalladi)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 

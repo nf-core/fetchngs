@@ -4,10 +4,10 @@ process SRA_FASTQ_FTP {
     label 'process_low'
     label 'error_retry'
 
-    conda "conda-forge::wget=1.20.1"
+    conda "conda-forge::wget=1.21.4"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wget:1.20.1' :
-        'biocontainers/wget:1.20.1' }"
+        'https://depot.galaxyproject.org/singularity/wget:1.21.4' :
+        'biocontainers/wget:1.21.4' }"
 
     input:
     tuple val(meta), val(fastq)

@@ -10,7 +10,7 @@ process MULTIQC_MAPPINGS_CONFIG {
     path csv
 
     output:
-    path "*yml"        , emit: yml
+    path "*config.yml" , emit: yml
     path "versions.yml", emit: versions
 
     script:
