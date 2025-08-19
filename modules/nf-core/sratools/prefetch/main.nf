@@ -1,3 +1,5 @@
+params.ext_args = '--max-size 200g'
+
 process SRATOOLS_PREFETCH {
     tag "$id"
     label 'process_low'
