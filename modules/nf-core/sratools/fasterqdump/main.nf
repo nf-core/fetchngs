@@ -14,7 +14,8 @@ process SRATOOLS_FASTERQDUMP {
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('sratools'), eval("fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
+    tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //g'"), topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,10 +47,5 @@ process SRATOOLS_FASTERQDUMP {
         --processes $task.cpus \\
         *.fastq
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

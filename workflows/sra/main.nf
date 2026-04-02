@@ -33,7 +33,7 @@ workflow SRA {
     ids // channel: [ ids ]
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     //
     // MODULE: Get SRA run information for public database ids
@@ -110,7 +110,6 @@ workflow SRA {
             ch_sra_reads.sratools,
             params.dbgap_key ? file(params.dbgap_key, checkIfExists: true) : []
         )
-        ch_versions = ch_versions.mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.versions.first())
 
         //
         // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
@@ -124,7 +123,6 @@ workflow SRA {
         FASTQDL (
             ch_sra_reads.fastqdl
         )
-        ch_versions = ch_versions.mix(FASTQDL.out.versions)
 
         // Isolate FASTQ channel which will be added to emit block
         SRA_FASTQ_FTP
@@ -178,7 +176,7 @@ workflow SRA {
     //
     // MODULE: Create a MutiQC config file with sample name mappings
     //
-    ch_sample_mappings_yml = Channel.empty()
+    ch_sample_mappings_yml = channel.empty()
     if (params.sample_mapping_fields) {
         MULTIQC_MAPPINGS_CONFIG (
             ch_mappings

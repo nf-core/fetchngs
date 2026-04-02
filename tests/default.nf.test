@@ -23,8 +23,6 @@ nextflow_pipeline {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    // Number of successful tasks
-                    workflow.trace.succeeded().size(),
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_fetchngs_software_mqc_versions.yml", "Workflow"),
                     // All stable path name, with a relative path

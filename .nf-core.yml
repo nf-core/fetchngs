@@ -14,7 +14,7 @@ lint:
     - docs/images/nf-core-fetchngs_logo_light.png
   modules_config: false
   multiqc_config: false
-nf_core_version: 3.3.2
+nf_core_version: 3.5.2
 repository_type: pipeline
 template:
   author: Harshil Patel, Moritz E. Beber and Jose Espinosa-Carrasco
