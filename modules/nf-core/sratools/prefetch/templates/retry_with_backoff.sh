@@ -15,8 +15,8 @@ retry_with_backoff() {
     shift 3
 
     while [ ${attempt} -le ${max_attempts} ]; do
-        output=`"${@}"`
-        status=${PIPESTATUS}
+        output=$("${@}")
+        status=${?}
 
         if [ ${status} -eq 0 ]; then
             break
@@ -30,8 +30,8 @@ retry_with_backoff() {
             return ${status}
         fi
 
-        attempt=`expr ${attempt} + 1`
-        delay=`expr ${delay} \* 2`
+        attempt=$(( ${attempt} + 1 ))
+        delay=$(( ${delay} * 2 ))
         if [ ${delay} -ge ${max_time} ]; then
             delay=${max_time}
         fi
@@ -40,19 +40,22 @@ retry_with_backoff() {
     echo "${output}"
 }
 
-export NCBI_SETTINGS="${PWD}/!{ncbi_settings}"
+export NCBI_SETTINGS="$PWD/!{ncbi_settings}"
 
 retry_with_backoff !{args2} \
     prefetch \
     !{args} \
     !{id}
 
-# check file integrity using vdb-validate or (when archive contains no checksums) md5sum
-vdb-validate !{id} > vdb-validate_result.txt 2>&1 || exit 1
+[ -f !{id}.sralite ] && vdb-validate !{id}.sralite || vdb-validate !{id}
+
+
+check file integrity using vdb-validate or (when archive contains no checksums) md5sum
+vdb-validate ${id} > vdb-validate_result.txt 2>&1 || exit 1
 if grep -q "checksums missing" vdb-validate_result.txt; then
-    VALID_MD5SUMS=`curl --silent --fail --location --retry 3 --retry-delay 60 'https://locate.ncbi.nlm.nih.gov/sdl/2/retrieve?filetype=run&acc=!{id}'`
-    LOCAL_MD5SUMS=`md5sum !{id}/* | cut -f1 -d' '`
-    if ! grep -q -F -f <(echo "${LOCAL_MD5SUMS}") <(echo "${VALID_MD5SUMS}"); then
+    VALID_MD5SUMS=`curl --silent --fail --location --retry 3 --retry-delay 60 'https://locate.ncbi.nlm.nih.gov/sdl/2/retrieve?filetype=run&acc=${id}'`
+    LOCAL_MD5SUMS=`md5sum ${id}/* | cut -f1 -d' '`
+    if ! grep -q -F -f <(echo "\${LOCAL_MD5SUMS}") <(echo "\${VALID_MD5SUMS}"); then
         echo "MD5 sum check failed" 1>&2
         exit 1
     fi
