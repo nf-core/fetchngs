@@ -1,8 +1,8 @@
 nextflow_workflow {
 
-    name "Test workflow: sra/main.nf"
+    name "Test workflow: ../workflows/fetchngs.nf"
     script "../main.nf"
-    workflow "SRA"
+    workflow "FETCHNGS"
     tag "SRA_DOWNLOAD_METHOD_FASTQDL"
 
     // Dependencies
@@ -34,7 +34,8 @@ nextflow_workflow {
                     workflow.out.mappings,
                     workflow.out.sample_mappings,
                     workflow.out.sra_metadata,
-                    workflow.out.versions
+                    workflow.out.versions,
+                    path("${outputDir}/pipeline_info/nf_core_fetchngs_software_versions.yml").name
                 ).match() }
             )
         }
