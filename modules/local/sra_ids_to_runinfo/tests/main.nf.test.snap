@@ -6,20 +6,28 @@
                     "SRR13191702.runinfo.tsv:md5,3a1be35781ca6e8a28d8fd4d2f3bbe85"
                 ],
                 "1": [
-                    "versions.yml:md5,1c14442e9b494b586eafe41e77300fae"
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.9.5"
+                    ]
                 ],
                 "tsv": [
                     "SRR13191702.runinfo.tsv:md5,3a1be35781ca6e8a28d8fd4d2f3bbe85"
                 ],
-                "versions": [
-                    "versions.yml:md5,1c14442e9b494b586eafe41e77300fae"
+                "versions_python": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.9.5"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-13T15:42:19.072989",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-17T09:17:11.040523"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

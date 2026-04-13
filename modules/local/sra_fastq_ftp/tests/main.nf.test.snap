@@ -31,7 +31,11 @@
                     ]
                 ],
                 "2": [
-                    "versions.yml:md5,7bfc86ca1f3e3236dbb91eb85c1d7af0"
+                    [
+                        "SRA_FASTQ_FTP",
+                        "wget",
+                        "1.21.4"
+                    ]
                 ],
                 "fastq": [
                     [
@@ -61,15 +65,19 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,7bfc86ca1f3e3236dbb91eb85c1d7af0"
+                "versions_wget": [
+                    [
+                        "SRA_FASTQ_FTP",
+                        "wget",
+                        "1.21.4"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-13T15:42:09.490402",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-17T09:16:57.715689"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

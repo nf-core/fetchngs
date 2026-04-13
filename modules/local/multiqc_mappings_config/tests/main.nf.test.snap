@@ -6,20 +6,28 @@
                     "multiqc_config.yml:md5,7f3cb10fff83ba9eb3e8fa6862d1290a"
                 ],
                 "1": [
-                    "versions.yml:md5,dd4c66f0551d15510b36bb2e2b2fdd73"
+                    [
+                        "MULTIQC_MAPPINGS_CONFIG",
+                        "python",
+                        "3.9.5"
+                    ]
                 ],
-                "versions": [
-                    "versions.yml:md5,dd4c66f0551d15510b36bb2e2b2fdd73"
+                "versions_python": [
+                    [
+                        "MULTIQC_MAPPINGS_CONFIG",
+                        "python",
+                        "3.9.5"
+                    ]
                 ],
                 "yml": [
                     "multiqc_config.yml:md5,7f3cb10fff83ba9eb3e8fa6862d1290a"
                 ]
             }
         ],
+        "timestamp": "2026-04-13T15:41:59.602846",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-17T09:16:46.557614"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

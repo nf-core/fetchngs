@@ -6,20 +6,28 @@
                     "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
                 ],
                 "1": [
-                    "versions.yml:md5,e95f8185f665127a73622a19d321bcca"
+                    [
+                        "SRA_RUNINFO_TO_FTP",
+                        "python",
+                        "3.9.5"
+                    ]
                 ],
                 "tsv": [
                     "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
                 ],
-                "versions": [
-                    "versions.yml:md5,e95f8185f665127a73622a19d321bcca"
+                "versions_python": [
+                    [
+                        "SRA_RUNINFO_TO_FTP",
+                        "python",
+                        "3.9.5"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-13T15:42:31.518986",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-17T09:17:23.371547"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }
