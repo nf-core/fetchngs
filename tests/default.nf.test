@@ -24,7 +24,7 @@ nextflow_pipeline {
             assertAll(
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
-                    removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_fetchngs_software_mqc_versions.yml", "Workflow"),
+                    removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_fetchngs_software_versions.yml", "Workflow"),
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
