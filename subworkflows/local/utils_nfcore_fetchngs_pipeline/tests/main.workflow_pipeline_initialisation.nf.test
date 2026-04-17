@@ -16,6 +16,9 @@ nextflow_workflow {
                 nextflow_cli_args   = []
                 outdir              = 'results'
                 ena_metadata_fields = null
+                help        = false
+                help_full   = false
+                show_hidden = false
 
                 input[0] = version
                 input[1] = validate_params
