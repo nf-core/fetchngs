@@ -30,7 +30,7 @@ nextflow_pipeline {
                     // All files with stable contents
                     stable_path,
                     // Samplesheet
-                    "samplesheet.csv:md5," + csv_file.sort().table.print().replaceAll(params.outdir, "").md5()
+                    "samplesheet.csv:md5," + csv_file.sort().table.collect { row -> [row.getString("sample"), row.getString("fastq_1"), row.getString("fastq_2")].join(",") }.join("\n").md5()
                 ).match() }
             )
         }
