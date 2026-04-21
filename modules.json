@@ -7,7 +7,7 @@
                 "nf-core": {
                     "custom/sratoolsncbisettings": {
                         "branch": "master",
-                        "git_sha": "8e6139dbf4f3ca01bbac6152d2833e04edff18df",
+                        "git_sha": "e3e5748c7c5b58056759369025b9f2c919822e6a",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "fastqdl": {
