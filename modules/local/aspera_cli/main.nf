@@ -14,7 +14,7 @@ process ASPERA_CLI {
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
     tuple val(meta), path("*md5")     , emit: md5
-    tuple val("${task.process}"), val('aspera_cli'), eval('ascli --version'), emit: versions_aspera_cli, topic: versions
+    tuple val("${task.process}"), val('aspera_cli'), eval('gem list aspera-cli | grep -o "[0-9][0-9.]*"'), emit: versions_aspera_cli, topic: versions
 
     script:
     def args = task.ext.args ?: ''
