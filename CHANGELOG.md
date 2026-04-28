@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Update module multiqc_mappings_config and sratools/prefetch for TES compliance
 - [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Refactor workflow tests
 - [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
+- [PR #325](https://github.com/nf-core/fetchngs/pull/325) - Add wget wait time for retries
 - [PR #333](https://github.com/nf-core/fetchngs/pull/333) - Add logo
 - [PR #365](https://github.com/nf-core/fetchngs/pull/365) - Template update for nf-core/tools v3.5.2, including topic channels for version reporting
 
