@@ -19,4 +19,9 @@ process SRA_RUNINFO_TO_FTP {
         ${runinfo.join(',')} \\
         ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
     """
+
+    stub:
+    """
+    touch ${runinfo.toString().tokenize(".")[0]}.runinfo_ftp.tsv
+    """
 }

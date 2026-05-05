@@ -25,4 +25,9 @@ process SRA_IDS_TO_RUNINFO {
         ${id}.runinfo.tsv \\
         $metadata_fields
     """
+
+    stub:
+    """
+    touch ${id}.runinfo.tsv
+    """
 }

@@ -72,4 +72,10 @@ process SRA_TO_SAMPLESHEET {
     // Write mappings to file
     def mappings_file = task.workDir.resolve("${meta.id}.mappings.csv")
     mappings_file.text = mappings
+
+    stub:
+    """
+    touch ${meta.id}.samplesheet.csv
+    touch ${meta.id}.mappings.csv
+    """
 }
