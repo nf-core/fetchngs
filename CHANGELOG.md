@@ -190,6 +190,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #148](https://github.com/nf-core/fetchngs/pull/148) - Fix default metadata fields for ENA API v2.0
 - [PR #150](https://github.com/nf-core/fetchngs/pull/150) - Add infrastructure and CI for multi-cloud full-sized tests run via Nextflow Tower
 - [PR #157](https://github.com/nf-core/fetchngs/pull/157) - Add `public_aws_ecr.config` to source mulled containers when using `public.ecr.aws` Docker Biocontainer registry
+- [PR #368](https://github.com/nf-core/fetchngs/pull/XXX) - Add stub blocks to all local modules
 
 ### Software dependencies
 
