@@ -56,18 +56,4 @@ process ASPERA_CLI {
         """
     }
 
-    stub:
-    if (meta.single_end) {
-        """
-        echo "" | gzip > ${meta.id}.fastq.gz
-        touch ${meta.id}.fastq.gz.md5
-        """
-    } else {
-        """
-        echo "" | gzip > ${meta.id}_1.fastq.gz
-        echo "" | gzip > ${meta.id}_2.fastq.gz
-        touch ${meta.id}_1.fastq.gz.md5
-        touch ${meta.id}_2.fastq.gz.md5
-        """
-    }
 }
