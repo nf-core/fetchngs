@@ -1,5 +1,5 @@
 {
-    "Should run without failures": {
+    "Should run without failures - stub": {
         "content": [
             {
                 "0": [
@@ -11,8 +11,8 @@
                             "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
                         },
                         [
-                            "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
-                            "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32"
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
                 ],
@@ -25,8 +25,8 @@
                             "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
                         },
                         [
-                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
-                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
+                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -34,7 +34,7 @@
                     [
                         "SRA_FASTQ_FTP",
                         "wget",
-                        "1.21.4"
+                        ""
                     ]
                 ],
                 "fastq": [
@@ -46,8 +46,8 @@
                             "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
                         },
                         [
-                            "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
-                            "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32"
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
                 ],
@@ -60,8 +60,8 @@
                             "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
                         },
                         [
-                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
-                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
+                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
                     ]
                 ],
@@ -69,12 +69,41 @@
                     [
                         "SRA_FASTQ_FTP",
                         "wget",
-                        "1.21.4"
+                        ""
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-04-13T15:42:09.490402",
+        "timestamp": "2026-05-06T14:43:10.490481",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    
+                ],
+                "2": [
+                    
+                ],
+                "fastq": [
+                    
+                ],
+                "md5": [
+                    
+                ],
+                "versions_wget": [
+                    
+                ]
+            }
+        ],
+        "timestamp": "2026-05-06T14:43:02.233981",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

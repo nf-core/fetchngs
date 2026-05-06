@@ -1,4 +1,35 @@
 {
+    "Should run without failures - stub": {
+        "content": [
+            {
+                "0": [
+                    "SRR13191702.runinfo.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "1": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.10.18"
+                    ]
+                ],
+                "tsv": [
+                    "SRR13191702.runinfo.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "versions_python": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.10.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-06T14:43:29.759674",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
     "Should run without failures": {
         "content": [
             {
@@ -9,7 +40,7 @@
                     [
                         "SRA_IDS_TO_RUNINFO",
                         "python",
-                        "3.9.5"
+                        "3.10.18"
                     ]
                 ],
                 "tsv": [
@@ -19,12 +50,12 @@
                     [
                         "SRA_IDS_TO_RUNINFO",
                         "python",
-                        "3.9.5"
+                        "3.10.18"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-04-13T15:42:19.072989",
+        "timestamp": "2026-05-06T14:43:21.109568",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
