@@ -1,35 +1,4 @@
 {
-    "Should run without failures - stub": {
-        "content": [
-            {
-                "0": [
-                    "multiqc_config.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "1": [
-                    [
-                        "MULTIQC_MAPPINGS_CONFIG",
-                        "python",
-                        "3.10.18"
-                    ]
-                ],
-                "versions_python": [
-                    [
-                        "MULTIQC_MAPPINGS_CONFIG",
-                        "python",
-                        "3.10.18"
-                    ]
-                ],
-                "yml": [
-                    "multiqc_config.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ]
-            }
-        ],
-        "timestamp": "2026-05-06T14:42:53.490262",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
-        }
-    },
     "Should run without failures": {
         "content": [
             {
@@ -40,14 +9,14 @@
                     [
                         "MULTIQC_MAPPINGS_CONFIG",
                         "python",
-                        "3.10.18"
+                        "3.9.5"
                     ]
                 ],
                 "versions_python": [
                     [
                         "MULTIQC_MAPPINGS_CONFIG",
                         "python",
-                        "3.10.18"
+                        "3.9.5"
                     ]
                 ],
                 "yml": [
@@ -55,7 +24,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-06T14:42:39.651001",
+        "timestamp": "2026-05-06T16:00:30.170721088",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
