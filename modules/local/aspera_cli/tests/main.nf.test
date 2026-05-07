@@ -28,5 +28,4 @@ nextflow_process {
             )
         }
     }
-
 }
