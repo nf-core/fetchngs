@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #325](https://github.com/nf-core/fetchngs/pull/325) - Add wget wait time for retries
 - [PR #333](https://github.com/nf-core/fetchngs/pull/333) - Add logo
 - [PR #365](https://github.com/nf-core/fetchngs/pull/365) - Template update for nf-core/tools v3.5.2, including topic channels for version reporting
-- [PR #368](https://github.com/nf-core/fetchngs/pull/XXX) - Add stub blocks to all local modules
+- [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
 
 ### Software dependencies
 
