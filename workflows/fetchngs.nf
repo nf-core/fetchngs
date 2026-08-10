@@ -59,7 +59,7 @@ workflow FETCHNGS {
     )
 
     SRA_RUNINFO_TO_FTP.out.tsv
-        .filter { it.size() > 0 }
+        .filter { row -> row.size() > 0 }
         .splitCsv(header: true, sep: '\t')
         .map { meta ->
             def meta_clone = meta.clone()

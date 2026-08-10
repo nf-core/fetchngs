@@ -32,7 +32,6 @@ workflow NFCORE_FETCHNGS {
     ids // channel: database ids read in from --input
 
     main:
-
     //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
@@ -65,9 +64,8 @@ workflow {
     //
     // WORKFLOW: Run primary workflows for the pipeline
     //
-    NFCORE_FETCHNGS(
-        PIPELINE_INITIALISATION.out.ids
-    )
+    NFCORE_FETCHNGS(PIPELINE_INITIALISATION.out.ids)
+
     //
     // SUBWORKFLOW: Run completion tasks
     //
