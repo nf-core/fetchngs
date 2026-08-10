@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #365](https://github.com/nf-core/fetchngs/pull/365) - Template update for nf-core/tools v3.5.2, including topic channels for version reporting
 - [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
 - [PR #366](https://github.com/nf-core/fetchngs/pull/366) - Template update for nf-core/tools v4.0.2
+- [PR #370](https://github.com/nf-core/fetchngs/pull/370) - Template update for nf-core/tools v4.0.3
 
 ### Software dependencies
 
