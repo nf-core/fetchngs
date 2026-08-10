@@ -4,10 +4,42 @@
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {
-                "nf-core": {}
+                "nf-core": {
+                    "custom/sratoolsncbisettings": {
+                        "branch": "master",
+                        "git_sha": "e3e5748c7c5b58056759369025b9f2c919822e6a",
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
+                    },
+                    "fastqdl": {
+                        "branch": "master",
+                        "git_sha": "c26a0629a278afc21df30cada9ddc2788dc3fc7a",
+                        "installed_by": ["modules"]
+                    },
+                    "sratools/fasterqdump": {
+                        "branch": "master",
+                        "git_sha": "8e6139dbf4f3ca01bbac6152d2833e04edff18df",
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"],
+                        "patch": "modules/nf-core/sratools/fasterqdump/sratools-fasterqdump.diff"
+                    },
+                    "sratools/prefetch": {
+                        "branch": "master",
+                        "git_sha": "8e6139dbf4f3ca01bbac6152d2833e04edff18df",
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
+                    },
+                    "untar": {
+                        "branch": "master",
+                        "git_sha": "447f7bc0fa41dfc2400c8cad4c0291880dc060cf",
+                        "installed_by": ["modules"]
+                    }
+                }
             },
             "subworkflows": {
                 "nf-core": {
+                    "fastq_download_prefetch_fasterqdump_sratools": {
+                        "branch": "master",
+                        "git_sha": "8e6139dbf4f3ca01bbac6152d2833e04edff18df",
+                        "installed_by": ["subworkflows"]
+                    },
                     "utils_nextflow_pipeline": {
                         "branch": "master",
                         "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",

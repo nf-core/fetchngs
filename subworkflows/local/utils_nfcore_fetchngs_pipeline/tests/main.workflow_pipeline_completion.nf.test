@@ -1,0 +1,36 @@
+nextflow_workflow {
+
+    name "Test Workflow PIPELINE_COMPLETION"
+    script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
+    workflow "PIPELINE_COMPLETION"
+    tag "UTILS_NFCORE_FETCHNGS_PIPELINE"
+
+    test("Should run") {
+
+        when {
+            workflow {
+                """
+                email           = null
+                email_on_fail   = null
+                plaintext_email = false
+                outdir          = 'results'
+                monochrome_logs = false
+                hook_url        = null
+
+                input[0] = email
+                input[1] = email_on_fail
+                input[2] = plaintext_email
+                input[3] = outdir
+                input[4] = monochrome_logs
+                input[5] = hook_url
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success }
+            )
+        }
+    }
+}
