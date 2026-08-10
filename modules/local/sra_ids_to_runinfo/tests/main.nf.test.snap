@@ -1,0 +1,33 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "SRR13191702.runinfo.tsv:md5,3a1be35781ca6e8a28d8fd4d2f3bbe85"
+                ],
+                "1": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.9.5"
+                    ]
+                ],
+                "tsv": [
+                    "SRR13191702.runinfo.tsv:md5,3a1be35781ca6e8a28d8fd4d2f3bbe85"
+                ],
+                "versions_python": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.9.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-06T16:01:36.028872084",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

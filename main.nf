@@ -15,7 +15,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { FETCHNGS  } from './workflows/fetchngs'
+include { FETCHNGS                } from './workflows/fetchngs'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetchngs_pipeline'
 /*
@@ -25,23 +25,19 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetc
 */
 
 //
-// WORKFLOW: Run main analysis pipeline depending on type of input
+// WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
-
     take:
-    samplesheet // channel: samplesheet read in from --input
+    ids // channel: database ids read in from --input
 
     main:
-
     //
-    // WORKFLOW: Run pipeline
+    // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
-    FETCHNGS (
-        samplesheet,
-        params.outdir,
-    )
+    FETCHNGS(ids, params.outdir)
 }
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     RUN MAIN WORKFLOW
@@ -49,33 +45,31 @@ workflow NFCORE_FETCHNGS {
 */
 
 workflow {
-
-    main:
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION (
+    PIPELINE_INITIALISATION(
         params.version,
         params.validate_params,
         params.monochrome_logs,
         args,
         params.outdir,
         params.input,
+        params.ena_metadata_fields,
         params.help,
         params.help_full,
-        params.show_hidden
+        params.show_hidden,
     )
 
     //
-    // WORKFLOW: Run main workflow
+    // WORKFLOW: Run primary workflows for the pipeline
     //
-    NFCORE_FETCHNGS (
-        PIPELINE_INITIALISATION.out.samplesheet
-    )
+    NFCORE_FETCHNGS(PIPELINE_INITIALISATION.out.ids)
+
     //
     // SUBWORKFLOW: Run completion tasks
     //
-    PIPELINE_COMPLETION (
+    PIPELINE_COMPLETION(
         params.email,
         params.email_on_fail,
         params.plaintext_email,
@@ -83,9 +77,3 @@ workflow {
         params.monochrome_logs,
     )
 }
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/

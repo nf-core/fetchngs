@@ -1,0 +1,83 @@
+{
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
+                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        "SRA_FASTQ_FTP",
+                        "wget",
+                        "1.21.4"
+                    ]
+                ],
+                "fastq": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32"
+                        ]
+                    ]
+                ],
+                "md5": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
+                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
+                        ]
+                    ]
+                ],
+                "versions_wget": [
+                    [
+                        "SRA_FASTQ_FTP",
+                        "wget",
+                        "1.21.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-06T16:01:04.565094912",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}
