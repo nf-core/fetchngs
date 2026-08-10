@@ -28,17 +28,14 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetc
 // WORKFLOW: Run main nf-core/fetchngs analysis pipeline depending on type of identifier provided
 //
 workflow NFCORE_FETCHNGS {
-
     take:
     ids // channel: database ids read in from --input
 
     main:
-
     //
     // WORKFLOW: Download FastQ files for SRA / ENA / GEO / DDBJ ids
     //
-    FETCHNGS ( ids )
-
+    FETCHNGS(ids, params.outdir)
 }
 
 /*
@@ -48,12 +45,10 @@ workflow NFCORE_FETCHNGS {
 */
 
 workflow {
-
-    main:
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
-    PIPELINE_INITIALISATION (
+    PIPELINE_INITIALISATION(
         params.version,
         params.validate_params,
         params.monochrome_logs,
@@ -63,30 +58,22 @@ workflow {
         params.ena_metadata_fields,
         params.help,
         params.help_full,
-        params.show_hidden
+        params.show_hidden,
     )
 
     //
     // WORKFLOW: Run primary workflows for the pipeline
     //
-    NFCORE_FETCHNGS (
-        PIPELINE_INITIALISATION.out.ids
-    )
+    NFCORE_FETCHNGS(PIPELINE_INITIALISATION.out.ids)
+
     //
     // SUBWORKFLOW: Run completion tasks
     //
-    PIPELINE_COMPLETION (
+    PIPELINE_COMPLETION(
         params.email,
         params.email_on_fail,
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        params.hook_url,
     )
 }
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/

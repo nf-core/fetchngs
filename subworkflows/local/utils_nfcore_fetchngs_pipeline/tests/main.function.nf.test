@@ -1,4 +1,3 @@
-
 nextflow_function {
 
     name "Test Functions"
@@ -75,5 +74,4 @@ nextflow_function {
             )
         }
     }
-
 }
