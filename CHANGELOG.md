@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Special thanks to the following for their contributions to the release:
 
 - [Adam Talbot](https://github.com/adamrtalbot)
+- [Adrian Janucik](https://github.com/ajandria)
+- [Maxime Borry](https://github.com/maxibor)
+- [Sebastian Uhrig](https://github.com/suhrig)
+- [Tabea Attig](https://github.com/Tabea01)
+- [Venkat Malladi](https://github.com/vsmalladi)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 
