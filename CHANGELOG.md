@@ -21,9 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
 - [PR #366](https://github.com/nf-core/fetchngs/pull/366) - Template update for nf-core/tools v4.0.2
 - [PR #370](https://github.com/nf-core/fetchngs/pull/370) - Template update for nf-core/tools v4.0.3
-- Added `meta.yml` and `environment.yml` for all local modules
-- Updated local modules to use `${moduleDir}/environment.yml` for conda dependencies
-- Removed unused `untar` module
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add metadata and environment files for local modules, remove unused untar module
 
 ### Software dependencies
 
