@@ -15,14 +15,12 @@ nextflow_workflow {
                 plaintext_email = false
                 outdir          = 'results'
                 monochrome_logs = false
-                hook_url        = null
 
                 input[0] = email
                 input[1] = email_on_fail
                 input[2] = plaintext_email
                 input[3] = outdir
                 input[4] = monochrome_logs
-                input[5] = hook_url
                 """
             }
         }
