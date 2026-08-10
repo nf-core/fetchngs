@@ -11,7 +11,9 @@ Special thanks to the following for their contributions to the release:
 
 - [Adam Talbot](https://github.com/adamrtalbot)
 - [Adrian Janucik](https://github.com/ajandria)
+- [Harshil Patel](https://github.com/drpatelh)
 - [Maxime Borry](https://github.com/maxibor)
+- [Maxime Ulysse Garcia](https://github.com/maxulysse)
 - [Sebastian Uhrig](https://github.com/suhrig)
 - [Tabea Attig](https://github.com/Tabea01)
 - [Venkat Malladi](https://github.com/vsmalladi)
