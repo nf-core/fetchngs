@@ -27,14 +27,13 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
                 { assert snapshot(
                     path(workflow.out.samplesheet[0].toString()).fileName.toString(),
                     workflow.out.mappings,
                     workflow.out.sample_mappings,
                     workflow.out.sra_metadata,
-                    //workflow.out.versions,
                     path("${outputDir}/pipeline_info/nf_core_fetchngs_software_versions.yml").fileName.toString()
                 ).match() }
             )
