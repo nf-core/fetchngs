@@ -40,6 +40,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Remove unused untar module
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update all modules and subworkflows from nf-core/modules
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add AGENTS.md file with nf-core agent instructions
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Improve workflow syntax with modern Nextflow DSL2 conventions
 
 ### Software dependencies
 
