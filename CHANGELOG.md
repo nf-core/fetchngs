@@ -36,11 +36,11 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #366](https://github.com/nf-core/fetchngs/pull/366) - Template update for nf-core/tools v4.0.2
 - [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
 - [PR #370](https://github.com/nf-core/fetchngs/pull/370) - Template update for nf-core/tools v4.0.3
-- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add metadata and environment files for local modules
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add AGENTS.md for nf-core agent instructions
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add meta.yml and environment.yml for local modules
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Follow Nextflow strict syntax conventions
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Remove unused untar module
-- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update all modules and subworkflows from nf-core/modules
-- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add AGENTS.md file with nf-core agent instructions
-- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Improve workflow syntax with modern Nextflow DSL2 conventions
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update nf-core modules and subworkflows
 
 ### Software dependencies
 
