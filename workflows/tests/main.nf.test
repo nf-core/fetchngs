@@ -1,6 +1,6 @@
 nextflow_workflow {
 
-    name "Test workflow: fetchngs.nf"
+    name "Test workflow: workflows/fetchngs.nf"
     script "../fetchngs.nf"
     workflow "FETCHNGS"
     tag "SRA_DEFAULT"

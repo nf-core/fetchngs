@@ -1,26 +1,27 @@
 nextflow_workflow {
 
-    name "Test workflow: ../workflows/fetchngs.nf"
-    script "../main.nf"
+    name "Test workflow: workflows/fetchngs.nf"
+    script "../fetchngs.nf"
     workflow "FETCHNGS"
-    tag "SRA_SKIP_FASTQ_DOWNLOAD"
+    tag "SRA_NF_CORE_PIPELINE_RNASEQ"
 
     // Dependencies
     tag "SRA_IDS_TO_RUNINFO"
     tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_FASTQ_FTP"
     tag "SRA_TO_SAMPLESHEET"
     tag "MULTIQC_MAPPINGS_CONFIG"
 
-    test("Parameters: --skip_fastq_download") {
+    test("Parameters: --nf_core_pipeline rnaseq") {
 
         when {
             params {
-                outdir = "$outputDir"
-                skip_fastq_download = true
+                nf_core_pipeline = "rnaseq"
             }
             workflow {
                 """
                 input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                input[1] = "${outputDir}"
                 """
             }
         }

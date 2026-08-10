@@ -1,9 +1,9 @@
 nextflow_workflow {
 
-    name "Test workflow: ../workflows/fetchngs.nf"
-    script "../main.nf"
+    name "Test workflow: workflows/fetchngs.nf"
+    script "../fetchngs.nf"
     workflow "FETCHNGS"
-    tag "SRA_NF_CORE_PIPELINE_VIRALRECON"
+    tag "SRA_NF_CORE_PIPELINE_ATACSEQ"
 
     // Dependencies
     tag "SRA_IDS_TO_RUNINFO"
@@ -12,16 +12,16 @@ nextflow_workflow {
     tag "SRA_TO_SAMPLESHEET"
     tag "MULTIQC_MAPPINGS_CONFIG"
 
-    test("Parameters: --nf_core_pipeline viralrecon") {
+    test("Parameters: --nf_core_pipeline atacseq") {
 
         when {
             params {
-                outdir = "$outputDir"
-                nf_core_pipeline = "viralrecon"
+                nf_core_pipeline = "atacseq"
             }
             workflow {
                 """
                 input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                input[1] = "${outputDir}"
                 """
             }
         }

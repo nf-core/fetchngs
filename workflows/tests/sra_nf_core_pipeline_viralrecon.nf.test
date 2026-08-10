@@ -1,9 +1,9 @@
 nextflow_workflow {
 
-    name "Test workflow: ../workflows/fetchngs.nf"
-    script "../main.nf"
+    name "Test workflow: workflows/fetchngs.nf"
+    script "../fetchngs.nf"
     workflow "FETCHNGS"
-    tag "SRA_CUSTOM_ENA_METADATA_FIELDS"
+    tag "SRA_NF_CORE_PIPELINE_VIRALRECON"
 
     // Dependencies
     tag "SRA_IDS_TO_RUNINFO"
@@ -12,18 +12,16 @@ nextflow_workflow {
     tag "SRA_TO_SAMPLESHEET"
     tag "MULTIQC_MAPPINGS_CONFIG"
 
-    test("Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...") {
+    test("Parameters: --nf_core_pipeline viralrecon") {
 
         when {
             params {
-                outdir = "$outputDir"
-                ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
-                nf_core_pipeline = "rnaseq"
-                sample_mapping_fields = "run_accession,library_layout"
+                nf_core_pipeline = "viralrecon"
             }
             workflow {
                 """
                 input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                input[1] = "${outputDir}"
                 """
             }
         }

@@ -1,7 +1,7 @@
 nextflow_workflow {
 
-    name "Test workflow: ../workflows/fetchngs.nf"
-    script "../main.nf"
+    name "Test workflow: workflows/fetchngs.nf"
+    script "../fetchngs.nf"
     workflow "FETCHNGS"
     tag "SRA_DOWNLOAD_METHOD_ASPERA"
 
@@ -16,12 +16,12 @@ nextflow_workflow {
 
         when {
             params {
-                outdir = "$outputDir"
                 download_method = 'aspera'
             }
             workflow {
                 """
                 input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                input[1] = "${outputDir}"
                 """
             }
         }
