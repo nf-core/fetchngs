@@ -3,15 +3,15 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:3.2.1--h4304569_1' :
-        'biocontainers/sra-tools:3.2.1--h4304569_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sra-tools:3.2.1--h4304569_1'
+        : 'quay.io/biocontainers/sra-tools:3.2.1--h4304569_1'}"
 
     input:
     val ids
 
     output:
-    path('*.mkfg'), emit: ncbi_settings
+    path ('*.mkfg'), emit: ncbi_settings
     tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
 
     when:
@@ -24,7 +24,7 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     echo ${config}
     """
 
-    template "detect_ncbi_settings.sh"
+    template("detect_ncbi_settings.sh")
 
     stub:
     """

@@ -10,3 +10,5 @@ null/
 .lineage/
 .nf-test*
 test.xml
+modules/nf-core/**/tests/
+subworkflows/nf-core/**/tests/

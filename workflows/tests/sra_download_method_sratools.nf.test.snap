@@ -141,8 +141,8 @@
                     "python": "3.9.5"
                 },
                 "SRATOOLS_FASTERQDUMP": {
-                    "pigz": 2.6,
-                    "sratools": "2.11.0"
+                    "pigz": 2.8,
+                    "sratools": "3.2.1"
                 },
                 "SRATOOLS_PREFETCH": {
                     "curl": "8.14.1",
@@ -156,7 +156,7 @@
                 }
             }
         ],
-        "timestamp": "2026-08-10T13:30:48.141249453",
+        "timestamp": "2026-08-10T14:50:49.11653117",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"

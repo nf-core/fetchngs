@@ -2,8 +2,9 @@ process ASPERA_CLI {
     tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::aspera-cli=4.20.0"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    conda "${moduleDir}/environment.yml"
+
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/aspera-cli:4.20.0--hdfd78af_0'
         : 'biocontainers/aspera-cli:4.20.0--hdfd78af_0'}"
 

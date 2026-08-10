@@ -9,8 +9,8 @@
                     "python": "3.9.5"
                 },
                 "SRATOOLS_FASTERQDUMP": {
-                    "pigz": 2.6,
-                    "sratools": "2.11.0"
+                    "pigz": 2.8,
+                    "sratools": "3.2.1"
                 },
                 "SRATOOLS_PREFETCH": {
                     "curl": "8.14.1",
@@ -99,8 +99,8 @@
                 "SRX17709227_SRR21711856.fastq.gz:md5,1fe5e87cc11c2af1584da9a75e49c4d2",
                 "SRX17709228_SRR21711855.fastq.gz:md5,3a4b64f005eba3923da57a5e61131c2a",
                 "SRX6725035_SRR9984183.fastq.gz:md5,c9b4c2c4abf19da7082caf442fdefea7",
-                "SRX9315476_SRR12848126_1.fastq.gz:md5,9629d3ace6ac9b5903659c33c5eb9155",
-                "SRX9315476_SRR12848126_2.fastq.gz:md5,35adb08340d978463b0cb5e6445fad3e",
+                "SRX9315476_SRR12848126_1.fastq.gz:md5,e4e86261d46fc31146e8809e605fd381",
+                "SRX9315476_SRR12848126_2.fastq.gz:md5,b154211da872f5a99697097628aa3afb",
                 "SRX9504942_SRR13055517_1.fastq.gz:md5,d28e744271fb20660ab94a912c1540a2",
                 "SRX9504942_SRR13055517_2.fastq.gz:md5,7e6144c926693a4d3d5078fc24e83968",
                 "SRX9504942_SRR13055518_1.fastq.gz:md5,c865addbbb95b4056bd2f6c8cce4ad56",
@@ -133,10 +133,10 @@
             ],
             "samplesheet.csv:md5,f7a9fefa9f4f4c57ffe3228c91ca28e4"
         ],
-        "timestamp": "2026-04-17T13:16:04.491325",
+        "timestamp": "2026-08-10T14:42:52.349537526",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.4"
         }
     }
 }
