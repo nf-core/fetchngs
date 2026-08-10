@@ -24,14 +24,24 @@ nextflow_workflow {
         }
 
         then {
+            // csv_file: Just the samplesheet
+            def csv_file = path(outputDir + '/samplesheet/samplesheet.csv').csv()
+
+            // Sanitize sra_metadata to remove unstable output directory paths
+            def sra_metadata = workflow.out.sra_metadata.collect { meta ->
+                return [meta + [fastq_1:meta.fastq_1 ? path(meta.fastq_1).fileName.toString() : ''] + [fastq_2:meta.fastq_2 ? path(meta.fastq_2).fileName.toString() : '']]
+            }
+
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    path(workflow.out.samplesheet[0]).fileName.toString(),
+                    // Samplesheet
+                    "samplesheet.csv:md5," + csv_file.sort().table.collect { row -> [row.getString("sample"), row.getString("fastq_1").replaceAll(outputDir, ""), row.getString("fastq_2").replaceAll(outputDir, "")].join(",") }.join("\n").md5(),
                     workflow.out.mappings,
                     workflow.out.sample_mappings,
-                    workflow.out.sra_metadata,
-                    path("${outputDir}/pipeline_info/nf_core_fetchngs_software_versions.yml").fileName.toString()
+                    sra_metadata,
+                    // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_fetchngs_software_versions.yml", "Workflow"),
                 ).match() }
             )
         }
