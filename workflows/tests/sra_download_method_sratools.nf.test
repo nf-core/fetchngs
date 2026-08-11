@@ -15,13 +15,17 @@ nextflow_workflow {
     test("Parameters: --download_method sratools") {
 
         when {
-            params {
-                download_method = 'sratools'
-            }
             workflow {
                 """
                 input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
                 input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'sratools'
+                input[4] = ''
+                input[5] = ''
+                input[6] = 'auto'
+                input[7] = 'experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description'
+                input[8] = false
                 """
             }
         }

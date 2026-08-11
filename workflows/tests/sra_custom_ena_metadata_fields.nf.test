@@ -15,15 +15,17 @@ nextflow_workflow {
     test("Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...") {
 
         when {
-            params {
-                ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
-                nf_core_pipeline = "rnaseq"
-                sample_mapping_fields = "run_accession,library_layout"
-            }
             workflow {
                 """
                 input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
                 input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'ftp'
+                input[4] = 'run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5'
+                input[5] = 'rnaseq'
+                input[6] = 'auto'
+                input[7] = 'run_accession,library_layout'
+                input[8] = false
                 """
             }
         }
