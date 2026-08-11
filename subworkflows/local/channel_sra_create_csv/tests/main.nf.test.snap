@@ -1,0 +1,25 @@
+{
+    "Should create samplesheet and mappings": {
+        "content": [
+            {
+                "0": [
+                    "samplesheet.csv:md5,e7898191d57258e049ee7129d36f5c08"
+                ],
+                "1": [
+                    "id_mappings.csv:md5,d09ddb4f0709675e5dfe1eadf12c608f"
+                ],
+                "mappings": [
+                    "id_mappings.csv:md5,d09ddb4f0709675e5dfe1eadf12c608f"
+                ],
+                "samplesheet": [
+                    "samplesheet.csv:md5,e7898191d57258e049ee7129d36f5c08"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-11T15:08:16.903311077",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    }
+}

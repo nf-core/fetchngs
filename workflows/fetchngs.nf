@@ -1,32 +1,25 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT LOCAL MODULES/SUBWORKFLOWS
+    IMPORT LOCAL MODULES/SUBWORKFLOWS/FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { ASPERA_CLI                                   } from '../modules/local/aspera_cli'
 include { MULTIQC_MAPPINGS_CONFIG                      } from '../modules/local/multiqc_mappings_config'
 include { SRA_FASTQ_FTP                                } from '../modules/local/sra_fastq_ftp'
 include { SRA_IDS_TO_RUNINFO                           } from '../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP                           } from '../modules/local/sra_runinfo_to_ftp'
-include { ASPERA_CLI                                   } from '../modules/local/aspera_cli'
-include { SRA_TO_SAMPLESHEET                           } from '../modules/local/sra_to_samplesheet'
-include { FASTQDL                                      } from '../modules/nf-core/fastqdl/main'
-include { softwareVersionsToYAML                       } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { CHANNEL_SRA_CREATE_CSV                       } from '../subworkflows/local/channel_sra_create_csv'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT NF-CORE SUBWORKFLOWS
+    IMPORT NF-CORE MODULES/SUBWORKFLOWS/FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { FASTQDL                                      } from '../modules/nf-core/fastqdl'
 include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-include { paramsSummaryMap                             } from 'plugin/nf-schema'
+include { softwareVersionsToYAML                       } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -142,30 +135,24 @@ workflow FETCHNGS {
     }
 
     //
-    // MODULE: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
+    // SUBWORKFLOW: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
     //
-    SRA_TO_SAMPLESHEET(
+    CHANNEL_SRA_CREATE_CSV(
         ch_sra_metadata,
         params.nf_core_pipeline ?: '',
         params.nf_core_rnaseq_strandedness ?: 'auto',
         params.sample_mapping_fields,
+        outdir,
     )
 
-    // Merge samplesheets and mapping files across all samples
-    SRA_TO_SAMPLESHEET.out.samplesheet.map { _meta, samplesheet -> samplesheet }.collectFile(name: 'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: { file -> file.baseName }).map { file -> file.text.tokenize('\n').join('\n') }.collectFile(name: 'samplesheet.csv', storeDir: "${outdir}/samplesheet").set { ch_samplesheet }
-
-    SRA_TO_SAMPLESHEET.out.mappings.map { _meta, mappings -> mappings }.collectFile(name: 'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: { file -> file.baseName }).map { file -> file.text.tokenize('\n').join('\n') }.collectFile(name: 'id_mappings.csv', storeDir: "${outdir}/samplesheet").set { ch_mappings }
+    ch_samplesheet = CHANNEL_SRA_CREATE_CSV.out.samplesheet
+    ch_mappings = CHANNEL_SRA_CREATE_CSV.out.mappings
 
     //
     // MODULE: Create a MutiQC config file with sample name mappings
     //
-    ch_sample_mappings_yml = channel.empty()
-    if (params.sample_mapping_fields) {
-        MULTIQC_MAPPINGS_CONFIG(
-            ch_mappings
-        )
-        ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
-    }
+    MULTIQC_MAPPINGS_CONFIG(ch_mappings.filter { params.sample_mapping_fields })
+    ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
 
     //
     // Collate and save software versions
@@ -201,5 +188,5 @@ workflow FETCHNGS {
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
-    versions        = ch_collated_versions.unique()
+    versions        = ch_collated_versions
 }
