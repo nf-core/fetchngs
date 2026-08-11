@@ -5,6 +5,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.13.0dev - [date]
 
+### Credits
+
+Special thanks to the following for their contributions to the release:
+
+- [Adam Talbot](https://github.com/adamrtalbot)
+- [Adrian Janucik](https://github.com/ajandria)
+- [Harshil Patel](https://github.com/drpatelh)
+- [Maxime Borry](https://github.com/maxibor)
+- [Maxime Ulysse Garcia](https://github.com/maxulysse)
+- [Sebastian Uhrig](https://github.com/suhrig)
+- [Tabea Attig](https://github.com/Tabea01)
+- [Venkat Malladi](https://github.com/vsmalladi)
+
+Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
+
 ### Enhancements & fixes
 
 - [PR #299](https://github.com/nf-core/fetchngs/pull/299) - Template update for nf-core/tools v2.13.1
@@ -12,22 +27,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #303](https://github.com/nf-core/fetchngs/pull/303) - Update wget container for SRA_FASTQ_FTP from 1.20.1 to 1.21.4
 - [PR #305](https://github.com/nf-core/fetchngs/pull/305) - Update module sratools/prefetch for reliable download integrity check
 - [PR #316](https://github.com/nf-core/fetchngs/pull/316) - Use nf-core/setup-nf-test to install nf-test from cache during CI/CD
-- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Update module multiqc_mappings_config and sratools/prefetch for TES compliance
 - [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Refactor workflow tests
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Update module multiqc_mappings_config and sratools/prefetch for TES compliance
 - [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
 - [PR #325](https://github.com/nf-core/fetchngs/pull/325) - Add wget wait time for retries
 - [PR #333](https://github.com/nf-core/fetchngs/pull/333) - Add logo
 - [PR #365](https://github.com/nf-core/fetchngs/pull/365) - Template update for nf-core/tools v3.5.2, including topic channels for version reporting
-- [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
 - [PR #366](https://github.com/nf-core/fetchngs/pull/366) - Template update for nf-core/tools v4.0.2
+- [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
 - [PR #370](https://github.com/nf-core/fetchngs/pull/370) - Template update for nf-core/tools v4.0.3
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add AGENTS.md for nf-core agent instructions
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add meta.yml and environment.yml for local modules
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Follow Nextflow strict syntax conventions
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Remove unused untar module
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update nf-core modules and subworkflows
 
 ### Software dependencies
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
+| `pigz`     | 2.6         | 2.8         |
+| `sratools` | 2.11.0      | 3.2.1       |
 | `wget`     | 1.20.1      | 1.21.4      |
-| `sratools` | 3.0.8       | 3.1.0       |
 
 ## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 

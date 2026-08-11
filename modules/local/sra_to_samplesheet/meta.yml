@@ -1,0 +1,52 @@
+name: sra_to_samplesheet
+description: Create nf-core pipeline-compatible samplesheets and ID mapping files from SRA metadata
+keywords:
+  - samplesheet
+  - sra
+  - metadata
+  - pipeline
+tools:
+  - custom:
+      description: Custom Groovy logic - no external tool
+input:
+  - - meta:
+        type: map
+        description: >
+          Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+  - pipeline:
+      type: string
+      description: >
+        Target nf-core pipeline name (e.g. 'rnaseq', 'atacseq', 'taxprofiler')
+  - strandedness:
+      type: string
+      description: >
+        Strandedness information (used for rnaseq pipeline)
+  - mapping_fields:
+      type: string
+      description: >
+        Comma-separated list of metadata fields to include in the mappings CSV
+output:
+  samplesheet:
+    - - meta:
+          type: map
+          description: >
+            Groovy Map containing sample information
+      - "*samplesheet.csv":
+          type: file
+          description: Pipeline-ready samplesheet CSV
+          pattern: "*samplesheet.csv"
+  mappings:
+    - - meta:
+          type: map
+          description: >
+            Groovy Map containing sample information
+      - "*mappings.csv":
+          type: file
+          description: Sample-to-raw-accession mappings CSV
+          pattern: "*mappings.csv"
+authors:
+  - "@ewels"
+maintainers:
+  - "@ewels"
+  - "@jfy133"
+  - "@maxulysse"

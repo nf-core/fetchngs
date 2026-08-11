@@ -1,20 +1,19 @@
-
 process SRA_FASTQ_FTP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
     label 'error_retry'
 
-    conda "conda-forge::wget=1.21.4"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wget:1.21.4' :
-        'biocontainers/wget:1.21.4' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/wget:1.21.4'
+        : 'biocontainers/wget:1.21.4'}"
 
     input:
     tuple val(meta), val(fastq)
 
     output:
     tuple val(meta), path("*fastq.gz"), emit: fastq
-    tuple val(meta), path("*md5")     , emit: md5
+    tuple val(meta), path("*md5"), emit: md5
     tuple val("${task.process}"), val('wget'), eval('wget --version | head -n 1 | sed  "s/^GNU Wget //; s/ .*\$//"'), emit: versions_wget, topic: versions
 
     script:
@@ -22,17 +21,18 @@ process SRA_FASTQ_FTP {
     if (meta.single_end) {
         """
         wget \\
-            $args \\
+            ${args} \\
             -O ${meta.id}.fastq.gz \\
             ${fastq[0]}
 
         echo "${meta.md5_1}  ${meta.id}.fastq.gz" > ${meta.id}.fastq.gz.md5
         md5sum -c ${meta.id}.fastq.gz.md5
         """
-    } else {
+    }
+    else {
         """
         wget \\
-            $args \\
+            ${args} \\
             -O ${meta.id}_1.fastq.gz \\
             ${fastq[0]}
 
@@ -40,7 +40,7 @@ process SRA_FASTQ_FTP {
         md5sum -c ${meta.id}_1.fastq.gz.md5
 
         wget \\
-            $args \\
+            ${args} \\
             -O ${meta.id}_2.fastq.gz \\
             ${fastq[1]}
 
@@ -55,7 +55,8 @@ process SRA_FASTQ_FTP {
         echo | gzip > ${meta.id}.fastq.gz
         touch ${meta.id}.fastq.gz.md5
         """
-    } else {
+    }
+    else {
         """
         echo | gzip > ${meta.id}_1.fastq.gz
         echo | gzip > ${meta.id}_2.fastq.gz
