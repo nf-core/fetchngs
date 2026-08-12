@@ -1,3 +1,31 @@
+def buildPipelineMap(meta, pipeline, strandedness) {
+    def m = meta instanceof List ? meta[0] : meta
+
+    def meta_clone = m.clone()
+    meta_clone.remove("id")
+    meta_clone.remove("fastq_1")
+    meta_clone.remove("fastq_2")
+    meta_clone.remove("md5_1")
+    meta_clone.remove("md5_2")
+    meta_clone.remove("single_end")
+
+    def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
+
+    if (pipeline) {
+        if (pipeline == 'rnaseq') {
+            pipeline_map << [strandedness: strandedness]
+        }
+        else if (pipeline == 'atacseq') {
+            pipeline_map << [replicate: 1]
+        }
+        else if (pipeline == 'taxprofiler') {
+            pipeline_map << [fasta: '']
+        }
+    }
+    pipeline_map << meta_clone
+    return pipeline_map
+}
+
 workflow CHANNEL_SRA_CREATE_CSV {
     take:
     ch_sra_metadata // channel: [ meta ]
@@ -13,31 +41,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
     //
     ch_samplesheet = ch_sra_metadata
         .map { meta ->
-            def m = meta instanceof List ? meta[0] : meta
-
-            def meta_clone = m.clone()
-            meta_clone.remove("id")
-            meta_clone.remove("fastq_1")
-            meta_clone.remove("fastq_2")
-            meta_clone.remove("md5_1")
-            meta_clone.remove("md5_2")
-            meta_clone.remove("single_end")
-
-            def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
-
-            if (pipeline) {
-                if (pipeline == 'rnaseq') {
-                    pipeline_map << [strandedness: strandedness]
-                }
-                else if (pipeline == 'atacseq') {
-                    pipeline_map << [replicate: 1]
-                }
-                else if (pipeline == 'taxprofiler') {
-                    pipeline_map << [fasta: '']
-                }
-            }
-            pipeline_map << meta_clone
-
+            def pipeline_map = buildPipelineMap(meta, pipeline, strandedness)
             def header = pipeline_map.keySet().collect { key -> '"' + key + '"' }.join(",")
             def values = pipeline_map.values().collect { value -> '"' + value + '"' }.join(",")
             return "${header}\n${values}"
@@ -51,30 +55,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
     //
     ch_mappings = ch_sra_metadata
         .map { meta ->
-            def m = meta instanceof List ? meta[0] : meta
-
-            def meta_clone = m.clone()
-            meta_clone.remove("id")
-            meta_clone.remove("fastq_1")
-            meta_clone.remove("fastq_2")
-            meta_clone.remove("md5_1")
-            meta_clone.remove("md5_2")
-            meta_clone.remove("single_end")
-
-            def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
-
-            if (pipeline) {
-                if (pipeline == 'rnaseq') {
-                    pipeline_map << [strandedness: strandedness]
-                }
-                else if (pipeline == 'atacseq') {
-                    pipeline_map << [replicate: 1]
-                }
-                else if (pipeline == 'taxprofiler') {
-                    pipeline_map << [fasta: '']
-                }
-            }
-            pipeline_map << meta_clone
+            def pipeline_map = buildPipelineMap(meta, pipeline, strandedness)
 
             def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect { field -> field.trim().toLowerCase() } : []
             if ((pipeline_map.keySet() + fields).unique().size() != pipeline_map.keySet().size()) {
