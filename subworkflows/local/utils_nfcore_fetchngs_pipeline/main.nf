@@ -100,8 +100,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input
     //
-    ch_input = file(input)
-    if (isSraId(ch_input)) {
+    if (isSraId(file(input))) {
         sraCheckENAMetadataFields(ena_metadata_fields)
     }
     else {
@@ -109,7 +108,7 @@ workflow PIPELINE_INITIALISATION {
     }
 
     // Read in ids from --input file
-    ch_ids = channel.from(ch_input)
+    ch_ids = channel.of(file(input))
         .splitCsv(header: false, sep: '', strip: true)
         .map { row -> row[0] }
         .unique()

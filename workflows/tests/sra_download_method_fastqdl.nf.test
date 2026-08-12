@@ -20,7 +20,7 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
                 input[1] = "${outputDir}"
                 input[2] = []
                 input[3] = 'fastq-dl'
