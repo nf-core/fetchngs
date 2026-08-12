@@ -13,8 +13,11 @@ workflow CHANNEL_SRA_CREATE_CSV {
     //
     ch_samplesheet = ch_sra_metadata
         .map { meta ->
+            // Handle both list-wrapped and plain map formats
+            def m = meta instanceof List ? meta[0] : meta
+
             // Remove custom keys needed to download the data
-            def meta_clone = meta.clone()
+            def meta_clone = m.clone()
             meta_clone.remove("id")
             meta_clone.remove("fastq_1")
             meta_clone.remove("fastq_2")
@@ -23,7 +26,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
             meta_clone.remove("single_end")
 
             // Add relevant fields to the beginning of the map
-            def pipeline_map = [sample: "${meta.id.split('_')[0..-2].join('_')}", fastq_1: meta.fastq_1, fastq_2: meta.fastq_2]
+            def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
 
             // Add nf-core pipeline specific entries
             if (pipeline) {
@@ -42,7 +45,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
             // Create CSV content
             def header = pipeline_map.keySet().collect { key -> '"' + key + '"' }.join(",")
             def values = pipeline_map.values().collect { value -> '"' + value + '"' }.join(",")
-            return "${header}\n${values}\n"
+            return "${header}\n${values}"
         }
         .collectFile(name: 'tmp_samplesheet.csv', newLine: true, keepHeader: true, sort: true)
         .map { file -> file.text.tokenize('\n').join('\n') }
@@ -53,8 +56,11 @@ workflow CHANNEL_SRA_CREATE_CSV {
     //
     ch_mappings = ch_sra_metadata
         .map { meta ->
+            // Handle both list-wrapped and plain map formats
+            def m = meta instanceof List ? meta[0] : meta
+
             // Remove custom keys needed to download the data
-            def meta_clone = meta.clone()
+            def meta_clone = m.clone()
             meta_clone.remove("id")
             meta_clone.remove("fastq_1")
             meta_clone.remove("fastq_2")
@@ -63,7 +69,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
             meta_clone.remove("single_end")
 
             // Add relevant fields to the beginning of the map
-            def pipeline_map = [sample: "${meta.id.split('_')[0..-2].join('_')}", fastq_1: meta.fastq_1, fastq_2: meta.fastq_2]
+            def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
 
             // Add nf-core pipeline specific entries
             if (pipeline) {
@@ -88,7 +94,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
             // Create CSV content
             def header = fields.collect { field -> '"' + field + '"' }.join(",")
             def values = fields.collect { field -> '"' + pipeline_map[field] + '"' }.join(",")
-            return "${header}\n${values}\n"
+            return "${header}\n${values}"
         }
         .collectFile(name: 'tmp_id_mappings.csv', newLine: true, keepHeader: true, sort: true)
         .map { file -> file.text.tokenize('\n').join('\n') }

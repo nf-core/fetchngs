@@ -179,4 +179,6 @@ If you update images or graphics, follow the nf-core [style guidelines](https://
 
 ## Pipeline specific contribution guidelines
 
+- Always include PR number in CHANGELOG entries (use format: `[PR #NNN](https://github.com/nf-core/fetchngs/pull/NNN)`)
+
 <!-- TODO nf-core: Add any pipeline specific contribution guidelines here, such as coding styles, procedures, checklists etc. -->

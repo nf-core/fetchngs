@@ -41,6 +41,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Follow Nextflow strict syntax conventions
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Remove unused untar module
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update nf-core modules and subworkflows
+- [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Replace SRA_TO_SAMPLESHEET process with CHANNEL_SRA_CREATE_CSV subworkflow using channel manipulation
+- [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Strict syntax improvements
 
 ### Software dependencies
 

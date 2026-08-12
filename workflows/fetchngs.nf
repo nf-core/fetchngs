@@ -56,7 +56,7 @@ workflow FETCHNGS {
     ch_sra_metadata = SRA_RUNINFO_TO_FTP.out.tsv
         .filter { row -> row.size() > 0 }
         .splitCsv(header: true, sep: '\t')
-        .map { meta -> [meta + [single_end: meta.single_end.toBoolean()]] }
+        .map { meta -> (meta + [single_end: meta.single_end.toBoolean()]).sort { it.key } }
         .unique()
 
     if (!skip_fastq_download) {
