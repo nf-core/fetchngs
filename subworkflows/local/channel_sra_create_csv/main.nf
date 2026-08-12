@@ -13,10 +13,8 @@ workflow CHANNEL_SRA_CREATE_CSV {
     //
     ch_samplesheet = ch_sra_metadata
         .map { meta ->
-            // Handle both list-wrapped and plain map formats
             def m = meta instanceof List ? meta[0] : meta
 
-            // Remove custom keys needed to download the data
             def meta_clone = m.clone()
             meta_clone.remove("id")
             meta_clone.remove("fastq_1")
@@ -25,10 +23,8 @@ workflow CHANNEL_SRA_CREATE_CSV {
             meta_clone.remove("md5_2")
             meta_clone.remove("single_end")
 
-            // Add relevant fields to the beginning of the map
             def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
 
-            // Add nf-core pipeline specific entries
             if (pipeline) {
                 if (pipeline == 'rnaseq') {
                     pipeline_map << [strandedness: strandedness]
@@ -42,7 +38,6 @@ workflow CHANNEL_SRA_CREATE_CSV {
             }
             pipeline_map << meta_clone
 
-            // Create CSV content
             def header = pipeline_map.keySet().collect { key -> '"' + key + '"' }.join(",")
             def values = pipeline_map.values().collect { value -> '"' + value + '"' }.join(",")
             return "${header}\n${values}"
@@ -56,10 +51,8 @@ workflow CHANNEL_SRA_CREATE_CSV {
     //
     ch_mappings = ch_sra_metadata
         .map { meta ->
-            // Handle both list-wrapped and plain map formats
             def m = meta instanceof List ? meta[0] : meta
 
-            // Remove custom keys needed to download the data
             def meta_clone = m.clone()
             meta_clone.remove("id")
             meta_clone.remove("fastq_1")
@@ -68,10 +61,8 @@ workflow CHANNEL_SRA_CREATE_CSV {
             meta_clone.remove("md5_2")
             meta_clone.remove("single_end")
 
-            // Add relevant fields to the beginning of the map
             def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
 
-            // Add nf-core pipeline specific entries
             if (pipeline) {
                 if (pipeline == 'rnaseq') {
                     pipeline_map << [strandedness: strandedness]
@@ -85,13 +76,11 @@ workflow CHANNEL_SRA_CREATE_CSV {
             }
             pipeline_map << meta_clone
 
-            // Select fields for mappings
             def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect { field -> field.trim().toLowerCase() } : []
             if ((pipeline_map.keySet() + fields).unique().size() != pipeline_map.keySet().size()) {
                 error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${pipeline_map.keySet().join(', ')}")
             }
 
-            // Create CSV content
             def header = fields.collect { field -> '"' + field + '"' }.join(",")
             def values = fields.collect { field -> '"' + pipeline_map[field] + '"' }.join(",")
             return "${header}\n${values}"
