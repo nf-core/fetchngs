@@ -16,9 +16,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -36,8 +36,28 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Should run with ena_metadata_fields containing whitespace") {
+
+        when {
+            process {
+                """
+                input[0] = 'SRR13191702'
+                input[1] = 'experiment_accession, run_accession, sample_accession'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -43,7 +43,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update nf-core modules and subworkflows
 - [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Replace SRA_TO_SAMPLESHEET process with CHANNEL_SRA_CREATE_CSV subworkflow using channel manipulation
 - [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Strict syntax improvements
-- [PR #381](https://github.com/nf-core/fetchngs/pull/381) - Quote ena_metadata_fields to prevent word-splitting (#374)
+- [PR #381](https://github.com/nf-core/fetchngs/pull/381) - Quote ena_metadata_fields and strip spaces to prevent word-splitting (#374)
 
 ### Software dependencies
 
