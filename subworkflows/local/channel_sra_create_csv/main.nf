@@ -42,21 +42,9 @@ workflow CHANNEL_SRA_CREATE_CSV {
     mappings    = ch_mappings
 }
 
-// FUNTIONS
+// FUNCTIONS
 
 def buildPipelineMap(meta, pipeline, strandedness) {
-    def pipeline_map = []
-
-    if (pipeline) {
-        if (pipeline == 'rnaseq') {
-            pipeline_map << [strandedness: strandedness]
-        }
-        else if (pipeline == 'atacseq') {
-            pipeline_map << [replicate: 1]
-        }
-        else if (pipeline == 'taxprofiler') {
-            pipeline_map << [fasta: '']
-        }
-    }
-    return meta + [sample: "${meta.id.toString().split('_')[0..-2].join('_')}"] - meta.submap[['id', 'md5_1', 'md5_2', 'single_end']] + pipeline_map
+    def pipeline_extras = [rnaseq: [strandedness: strandedness], atacseq: [replicate: 1], taxprofiler: [fasta: '']]
+    return meta + [sample: "${meta.id.toString().split('_')[0..-2].join('_')}"] - meta.submap[['id', 'md5_1', 'md5_2', 'single_end']] + (pipeline_extras[pipeline] ?: [:])
 }
