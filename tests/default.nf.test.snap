@@ -129,11 +129,11 @@
                 "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
                 "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945",
                 "id_mappings.csv:md5,33c5e095dbbb15def4e3b402eba6ade2",
-                "multiqc_config.yml:md5,bb99e81ddd360988338c10ecbdbce65a"
+                "multiqc_config.yml:md5,4c1962b5345d05b9fedd1eeee943aa44"
             ],
             "samplesheet.csv:md5,f7a9fefa9f4f4c57ffe3228c91ca28e4"
         ],
-        "timestamp": "2026-08-10T14:42:52.349537526",
+        "timestamp": "2026-08-13T14:23:24.813510759",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
