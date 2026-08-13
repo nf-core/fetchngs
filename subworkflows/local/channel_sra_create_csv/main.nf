@@ -46,10 +46,10 @@ workflow CHANNEL_SRA_CREATE_CSV {
 
 def buildPipelineMap(meta, pipeline, strandedness) {
     def pipeline_extras = [
-        atacseq: [replicate: 1],
-        rnaseq: [strandedness: strandedness],
+        atacseq:     [replicate: 1],
+        rnaseq:      [strandedness: strandedness],
         taxprofiler: [fasta: ''],
     ]
 
-    return meta + [sample: "${meta.id.toString().split('_')[0..-2].join('_')}"] - meta.submap[['id', 'md5_1', 'md5_2', 'single_end']] + (pipeline_extras[pipeline] ?: [:])
+    return meta - meta.subMap(['id', 'md5_1', 'md5_2', 'single_end']) + [sample: "${meta.id.toString().split('_')[0..-2].join('_')}"] + (pipeline_extras[pipeline] ?: [:])
 }
