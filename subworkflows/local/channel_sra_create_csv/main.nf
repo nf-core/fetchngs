@@ -45,17 +45,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
 // FUNTIONS
 
 def buildPipelineMap(meta, pipeline, strandedness) {
-    def m = meta
-
-    def meta_clone = m.clone()
-    meta_clone.remove("id")
-    meta_clone.remove("fastq_1")
-    meta_clone.remove("fastq_2")
-    meta_clone.remove("md5_1")
-    meta_clone.remove("md5_2")
-    meta_clone.remove("single_end")
-
-    def pipeline_map = [sample: "${m.id.toString().split('_')[0..-2].join('_')}", fastq_1: m.fastq_1, fastq_2: m.fastq_2]
+    def pipeline_map = []
 
     if (pipeline) {
         if (pipeline == 'rnaseq') {
@@ -68,6 +58,5 @@ def buildPipelineMap(meta, pipeline, strandedness) {
             pipeline_map << [fasta: '']
         }
     }
-    pipeline_map << meta_clone
-    return pipeline_map
+    return meta + [sample: "${meta.id.toString().split('_')[0..-2].join('_')}"] - meta.submap[['id', 'md5_1', 'md5_2', 'single_end']] + pipeline_map
 }
