@@ -16,7 +16,7 @@ process SRA_IDS_TO_RUNINFO {
     tuple val("${task.process}"), val('python'), eval('python --version | sed "s/Python //g"'), emit: versions_python, topic: versions
 
     script:
-    def metadata_fields = fields ? "--ena_metadata_fields ${fields}" : ''
+    def metadata_fields = fields ? "--ena_metadata_fields '${fields}'" : ''
     """
     echo ${id} > id.txt
     sra_ids_to_runinfo.py \\
