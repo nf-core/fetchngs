@@ -43,6 +43,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update nf-core modules and subworkflows
 - [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Replace SRA_TO_SAMPLESHEET process with CHANNEL_SRA_CREATE_CSV subworkflow using channel manipulation
 - [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Strict syntax improvements
+- [PR #380](https://github.com/nf-core/fetchngs/pull/380) - Use Seqera Wave container for wget to fix DNS resolution issues (#373)
+- [PR #381](https://github.com/nf-core/fetchngs/pull/381) - Quote ena_metadata_fields to prevent word-splitting (#374)
 
 ### Software dependencies
 
@@ -50,7 +52,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 | ---------- | ----------- | ----------- |
 | `pigz`     | 2.6         | 2.8         |
 | `sratools` | 2.11.0      | 3.2.1       |
-| `wget`     | 1.20.1      | 1.21.4      |
+| `wget`     | 1.20.1      | 1.25.0      |
 
 ## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 
