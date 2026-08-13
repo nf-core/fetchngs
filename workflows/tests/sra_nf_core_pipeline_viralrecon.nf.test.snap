@@ -6,7 +6,7 @@
                 "id_mappings.csv:md5,3e41ce6ab19feb76f2b20fa77a910ad3"
             ],
             [
-                "multiqc_config.yml:md5,1ac06bb95b503703430e74660bbdd768"
+                "multiqc_config.yml:md5,0f585277bfcae95ea182dcc9928f9243"
             ],
             [
                 [
@@ -148,7 +148,7 @@
                 }
             }
         ],
-        "timestamp": "2026-08-10T13:31:47.461053544",
+        "timestamp": "2026-08-13T14:28:48.081638625",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
