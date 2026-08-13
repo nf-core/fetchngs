@@ -36,7 +36,8 @@ nextflow_workflow {
 
             // Sanitize sra_metadata to remove unstable output directory paths
             def sra_metadata = workflow.out.sra_metadata.collect { meta ->
-                def m = meta instanceof List ? meta[0] : meta
+                assert meta instanceof Map
+                def m = meta
                 def fastq1 = m.fastq_1 ? (m.fastq_1 instanceof List ? path(m.fastq_1[0]).fileName.toString() : path(m.fastq_1).fileName.toString()) : ''
                 def fastq2 = m.fastq_2 ? (m.fastq_2 instanceof List ? path(m.fastq_2[0]).fileName.toString() : path(m.fastq_2).fileName.toString()) : ''
                 return [m + [fastq_1: fastq1] + [fastq_2: fastq2]]

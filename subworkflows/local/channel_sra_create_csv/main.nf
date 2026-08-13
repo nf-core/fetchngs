@@ -45,7 +45,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
 // FUNTIONS
 
 def buildPipelineMap(meta, pipeline, strandedness) {
-    def m = meta instanceof List ? meta[0] : meta
+    def m = meta
 
     def meta_clone = m.clone()
     meta_clone.remove("id")

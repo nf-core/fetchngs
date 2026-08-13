@@ -56,7 +56,7 @@ workflow FETCHNGS {
     ch_sra_metadata = SRA_RUNINFO_TO_FTP.out.tsv
         .filter { row -> row.size() > 0 }
         .splitCsv(header: true, sep: '\t')
-        .map { meta -> (meta + [single_end: meta.single_end.toBoolean()]).sort { it.key } }
+        .map { meta -> meta + [single_end: meta.single_end.toBoolean()] }
         .unique()
 
     if (!skip_fastq_download) {
@@ -110,7 +110,7 @@ workflow FETCHNGS {
             .map { meta, fastq ->
                 def reads = fastq instanceof List ? fastq.flatten() : [fastq]
 
-                return [meta + [fastq_1: reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : '', fastq_2: reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : '']]
+                return meta + [fastq_1: reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : '', fastq_2: reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : '']
             }
     }
 
