@@ -60,7 +60,7 @@
                     "python": "3.9.5"
                 },
                 "SRA_FASTQ_FTP": {
-                    "wget": "1.21.4"
+                    "wget": "1.25.0"
                 },
                 "SRA_IDS_TO_RUNINFO": {
                     "python": "3.9.5"
