@@ -17,8 +17,15 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
                 input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'ftp'
+                input[4] = ''
+                input[5] = ''
+                input[6] = 'auto'
+                input[7] = 'experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description'
+                input[8] = false
                 """
             }
         }
@@ -29,7 +36,10 @@ nextflow_workflow {
 
             // Sanitize sra_metadata to remove unstable output directory paths
             def sra_metadata = workflow.out.sra_metadata.collect { meta ->
-                return [meta + [fastq_1:meta.fastq_1 ? path(meta.fastq_1).fileName.toString() : ''] + [fastq_2:meta.fastq_2 ? path(meta.fastq_2).fileName.toString() : '']]
+                assert meta instanceof Map
+                def fastq1 = meta.fastq_1 ? (meta.fastq_1 instanceof List ? path(meta.fastq_1[0]).fileName.toString() : path(meta.fastq_1).fileName.toString()) : ''
+                def fastq2 = meta.fastq_2 ? (meta.fastq_2 instanceof List ? path(meta.fastq_2[0]).fileName.toString() : path(meta.fastq_2).fileName.toString()) : ''
+                return [meta + [fastq_1: fastq1] + [fastq_2: fastq2]]
             }
 
             assert workflow.success

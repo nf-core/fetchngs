@@ -15,15 +15,17 @@ nextflow_workflow {
     test("Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...") {
 
         when {
-            params {
-                ena_metadata_fields = "run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5"
-                nf_core_pipeline = "rnaseq"
-                sample_mapping_fields = "run_accession,library_layout"
-            }
             workflow {
                 """
-                input[0] = Channel.from("DRX026011", "ERX1234253", "SRX6725035")
+                input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
                 input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'ftp'
+                input[4] = 'run_accession,experiment_accession,library_layout,fastq_ftp,fastq_md5'
+                input[5] = 'rnaseq'
+                input[6] = 'auto'
+                input[7] = 'run_accession,library_layout'
+                input[8] = false
                 """
             }
         }
@@ -34,7 +36,10 @@ nextflow_workflow {
 
             // Sanitize sra_metadata to remove unstable output directory paths
             def sra_metadata = workflow.out.sra_metadata.collect { meta ->
-                return [meta + [fastq_1:meta.fastq_1 ? path(meta.fastq_1).fileName.toString() : ''] + [fastq_2:meta.fastq_2 ? path(meta.fastq_2).fileName.toString() : '']]
+                assert meta instanceof Map
+                def fastq1 = meta.fastq_1 ? (meta.fastq_1 instanceof List ? path(meta.fastq_1[0]).fileName.toString() : path(meta.fastq_1).fileName.toString()) : ''
+                def fastq2 = meta.fastq_2 ? (meta.fastq_2 instanceof List ? path(meta.fastq_2[0]).fileName.toString() : path(meta.fastq_2).fileName.toString()) : ''
+                return [meta + [fastq_1: fastq1] + [fastq_2: fastq2]]
             }
 
             assert workflow.success

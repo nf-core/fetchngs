@@ -1,4 +1,5 @@
 process SRA_RUNINFO_TO_FTP {
+    tag "${runinfo.toString().tokenize(".")[0]}"
 
     conda "${moduleDir}/environment.yml"
 
