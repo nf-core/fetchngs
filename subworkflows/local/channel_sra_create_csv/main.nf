@@ -47,6 +47,7 @@ workflow CHANNEL_SRA_CREATE_CSV {
 def buildPipelineMap(meta, pipeline, strandedness) {
     def pipeline_extras = [
         atacseq: [replicate: 1],
+        mag: [group: '', short_reads_platform: 'ILLUMINA', long_reads_platform: ''],
         rnaseq: [strandedness: strandedness],
         taxprofiler: [fasta: ''],
     ]
