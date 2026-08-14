@@ -136,7 +136,7 @@ workflow FETCHNGS {
         nextflowVersion: workflow.nextflow.version,
     ).collectFile(
         storeDir: "${outdir}/pipeline_info",
-        name: 'nf_core_' + 'fetchngs_software_' + 'mqc_' + 'versions.yml',
+        name: 'nf_core_' + 'fetchngs_software_' + 'versions.yml',
         sort: true,
         newLine: true,
     )
