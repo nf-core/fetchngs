@@ -43,6 +43,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update nf-core modules and subworkflows
 - [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Replace SRA_TO_SAMPLESHEET process with CHANNEL_SRA_CREATE_CSV subworkflow using channel manipulation
 - [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Strict syntax improvements
+- [PR #382](https://github.com/nf-core/fetchngs/pull/382) - Use csv.reader to fix stray quote and comma handling in multiqc_mappings_config (#375)
 - [PR #384](https://github.com/nf-core/fetchngs/pull/384) - Add mag pipeline support
 
 ### Software dependencies
