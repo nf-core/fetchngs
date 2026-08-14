@@ -5,8 +5,8 @@ process SRA_FASTQ_FTP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/wget:1.21.4'
-        : 'biocontainers/wget:1.21.4'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc8f27d7e2139896e54d056523f8b8b4f86cef30a85b427c4397ff011a692739/data'
+        : 'community.wave.seqera.io/library/wget:1.25.0--452eb4bbcccd1c30'}"
 
     input:
     tuple val(meta), val(fastq)
