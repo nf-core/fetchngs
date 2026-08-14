@@ -141,7 +141,7 @@
                     "python": "3.9.5"
                 },
                 "SRATOOLS_FASTERQDUMP": {
-                    "pigz": 2.8,
+                    "pigz": "2.8",
                     "sratools": "3.2.1"
                 },
                 "SRATOOLS_PREFETCH": {
