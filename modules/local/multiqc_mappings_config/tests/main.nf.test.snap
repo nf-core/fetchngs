@@ -1,17 +1,28 @@
 {
-    "Should run without failures": {
+    "Should run without failures - stub": {
         "content": [
             {
-                "0": [
-                    "multiqc_config.yml:md5,2f0a31cabbe56da644d42e9e682a910e"
-                ],
-                "1": [
+                "versions_python": [
                     [
                         "MULTIQC_MAPPINGS_CONFIG",
                         "python",
                         "3.9.5"
                     ]
                 ],
+                "yml": [
+                    "multiqc_config.yml:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-13T13:41:44.055908644",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "Should run without failures": {
+        "content": [
+            {
                 "versions_python": [
                     [
                         "MULTIQC_MAPPINGS_CONFIG",
