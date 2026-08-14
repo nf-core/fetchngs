@@ -22,6 +22,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 ### Enhancements & fixes
 
+- Add nf-core-utils plugin v0.5.0 for pipeline utilities
+- Remove local subworkflows (utils_nfcore_pipeline, utils_nextflow_pipeline, utils_nfschema_plugin) in favour of plugin functions
 - [PR #299](https://github.com/nf-core/fetchngs/pull/299) - Template update for nf-core/tools v2.13.1
 - [PR #300](https://github.com/nf-core/fetchngs/pull/300) - Use file paths instead of tags for testing matrix, should make matrices more efficient
 - [PR #303](https://github.com/nf-core/fetchngs/pull/303) - Update wget container for SRA_FASTQ_FTP from 1.20.1 to 1.21.4

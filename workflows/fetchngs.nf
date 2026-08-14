@@ -19,7 +19,7 @@ include { CHANNEL_SRA_CREATE_CSV                       } from '../subworkflows/l
 
 include { FASTQDL                                      } from '../modules/nf-core/fastqdl'
 include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools'
-include { softwareVersionsToYAML                       } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML                       } from 'plugin/nf-core-utils'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
