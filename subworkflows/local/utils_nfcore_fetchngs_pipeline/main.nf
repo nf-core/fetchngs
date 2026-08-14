@@ -8,19 +8,19 @@
 ========================================================================================
 */
 
-include { checkCondaChannels       } from 'plugin/nf-core-utils'
-include { checkConfigProvided      } from 'plugin/nf-core-utils'
-include { checkProfileProvided     } from 'plugin/nf-core-utils'
-include { completionEmail          } from 'plugin/nf-core-utils'
-include { completionSummary        } from 'plugin/nf-core-utils'
-include { dumpParametersToJSON     } from 'plugin/nf-core-utils'
-include { getWorkflowVersion       } from 'plugin/nf-core-utils'
+include { checkCondaChannels   } from 'plugin/nf-core-utils'
+include { checkConfigProvided  } from 'plugin/nf-core-utils'
+include { checkProfileProvided } from 'plugin/nf-core-utils'
+include { completionEmail      } from 'plugin/nf-core-utils'
+include { completionSummary    } from 'plugin/nf-core-utils'
+include { dumpParametersToJSON } from 'plugin/nf-core-utils'
+include { getWorkflowVersion   } from 'plugin/nf-core-utils'
 
-include { paramsHelp               } from 'plugin/nf-schema'
-include { paramsSummaryLog         } from 'plugin/nf-schema'
-include { paramsSummaryMap         } from 'plugin/nf-schema'
-include { samplesheetToList        } from 'plugin/nf-schema'
-include { validateParameters       } from 'plugin/nf-schema'
+include { paramsHelp           } from 'plugin/nf-schema'
+include { paramsSummaryLog     } from 'plugin/nf-schema'
+include { paramsSummaryMap     } from 'plugin/nf-schema'
+include { samplesheetToList    } from 'plugin/nf-schema'
+include { validateParameters   } from 'plugin/nf-schema'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,11 +67,11 @@ workflow PIPELINE_INITIALISATION {
     def after_text = ""
     before_text = """
 -\033[2m----------------------------------------------------\033[0m-
-                                    \033[0;32m,--.\033[0;30m/\033[0;32m,-.\033[0m
+                                        \033[0;32m,--.\033[0;30m/\033[0;32m,-.\033[0m
 \033[0;34m        ___     __   __   __   ___     \033[0;32m/,-._.--~\'\033[0m
 \033[0;34m  |\\ | |__  __ /  ` /  \\ |__) |__         \033[0;33m}  {\033[0m
 \033[0;34m  | \\| |       \\__, \\__/ |  \\ |___     \033[0;32m\\`-._,-`-,\033[0m
-                                    \033[0;32m`._,._,\'\033[0m
+                                        \033[0;32m`._,._,\'\033[0m
 \033[0;35m  nf-core/fetchngs ${workflow.manifest.version}\033[0m
 -\033[2m----------------------------------------------------\033[0m-
 """
