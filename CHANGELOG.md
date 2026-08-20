@@ -46,6 +46,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #380](https://github.com/nf-core/fetchngs/pull/380) - Use Seqera Wave container for wget to fix DNS resolution issues (#373)
 - [PR #381](https://github.com/nf-core/fetchngs/pull/381) - Quote ena_metadata_fields and strip spaces to prevent word-splitting (#374)
 - [PR #382](https://github.com/nf-core/fetchngs/pull/382) - Use csv.reader to fix stray quote and comma handling in multiqc_mappings_config (#375)
+- [PR #383](https://github.com/nf-core/fetchngs/pull/383) - Add ampliseq pipeline support
 - [PR #384](https://github.com/nf-core/fetchngs/pull/384) - Add mag pipeline support
 - [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Add nf-core-utils plugin, replacing utils subworkflows
 - [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Update nf-schema and nf-test plugins
