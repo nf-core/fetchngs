@@ -66,7 +66,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 | ------------- | ----------- | ----------- |
 | nf-core-utils |             | 0.5.0       |
 | nf-schema     | 2.5.1       | 2.7.3       |
-| nft-bam       | 0.4.0       | 0.7.0       |
+| nft-bam       | 0.4.0       |             |
 | nft-utils     | 0.0.9       | 1.0.0       |
 
 ### Modules / Subworkflows

@@ -41,8 +41,6 @@ workflow FETCHNGS {
 
     main:
 
-    def ch_versions = channel.empty()
-
     //
     // MODULE: Get SRA run information for public database ids
     //
