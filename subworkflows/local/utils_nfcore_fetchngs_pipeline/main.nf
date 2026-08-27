@@ -120,20 +120,14 @@ workflow PIPELINE_INITIALISATION {
     //
     checkConfigProvided()
 
+    // Verify the ENA metadata fields
+    sraCheckENAMetadataFields(ena_metadata_fields)
+
     //
     // Create channel from input file provided through params.input
     //
-    if (isSraId(file(input))) {
-        sraCheckENAMetadataFields(ena_metadata_fields)
-    }
-    else {
-        error('Ids provided via --input not recognised please make sure they are either SRA / ENA / GEO / DDBJ ids!')
-    }
-
-    // Read in ids from --input file
-    ch_ids = channel.of(file(input))
-        .splitCsv(header: false, sep: '', strip: true)
-        .map { row -> row[0] }
+    ch_ids = channel.fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
+        .map { row -> row[''] }
         .unique()
 
     emit:
@@ -187,33 +181,6 @@ workflow PIPELINE_COMPLETION {
     FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-
-//
-// Check if input ids are from the SRA
-//
-def isSraId(input) {
-    def is_sra = false
-    def total_ids = 0
-    def no_match_ids = []
-    def pattern = /^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM]))(\d+)$/
-    input.eachLine { line ->
-        total_ids += 1
-        if (!(line =~ pattern)) {
-            no_match_ids << line
-        }
-    }
-
-    def num_match = total_ids - no_match_ids.size()
-    if (num_match > 0) {
-        if (num_match == total_ids) {
-            is_sra = true
-        }
-        else {
-            error("Mixture of ids provided via --input: ${no_match_ids.join(', ')}\nPlease provide either SRA / ENA / GEO / DDBJ ids!")
-        }
-    }
-    return is_sra
-}
 
 //
 // Check and validate parameters
