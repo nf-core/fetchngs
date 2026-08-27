@@ -40,4 +40,43 @@ nextflow_workflow {
             )
         }
     }
+
+    test("Should fail with invalid IDs") {
+
+        when {
+            workflow {
+                """
+                version             = false
+                validate_params     = false
+                monochrome_logs     = false
+                nextflow_cli_args   = []
+                outdir              = 'results'
+                ena_metadata_fields = null
+                help        = false
+                help_full   = false
+                show_hidden = false
+
+                input[0] = version
+                input[1] = validate_params
+                input[2] = monochrome_logs
+                input[3] = nextflow_cli_args
+                input[4] = outdir
+                input[5] = '${projectDir}/subworkflows/local/utils_nfcore_fetchngs_pipeline/tests/bad_ids.csv'
+                input[6] = ena_metadata_fields
+                input[7] = help
+                input[8] = help_full
+                input[9] = show_hidden
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert snapshot(
+                    filterNextflowOutput(workflow.stdout + workflow.stderr, include: ["Please provide a valid"])
+                ).match() }
+            )
+        }
+    }
 }

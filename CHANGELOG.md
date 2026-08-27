@@ -48,6 +48,9 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #382](https://github.com/nf-core/fetchngs/pull/382) - Use csv.reader to fix stray quote and comma handling in multiqc_mappings_config (#375)
 - [PR #383](https://github.com/nf-core/fetchngs/pull/383) - Add ampliseq pipeline support
 - [PR #384](https://github.com/nf-core/fetchngs/pull/384) - Add mag pipeline support
+- [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Add nf-core-utils plugin, replacing utils subworkflows
+- [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Update nf-schema and nf-test plugins
+- [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Simplify topic version handling
 
 ### Software dependencies
 
@@ -56,6 +59,23 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 | `pigz`     | 2.6         | 2.8         |
 | `sratools` | 2.11.0      | 3.2.1       |
 | `wget`     | 1.20.1      | 1.25.0      |
+
+### Plugins
+
+| Dependency    | Old version | New version |
+| ------------- | ----------- | ----------- |
+| nf-core-utils |             | 0.5.0       |
+| nf-schema     | 2.5.1       | 2.7.3       |
+| nft-bam       | 0.4.0       |             |
+| nft-utils     | 0.0.9       | 1.0.0       |
+
+### Modules / Subworkflows
+
+| Dependency   | Old name                | New name |
+| ------------ | ----------------------- | -------- |
+| Subworkflows | utils_nextflow_pipeline |          |
+| Subworkflows | utils_nfcore_pipeline   |          |
+| Subworkflows | utils_nfschema_plugin   |          |
 
 ## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 
