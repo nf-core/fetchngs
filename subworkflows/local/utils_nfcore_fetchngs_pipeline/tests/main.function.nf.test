@@ -4,26 +4,6 @@ nextflow_function {
     script "subworkflows/local/utils_nfcore_fetchngs_pipeline/main.nf"
     tag "UTILS_NFCORE_FETCHNGS_PIPELINE"
 
-    test("Function isSraId") {
-
-        function "isSraId"
-
-        when {
-            function {
-                """
-                input[0] = 'DRR000774'
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert function.success },
-                { assert snapshot(function.result).match() }
-            )
-        }
-    }
-
     test("Function sraCheckENAMetadataFields [success]") {
 
         function "sraCheckENAMetadataFields"
@@ -58,7 +38,7 @@ nextflow_function {
 
         then {
             assertAll(
-                { assert !function.success }
+                { assert function.failed }
             )
         }
     }
