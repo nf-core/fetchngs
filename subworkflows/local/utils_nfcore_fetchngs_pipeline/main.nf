@@ -19,6 +19,7 @@ include { getWorkflowVersion   } from 'plugin/nf-core-utils'
 include { paramsHelp           } from 'plugin/nf-schema'
 include { paramsSummaryLog     } from 'plugin/nf-schema'
 include { paramsSummaryMap     } from 'plugin/nf-schema'
+include { samplesheetToList    } from 'plugin/nf-schema'
 include { validateParameters   } from 'plugin/nf-schema'
 
 /*
@@ -125,9 +126,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input
     //
-    ch_ids = channel.of(file(input))
-        .splitCsv(header: false, sep: '', strip: true)
-        .map { row -> row[0] }
+    ch_ids = channel.fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
         .unique()
 
     emit:
