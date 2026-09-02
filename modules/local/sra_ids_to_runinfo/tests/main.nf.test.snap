@@ -1,0 +1,65 @@
+{
+    "Should run with ena_metadata_fields containing whitespace": {
+        "content": [
+            {
+                "tsv": [
+                    "SRR13191702.runinfo.tsv:md5,7d0109e2f1183e18588d76c4ab4033b3"
+                ],
+                "versions_python": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.9.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-13T13:26:47.669699982",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "Should run without failures - stub": {
+        "content": [
+            {
+                "tsv": [
+                    "SRR13191702.runinfo.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "versions_python": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.9.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-13T13:42:19.022762197",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "Should run without failures": {
+        "content": [
+            {
+                "tsv": [
+                    "SRR13191702.runinfo.tsv:md5,3a1be35781ca6e8a28d8fd4d2f3bbe85"
+                ],
+                "versions_python": [
+                    [
+                        "SRA_IDS_TO_RUNINFO",
+                        "python",
+                        "3.9.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-06T16:01:36.028872084",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

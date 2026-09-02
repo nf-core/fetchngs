@@ -1,0 +1,94 @@
+{
+    "Should run without failures - stub": {
+        "content": [
+            {
+                "fastq": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "md5": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions_aspera_cli": [
+                    [
+                        "ASPERA_CLI",
+                        "aspera_cli",
+                        "4.20.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-13T13:41:21.13936428",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "Should run without failures": {
+        "content": [
+            {
+                "fastq": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz:md5,baaaea61cba4294ec696fdfea1610848",
+                            "SRX9626017_SRR13191702_2.fastq.gz:md5,8e43ad99049fabb6526a4b846da01c32"
+                        ]
+                    ]
+                ],
+                "md5": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false,
+                            "md5_1": "89c5be920021a035084d8aeb74f32df7",
+                            "md5_2": "56271be38a80db78ef3bdfc5d9909b98"
+                        },
+                        [
+                            "SRX9626017_SRR13191702_1.fastq.gz.md5:md5,055a6916ec9ee478e453d50651f87997",
+                            "SRX9626017_SRR13191702_2.fastq.gz.md5:md5,c30ac785f8d80ec563fabf604d8bf945"
+                        ]
+                    ]
+                ],
+                "versions_aspera_cli": [
+                    [
+                        "ASPERA_CLI",
+                        "aspera_cli",
+                        "4.20.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-22T16:34:41.130191",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

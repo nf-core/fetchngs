@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test process: SRA_IDS_TO_RUNINFO"
+    script "../main.nf"
+    process "SRA_IDS_TO_RUNINFO"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = 'SRR13191702'
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Should run without failures - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = 'SRR13191702'
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Should run with ena_metadata_fields containing whitespace") {
+
+        when {
+            process {
+                """
+                input[0] = 'SRR13191702'
+                input[1] = 'experiment_accession, run_accession, sample_accession'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
