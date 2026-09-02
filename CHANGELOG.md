@@ -51,6 +51,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Add nf-core-utils plugin, replacing utils subworkflows
 - [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Update nf-schema and nf-test plugins
 - [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Simplify topic version handling
+- [PR #386](https://github.com/nf-core/fetchngs/pull/386) - Template update for nf-core/tools v4.1.0
 
 ### Software dependencies
 
