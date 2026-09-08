@@ -4,10 +4,7 @@
 %%metro file: input_csv | CSV
 %%metro file: fastq_files | CSV, FASTQ
 %%metro off_track: fastq_files
-%%metro file: rnaseq_csv | CSV | nf-core/rnaseq
-%%metro file: atacseq_csv | CSV | nf-core/atacseq
-%%metro file: viralrecon_csv | CSV | nf-core/viralrecon
-%%metro file: taxprofiler_csv | CSV | nf-core/taxprofiler
+%%metro file: pipeline_csv | CSV | nf-core/<PIPELINE>
 %%metro line: sra | SRA | #3a843a
 %%metro line: geo | GEO | #0e2a67
 %%metro line: ena | ENA | #f2a554
@@ -49,14 +46,8 @@ graph LR
         metadata -->|sra,geo,ena,ddbj| fastq_files
     end
 
-    subgraph downstream_pipelines [Downstream pipelines]
-        rnaseq_csv[ ]
-        atacseq_csv[ ]
-        viralrecon_csv[ ]
-        taxprofiler_csv[ ]
+    subgraph downstream_pipelines [Downstream]
+        pipeline_csv[ ]
 
-        metadata -->|sra,geo,ena,ddbj| rnaseq_csv
-        metadata -->|sra,geo,ena,ddbj| atacseq_csv
-        metadata -->|sra,geo,ena,ddbj| viralrecon_csv
-        metadata -->|sra,geo,ena,ddbj| taxprofiler_csv
+        metadata -->|sra,geo,ena,ddbj| pipeline_csv
     end
