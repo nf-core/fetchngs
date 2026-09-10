@@ -38,10 +38,14 @@ This downloads a text file called `SRR_Acc_List.txt` that can be directly provid
 
 As a bonus, the columns in the auto-created samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines, these currently include:
 
-- [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/ampliseq](https://nf-co.re/ampliseq/usage#samplesheet-input)
 - [nf-core/atacseq](https://nf-co.re/atacseq/usage#samplesheet-input)
-- Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
-- [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)
+- [nf-core/mag](https://nf-co.re/mag/usage#samplesheet-input)
+- [nf-core/metatdenovo](https://nf-co.re/metatdenovo/usage#samplesheet-input)
+- [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/sarek](https://nf-co.re/sarek/usage/#input-sample-sheet-configurations)
+- [nf-core/taxprofiler](https://nf-co.re/taxprofiler/usage#samplesheet-input)
+- Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
 
 You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers required by the downstream nf-core pipeline are accurately represented in the samplesheet. For example, the nf-core/atacseq pipeline requires a `replicate` column to be provided in it's input samplehsheet, however, public databases don't reliably hold information regarding replicates so you may need to amend these entries if your samplesheet was created by providing `--nf_core_pipeline atacseq`.
 

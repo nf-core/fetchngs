@@ -57,6 +57,8 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #387](https://github.com/nf-core/fetchngs/pull/387) - Add metatdenovo pipeline support
 - [PR #388](https://github.com/nf-core/fetchngs/pull/388) - Render metro map with nf-metro 2.0.0
 - [PR #389](https://github.com/nf-core/fetchngs/pull/389) - Update CHANGELOG
+- [PR #391](https://github.com/nf-core/fetchngs/pull/391) - Update supported nf-core pipelines
+- [PR #392](https://github.com/nf-core/fetchngs/pull/392) - Add sarek pipeline support
 - [PR #393](https://github.com/nf-core/fetchngs/pull/393) - Use transparent background for metro map
 
 ### Software dependencies

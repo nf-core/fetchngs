@@ -78,10 +78,14 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 
 The columns in the output samplesheet can be tailored to be accepted out-of-the-box by selected nf-core pipelines (see [usage docs](https://nf-co.re/fetchngs/usage#samplesheet-format)), these currently include:
 
-- [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/ampliseq](https://nf-co.re/ampliseq/usage#samplesheet-input)
 - [nf-core/atacseq](https://nf-co.re/atacseq/usage#samplesheet-input)
-- Ilumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
-- [nf-core/taxprofiler](https://nf-co.re/nf-core/taxprofiler)
+- [nf-core/mag](https://nf-co.re/mag/usage#samplesheet-input)
+- [nf-core/metatdenovo](https://nf-co.re/metatdenovo/usage#samplesheet-input)
+- [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/sarek](https://nf-co.re/sarek/usage/#input-sample-sheet-configurations)
+- [nf-core/taxprofiler](https://nf-co.re/taxprofiler/usage#samplesheet-input)
+- Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
 
 To see the the results of a test run with a full size dataset refer to the [results](https://nf-co.re/fetchngs/results) tab on the nf-core website pipeline page.
 For more details about the output files and reports, please refer to the
