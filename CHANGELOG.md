@@ -60,12 +60,13 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #391](https://github.com/nf-core/fetchngs/pull/391) - Update supported nf-core pipelines
 - [PR #392](https://github.com/nf-core/fetchngs/pull/392) - Add sarek pipeline support
 - [PR #393](https://github.com/nf-core/fetchngs/pull/393) - Use transparent background for metro map
+- [PR #395](https://github.com/nf-core/fetchngs/pull/395) - Update fastqdl module to 4.0.1
 
 ### Software dependencies
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
-| `fastq-dl` |             | 3.0.1       |
+| `fastq-dl` |             | 4.0.1       |
 | `pigz`     | 2.6         | 2.8         |
 | `sratools` | 2.11.0      | 3.2.1       |
 | `wget`     | 1.20.1      | 1.25.0      |
