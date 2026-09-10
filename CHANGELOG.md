@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v1.13.0dev - [date]
+## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
 ### Credits
 
@@ -60,6 +60,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #391](https://github.com/nf-core/fetchngs/pull/391) - Update supported nf-core pipelines
 - [PR #392](https://github.com/nf-core/fetchngs/pull/392) - Add sarek pipeline support
 - [PR #393](https://github.com/nf-core/fetchngs/pull/393) - Use transparent background for metro map
+- [PR #394](https://github.com/nf-core/fetchngs/pull/394) - Prepare release 1.13.0
 
 ### Software dependencies
 
