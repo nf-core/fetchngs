@@ -50,6 +50,7 @@ def buildPipelineMap(meta, pipeline, strandedness) {
         atacseq: [replicate: 1],
         mag: [group: '', short_reads_platform: 'ILLUMINA', long_reads_platform: ''],
         rnaseq: [strandedness: strandedness],
+        sarek: [patient: meta.sample_accession],
         taxprofiler: [fasta: ''],
     ]
 
