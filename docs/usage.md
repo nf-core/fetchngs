@@ -43,6 +43,7 @@ As a bonus, the columns in the auto-created samplesheet can be tailored to be ac
 - [nf-core/mag](https://nf-co.re/mag/usage#samplesheet-input)
 - [nf-core/metatdenovo](https://nf-co.re/metatdenovo/usage#samplesheet-input)
 - [nf-core/rnaseq](https://nf-co.re/rnaseq/usage#samplesheet-input)
+- [nf-core/sarek](https://nf-co.re/sarek/usage/#input-sample-sheet-configurations)
 - [nf-core/taxprofiler](https://nf-co.re/taxprofiler/usage#samplesheet-input)
 - Illumina processing mode of [nf-core/viralrecon](https://nf-co.re/viralrecon/usage#illumina-samplesheet-format)
 
