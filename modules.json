@@ -12,7 +12,7 @@
                     },
                     "fastqdl": {
                         "branch": "master",
-                        "git_sha": "e62a1ec1dcefe39a0f543528c2817ddaf6d3c099",
+                        "git_sha": "6b184b1389e6b41615c169906a621c99f17dc24e",
                         "installed_by": ["modules"]
                     },
                     "sratools/fasterqdump": {
