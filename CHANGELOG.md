@@ -11,6 +11,7 @@ Special thanks to the following for their contributions to the release:
 
 - [Adam Talbot](https://github.com/adamrtalbot)
 - [Adrian Janucik](https://github.com/ajandria)
+- [Cameron Lloyd](https://github.com/camlloyd)
 - [Harshil Patel](https://github.com/drpatelh)
 - [Maxime Borry](https://github.com/maxibor)
 - [Maxime Ulysse Garcia](https://github.com/maxulysse)
@@ -32,6 +33,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
 - [PR #325](https://github.com/nf-core/fetchngs/pull/325) - Add wget wait time for retries
 - [PR #333](https://github.com/nf-core/fetchngs/pull/333) - Add logo
+- [PR #353](https://github.com/nf-core/fetchngs/pull/353) - Add fastq-dl as download method
 - [PR #365](https://github.com/nf-core/fetchngs/pull/365) - Template update for nf-core/tools v3.5.2, including topic channels for version reporting
 - [PR #366](https://github.com/nf-core/fetchngs/pull/366) - Template update for nf-core/tools v4.0.2
 - [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
@@ -57,6 +59,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 
 | Dependency | Old version | New version |
 | ---------- | ----------- | ----------- |
+| `fastq-dl` |             | 3.0.1       |
 | `pigz`     | 2.6         | 2.8         |
 | `sratools` | 2.11.0      | 3.2.1       |
 | `wget`     | 1.20.1      | 1.25.0      |
