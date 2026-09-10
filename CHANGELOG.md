@@ -56,6 +56,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #386](https://github.com/nf-core/fetchngs/pull/386) - Template update for nf-core/tools v4.1.0
 - [PR #387](https://github.com/nf-core/fetchngs/pull/387) - Add metatdenovo pipeline support
 - [PR #388](https://github.com/nf-core/fetchngs/pull/388) - Render metro map with nf-metro 2.0.0
+- [PR #389](https://github.com/nf-core/fetchngs/pull/389) - Update CHANGELOG
 
 ### Software dependencies
 
