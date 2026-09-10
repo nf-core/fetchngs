@@ -10,11 +10,14 @@ nf-metro render assets/metro_map.mmd \
   -o docs/images/nf-core-fetchngs_metro_map_grey.svg \
   --logo docs/images/nf-core-fetchngs_logo_light.png
 
-# PNG: bake the light palette and drop the var() chrome CSS cairosvg can't parse.
+# PNG: render with the `light` theme, whose background_color is 'none', so the
+# PNG has a transparent ground and stays readable in both GitHub light and dark
+# mode. Its chrome palette is identical to nfcore-light. Drop the var() chrome
+# CSS cairosvg can't parse.
 # Use cairosvg, not rsvg-convert, which ignores dominant-baseline and overlaps labels.
 nf-metro render assets/metro_map.mmd \
   -o /tmp/fetchngs_metro_flat.svg \
-  --mode light --no-chrome-css \
+  --theme light --no-chrome-css \
   --logo docs/images/nf-core-fetchngs_logo_light.png
 
 python -c "import cairosvg; cairosvg.svg2png(
