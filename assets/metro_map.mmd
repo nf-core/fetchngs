@@ -1,0 +1,53 @@
+%%metro title: nf-core/fetchngs
+%%metro logo: assets/nf-core-fetchngs_logo_light.png
+%%metro style: nfcore-light
+%%metro file: input_csv | CSV
+%%metro file: fastq_files | CSV, FASTQ
+%%metro off_track: fastq_files
+%%metro file: pipeline_csv | CSV | nf-core/<PIPELINE>
+%%metro line: sra | SRA | #2db572
+%%metro line: geo | GEO | #0570b0
+%%metro line: ena | ENA | #ff8c00
+%%metro line: ddbj | DDBJ | #e6007e
+%%metro legend: bl
+%%metro diamond_style: symmetric
+%%metro x_spacing: 90
+%%metro width: 1120
+%%metro caption: License: CC BY 4.0
+
+graph LR
+    subgraph download_metadata [Download metadata]
+        input_csv[ ]
+        fetch_metadata[Fetch metadata]
+        get_download_links[Get\ndownload\nlinks]
+
+        input_csv -->|sra,geo,ena,ddbj| fetch_metadata
+        fetch_metadata -->|sra,geo,ena,ddbj| get_download_links
+    end
+
+    subgraph download_files [Download FASTQ files]
+        aspera[Aspera]
+        fastqdl[fastq-dl]
+        ftp[FTP]
+        sra_tools[sra-tools]
+        metadata[ ]
+        fastq_files[ ]
+
+        get_download_links -->|sra,geo,ena,ddbj| aspera
+        get_download_links -->|sra,geo,ena,ddbj| fastqdl
+        get_download_links -->|sra,geo,ena,ddbj| ftp
+        get_download_links -->|sra,geo,ena,ddbj| sra_tools
+
+        aspera -->|sra,geo,ena,ddbj| metadata
+        fastqdl -->|sra,geo,ena,ddbj| metadata
+        ftp -->|sra,geo,ena,ddbj| metadata
+        sra_tools -->|sra,geo,ena,ddbj| metadata
+
+        metadata -->|sra,geo,ena,ddbj| fastq_files
+    end
+
+    subgraph downstream_pipelines [Downstream]
+        pipeline_csv[ ]
+
+        metadata -->|sra,geo,ena,ddbj| pipeline_csv
+    end
