@@ -82,7 +82,7 @@ If the appropriate download links are available, the pipeline uses FTP by defaul
 
 As of aspera-cli 4.20.0, the `ascp` binary is no longer bundled with the conda package or container image. On first use, the pipeline downloads it from IBM's servers at runtime. This means `--download_method aspera` requires outbound network access from the compute node where the job runs.
 
-On air-gapped or network-restricted HPC systems, this will silently fail. Use `--download_method ftp`, `--download_method sratools`, or `--download_method fastq-dl` instead.
+On air-gapped or network-restricted HPC systems, this will fail. Use `--download_method ftp`, `--download_method sratools`, or `--download_method fastq-dl` instead.
 
 ### Downloading dbGAP data with JWT
 
