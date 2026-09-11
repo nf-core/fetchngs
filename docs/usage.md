@@ -78,6 +78,12 @@ See [issue #260](https://github.com/nf-core/fetchngs/issues/260) for more detail
 
 If the appropriate download links are available, the pipeline uses FTP by default to download FastQ files by setting the `--download_method ftp` parameter. If you are having issues and prefer to use sra-tools, Aspera or fastq-dl instead, you can set the [`--download_method`](https://nf-co.re/fetchngs/parameters#download_method) parameter to `--download_method sratools`, `--download_method aspera` or `--download_method fastq-dl`, respectively.
 
+### Aspera download method limitations
+
+As of aspera-cli 4.20.0, the `ascp` binary is no longer bundled with the conda package or container image. On first use, the pipeline downloads it from IBM's servers at runtime. This means `--download_method aspera` requires outbound network access from the compute node where the job runs.
+
+On air-gapped or network-restricted HPC systems, this will fail. Use `--download_method ftp`, `--download_method sratools`, or `--download_method fastq-dl` instead.
+
 ### Downloading dbGAP data with JWT
 
 As of v1.10.0, the SRA Toolkit used in this pipeline can be configured to access protected data from dbGAP using a [JWT cart file](https://www.ncbi.nlm.nih.gov/sra/docs/sra-dbGAP-cloud-download/) on a supported cloud computing environment (Amazon Web Services or Google Cloud Platform). The JWT cart file can be specified with `--dbgap_key /path/to/cart.jwt`.
