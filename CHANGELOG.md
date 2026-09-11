@@ -64,6 +64,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #395](https://github.com/nf-core/fetchngs/pull/395) - Update fastqdl module to 4.0.1
 - [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix aspera_cli GEM_HOME for Singularity containers
 - [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix sra_fastq_ftp missing gzip dependency for stub tests
+- [PR #398](https://github.com/nf-core/fetchngs/pull/398) - Remove cloudtest.yml workflow
 
 ### Software dependencies
 
