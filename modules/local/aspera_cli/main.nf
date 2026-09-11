@@ -21,6 +21,7 @@ process ASPERA_CLI {
     def args = task.ext.args ?: ''
     if (meta.single_end) {
         """
+        export GEM_HOME="\${GEM_HOME:-/usr/local/share/rubygems}"
         if [ ! -w "\${HOME:-/}" ]; then
             export HOME=\$(mktemp -d)
         fi
@@ -42,6 +43,7 @@ process ASPERA_CLI {
     }
     else {
         """
+        export GEM_HOME="\${GEM_HOME:-/usr/local/share/rubygems}"
         if [ ! -w "\${HOME:-/}" ]; then
             export HOME=\$(mktemp -d)
         fi
