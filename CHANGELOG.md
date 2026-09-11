@@ -62,6 +62,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #393](https://github.com/nf-core/fetchngs/pull/393) - Use transparent background for metro map
 - [PR #394](https://github.com/nf-core/fetchngs/pull/394) - Prepare release 1.13.0
 - [PR #395](https://github.com/nf-core/fetchngs/pull/395) - Update fastqdl module to 4.0.1
+- [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix aspera_cli GEM_HOME for Singularity containers
 
 ### Software dependencies
 
