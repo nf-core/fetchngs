@@ -65,6 +65,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix aspera_cli GEM_HOME for Singularity containers
 - [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix sra_fastq_ftp missing gzip dependency for stub tests
 - [PR #398](https://github.com/nf-core/fetchngs/pull/398) - Remove cloudtest.yml workflow
+- [PR #398](https://github.com/nf-core/fetchngs/pull/398) - Document aspera-cli 4.20.0 network access requirement
 
 ### Software dependencies
 
