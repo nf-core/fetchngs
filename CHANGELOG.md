@@ -66,6 +66,7 @@ Thank you to everyone else that has contributed by reporting bugs, enhancements 
 - [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix sra_fastq_ftp missing gzip dependency for stub tests
 - [PR #398](https://github.com/nf-core/fetchngs/pull/398) - Remove cloudtest.yml workflow
 - [PR #398](https://github.com/nf-core/fetchngs/pull/398) - Document aspera-cli 4.20.0 network access requirement
+- [PR #399](https://github.com/nf-core/fetchngs/pull/399) - Add `manifest.diagram` to `nextflow.config`
 
 ### Software dependencies
 
