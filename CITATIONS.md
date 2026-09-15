@@ -12,6 +12,8 @@
 
 - [Aspera CLI](https://github.com/IBM/aspera-cli)
 
+- [fastq-dl](https://github.com/rpetit3/fastq-dl)
+
 - [Python](http://www.python.org)
 
 - [Requests](https://docs.python-requests.org/)
@@ -36,7 +38,7 @@
 
   > Barrett T, Wilhite SE, Ledoux P, Evangelista C, Kim IF, Tomashevsky M, Marshall KA, Phillippy KH, Sherman PM, Holko M, Yefanov A, Lee H, Zhang N, Robertson CL, Serova N, Davis S, Soboleva A. NCBI GEO: archive for functional genomics data sets--update. Nucleic Acids Res. 2013 Jan;41(Database issue):D991-5. doi: 10.1093/nar/gks1193. Epub 2012 Nov 27. PubMed PMID: 23193258; PubMed Central PMCID: PMC3531084.
 
-## Software packaging/containerisation/testing tools
+## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)
 

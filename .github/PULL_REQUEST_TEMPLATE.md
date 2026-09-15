@@ -8,17 +8,17 @@ These are the most common things requested on pull requests (PRs).
 
 Remember that PRs should be made against the dev branch, unless you're preparing a pipeline release.
 
-Learn more about contributing: [CONTRIBUTING.md](https://github.com/nf-core/fetchngs/tree/master/.github/CONTRIBUTING.md)
+Learn more about contributing: [CONTRIBUTING.md](https://github.com/nf-core/fetchngs/tree/master/docs/CONTRIBUTING.md)
 -->
 
 ## PR checklist
 
 - [ ] This comment contains a description of changes (with reason).
 - [ ] If you've fixed a bug or added code that should be tested, add tests!
-- [ ] If you've added a new tool - have you followed the pipeline conventions in the [contribution docs](https://github.com/nf-core/fetchngs/tree/master/.github/CONTRIBUTING.md)
+- [ ] If you've added a new tool - have you followed the pipeline conventions in the [contribution docs](https://github.com/nf-core/fetchngs/tree/master/docs/CONTRIBUTING.md)
 - [ ] If necessary, also make a PR on the nf-core/fetchngs _branch_ on the [nf-core/test-datasets](https://github.com/nf-core/test-datasets) repository.
-- [ ] Make sure your code lints (`nf-core lint`).
-- [ ] Ensure the test suite passes (`nextflow run . -profile test,docker --outdir <OUTDIR>`).
+- [ ] Make sure your code lints (`nf-core pipelines lint`).
+- [ ] Ensure the test suite passes (`nf-test test --verbose --debug --profile "+docker" tests/`).
 - [ ] Check for unexpected warnings in debug mode (`nextflow run . -profile debug,test,docker --outdir <OUTDIR>`).
 - [ ] Usage Documentation in `docs/usage.md` is updated.
 - [ ] Output Documentation in `docs/output.md` is updated.

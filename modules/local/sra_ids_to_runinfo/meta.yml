@@ -1,0 +1,57 @@
+name: sra_ids_to_runinfo
+description: Query NCBI/ENA APIs to retrieve run-level metadata for SRA accession IDs
+keywords:
+  - sra
+  - ena
+  - ncbi
+  - metadata
+  - runinfo
+tools:
+  - python:
+      description: General-purpose programming language
+      homepage: https://www.python.org/
+      documentation: https://docs.python.org/3/
+      licence:
+        - "PSF-2.0"
+input:
+  - id:
+      type: string
+      description: >
+        SRA accession ID (e.g. SRR, SRX, SRP, PRJNA, etc.)
+  - fields:
+      type: string
+      description: >
+        Optional comma-separated list of ENA metadata fields to query
+output:
+  tsv:
+    - "*.tsv":
+        type: file
+        description: Run metadata TSV file with SRA/ENA information
+        pattern: "*.tsv"
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ewels"
+maintainers:
+  - "@ewels"
+  - "@taume"
+  - "@maxulysse"

@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: channel_sra_create_csv
+description: Create samplesheet and mappings CSV from SRA metadata channel
+keywords:
+  - SRA
+  - samplesheet
+  - CSV
+  - metadata
+components: []
+input:
+  - ch_sra_metadata:
+      type: map
+      description: >
+        Groovy Map containing SRA metadata e.g. [ id:'test', single_end:false ]
+
+  - pipeline:
+      type: string
+      description: >
+        Name of nf-core pipeline e.g. 'rnaseq'
+
+  - strandedness:
+      type: string
+      description: >
+        Strandedness value for rnaseq pipeline
+
+  - mapping_fields:
+      type: string
+      description: >
+        Comma-separated list of fields for id_mappings.csv
+
+  - outdir:
+      type: string
+      description: >
+        Output directory for samplesheet and mappings files
+
+output:
+  - samplesheet:
+      type: file
+      description: >
+        Samplesheet CSV file with metadata for pipeline input
+      pattern: "samplesheet.csv"
+
+  - mappings:
+      type: file
+      description: >
+        ID mappings CSV file with selected fields
+      pattern: "id_mappings.csv"
+
+authors:
+  - "@maxulysse"

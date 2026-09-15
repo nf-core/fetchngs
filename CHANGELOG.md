@@ -3,6 +3,97 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
+
+### Credits
+
+Special thanks to the following for their contributions to the release:
+
+- [Adam Talbot](https://github.com/adamrtalbot)
+- [Adrian Janucik](https://github.com/ajandria)
+- [Cameron Lloyd](https://github.com/camlloyd)
+- [Harshil Patel](https://github.com/drpatelh)
+- [Maxime Borry](https://github.com/maxibor)
+- [Maxime Ulysse Garcia](https://github.com/maxulysse)
+- [Sebastian Uhrig](https://github.com/suhrig)
+- [Tabea Attig](https://github.com/Tabea01)
+- [Venkat Malladi](https://github.com/vsmalladi)
+
+Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
+
+### Enhancements & fixes
+
+- [PR #299](https://github.com/nf-core/fetchngs/pull/299) - Template update for nf-core/tools v2.13.1
+- [PR #300](https://github.com/nf-core/fetchngs/pull/300) - Use file paths instead of tags for testing matrix, should make matrices more efficient
+- [PR #303](https://github.com/nf-core/fetchngs/pull/303) - Update wget container for SRA_FASTQ_FTP from 1.20.1 to 1.21.4
+- [PR #305](https://github.com/nf-core/fetchngs/pull/305) - Update module sratools/prefetch for reliable download integrity check
+- [PR #316](https://github.com/nf-core/fetchngs/pull/316) - Use nf-core/setup-nf-test to install nf-test from cache during CI/CD
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Refactor workflow tests
+- [PR #320](https://github.com/nf-core/fetchngs/pull/320) - Update module multiqc_mappings_config and sratools/prefetch for TES compliance
+- [PR #323](https://github.com/nf-core/fetchngs/pull/323) - Template update for nf-core/tools v3.0.2
+- [PR #325](https://github.com/nf-core/fetchngs/pull/325) - Add wget wait time for retries
+- [PR #333](https://github.com/nf-core/fetchngs/pull/333) - Add logo
+- [PR #353](https://github.com/nf-core/fetchngs/pull/353) - Add fastq-dl as download method
+- [PR #365](https://github.com/nf-core/fetchngs/pull/365) - Template update for nf-core/tools v3.5.2, including topic channels for version reporting
+- [PR #366](https://github.com/nf-core/fetchngs/pull/366) - Template update for nf-core/tools v4.0.2
+- [PR #368](https://github.com/nf-core/fetchngs/pull/368) - Add stub blocks to all local modules
+- [PR #370](https://github.com/nf-core/fetchngs/pull/370) - Template update for nf-core/tools v4.0.3
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add AGENTS.md for nf-core agent instructions
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Add meta.yml and environment.yml for local modules
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Follow Nextflow strict syntax conventions
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Remove unused untar module
+- [PR #378](https://github.com/nf-core/fetchngs/pull/378) - Update nf-core modules and subworkflows
+- [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Replace SRA_TO_SAMPLESHEET process with CHANNEL_SRA_CREATE_CSV subworkflow using channel manipulation
+- [PR #379](https://github.com/nf-core/fetchngs/pull/379) - Strict syntax improvements
+- [PR #380](https://github.com/nf-core/fetchngs/pull/380) - Use Seqera Wave container for wget to fix DNS resolution issues (#373)
+- [PR #381](https://github.com/nf-core/fetchngs/pull/381) - Quote ena_metadata_fields and strip spaces to prevent word-splitting (#374)
+- [PR #382](https://github.com/nf-core/fetchngs/pull/382) - Use csv.reader to fix stray quote and comma handling in multiqc_mappings_config (#375)
+- [PR #383](https://github.com/nf-core/fetchngs/pull/383) - Add ampliseq pipeline support
+- [PR #384](https://github.com/nf-core/fetchngs/pull/384) - Add mag pipeline support
+- [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Add nf-core-utils plugin, replacing utils subworkflows
+- [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Update nf-schema and nf-test plugins
+- [PR #385](https://github.com/nf-core/fetchngs/pull/385) - Simplify topic version handling
+- [PR #386](https://github.com/nf-core/fetchngs/pull/386) - Template update for nf-core/tools v4.1.0
+- [PR #387](https://github.com/nf-core/fetchngs/pull/387) - Add metatdenovo pipeline support
+- [PR #388](https://github.com/nf-core/fetchngs/pull/388) - Render metro map with nf-metro 2.0.0
+- [PR #389](https://github.com/nf-core/fetchngs/pull/389) - Update CHANGELOG
+- [PR #391](https://github.com/nf-core/fetchngs/pull/391) - Update supported nf-core pipelines
+- [PR #392](https://github.com/nf-core/fetchngs/pull/392) - Add sarek pipeline support
+- [PR #393](https://github.com/nf-core/fetchngs/pull/393) - Use transparent background for metro map
+- [PR #394](https://github.com/nf-core/fetchngs/pull/394) - Prepare release 1.13.0
+- [PR #395](https://github.com/nf-core/fetchngs/pull/395) - Update fastqdl module to 4.0.1
+- [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix aspera_cli GEM_HOME for Singularity containers
+- [PR #397](https://github.com/nf-core/fetchngs/pull/397) - Fix sra_fastq_ftp missing gzip dependency for stub tests
+- [PR #398](https://github.com/nf-core/fetchngs/pull/398) - Remove cloudtest.yml workflow
+- [PR #398](https://github.com/nf-core/fetchngs/pull/398) - Document aspera-cli 4.20.0 network access requirement
+- [PR #399](https://github.com/nf-core/fetchngs/pull/399) - Add `manifest.diagram` to `nextflow.config`
+
+### Software dependencies
+
+| Dependency | Old version | New version |
+| ---------- | ----------- | ----------- |
+| `fastq-dl` |             | 4.0.1       |
+| `pigz`     | 2.6         | 2.8         |
+| `sratools` | 2.11.0      | 3.2.1       |
+| `wget`     | 1.20.1      | 1.25.0      |
+
+### Plugins
+
+| Dependency    | Old version | New version |
+| ------------- | ----------- | ----------- |
+| nf-core-utils |             | 0.5.0       |
+| nf-schema     | 2.5.1       | 2.7.3       |
+| nft-bam       | 0.4.0       |             |
+| nft-utils     | 0.0.9       | 1.0.0       |
+
+### Modules / Subworkflows
+
+| Dependency   | Old name                | New name |
+| ------------ | ----------------------- | -------- |
+| Subworkflows | utils_nextflow_pipeline |          |
+| Subworkflows | utils_nfcore_pipeline   |          |
+| Subworkflows | utils_nfschema_plugin   |          |
+
 ## [[1.12.0](https://github.com/nf-core/fetchngs/releases/tag/1.12.0)] - 2024-02-29
 
 ### :warning: Major enhancements
@@ -24,6 +115,7 @@ Special thanks to the following for their contributions to the release:
 - [Maxime Garcia](https://github.com/maxulysse)
 - [Sateesh Peri](https://github.com/sateeshperi)
 - [Sebastian Uhrig](https://github.com/suhrig)
+- [Venkat Malladi](https://github.com/vsmalladi)
 
 Thank you to everyone else that has contributed by reporting bugs, enhancements or in any other way, shape or form.
 

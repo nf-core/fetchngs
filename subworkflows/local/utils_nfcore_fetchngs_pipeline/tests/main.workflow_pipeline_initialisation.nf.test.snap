@@ -1,0 +1,15 @@
+{
+    "Should fail with invalid IDs": {
+        "content": [
+            [
+                "-> Entry 1: \"NOTVALID123\" does not match regular expression ^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM]))(\\d+)$ (Please provide a valid SRA, ENA, DDBJ or GEO identifier)",
+                "-> Entry 2: \"abc\" does not match regular expression ^(((SR|ER|DR)[APRSX])|(SAM(N|EA|D))|(PRJ(NA|EB|DB))|(GS[EM]))(\\d+)$ (Please provide a valid SRA, ENA, DDBJ or GEO identifier)"
+            ]
+        ],
+        "timestamp": "2026-08-27T13:26:52.346015296",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
+        }
+    }
+}

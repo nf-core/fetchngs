@@ -6,7 +6,9 @@ results/
 testing/
 testing*
 *.pyc
-.nf-test.log
-nf-test
+null/
+.lineage/
 .nf-test*
 test.xml
+modules/nf-core/**/tests/
+subworkflows/nf-core/**/tests/

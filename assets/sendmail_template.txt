@@ -25,4 +25,7 @@ Content-Disposition: inline; filename="nf-core-fetchngs_logo_light.png"
     flatten().
     join( '\n' ) %>
 
+<%
+%>
+
 --nfcoremimeboundary--

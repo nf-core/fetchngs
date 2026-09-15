@@ -7,24 +7,23 @@
                 "nf-core": {
                     "custom/sratoolsncbisettings": {
                         "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
+                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
+                    },
+                    "fastqdl": {
+                        "branch": "master",
+                        "git_sha": "6b184b1389e6b41615c169906a621c99f17dc24e",
+                        "installed_by": ["modules"]
                     },
                     "sratools/fasterqdump": {
                         "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
-                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"],
-                        "patch": "modules/nf-core/sratools/fasterqdump/sratools-fasterqdump.diff"
+                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
                     },
                     "sratools/prefetch": {
                         "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
+                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
                         "installed_by": ["fastq_download_prefetch_fasterqdump_sratools"]
-                    },
-                    "untar": {
-                        "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
-                        "installed_by": ["modules"]
                     }
                 }
             },
@@ -32,22 +31,7 @@
                 "nf-core": {
                     "fastq_download_prefetch_fasterqdump_sratools": {
                         "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
-                        "installed_by": ["subworkflows"]
-                    },
-                    "utils_nextflow_pipeline": {
-                        "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
-                        "installed_by": ["subworkflows"]
-                    },
-                    "utils_nfcore_pipeline": {
-                        "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
-                        "installed_by": ["subworkflows"]
-                    },
-                    "utils_nfvalidation_plugin": {
-                        "branch": "master",
-                        "git_sha": "5caf7640a9ef1d18d765d55339be751bb0969dfa",
+                        "git_sha": "8e6139dbf4f3ca01bbac6152d2833e04edff18df",
                         "installed_by": ["subworkflows"]
                     }
                 }
