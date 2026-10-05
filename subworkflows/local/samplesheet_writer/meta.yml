@@ -1,17 +1,16 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: channel_sra_create_csv
-description: Create samplesheet and mappings CSV from SRA metadata channel
+name: samplesheet_writer
+description: Write the samplesheet and id mappings CSV files from samplesheet rows of any repository
 keywords:
-  - SRA
   - samplesheet
   - CSV
   - metadata
 components: []
 input:
-  - ch_sra_metadata:
+  - ch_rows:
       type: map
       description: >
-        Groovy Map containing SRA metadata e.g. [ id:'test', single_end:false ]
+        Ordered Groovy Map for each run, starting with sample, fastq_1 and fastq_2
 
   - pipeline:
       type: string
@@ -48,3 +47,4 @@ output:
 
 authors:
   - "@maxulysse"
+  - "@Tabea01"
