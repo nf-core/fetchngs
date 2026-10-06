@@ -5,7 +5,7 @@
 */
 
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
-include { FETCH_SRA               } from '../subworkflows/local/fetch_sra'
+include { FETCH_NGS               } from '../subworkflows/local/fetch_ngs'
 include { SAMPLESHEET_WRITER      } from '../subworkflows/local/samplesheet_writer'
 include { dataTypeForId           } from '../subworkflows/local/utils_nfcore_fetchngs_pipeline'
 
@@ -54,7 +54,7 @@ workflow FETCHNGS {
     //
     // SUBWORKFLOW: Download FastQ files and metadata for SRA / ENA / DDBJ / GEO ids
     //
-    FETCH_SRA(
+    FETCH_NGS(
         ch_ids.ngs,
         outdir,
         dbgap_key,
@@ -64,7 +64,7 @@ workflow FETCHNGS {
     )
 
     ch_samplesheet_rows = channel.empty()
-        .mix(FETCH_SRA.out.samplesheet_rows)
+        .mix(FETCH_NGS.out.samplesheet_rows)
 
     //
     // SUBWORKFLOW: Write the samplesheet and id mappings for all repositories
@@ -97,6 +97,6 @@ workflow FETCHNGS {
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
-    sra_metadata    = FETCH_SRA.out.metadata
+    sra_metadata    = FETCH_NGS.out.metadata
     versions        = ch_collated_versions
 }
