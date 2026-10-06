@@ -10,10 +10,10 @@ keywords:
   - fastq
   - metadata
 components:
-  - aspera/cli
-  - sra/fastq/ftp
-  - sra/ids/to/runinfo
-  - sra/runinfo/to/ftp
+  - aspera_cli
+  - sra_fastq_ftp
+  - sra_ids_to_runinfo
+  - sra_runinfo_to_ftp
   - fastqdl
   - fastq_download_prefetch_fasterqdump_sratools
 input:
