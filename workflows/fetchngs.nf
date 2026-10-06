@@ -7,6 +7,7 @@
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
 include { FETCH_SRA               } from '../subworkflows/local/fetch_sra'
 include { SAMPLESHEET_WRITER      } from '../subworkflows/local/samplesheet_writer'
+include { dataTypeForId           } from '../subworkflows/local/utils_nfcore_fetchngs_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,19 +38,24 @@ workflow FETCHNGS {
     main:
 
     //
-    // Route each id to the subworkflow for its repository.
-    // To add a repository: add a branch here, call its FETCH_<REPOSITORY>
+    // Route each id to the subworkflow for its data type, based on the patterns in assets/schema_input.json.
+    // To add a data type: add its pattern to the schema and a branch here, call its FETCH_<DATA_TYPE>
     // subworkflow below and mix its samplesheet_rows into ch_samplesheet_rows.
     //
-    ch_ids = ids.branch { _id ->
-        sra: true
+    ch_ids = ids.branch { id ->
+        ngs: dataTypeForId(id) == 'ngs'
+        other: true
+    }
+
+    ch_ids.other.subscribe { id ->
+        error("No data type found for id '${id}'")
     }
 
     //
     // SUBWORKFLOW: Download FastQ files and metadata for SRA / ENA / DDBJ / GEO ids
     //
     FETCH_SRA(
-        ch_ids.sra,
+        ch_ids.ngs,
         outdir,
         dbgap_key,
         download_method,
