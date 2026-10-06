@@ -12,16 +12,6 @@ input:
       description: >
         Ordered Groovy Map for each run, starting with sample, fastq_1 and fastq_2
 
-  - pipeline:
-      type: string
-      description: >
-        Name of nf-core pipeline e.g. 'rnaseq'
-
-  - strandedness:
-      type: string
-      description: >
-        Strandedness value for rnaseq pipeline
-
   - mapping_fields:
       type: string
       description: >

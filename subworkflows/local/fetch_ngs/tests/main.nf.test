@@ -22,7 +22,9 @@ nextflow_workflow {
                 input[2] = []
                 input[3] = 'ftp'
                 input[4] = ''
-                input[5] = true
+                input[5] = ''
+                input[6] = 'auto'
+                input[7] = true
                 """
             }
         }

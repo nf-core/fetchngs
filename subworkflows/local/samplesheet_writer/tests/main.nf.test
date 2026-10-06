@@ -13,6 +13,7 @@ nextflow_workflow {
                     sample:'ERX1188904',
                     fastq_1:'./results/fastq/ERX1188904_ERR1109373_1.fastq.gz',
                     fastq_2:'./results/fastq/ERX1188904_ERR1109373_2.fastq.gz',
+                    strandedness:'auto',
                     run_accession:'ERR1109373',
                     experiment_accession:'ERX1188904',
                     sample_accession:'SAMEA3643867',
@@ -27,10 +28,8 @@ nextflow_workflow {
                     fastq_md5:'8d7d7b854d0207d1226477a30103fade;9fd57225d6c07a31843276d6df9b15c0;5a62e8f785687dce890cfb4fe3e607f9',
                     fastq_ftp:'ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz'
                 ])
-                input[1] = 'rnaseq'
-                input[2] = 'auto'
-                input[3] = 'experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description'
-                input[4] = "${outputDir}"
+                input[1] = 'experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description'
+                input[2] = "${outputDir}"
                 """
             }
         }

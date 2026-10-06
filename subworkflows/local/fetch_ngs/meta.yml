@@ -42,6 +42,16 @@ input:
       description: >
         Comma-separated list of ENA metadata fields to fetch
 
+  - pipeline:
+      type: string
+      description: >
+        Name of nf-core pipeline e.g. 'rnaseq'
+
+  - strandedness:
+      type: string
+      description: >
+        Strandedness value for rnaseq pipeline
+
   - skip_fastq_download:
       type: boolean
       description: >
@@ -57,7 +67,7 @@ output:
       type: map
       description: >
         Ordered Groovy Map for each run, starting with sample, fastq_1 and fastq_2
-        followed by the SRA metadata columns
+        followed by the columns required by the nf-core pipeline and the SRA metadata columns
 
 authors:
   - "@Tabea01"

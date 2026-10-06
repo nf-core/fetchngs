@@ -60,6 +60,8 @@ workflow FETCHNGS {
         dbgap_key,
         download_method,
         ena_metadata_fields,
+        nf_core_pipeline,
+        nf_core_rnaseq_strandedness,
         skip_fastq_download,
     )
 
@@ -69,7 +71,7 @@ workflow FETCHNGS {
     //
     // SUBWORKFLOW: Write the samplesheet and id mappings for all repositories
     //
-    SAMPLESHEET_WRITER(ch_samplesheet_rows, nf_core_pipeline, nf_core_rnaseq_strandedness, sample_mapping_fields, outdir)
+    SAMPLESHEET_WRITER(ch_samplesheet_rows, sample_mapping_fields, outdir)
 
     ch_samplesheet = SAMPLESHEET_WRITER.out.samplesheet
     ch_mappings = SAMPLESHEET_WRITER.out.mappings
