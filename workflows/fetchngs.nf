@@ -66,8 +66,7 @@ workflow FETCHNGS {
     )
 
     ch_samplesheet_rows = channel.empty()
-        .mix(FETCH_NGS.out.samplesheet_rows)
-
+        .mix(FETCH_NGS.out.samplesheet_rows.map { row -> ['ngs', row] })
     //
     // SUBWORKFLOW: Write the samplesheet and id mappings for all repositories
     //
