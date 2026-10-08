@@ -107,7 +107,7 @@ workflow FETCH_NGS {
             .map { meta, fastq ->
                 def reads = fastq instanceof List ? fastq.flatten() : [fastq]
 
-                return meta + [fastq_1: reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : '', fastq_2: reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : '']
+                return meta + [fastq_1: reads[0] ? "${outdir}/ngs/fastq/${reads[0].getName()}" : '', fastq_2: reads[1] && !meta.single_end ? "${outdir}/ngs/fastq/${reads[1].getName()}" : '']
             }
     }
 
