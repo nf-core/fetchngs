@@ -1,7 +1,7 @@
 {
     "Parameters: --nf_core_pipeline sarek": {
         "content": [
-            "samplesheet.csv:md5,ec070c39ea13ecbfb922531176c7fe1a",
+            "samplesheet.csv:md5,46142d482a0fda9ced22c6033925097a",
             [
                 "id_mappings.csv:md5,6ba11efa75ec58f7c615eb90681183b9"
             ],
@@ -241,10 +241,10 @@
                 }
             }
         ],
-        "timestamp": "2026-09-10T13:45:24.250617617",
+        "timestamp": "2026-10-08T10:04:29.213443",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.08.0"
+            "nextflow": "25.10.4"
         }
     }
 }
