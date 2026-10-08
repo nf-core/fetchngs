@@ -4,6 +4,8 @@
 
 This document describes the output produced by the pipeline. The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
+The outputs are grouped by data type: all files for a data type are written to a folder named after it (e.g. `ngs/` for SRA / ENA / DDBJ / GEO ids), so that each folder contains everything needed for its downstream pipelines. Only `pipeline_info/` is shared between data types.
+
 ## Pipeline overview
 
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data depending on the type of ids provided:
@@ -18,17 +20,19 @@ Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introductio
 <details markdown="1">
 <summary>Output files</summary>
 
-- `fastq/`
+- `ngs/fastq/`
   - `*.fastq.gz`: Paired-end/single-end reads downloaded from the SRA / ENA / DDBJ / GEO.
-- `fastq/md5/`
+- `ngs/fastq/md5/`
   - `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA.
-- `samplesheet/`
+- `ngs/samplesheet/`
   - `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
   - `id_mappings.csv`: File with selected fields that can be used to rename samples to more informative names; see [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
   - `multiqc_config.yml`: [MultiQC](https://multiqc.info/docs/#bulk-sample-renaming) config file that can be passed to most nf-core pipelines via the `--multiqc_config` parameter for bulk renaming of sample names from database ids; [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
-- `metadata/`
+- `ngs/metadata/`
   - `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA.
   - `*.runinfo.tsv`: Original metadata file downloaded from the ENA.
+- `ngs/custom/`
+  - `user-settings.mkfg`: NCBI settings file used by sra-tools; only present when FastQ files are downloaded with sra-tools.
 
 </details>
 
