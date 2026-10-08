@@ -37,7 +37,9 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() },
+                { assert path("${outputDir}/ngs/samplesheet/samplesheet.csv").exists() },
+                { assert path("${outputDir}/ngs/samplesheet/id_mappings.csv").exists() }
             )
         }
     }
