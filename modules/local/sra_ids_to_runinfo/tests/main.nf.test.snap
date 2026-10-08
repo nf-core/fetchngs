@@ -9,7 +9,7 @@
                     [
                         "SRA_IDS_TO_RUNINFO",
                         "python",
-                        "3.9.5"
+                        "3.13.7"
                     ]
                 ]
             }
@@ -30,7 +30,7 @@
                     [
                         "SRA_IDS_TO_RUNINFO",
                         "python",
-                        "3.9.5"
+                        "3.13.7"
                     ]
                 ]
             }
@@ -51,7 +51,7 @@
                     [
                         "SRA_IDS_TO_RUNINFO",
                         "python",
-                        "3.9.5"
+                        "3.13.7"
                     ]
                 ]
             }

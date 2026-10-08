@@ -2,7 +2,6 @@
 
 
 import argparse
-import cgi
 import csv
 import gzip
 import logging
@@ -157,8 +156,7 @@ class Response:
     def text(self, encoding=None):
         """Return the response's body as a decoded string."""
         if encoding is None:
-            _, params = cgi.parse_header(self._response.getheader("Content-Type", ""))
-            encoding = params.get("charset", "utf-8")
+            encoding = self._response.headers.get_content_charset("utf-8")
         return self.body.decode(encoding)
 
 
