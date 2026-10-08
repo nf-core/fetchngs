@@ -54,4 +54,64 @@ nextflow_function {
             )
         }
     }
+
+    test("Function dataTypeForId [SRA run]") {
+
+        function "dataTypeForId"
+
+        when {
+            function {
+                """
+                input[0] = 'SRR9984183'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'ngs' }
+            )
+        }
+    }
+
+    test("Function dataTypeForId [GEO series]") {
+
+        function "dataTypeForId"
+
+        when {
+            function {
+                """
+                input[0] = 'GSE214215'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'ngs' }
+            )
+        }
+    }
+
+    test("Function dataTypeForId [unknown id]") {
+
+        function "dataTypeForId"
+
+        when {
+            function {
+                """
+                input[0] = 'PXD012345'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == null }
+            )
+        }
+    }
 }

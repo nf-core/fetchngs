@@ -1,0 +1,33 @@
+nextflow_workflow {
+
+    name "Test workflow: workflows/fetchngs.nf"
+    script "../fetchngs.nf"
+    workflow "FETCHNGS"
+    tag "UNKNOWN_DATA_TYPE"
+
+    test("Should fail for an id that matches no data type") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of("CHEMBL25")
+                input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'ftp'
+                input[4] = ''
+                input[5] = ''
+                input[6] = 'auto'
+                input[7] = ''
+                input[8] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert (workflow.stdout + workflow.stderr).any { line -> line.contains("No data type found for id 'CHEMBL25'") } }
+            )
+        }
+    }
+}

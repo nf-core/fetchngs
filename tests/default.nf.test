@@ -19,7 +19,7 @@ nextflow_pipeline {
             // stable_content: All files in ${params.outdir}/ with stable content
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
             // csv_file: Just the samplesheet
-            def csv_file = path(params.outdir + '/samplesheet/samplesheet.csv').csv()
+            def csv_file = path(params.outdir + '/ngs/samplesheet/samplesheet.csv').csv()
             assert workflow.success
             assertAll(
                 { assert snapshot(
