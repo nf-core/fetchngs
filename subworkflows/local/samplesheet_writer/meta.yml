@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: samplesheet_writer
-description: Write the samplesheet and id mappings CSV files from samplesheet rows of any repository
+description: Write the samplesheet and id mappings CSV files per data type to <outdir>/<data_type>/samplesheet/
 keywords:
   - samplesheet
   - CSV
@@ -8,9 +8,9 @@ keywords:
 components: []
 input:
   - ch_rows:
-      type: map
+      type: list
       description: >
-        Ordered Groovy Map for each run, starting with sample, fastq_1 and fastq_2
+        [ data_type, row ] for each run, where row is an ordered Groovy Map starting with sample, fastq_1 and fastq_2
 
   - mapping_fields:
       type: string
@@ -27,13 +27,13 @@ output:
       type: file
       description: >
         Samplesheet CSV file with metadata for pipeline input
-      pattern: "samplesheet.csv"
+      pattern: "*/samplesheet/samplesheet.csv"
 
   - mappings:
       type: file
       description: >
         ID mappings CSV file with selected fields
-      pattern: "id_mappings.csv"
+      pattern: "*/samplesheet/id_mappings.csv"
 
 authors:
   - "@maxulysse"
