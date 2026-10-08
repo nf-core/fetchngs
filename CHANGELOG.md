@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [PR #400](https://github.com/nf-core/fetchngs/pull/400) - Back to dev
 - [PR #401](https://github.com/nf-core/fetchngs/pull/401) - Render metro map with nf-metro 2.1.0
+- [PR #403](https://github.com/nf-core/fetchngs/pull/403) - Replace removed `cgi` module in `sra_ids_to_runinfo.py` and update `SRA_IDS_TO_RUNINFO` to Python 3.13.7
 
 ## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
