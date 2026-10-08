@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [PR #400](https://github.com/nf-core/fetchngs/pull/400) - Back to dev
 - [PR #401](https://github.com/nf-core/fetchngs/pull/401) - Render metro map with nf-metro 2.1.0
+- [PR #406](https://github.com/nf-core/fetchngs/pull/406) - Prepare the pipeline for multiple data types: outputs for SRA / ENA / DDBJ / GEO ids are now written to `ngs/`, so that every data type has its own folder, and the per-module configs are moved into `conf/modules.config`
 
 ## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
