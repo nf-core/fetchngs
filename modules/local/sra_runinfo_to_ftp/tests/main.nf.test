@@ -22,13 +22,12 @@ nextflow_process {
         }
     }
 
-    test("Should run without failures - stub") {
-        options '-stub'
+    test("Should handle edge cases like the original Python script") {
 
         when {
             process {
                 """
-                input[0] = file(params.pipelines_testdata_base_path + 'tsv/SRR13191702.runinfo.tsv', checkIfExists: true)
+                input[0] = file('${moduleTestDir}/edge_cases.runinfo.tsv', checkIfExists: true)
                 """
             }
         }

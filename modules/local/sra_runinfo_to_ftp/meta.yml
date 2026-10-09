@@ -7,45 +7,24 @@ keywords:
   - runinfo
   - metadata
 tools:
-  - python:
-      description: General-purpose programming language
-      homepage: https://www.python.org/
-      documentation: https://docs.python.org/3/
+  - nextflow:
+      description: Native Nextflow process (no external tools)
+      homepage: https://www.nextflow.io/
+      documentation: https://www.nextflow.io/docs/latest/
       licence:
-        - "PSF-2.0"
+        - "Apache-2.0"
 input:
-  - runinfo:
+  - runinfo_file:
       type: file
       description: >
-        TSV runinfo file(s) from SRA_IDS_TO_RUNINFO
+        TSV runinfo file from SRA_IDS_TO_RUNINFO
       pattern: "*.tsv"
 output:
   tsv:
-    - "*.tsv":
+    - "*.runinfo_ftp.tsv":
         type: file
         description: TSV with FTP download links and MD5 checksums for FASTQ files
         pattern: "*.tsv"
-  versions_python:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python --version | sed "s/Python //g":
-          type: eval
-          description: The expression to obtain the version of the tool
-topics:
-  versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python --version | sed "s/Python //g":
-          type: eval
-          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
 maintainers:

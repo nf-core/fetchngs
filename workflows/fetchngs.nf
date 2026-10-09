@@ -51,7 +51,7 @@ workflow FETCHNGS {
     //
     SRA_RUNINFO_TO_FTP(SRA_IDS_TO_RUNINFO.out.tsv)
 
-    ch_sra_metadata = SRA_RUNINFO_TO_FTP.out.tsv
+    ch_sra_metadata = SRA_RUNINFO_TO_FTP.out
         .filter { row -> row.size() > 0 }
         .splitCsv(header: true, sep: '\t')
         .map { meta -> meta + [single_end: meta.single_end.toBoolean()] }

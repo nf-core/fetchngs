@@ -1,44 +1,30 @@
 {
-    "Should run without failures - stub": {
+    "Should handle edge cases like the original Python script": {
         "content": [
             {
-                "tsv": [
-                    "SRR13191702.runinfo_ftp.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "versions_python": [
-                    [
-                        "SRA_RUNINFO_TO_FTP",
-                        "python",
-                        "3.9.5"
-                    ]
+                "0": [
+                    "edge_cases.runinfo_ftp.tsv:md5,75716b92252af654253118feea6ca9a6"
                 ]
             }
         ],
-        "timestamp": "2026-08-13T13:42:51.488489706",
+        "timestamp": "2026-10-09T16:55:59.728530659",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "26.09.2"
         }
     },
     "Should run without failures": {
         "content": [
             {
-                "tsv": [
+                "0": [
                     "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
-                ],
-                "versions_python": [
-                    [
-                        "SRA_RUNINFO_TO_FTP",
-                        "python",
-                        "3.9.5"
-                    ]
                 ]
             }
         ],
-        "timestamp": "2026-05-06T16:02:10.236064039",
+        "timestamp": "2026-10-09T16:25:28.024277976",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.09.2"
         }
     }
 }
