@@ -1,13 +1,27 @@
 {
-    "Should run without failures": {
+    "Should handle edge cases like the original Python script": {
         "content": [
             {
-                "tsv": [
-                    "SRR13191702.runinfo_ftp.tsv:md5,09922ad51b11d8394c78932360d5b2ad"
+                "0": [
+                    "edge_cases.runinfo_ftp.tsv:md5,3752842822f4e59a099ce172b9e9be5a"
                 ]
             }
         ],
-        "timestamp": "2026-10-09T15:09:23.583481491",
+        "timestamp": "2026-10-09T16:26:33.660786563",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.09.2"
+        }
+    },
+    "Should run without failures": {
+        "content": [
+            {
+                "0": [
+                    "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
+                ]
+            }
+        ],
+        "timestamp": "2026-10-09T16:25:28.024277976",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.09.2"

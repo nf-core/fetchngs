@@ -1,0 +1,8 @@
+run_accession	experiment_accession	library_layout	fastq_ftp	fastq_md5	sample_title
+SRR1	SRX1	SINGLE	ftp/SRR1.fastq.gz	m1	single end
+SRR2	SRX2	PAIRED			no ftp links
+SRR3	SRX3	PAIRED	ftp/SRR3.fastq.gz;ftp/SRR3_1.fastq.gz;ftp/SRR3_2.fastq.gz	a;b;c	unpaired plus paired
+SRR4	SRX4	PAIRED	ftp/SRR4_1.fastq.gz;ftp/SRR4_2.fastq.gz	d;e	multiple runs
+SRR5	SRX4	PAIRED	ftp/SRR5_1.fastq.gz;ftp/SRR5_2.fastq.gz	f;g	multiple runs
+SRR6	SRX5	PAIRED	ftp/SRR6_1.fastq.gz;ftp/SRR6_2.fastq.gz	h;i	"quoted ""title""	with tab
+and newline"

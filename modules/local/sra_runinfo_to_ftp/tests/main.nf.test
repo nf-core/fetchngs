@@ -21,4 +21,22 @@ nextflow_process {
             )
         }
     }
+
+    test("Should handle edge cases like the original Python script") {
+
+        when {
+            process {
+                """
+                input[0] = file('${moduleTestDir}/edge_cases.runinfo.tsv', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }
