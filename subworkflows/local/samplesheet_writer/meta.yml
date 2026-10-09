@@ -1,11 +1,12 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: samplesheet_writer
-description: Write the samplesheet and id mappings CSV files per data type to <outdir>/<data_type>/samplesheet/
+description: Write the samplesheet and id mappings CSV files per data type
 keywords:
   - samplesheet
   - CSV
   - metadata
-components: []
+components:
+  - samplesheet/write
 input:
   - ch_rows:
       type: list
@@ -17,23 +18,18 @@ input:
       description: >
         Comma-separated list of fields for id_mappings.csv
 
-  - outdir:
-      type: string
-      description: >
-        Output directory for samplesheet and mappings files
-
 output:
   - samplesheet:
       type: file
       description: >
-        Samplesheet CSV file with metadata for pipeline input
-      pattern: "*/samplesheet/samplesheet.csv"
+        Channel with [ meta, samplesheet.csv ] per data type, where meta.id is the data type
+      pattern: "samplesheet.csv"
 
   - mappings:
       type: file
       description: >
-        ID mappings CSV file with selected fields
-      pattern: "*/samplesheet/id_mappings.csv"
+        Channel with [ meta, id_mappings.csv ] per data type, where meta.id is the data type
+      pattern: "id_mappings.csv"
 
 authors:
   - "@maxulysse"

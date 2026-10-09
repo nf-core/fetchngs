@@ -7,6 +7,9 @@ nextflow_workflow {
     test("Should create samplesheet and mappings") {
 
         when {
+            params {
+                outdir = "${outputDir}"
+            }
             workflow {
                 """
                 input[0] = channel.of(['ngs', [
@@ -29,7 +32,6 @@ nextflow_workflow {
                     fastq_ftp:'ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR110/003/ERR1109373/ERR1109373_2.fastq.gz'
                 ]])
                 input[1] = 'experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description'
-                input[2] = "${outputDir}"
                 """
             }
         }
