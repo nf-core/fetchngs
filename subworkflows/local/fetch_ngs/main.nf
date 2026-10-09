@@ -57,9 +57,6 @@ workflow FETCH_NGS {
 
         ch_reads = ch_metadata.branch { meta ->
             def final_download_method = 'ftp'
-            // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
-            // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
-            // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
             if (meta.fastq_aspera && download_method == 'aspera') {
                 final_download_method = 'aspera'
             }
