@@ -20,7 +20,7 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035", "SRX34639651", "SRX34639654")
+                input[0] = channel.of(["ngs", "DRX026011"], ["ngs", "ERX1234253"], ["ngs", "SRX6725035"], ["ngs", "SRX34639651"], ["ngs", "SRX34639654"])
                 input[1] = "${outputDir}"
                 input[2] = []
                 input[3] = 'ftp'

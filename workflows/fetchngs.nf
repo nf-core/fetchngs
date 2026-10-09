@@ -7,7 +7,6 @@
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
 include { FETCH_NGS               } from '../subworkflows/local/fetch_ngs'
 include { SAMPLESHEET_WRITER      } from '../subworkflows/local/samplesheet_writer'
-include { dataTypeForId           } from '../subworkflows/local/utils_nfcore_fetchngs_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,7 +24,7 @@ include { softwareVersionsToYAML } from 'plugin/nf-core-utils'
 
 workflow FETCHNGS {
     take:
-    ids // channel: [ ids ]
+    ids // channel: [ val(data_type), val(id) ]
     outdir
     dbgap_key
     download_method
@@ -40,13 +39,9 @@ workflow FETCHNGS {
     //
     // Route each id to the subworkflow for its data type
     //
-    ch_ids = ids.branch { id ->
-        ngs: dataTypeForId(id) == 'ngs'
-        other: true
-    }
-
-    ch_ids.other.subscribe { id ->
-        error("No data type found for id '${id}'")
+    ch_ids = ids.branch { data_type, id ->
+        ngs: data_type == 'ngs'
+            return id
     }
 
     //

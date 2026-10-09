@@ -128,9 +128,10 @@ workflow PIPELINE_INITIALISATION {
     //
     ch_ids = channel.fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
         .unique()
+        .map { id -> [dataTypeForId(id), id] }
 
     emit:
-    ids = ch_ids
+    ids = ch_ids // channel: [ val(data_type), val(id) ]
 }
 
 /*
