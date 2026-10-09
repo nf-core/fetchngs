@@ -91,6 +91,6 @@ workflow FETCHNGS {
     samplesheet     = ch_samplesheet
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
-    sra_metadata    = FETCH_NGS.out.metadata
+    ngs_metadata    = FETCH_NGS.out.metadata
     versions        = ch_collated_versions
 }
