@@ -128,7 +128,7 @@ def buildPipelineMap(meta, pipeline, strandedness) {
     def pipeline_extras = [
         ampliseq: [run: ''],
         atacseq: [replicate: 1],
-        mag: [group: '', short_reads_platform: 'ILLUMINA', long_reads_platform: ''],
+        mag: [group: '', short_reads_platform: '', long_reads_platform: ''],
         rnaseq: [strandedness: strandedness],
         sarek: [patient: meta.sample_accession],
         taxprofiler: [fasta: ''],
