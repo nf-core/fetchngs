@@ -46,7 +46,7 @@ def parseSraRuninfo(file_in: Path) {
         "fastq_ftp",
         "fastq_md5",
     ]
-    def records = parseTsv(file_in.text)
+    def records = file_in.splitCsv(sep: "\t") as List<List<String>>
     def header = records ? records.first() : []
     def missing = columns.findAll { c -> c !in header }
     if( missing )
@@ -135,122 +135,11 @@ def getExtensions() -> List<String> {
 
 
 /**
- * Parse TSV text into records, matching Python's csv.reader with
- * delimiter="\t" and skipinitialspace=True.
- */
-def parseTsv(text: String) -> List<List<String>> {
-    // insert an end-of-line marker ('') after each line, as Python does
-    def n = text.length()
-    def chars = (0..<n).collectMany { i ->
-        def c = text[i]
-        def eol = c == '\n' || (c == '\r' && (i + 1 == n || text[i + 1] != '\n'))
-        eol ? [c, ''] : [c]
-    }.toList()
-    if( n > 0 && text[n - 1] != '\n' && text[n - 1] != '\r' )
-        chars = chars + ['']
-
-    def records = []
-    def record = []
-    def field = ''
-    def state = 'START_RECORD'
-    chars.each { c ->
-        if( state == 'START_RECORD' && c != '' && c != '\n' && c != '\r' )
-            state = 'START_FIELD'
-
-        if( state == 'START_RECORD' ) {
-            if( c != '' )
-                state = 'EAT_CRNL'
-        }
-        else if( state == 'START_FIELD' ) {
-            if( c == '' || c == '\n' || c == '\r' ) {
-                record = record + [field]
-                field = ''
-                state = c == '' ? 'START_RECORD' : 'EAT_CRNL'
-            }
-            else if( c == '"' ) {
-                state = 'IN_QUOTED_FIELD'
-            }
-            else if( c == '\t' ) {
-                record = record + [field]
-                field = ''
-            }
-            else if( c != ' ' ) {
-                field += c
-                state = 'IN_FIELD'
-            }
-        }
-        else if( state == 'IN_FIELD' ) {
-            if( c == '' || c == '\n' || c == '\r' ) {
-                record = record + [field]
-                field = ''
-                state = c == '' ? 'START_RECORD' : 'EAT_CRNL'
-            }
-            else if( c == '\t' ) {
-                record = record + [field]
-                field = ''
-                state = 'START_FIELD'
-            }
-            else {
-                field += c
-            }
-        }
-        else if( state == 'IN_QUOTED_FIELD' ) {
-            if( c == '"' )
-                state = 'QUOTE_IN_QUOTED_FIELD'
-            else if( c != '' )
-                field += c
-        }
-        else if( state == 'QUOTE_IN_QUOTED_FIELD' ) {
-            if( c == '"' ) {
-                field += c
-                state = 'IN_QUOTED_FIELD'
-            }
-            else if( c == '\t' ) {
-                record = record + [field]
-                field = ''
-                state = 'START_FIELD'
-            }
-            else if( c == '' || c == '\n' || c == '\r' ) {
-                record = record + [field]
-                field = ''
-                state = c == '' ? 'START_RECORD' : 'EAT_CRNL'
-            }
-            else {
-                field += c
-                state = 'IN_FIELD'
-            }
-        }
-        else if( state == 'EAT_CRNL' ) {
-            if( c == '' )
-                state = 'START_RECORD'
-            else if( c != '\n' && c != '\r' )
-                throw new Exception("New-line character seen in unquoted field")
-        }
-
-        if( c == '' && state == 'START_RECORD' ) {
-            records = records + [record]
-            record = []
-        }
-    }
-    // a quoted field left open at the end of the input is saved as-is
-    if( state == 'IN_QUOTED_FIELD' ) {
-        record = record + [field]
-        records = records + [record]
-    }
-    return records
-}
-
-
-/**
- * Format a TSV record, matching Python's csv.writer with delimiter="\t".
+ * Format a TSV record with empty fields for null values and CRLF
+ * line endings, as written by the original Python script.
  */
 def formatTsvRecord(values: Iterable) -> String {
-    def fields = values.collect { v ->
-        def s = v == null ? '' : v as String
-        def quoted = ['\t', '"', '\r', '\n'].any { ch -> s.contains(ch) }
-        quoted ? '"' + s.replace('"', '""') + '"' : s
-    }
-    return fields.join("\t") + "\r\n"
+    return values.collect { v -> v == null ? '' : v as String }.join("\t") + "\r\n"
 }
 
 

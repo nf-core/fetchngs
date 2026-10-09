@@ -3,11 +3,11 @@
         "content": [
             {
                 "0": [
-                    "edge_cases.runinfo_ftp.tsv:md5,3752842822f4e59a099ce172b9e9be5a"
+                    "edge_cases.runinfo_ftp.tsv:md5,75716b92252af654253118feea6ca9a6"
                 ]
             }
         ],
-        "timestamp": "2026-10-09T16:26:33.660786563",
+        "timestamp": "2026-10-09T16:55:59.728530659",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.09.2"
