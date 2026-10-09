@@ -194,7 +194,7 @@ def sraCheckENAMetadataFields(ena_metadata_fields) {
 }
 
 //
-// Return the data type of an id (e.g. 'ngs'), i.e. the title of the matching pattern in assets/schema_input.json
+// Return the data type of an id (e.g. 'ngs')
 //
 def dataTypeForId(id) {
     def schema = new groovy.json.JsonSlurper().parse(file("${projectDir}/assets/schema_input.json"))

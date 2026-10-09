@@ -38,9 +38,7 @@ workflow FETCHNGS {
     main:
 
     //
-    // Route each id to the subworkflow for its data type, based on the patterns in assets/schema_input.json.
-    // To add a data type: add its pattern to the schema and a branch here, call its FETCH_<DATA_TYPE>
-    // subworkflow below and mix its samplesheet_rows into ch_samplesheet_rows.
+    // Route each id to the subworkflow for its data type
     //
     ch_ids = ids.branch { id ->
         ngs: dataTypeForId(id) == 'ngs'
