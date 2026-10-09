@@ -8,6 +8,9 @@ nextflow_workflow {
     test("Should fail for an id that matches no data type") {
 
         when {
+            params {
+                outdir = "${outputDir}"
+            }
             workflow {
                 """
                 input[0] = channel.of("CHEMBL25")

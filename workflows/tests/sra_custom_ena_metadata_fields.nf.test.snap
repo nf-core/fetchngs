@@ -3,10 +3,20 @@
         "content": [
             "samplesheet.csv:md5,2b160faed9781472411b8fe54dd9cb54",
             [
-                "id_mappings.csv:md5,7345715e7db0a160efb8dd3be9ce58ac"
+                [
+                    {
+                        "id": "ngs"
+                    },
+                    "id_mappings.csv:md5,7345715e7db0a160efb8dd3be9ce58ac"
+                ]
             ],
             [
-                "multiqc_config.yml:md5,613f626037974b84c1dc1adca5866691"
+                [
+                    {
+                        "id": "ngs"
+                    },
+                    "multiqc_config.yml:md5,613f626037974b84c1dc1adca5866691"
+                ]
             ],
             [
                 [
@@ -70,7 +80,7 @@
                 }
             }
         ],
-        "timestamp": "2026-10-07T17:23:09.114789",
+        "timestamp": "2026-10-09T13:09:50.024925",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

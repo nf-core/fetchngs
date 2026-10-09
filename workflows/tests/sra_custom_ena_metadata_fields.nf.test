@@ -15,6 +15,9 @@ nextflow_workflow {
     test("Parameters: --nf_core_pipeline rnaseq --ena_metadata_fields ... --sample_mapping_fields ...") {
 
         when {
+            params {
+                outdir = "${outputDir}"
+            }
             workflow {
                 """
                 input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
