@@ -1,17 +1,19 @@
+nextflow.enable.types = true
+
 process SRA_RUNINFO_TO_FTP {
     tag "${runinfo_file.name.tokenize(".")[0]}"
 
     input:
-    path runinfo_file
+    runinfo_file: Path
 
     output:
-    path "*.runinfo_ftp.tsv", emit: tsv
+    file("*.runinfo_ftp.tsv")
 
     exec:
     def (runinfo, header) = parseSraRuninfo(runinfo_file)
-    header.add(0, "id")
+    header = ["id"] + header
 
-    def samplesheet = [:]
+    def samplesheet = [:] as Map<String,List<Map>>
     runinfo.each { db_id, rows ->
         if( db_id !in samplesheet )
             samplesheet[db_id] = rows
@@ -24,8 +26,10 @@ process SRA_RUNINFO_TO_FTP {
     file_out << header.join("\t") << "\n"
 
     samplesheet
-        .sort { id, _rows -> id }
-        .each { id, rows ->
+        .entrySet()
+        .toSorted { entry -> entry.getKey() }
+        .each { entry ->
+            def (id, rows) = tuple(entry.getKey(), entry.getValue())
             rows.each { row ->
                 row.id = row.run_accession
                     ? "${id}_${row.run_accession}"
@@ -37,8 +41,8 @@ process SRA_RUNINFO_TO_FTP {
 }
 
 
-def parseSraRuninfo(file_in) {
-    def runinfo = [:]
+def parseSraRuninfo(file_in: Path) {
+    def runinfo = [:] as Map<String,List<Map>>
     def columns = [
         "run_accession",
         "experiment_accession",
@@ -46,17 +50,17 @@ def parseSraRuninfo(file_in) {
         "fastq_ftp",
         "fastq_md5",
     ]
-    def records = file_in.splitCsv(header: true, sep: "\t")
+    def records = file_in.splitCsv(header: true, sep: "\t") as List<Map>
     def header = file_in.readLines().first().tokenize("\t")
     def missing = columns.findAll { c -> c !in header }
     if( missing )
-        throw new Exception("The following expected columns are missing from ${file_in}: ${missing.join(', ')}.")
+        error("The following expected columns are missing from ${file_in}: ${missing.join(', ')}.")
 
     records.each { row ->
         def db_id = row.experiment_accession
         def sample = getSample(row, file_in.name)
 
-        sample.putAll(row)
+        sample += row
         if( db_id !in runinfo ) {
             runinfo[db_id] = [sample]
         }
@@ -68,11 +72,11 @@ def parseSraRuninfo(file_in) {
         }
     }
 
-    return [ runinfo, (header + getExtensions()).unique() ]
+    return tuple(runinfo, (header + getExtensions()).toUnique().toList())
 }
 
 
-def getSample(row, filename) {
+def getSample(row: Map, filename: String) -> Map {
     if( row.fastq_ftp ) {
         def fq_files = row.fastq_ftp.tokenize(";")
         def fq_md5 = row.fastq_md5.tokenize(";")
@@ -103,7 +107,7 @@ def getSample(row, filename) {
             ]
         }
 
-        throw new Exception("Unexpected number of FastQ files: ${fq_files}")
+        error("Unexpected number of FastQ files: ${fq_files}")
     }
 
     // In some instances, FTP links don't exist for FastQ files.
@@ -120,7 +124,7 @@ def getSample(row, filename) {
 }
 
 
-def getExtensions() {
+def getExtensions() -> List<String> {
     return [
         "fastq_1",
         "fastq_2",
