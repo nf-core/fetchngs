@@ -36,6 +36,8 @@ workflow FETCH_NGS {
     skip_fastq_download // val: boolean
 
     main:
+    // Keep in sync with the ngs/fastq publishDir paths in conf/modules.config
+    def fastq_dir = "${outdir}/ngs/fastq"
 
     //
     // MODULE: Get SRA run information for public database ids
@@ -102,9 +104,10 @@ workflow FETCH_NGS {
             .mix(ASPERA_CLI.out.fastq)
             .mix(FASTQDL.out.fastq)
             .map { meta, fastq ->
-                def reads = fastq instanceof List ? fastq.flatten() : [fastq]
-
-                return meta + [fastq_1: reads[0] ? "${outdir}/ngs/fastq/${reads[0].getName()}" : '', fastq_2: reads[1] && !meta.single_end ? "${outdir}/ngs/fastq/${reads[1].getName()}" : '']
+                def reads = [fastq].flatten()
+                def fastq_1 = reads[0] ? "${fastq_dir}/${reads[0].name}" : ''
+                def fastq_2 = !meta.single_end && reads[1] ? "${fastq_dir}/${reads[1].name}" : ''
+                return meta + [fastq_1: fastq_1, fastq_2: fastq_2]
             }
     }
 
