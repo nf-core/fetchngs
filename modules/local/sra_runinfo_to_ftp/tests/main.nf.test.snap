@@ -1,44 +1,16 @@
 {
-    "Should run without failures - stub": {
-        "content": [
-            {
-                "tsv": [
-                    "SRR13191702.runinfo_ftp.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "versions_python": [
-                    [
-                        "SRA_RUNINFO_TO_FTP",
-                        "python",
-                        "3.9.5"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-08-13T13:42:51.488489706",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
-        }
-    },
     "Should run without failures": {
         "content": [
             {
                 "tsv": [
-                    "SRR13191702.runinfo_ftp.tsv:md5,94378c448c044b3e20e5c54e442ab62e"
-                ],
-                "versions_python": [
-                    [
-                        "SRA_RUNINFO_TO_FTP",
-                        "python",
-                        "3.9.5"
-                    ]
+                    "SRR13191702.runinfo_ftp.tsv:md5,09922ad51b11d8394c78932360d5b2ad"
                 ]
             }
         ],
-        "timestamp": "2026-05-06T16:02:10.236064039",
+        "timestamp": "2026-10-09T15:09:23.583481491",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.09.2"
         }
     }
 }
