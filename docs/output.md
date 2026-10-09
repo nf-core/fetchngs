@@ -4,7 +4,7 @@
 
 This document describes the output produced by the pipeline. The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
 
-The outputs are grouped by data type: all files for a data type are written to a folder named after it (e.g. `ngs/` for SRA / ENA / DDBJ / GEO ids), so that each folder contains everything needed for its downstream pipelines. Only `pipeline_info/` is shared between data types.
+The outputs are grouped by data type: all files for a data type are written to a folder named after it (e.g. `ngs/` for SRA / ENA / DDBJ / GEO ids), so that each folder contains everything needed for its downstream pipelines.
 
 ## Pipeline overview
 
