@@ -1,12 +1,22 @@
 {
     "Parameters: --download_method fastq-dl": {
         "content": [
-            "samplesheet.csv:md5,bff529d350181fb4ce1d074f36589e3c",
+            "samplesheet.csv:md5,f7660dd80e4c8aeaceef421f079e8468",
             [
-                "id_mappings.csv:md5,3e41ce6ab19feb76f2b20fa77a910ad3"
+                [
+                    {
+                        "id": "ngs"
+                    },
+                    "id_mappings.csv:md5,3e41ce6ab19feb76f2b20fa77a910ad3"
+                ]
             ],
             [
-                "multiqc_config.yml:md5,0f585277bfcae95ea182dcc9928f9243"
+                [
+                    {
+                        "id": "ngs"
+                    },
+                    "multiqc_config.yml:md5,0f585277bfcae95ea182dcc9928f9243"
+                ]
             ],
             [
                 [
@@ -148,10 +158,10 @@
                 }
             }
         ],
-        "timestamp": "2026-09-10T14:28:45.509719",
+        "timestamp": "2026-10-09T13:10:38.893309",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "25.10.4"
         }
     }
 }

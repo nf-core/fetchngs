@@ -15,9 +15,12 @@ nextflow_workflow {
     test("Parameters: default") {
 
         when {
+            params {
+                outdir = "${outputDir}"
+            }
             workflow {
                 """
-                input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
+                input[0] = channel.of(["ngs", "DRX026011"], ["ngs", "ERX1234253"], ["ngs", "SRX6725035"])
                 input[1] = "${outputDir}"
                 input[2] = []
                 input[3] = 'ftp'
@@ -32,10 +35,10 @@ nextflow_workflow {
 
         then {
             // csv_file: Just the samplesheet
-            def csv_file = path(outputDir + '/samplesheet/samplesheet.csv').csv()
+            def csv_file = path(outputDir + '/ngs/samplesheet/samplesheet.csv').csv()
 
-            // Sanitize sra_metadata to remove unstable output directory paths
-            def sra_metadata = workflow.out.sra_metadata.collect { meta ->
+            // Sanitize ngs_metadata to remove unstable output directory paths
+            def ngs_metadata = workflow.out.ngs_metadata.collect { meta ->
                 assert meta instanceof Map
                 def fastq1 = meta.fastq_1 ? (meta.fastq_1 instanceof List ? path(meta.fastq_1[0]).fileName.toString() : path(meta.fastq_1).fileName.toString()) : ''
                 def fastq2 = meta.fastq_2 ? (meta.fastq_2 instanceof List ? path(meta.fastq_2[0]).fileName.toString() : path(meta.fastq_2).fileName.toString()) : ''
@@ -49,7 +52,7 @@ nextflow_workflow {
                     "samplesheet.csv:md5," + csv_file.sort().table.collect { row -> [row.getString("sample"), row.getString("fastq_1").replaceAll(outputDir, ""), row.getString("fastq_2").replaceAll(outputDir, "")].join(",") }.join("\n").md5(),
                     workflow.out.mappings,
                     workflow.out.sample_mappings,
-                    sra_metadata,
+                    ngs_metadata,
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeFromYamlMap("${outputDir}/pipeline_info/nf_core_fetchngs_software_versions.yml", "Workflow"),
                 ).match() }

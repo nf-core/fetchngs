@@ -13,17 +13,25 @@ tools:
       licence:
         - "PSF-2.0"
 input:
-  - csv:
-      type: file
-      description: >
-        CSV file with sample name mappings
-      pattern: "*.csv"
+  - - meta:
+        type: map
+        description: >
+          Groovy Map containing the data type, e.g. [ id:'ngs' ]
+    - csv:
+        type: file
+        description: >
+          CSV file with sample name mappings
+        pattern: "*.csv"
 output:
   yml:
-    - "*config.yml":
-        type: file
-        description: MultiQC configuration YAML file with sample rename mappings
-        pattern: "*config.yml"
+    - - meta:
+          type: map
+          description: >
+            Groovy Map containing the data type, e.g. [ id:'ngs' ]
+      - "*config.yml":
+          type: file
+          description: MultiQC configuration YAML file with sample rename mappings
+          pattern: "*config.yml"
   versions_python:
     - - ${task.process}:
           type: string

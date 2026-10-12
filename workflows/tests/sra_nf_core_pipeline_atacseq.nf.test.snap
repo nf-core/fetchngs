@@ -1,12 +1,22 @@
 {
     "Parameters: --nf_core_pipeline atacseq": {
         "content": [
-            "samplesheet.csv:md5,e457eb1e61c4f04181127cea006de9ca",
+            "samplesheet.csv:md5,2b160faed9781472411b8fe54dd9cb54",
             [
-                "id_mappings.csv:md5,3e41ce6ab19feb76f2b20fa77a910ad3"
+                [
+                    {
+                        "id": "ngs"
+                    },
+                    "id_mappings.csv:md5,3e41ce6ab19feb76f2b20fa77a910ad3"
+                ]
             ],
             [
-                "multiqc_config.yml:md5,0f585277bfcae95ea182dcc9928f9243"
+                [
+                    {
+                        "id": "ngs"
+                    },
+                    "multiqc_config.yml:md5,0f585277bfcae95ea182dcc9928f9243"
+                ]
             ],
             [
                 [
@@ -148,10 +158,10 @@
                 }
             }
         ],
-        "timestamp": "2026-08-13T14:28:20.708690197",
+        "timestamp": "2026-10-09T13:11:14.860254",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "25.10.4"
         }
     }
 }

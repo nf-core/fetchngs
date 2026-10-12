@@ -128,9 +128,10 @@ workflow PIPELINE_INITIALISATION {
     //
     ch_ids = channel.fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
         .unique()
+        .map { id -> [dataTypeForId(id), id] }
 
     emit:
-    ids = ch_ids
+    ids = ch_ids // channel: [ val(data_type), val(id) ]
 }
 
 /*
@@ -191,6 +192,35 @@ def sraCheckENAMetadataFields(ena_metadata_fields) {
     if (!actual_ena_metadata_fields.containsAll(valid_ena_metadata_fields)) {
         error("Invalid option: '${ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
     }
+}
+
+//
+// Return the data type of an id (e.g. 'ngs')
+//
+def dataTypeForId(id) {
+    def schema = new groovy.json.JsonSlurper().parse(file("${projectDir}/assets/schema_input.json"))
+    def entries = schema.items.anyOf ?: [schema.items]
+    return entries.find { entry -> id ==~ entry.pattern }?.title
+}
+
+//
+// Return the columns for id_mappings.csv: 'sample' plus the --sample_mapping_fields, or [] if none are set
+//
+def getSampleMappingFields(mapping_fields, columns) {
+    def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect { field -> field.trim().toLowerCase() } : []
+    if ((columns + fields).unique().size() != columns.size()) {
+        error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${columns.join(', ')}")
+    }
+    return fields
+}
+
+//
+// Return the CSV lines for the given columns: a quoted header and one quoted, sorted line per row
+//
+def toCsvLines(fields, rows) {
+    def header = fields.collect { field -> '"' + field + '"' }.join(",")
+    def values = rows.collect { row -> fields.collect { field -> '"' + row[field] + '"' }.join(",") }.sort()
+    return ([header] + values).findAll { line -> line }
 }
 
 //

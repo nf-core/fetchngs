@@ -183,7 +183,7 @@ If you update images or graphics, follow the nf-core [style guidelines](https://
 
 ### Adding a new pipeline
 
-1. Add an entry to `pipeline_extras` in `subworkflows/local/channel_sra_create_csv/main.nf`:
+1. Add an entry to `pipeline_extras` in `buildPipelineMap` in `subworkflows/local/fetch_ngs/main.nf`:
    - Map the pipeline name to its extra samplesheet columns (e.g., `[strandedness: strandedness]` for rnaseq)
    - Missing pipelines return `[:]`, so no entry is needed if there are no extras
 

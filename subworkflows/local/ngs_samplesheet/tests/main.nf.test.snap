@@ -1,0 +1,29 @@
+{
+    "Should create samplesheet and mappings": {
+        "content": [
+            {
+                "mappings": [
+                    [
+                        {
+                            "id": "ngs"
+                        },
+                        "id_mappings.csv:md5,d09ddb4f0709675e5dfe1eadf12c608f"
+                    ]
+                ],
+                "samplesheet": [
+                    [
+                        {
+                            "id": "ngs"
+                        },
+                        "samplesheet.csv:md5,e7898191d57258e049ee7129d36f5c08"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-09T13:02:28.699184",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

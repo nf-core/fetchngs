@@ -1,0 +1,30 @@
+name: write_file
+description: Write a list of lines to a file
+keywords:
+  - file
+  - write
+  - collect
+input:
+  - - meta:
+        type: map
+        description: >
+          Groovy Map containing information for the file
+    - name:
+        type: string
+        description: Name of the file to write
+    - items:
+        type: list
+        description: Lines to write to the file, joined by newlines
+output:
+  file:
+    - - meta:
+          type: map
+          description: >
+            Groovy Map containing information for the file
+      - ${name}:
+          type: file
+          description: The file written from the lines
+          pattern: "*"
+authors:
+  - "@maxulysse"
+  - "@Tabea01"
