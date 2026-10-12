@@ -204,6 +204,26 @@ def dataTypeForId(id) {
 }
 
 //
+// Return the columns for id_mappings.csv: 'sample' plus the --sample_mapping_fields, or [] if none are set
+//
+def getSampleMappingFields(mapping_fields, columns) {
+    def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect { field -> field.trim().toLowerCase() } : []
+    if ((columns + fields).unique().size() != columns.size()) {
+        error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${columns.join(', ')}")
+    }
+    return fields
+}
+
+//
+// Return the CSV lines for the given columns: a quoted header and one quoted, sorted line per row
+//
+def toCsvLines(fields, rows) {
+    def header = fields.collect { field -> '"' + field + '"' }.join(",")
+    def values = rows.collect { row -> fields.collect { field -> '"' + row[field] + '"' }.join(",") }.sort()
+    return ([header] + values).findAll { line -> line }
+}
+
+//
 // Print a warning after pipeline has completed
 //
 def sraCurateSamplesheetWarn() {

@@ -114,4 +114,70 @@ nextflow_function {
             )
         }
     }
+
+    test("Function getSampleMappingFields [success]") {
+
+        function "getSampleMappingFields"
+
+        when {
+            function {
+                """
+                input[0] = 'Run_Accession, experiment_accession'
+                input[1] = ['sample', 'fastq_1', 'run_accession', 'experiment_accession']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == ['sample', 'run_accession', 'experiment_accession'] }
+            )
+        }
+    }
+
+    test("Function getSampleMappingFields [failure]") {
+
+        function "getSampleMappingFields"
+
+        when {
+            function {
+                """
+                input[0] = 'not_a_column'
+                input[1] = ['sample', 'fastq_1', 'run_accession']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !function.success },
+                { assert function.stdout.any { line -> line.contains("Invalid option for '--sample_mapping_fields': not_a_column") } }
+            )
+        }
+    }
+
+    test("Function toCsvLines") {
+
+        function "toCsvLines"
+
+        when {
+            function {
+                """
+                input[0] = ['sample', 'fastq_1']
+                input[1] = [
+                    [sample: 'SRX2', fastq_1: 'b.fastq.gz', run_accession: 'SRR2'],
+                    [sample: 'SRX1', fastq_1: 'a.fastq.gz', run_accession: 'SRR1'],
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == ['"sample","fastq_1"', '"SRX1","a.fastq.gz"', '"SRX2","b.fastq.gz"'] }
+            )
+        }
+    }
 }
