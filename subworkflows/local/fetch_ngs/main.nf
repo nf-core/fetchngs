@@ -31,8 +31,6 @@ workflow FETCH_NGS {
     dbgap_key // path: dbGaP repository key, or []
     download_method // val: 'aspera', 'ftp', 'sratools' or 'fastq-dl'
     ena_metadata_fields // val: comma-separated ENA metadata fields
-    pipeline // val: pipeline name
-    strandedness // val: strandedness
     skip_fastq_download // val: boolean
 
     main:
@@ -111,32 +109,6 @@ workflow FETCH_NGS {
             }
     }
 
-    ch_samplesheet_rows = ch_metadata.map { meta -> buildPipelineMap(meta, pipeline, strandedness) }
-
     emit:
-    metadata         = ch_metadata // channel: [ meta ]
-    samplesheet_rows = ch_samplesheet_rows // channel: [ row ] ordered map, one per run
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-def buildPipelineMap(meta, pipeline, strandedness) {
-    def pipeline_extras = [
-        ampliseq: [run: ''],
-        atacseq: [replicate: 1],
-        mag: [group: '', short_reads_platform: '', long_reads_platform: ''],
-        rnaseq: [strandedness: strandedness],
-        sarek: [patient: meta.sample_accession],
-        taxprofiler: [fasta: ''],
-    ]
-
-    return [
-        sample: "${meta.id.toString().split('_')[0..-2].join('_')}",
-        fastq_1: meta.fastq_1,
-        fastq_2: meta.fastq_2,
-    ] + (pipeline_extras[pipeline] ?: [:]) + meta.subMap(meta.keySet() - ['id', 'md5_1', 'md5_2', 'single_end', 'fastq_1', 'fastq_2'])
+    metadata = ch_metadata // channel: [ meta ]
 }

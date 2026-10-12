@@ -6,7 +6,7 @@
 
 include { MULTIQC_MAPPINGS_CONFIG } from '../modules/local/multiqc_mappings_config'
 include { FETCH_NGS               } from '../subworkflows/local/fetch_ngs'
-include { SAMPLESHEET_WRITER      } from '../subworkflows/local/samplesheet_writer'
+include { NGS_SAMPLESHEET         } from '../subworkflows/local/ngs_samplesheet'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,20 +53,21 @@ workflow FETCHNGS {
         dbgap_key,
         download_method,
         ena_metadata_fields,
-        nf_core_pipeline,
-        nf_core_rnaseq_strandedness,
         skip_fastq_download,
     )
 
-    ch_samplesheet_rows = channel.empty()
-        .mix(FETCH_NGS.out.samplesheet_rows.map { row -> ['ngs', row] })
     //
-    // SUBWORKFLOW: Write the samplesheet and id mappings for all repositories
+    // SUBWORKFLOW: Write the samplesheet and id mappings for SRA / ENA / DDBJ / GEO ids
     //
-    SAMPLESHEET_WRITER(ch_samplesheet_rows, sample_mapping_fields)
+    NGS_SAMPLESHEET(
+        FETCH_NGS.out.metadata,
+        nf_core_pipeline,
+        nf_core_rnaseq_strandedness,
+        sample_mapping_fields,
+    )
 
-    ch_samplesheet = SAMPLESHEET_WRITER.out.samplesheet
-    ch_mappings = SAMPLESHEET_WRITER.out.mappings
+    ch_samplesheet = NGS_SAMPLESHEET.out.samplesheet
+    ch_mappings = NGS_SAMPLESHEET.out.mappings
 
     //
     // MODULE: Create a MutiQC config file with sample name mappings
