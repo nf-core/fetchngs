@@ -6,7 +6,7 @@ keywords:
   - CSV
   - metadata
 components:
-  - samplesheet/write
+  - write/file
 input:
   - ch_rows:
       type: list

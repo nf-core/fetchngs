@@ -1,4 +1,4 @@
-include { SAMPLESHEET_WRITE } from '../../../modules/local/samplesheet_write'
+include { WRITE_FILE } from '../../../modules/local/writefile'
 
 workflow SAMPLESHEET_WRITER {
     take:
@@ -6,14 +6,34 @@ workflow SAMPLESHEET_WRITER {
     mapping_fields // val: comma-separated columns for id_mappings.csv
 
     main:
-    // Group the rows of each data type and write one samplesheet and id mappings file per data type
-    ch_rows_by_data_type = ch_rows
+    // Build the samplesheet and id mappings lines of each data type and write all files with one WRITE_FILE call
+    ch_files = ch_rows
         .groupTuple()
-        .map { data_type, rows -> [[id: data_type], rows] }
+        .flatMap { data_type, rows ->
+            def meta = [id: data_type]
+            def fields = mapping_fields ? ['sample'] + mapping_fields.split(',').collect { field -> field.trim().toLowerCase() } : []
+            rows.each { row ->
+                if ((row.keySet() + fields).unique().size() != row.keySet().size()) {
+                    error("Invalid option for '--sample_mapping_fields': ${mapping_fields}.\nValid options: ${row.keySet().join(', ')}")
+                }
+            }
+            return [
+                [meta, 'samplesheet.csv', toCsvLines(rows.first().keySet() as List, rows)],
+                [meta, 'id_mappings.csv', toCsvLines(fields, rows)],
+            ]
+        }
 
-    SAMPLESHEET_WRITE(ch_rows_by_data_type, mapping_fields)
+    WRITE_FILE(ch_files)
 
     emit:
-    samplesheet = SAMPLESHEET_WRITE.out.samplesheet // channel: [ val(meta), path(samplesheet.csv) ]
-    mappings    = SAMPLESHEET_WRITE.out.mappings // channel: [ val(meta), path(id_mappings.csv) ]
+    samplesheet = WRITE_FILE.out.file.filter { _meta, file -> file.name == 'samplesheet.csv' } // channel: [ val(meta), path(samplesheet.csv) ]
+    mappings    = WRITE_FILE.out.file.filter { _meta, file -> file.name == 'id_mappings.csv' } // channel: [ val(meta), path(id_mappings.csv) ]
+}
+
+// FUNCTIONS
+
+def toCsvLines(fields, rows) {
+    def header = fields.collect { field -> '"' + field + '"' }.join(",")
+    def values = rows.collect { row -> fields.collect { field -> '"' + row[field] + '"' }.join(",") }.sort()
+    return ([header] + values).findAll { line -> line }
 }
