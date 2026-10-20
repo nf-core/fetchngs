@@ -51,7 +51,7 @@ output:
   - metadata:
       type: map
       description: >
-        Groovy Map containing SRA metadata for each run e.g. [ id:'SRX6725035_SRR9984183', single_end:false ]
+        Groovy Map containing SRA metadata for each run
 
 authors:
   - "@Tabea01"
