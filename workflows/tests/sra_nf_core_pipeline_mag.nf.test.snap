@@ -11,58 +11,17 @@
             [
                 [
                     {
-                        "base_count": "0",
-                        "experiment_accession": "SRX34639651",
-                        "experiment_alias": "NHD_D",
-                        "experiment_title": "GridION sequencing: mWGS of veterinary SSI non-host-depleted sample D",
-                        "fastq_1": "SRX34639651_SRR39975836.fastq.gz",
-                        "fastq_2": "",
-                        "fastq_aspera": "",
-                        "fastq_bytes": "",
-                        "fastq_ftp": "",
-                        "fastq_galaxy": "",
-                        "fastq_md5": "",
-                        "id": "SRX34639651_SRR39975836",
-                        "instrument_model": "GridION",
-                        "instrument_platform": "OXFORD_NANOPORE",
-                        "library_layout": "SINGLE",
-                        "library_name": "NHD_D",
-                        "library_selection": "RANDOM",
-                        "library_source": "GENOMIC",
-                        "library_strategy": "WGS",
-                        "md5_1": "",
-                        "md5_2": "",
-                        "read_count": "0",
-                        "run_accession": "SRR39975836",
-                        "run_alias": "NHD_D.fastq.gz",
-                        "sample_accession": "SAMN62143343",
-                        "sample_alias": "",
-                        "sample_description": "",
-                        "sample_title": "",
-                        "scientific_name": "",
-                        "secondary_sample_accession": "SRS30204721",
-                        "secondary_study_accession": "SRP723680",
-                        "single_end": true,
-                        "study_accession": "PRJNA1506675",
-                        "study_alias": "PRJNA1506675",
-                        "study_title": "mWGS of veterinary surgical site infections",
-                        "submission_accession": "SRA2501020",
-                        "tax_id": ""
-                    }
-                ],
-                [
-                    {
-                        "base_count": "0",
+                        "base_count": "10970668",
                         "experiment_accession": "SRX34639654",
                         "experiment_alias": "NHD_G",
                         "experiment_title": "GridION sequencing: mWGS of veterinary SSI non-host-depleted sample G",
                         "fastq_1": "SRX34639654_SRR39975833.fastq.gz",
                         "fastq_2": "",
-                        "fastq_aspera": "",
-                        "fastq_bytes": "",
-                        "fastq_ftp": "",
-                        "fastq_galaxy": "",
-                        "fastq_md5": "",
+                        "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/SRR399/033/SRR39975833/SRR39975833_1.fastq.gz",
+                        "fastq_bytes": "9607039",
+                        "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR399/033/SRR39975833/SRR39975833_1.fastq.gz",
+                        "fastq_galaxy": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR399/033/SRR39975833/SRR39975833_1.fastq.gz",
+                        "fastq_md5": "f11232cf7b7b9d9438639681ccb104d4",
                         "id": "SRX34639654_SRR39975833",
                         "instrument_model": "GridION",
                         "instrument_platform": "OXFORD_NANOPORE",
@@ -71,9 +30,9 @@
                         "library_selection": "RANDOM",
                         "library_source": "GENOMIC",
                         "library_strategy": "WGS",
-                        "md5_1": "",
+                        "md5_1": "f11232cf7b7b9d9438639681ccb104d4",
                         "md5_2": "",
-                        "read_count": "0",
+                        "read_count": "11125",
                         "run_accession": "SRR39975833",
                         "run_alias": "NHD_G.fastq.gz",
                         "sample_accession": "SAMN62143346",
@@ -175,6 +134,47 @@
                 ],
                 [
                     {
+                        "base_count": "27247045",
+                        "experiment_accession": "SRX34639651",
+                        "experiment_alias": "NHD_D",
+                        "experiment_title": "GridION sequencing: mWGS of veterinary SSI non-host-depleted sample D",
+                        "fastq_1": "SRX34639651_SRR39975836.fastq.gz",
+                        "fastq_2": "",
+                        "fastq_aspera": "fasp.sra.ebi.ac.uk:/vol1/fastq/SRR399/036/SRR39975836/SRR39975836_1.fastq.gz",
+                        "fastq_bytes": "23484109",
+                        "fastq_ftp": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR399/036/SRR39975836/SRR39975836_1.fastq.gz",
+                        "fastq_galaxy": "ftp.sra.ebi.ac.uk/vol1/fastq/SRR399/036/SRR39975836/SRR39975836_1.fastq.gz",
+                        "fastq_md5": "982debc68c40cc79eb024595c82d1182",
+                        "id": "SRX34639651_SRR39975836",
+                        "instrument_model": "GridION",
+                        "instrument_platform": "OXFORD_NANOPORE",
+                        "library_layout": "SINGLE",
+                        "library_name": "NHD_D",
+                        "library_selection": "RANDOM",
+                        "library_source": "GENOMIC",
+                        "library_strategy": "WGS",
+                        "md5_1": "982debc68c40cc79eb024595c82d1182",
+                        "md5_2": "",
+                        "read_count": "23027",
+                        "run_accession": "SRR39975836",
+                        "run_alias": "NHD_D.fastq.gz",
+                        "sample_accession": "SAMN62143343",
+                        "sample_alias": "",
+                        "sample_description": "",
+                        "sample_title": "",
+                        "scientific_name": "",
+                        "secondary_sample_accession": "SRS30204721",
+                        "secondary_study_accession": "SRP723680",
+                        "single_end": true,
+                        "study_accession": "PRJNA1506675",
+                        "study_alias": "PRJNA1506675",
+                        "study_title": "mWGS of veterinary surgical site infections",
+                        "submission_accession": "SRA2501020",
+                        "tax_id": ""
+                    }
+                ],
+                [
+                    {
                         "base_count": "35658",
                         "experiment_accession": "ERX1234253",
                         "experiment_alias": "qiita_ptid_1263:10317.BLANK.93.3E.r22",
@@ -216,19 +216,8 @@
                 ]
             ],
             {
-                "CUSTOM_SRATOOLSNCBISETTINGS": {
-                    "sratools": "3.2.1"
-                },
                 "MULTIQC_MAPPINGS_CONFIG": {
                     "python": "3.9.5"
-                },
-                "SRATOOLS_FASTERQDUMP": {
-                    "pigz": "2.8",
-                    "sratools": "3.2.1"
-                },
-                "SRATOOLS_PREFETCH": {
-                    "curl": "8.14.1",
-                    "sratools": "3.2.1"
                 },
                 "SRA_FASTQ_FTP": {
                     "wget": "1.25.0"
@@ -241,10 +230,10 @@
                 }
             }
         ],
-        "timestamp": "2026-08-14T12:41:45.382217688",
+        "timestamp": "2026-10-20T11:50:39.5751",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "25.10.4"
         }
     }
 }
