@@ -4,9 +4,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { ASPERA_CLI                                   } from '../modules/local/aspera_cli'
 include { MULTIQC_MAPPINGS_CONFIG                      } from '../modules/local/multiqc_mappings_config'
-include { SRA_FASTQ_FTP                                } from '../modules/local/sra_fastq_ftp'
 include { CHANNEL_SRA_CREATE_CSV                       } from '../subworkflows/local/channel_sra_create_csv'
 include { FETCH_NGS                                    } from '../subworkflows/local/fetch_ngs'
 
@@ -16,8 +14,6 @@ include { FETCH_NGS                                    } from '../subworkflows/l
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { FASTQDL                                      } from '../modules/nf-core/fastqdl'
-include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../subworkflows/nf-core/fastq_download_prefetch_fasterqdump_sratools'
 include { softwareVersionsToYAML                       } from 'plugin/nf-core-utils'
 
 /*
@@ -41,65 +37,10 @@ workflow FETCHNGS {
     main:
 
     //
-    // SUBWORKFLOW: Get run metadata for SRA / ENA / DDBJ / GEO ids
+    // SUBWORKFLOW: Get run metadata and download FastQ files for SRA / ENA / DDBJ / GEO ids
     //
-    FETCH_NGS(ids, ena_metadata_fields)
+    FETCH_NGS(ids, outdir, dbgap_key, download_method, ena_metadata_fields, skip_fastq_download)
     ch_sra_metadata = FETCH_NGS.out.metadata
-
-    if (!skip_fastq_download) {
-
-        ch_sra_reads = ch_sra_metadata.branch { meta ->
-            def final_download_method = 'ftp'
-            // meta.fastq_aspera is a metadata string with ENA fasp links supported by Aspera
-            // For single-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/ERR116/006/ERR1160846/ERR1160846.fastq.gz'
-            // For paired-end: 'fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_1.fastq.gz;fasp.sra.ebi.ac.uk:/vol1/fastq/SRR130/020/SRR13055520/SRR13055520_2.fastq.gz'
-            if (meta.fastq_aspera && download_method == 'aspera') {
-                final_download_method = 'aspera'
-            }
-            if (download_method == 'fastq-dl') {
-                final_download_method = 'fastq-dl'
-            }
-            if ((!meta.fastq_aspera && !meta.fastq_1) || download_method == 'sratools') {
-                final_download_method = 'sratools'
-            }
-            aspera: final_download_method == 'aspera'
-            return [meta, meta.fastq_aspera.tokenize(';').take(2)]
-            fastqdl: final_download_method == 'fastq-dl'
-            return [meta, meta.run_accession]
-            ftp: final_download_method == 'ftp'
-            return [meta, [meta.fastq_1, meta.fastq_2]]
-            sratools: final_download_method == 'sratools'
-            return [meta, meta.run_accession]
-        }
-
-        //
-        // MODULE: If FTP link is provided in run information then download FastQ directly via FTP and validate with md5sums
-        //
-        SRA_FASTQ_FTP(ch_sra_reads.ftp)
-
-        //
-        // SUBWORKFLOW: Download sequencing reads without FTP links using sra-tools.
-        //
-        FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS(ch_sra_reads.sratools, dbgap_key)
-
-        //
-        // MODULE: If Aspera link is provided in run information then download FastQ directly via Aspera CLI and validate with md5sums
-        //
-        ASPERA_CLI(ch_sra_reads.aspera, 'era-fasp')
-
-        FASTQDL(ch_sra_reads.fastqdl)
-
-        // Isolate FASTQ channel which will be added to emit block
-        ch_sra_metadata = SRA_FASTQ_FTP.out.fastq
-            .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
-            .mix(ASPERA_CLI.out.fastq)
-            .mix(FASTQDL.out.fastq)
-            .map { meta, fastq ->
-                def reads = fastq instanceof List ? fastq.flatten() : [fastq]
-
-                return meta + [fastq_1: reads[0] ? "${outdir}/fastq/${reads[0].getName()}" : '', fastq_2: reads[1] && !meta.single_end ? "${outdir}/fastq/${reads[1].getName()}" : '']
-            }
-    }
 
     //
     // SUBWORKFLOW: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
