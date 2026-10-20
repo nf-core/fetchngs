@@ -7,9 +7,8 @@
 include { ASPERA_CLI                                   } from '../modules/local/aspera_cli'
 include { MULTIQC_MAPPINGS_CONFIG                      } from '../modules/local/multiqc_mappings_config'
 include { SRA_FASTQ_FTP                                } from '../modules/local/sra_fastq_ftp'
-include { SRA_IDS_TO_RUNINFO                           } from '../modules/local/sra_ids_to_runinfo'
-include { SRA_RUNINFO_TO_FTP                           } from '../modules/local/sra_runinfo_to_ftp'
 include { CHANNEL_SRA_CREATE_CSV                       } from '../subworkflows/local/channel_sra_create_csv'
+include { FETCH_NGS                                    } from '../subworkflows/local/fetch_ngs'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,20 +41,10 @@ workflow FETCHNGS {
     main:
 
     //
-    // MODULE: Get SRA run information for public database ids
+    // SUBWORKFLOW: Get run metadata for SRA / ENA / DDBJ / GEO ids
     //
-    SRA_IDS_TO_RUNINFO(ids, ena_metadata_fields)
-
-    //
-    // MODULE: Parse SRA run information, create file containing FTP links and read into workflow as [ meta, [reads] ]
-    //
-    SRA_RUNINFO_TO_FTP(SRA_IDS_TO_RUNINFO.out.tsv)
-
-    ch_sra_metadata = SRA_RUNINFO_TO_FTP.out.tsv
-        .filter { row -> row.size() > 0 }
-        .splitCsv(header: true, sep: '\t')
-        .map { meta -> meta + [single_end: meta.single_end.toBoolean()] }
-        .unique()
+    FETCH_NGS(ids, ena_metadata_fields)
+    ch_sra_metadata = FETCH_NGS.out.metadata
 
     if (!skip_fastq_download) {
 
