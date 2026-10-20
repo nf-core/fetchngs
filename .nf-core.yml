@@ -5,14 +5,12 @@ lint:
     - assets/multiqc_config.yml
     - conf/igenomes.config
     - conf/igenomes_ignored.config
-    - conf/modules.config
   files_unchanged:
     - .github/PULL_REQUEST_TEMPLATE.md
     - assets/nf-core-fetchngs_logo_light.png
     - assets/sendmail_template.txt
     - docs/images/nf-core-fetchngs_logo_dark.png
     - docs/images/nf-core-fetchngs_logo_light.png
-  modules_config: false
   multiqc_config: false
 nf_core_version: 4.1.0
 repository_type: pipeline
