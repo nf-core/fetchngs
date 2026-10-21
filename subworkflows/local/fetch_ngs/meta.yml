@@ -25,7 +25,8 @@ input:
   - outdir:
       type: string
       description: >
-        Output directory used to build the FastQ paths in the samplesheet
+        Output directory used to build the fastq_1 / fastq_2 paths in the metadata.
+        Must match params.outdir, which the FastQ files are published to
 
   - dbgap_key:
       type: file
