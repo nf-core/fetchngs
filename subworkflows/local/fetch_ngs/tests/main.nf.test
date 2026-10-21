@@ -1,0 +1,70 @@
+nextflow_workflow {
+
+    name "Test workflow: FETCH_NGS"
+    script "../main.nf"
+    workflow "FETCH_NGS"
+
+    tag "subworkflows"
+    tag "subworkflows_local"
+    tag "fetch_ngs"
+
+    // Dependencies
+    tag "SRA_FASTQ_FTP"
+    tag "SRA_IDS_TO_RUNINFO"
+    tag "SRA_RUNINFO_TO_FTP"
+
+    test("Should emit metadata - skip_fastq_download") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
+                input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'ftp'
+                input[4] = ''
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert workflow.out.metadata.size() == 3 },
+                { assert snapshot(workflow.out.metadata.sort { meta -> meta.id }).match() }
+            )
+        }
+    }
+
+    test("Should download reads and rewrite fastq paths - ftp") {
+
+        when {
+            params {
+                outdir = "${outputDir}"
+            }
+            workflow {
+                """
+                input[0] = channel.of("DRX026011", "ERX1234253")
+                input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'ftp'
+                input[4] = ''
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            def metadata = workflow.out.metadata
+                .collect { meta -> [meta.id, meta.single_end, meta.fastq_1.replaceAll(outputDir, ''), meta.fastq_2.replaceAll(outputDir, '')] }
+                .sort { row -> row[0] }
+
+            assert workflow.success
+            assertAll(
+                { assert workflow.out.metadata.every { meta -> path(meta.fastq_1).exists() && (meta.single_end || path(meta.fastq_2).exists()) } },
+                { assert snapshot(metadata).match() }
+            )
+        }
+    }
+}
