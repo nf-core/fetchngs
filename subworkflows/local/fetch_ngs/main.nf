@@ -1,3 +1,7 @@
+//
+// Subworkflow to fetch metadata and FastQ files for SRA / ENA / DDBJ / GEO ids
+//
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT LOCAL MODULES/SUBWORKFLOWS/FUNCTIONS
