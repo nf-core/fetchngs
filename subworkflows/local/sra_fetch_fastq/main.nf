@@ -28,7 +28,7 @@ include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../nf-core/fas
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-workflow FETCH_NGS {
+workflow SRA_FETCH_FASTQ {
     take:
     ids // channel: [ ids ]
     outdir // val: output directory

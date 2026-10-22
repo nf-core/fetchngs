@@ -6,7 +6,7 @@
 
 include { MULTIQC_MAPPINGS_CONFIG                      } from '../modules/local/multiqc_mappings_config'
 include { CHANNEL_SRA_CREATE_CSV                       } from '../subworkflows/local/channel_sra_create_csv'
-include { FETCH_NGS                                    } from '../subworkflows/local/fetch_ngs'
+include { SRA_FETCH_FASTQ                              } from '../subworkflows/local/sra_fetch_fastq'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,8 +39,8 @@ workflow FETCHNGS {
     //
     // SUBWORKFLOW: Get run metadata and download FastQ files for SRA / ENA / DDBJ / GEO ids
     //
-    FETCH_NGS(ids, outdir, dbgap_key, download_method, ena_metadata_fields, skip_fastq_download)
-    ch_sra_metadata = FETCH_NGS.out.metadata
+    SRA_FETCH_FASTQ(ids, outdir, dbgap_key, download_method, ena_metadata_fields, skip_fastq_download)
+    ch_sra_metadata = SRA_FETCH_FASTQ.out.metadata
 
     //
     // SUBWORKFLOW: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
