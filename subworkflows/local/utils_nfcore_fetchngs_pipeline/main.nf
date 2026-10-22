@@ -126,11 +126,14 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input
     //
-    ch_ids = channel.fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
+    def schema_input = "${projectDir}/assets/schema_input.json"
+    def schema = new groovy.json.JsonSlurper().parse(file(schema_input))
+    ch_ids = channel.fromList(samplesheetToList(input, schema_input))
         .unique()
+        .map { id -> [sourceForId(id, schema), id] }
 
     emit:
-    ids = ch_ids
+    ids = ch_ids // channel: [ val(source), val(id) ]
 }
 
 /*
