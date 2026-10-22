@@ -194,6 +194,14 @@ def sraCheckENAMetadataFields(ena_metadata_fields) {
 }
 
 //
+// Return the source of an id: the title of the schema_input.json entry whose pattern it matches
+//
+def sourceForId(id, schema) {
+    def entries = schema.items.anyOf ?: [schema.items]
+    return entries.find { entry -> id ==~ entry.pattern }?.title
+}
+
+//
 // Print a warning after pipeline has completed
 //
 def sraCurateSamplesheetWarn() {
