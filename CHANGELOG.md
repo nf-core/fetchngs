@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #403](https://github.com/nf-core/fetchngs/pull/403) - Replace removed `cgi` module in `sra_ids_to_runinfo.py` and update `SRA_IDS_TO_RUNINFO` to Python 3.13.7
 - [PR #408](https://github.com/nf-core/fetchngs/pull/408) - Move module configs into `conf/modules.config` and respect `publish_dir_mode` for `FASTQDL` outputs
 - [PR #409](https://github.com/nf-core/fetchngs/pull/409) - Move SRA download steps into a `SRA_FETCH_FASTQ` subworkflow
+- [PR #410](https://github.com/nf-core/fetchngs/pull/410) - Route input ids to a subworkflow by their source, defined in `assets/schema_input.json`
 
 ## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
