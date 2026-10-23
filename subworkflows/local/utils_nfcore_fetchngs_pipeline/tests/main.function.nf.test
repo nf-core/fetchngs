@@ -54,4 +54,67 @@ nextflow_function {
             )
         }
     }
+
+    test("Function sourceForId [SRA run]") {
+
+        function "sourceForId"
+
+        when {
+            function {
+                """
+                input[0] = 'SRR9984183'
+                input[1] = new groovy.json.JsonSlurper().parse(file("${projectDir}/assets/schema_input.json"))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sra' }
+            )
+        }
+    }
+
+    test("Function sourceForId [GEO series]") {
+
+        function "sourceForId"
+
+        when {
+            function {
+                """
+                input[0] = 'GSE214215'
+                input[1] = new groovy.json.JsonSlurper().parse(file("${projectDir}/assets/schema_input.json"))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'sra' }
+            )
+        }
+    }
+
+    test("Function sourceForId [unknown id]") {
+
+        function "sourceForId"
+
+        when {
+            function {
+                """
+                input[0] = 'PXD012345'
+                input[1] = new groovy.json.JsonSlurper().parse(file("${projectDir}/assets/schema_input.json"))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == null }
+            )
+        }
+    }
 }
