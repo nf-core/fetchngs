@@ -24,7 +24,7 @@ include { softwareVersionsToYAML                       } from 'plugin/nf-core-ut
 
 workflow FETCHNGS {
     take:
-    ids // channel: [ ids ]
+    ids // channel: [ val(source), val(id) ]
     outdir
     dbgap_key
     download_method
@@ -37,9 +37,22 @@ workflow FETCHNGS {
     main:
 
     //
+    // Route each id to the subworkflow for its source
+    //
+    ch_ids = ids.branch { source, id ->
+        sra: source == 'sra'
+        return id
+        unknown: true
+    }
+
+    ch_ids.unknown.subscribe { source, id ->
+        error("No subworkflow to fetch '${id}' from source '${source}'")
+    }
+
+    //
     // SUBWORKFLOW: Get run metadata and download FastQ files for SRA / ENA / DDBJ / GEO ids
     //
-    SRA_FETCH_FASTQ(ids, outdir, dbgap_key, download_method, ena_metadata_fields, skip_fastq_download)
+    SRA_FETCH_FASTQ(ch_ids.sra, outdir, dbgap_key, download_method, ena_metadata_fields, skip_fastq_download)
     ch_sra_metadata = SRA_FETCH_FASTQ.out.metadata
 
     //
