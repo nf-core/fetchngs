@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #403](https://github.com/nf-core/fetchngs/pull/403) - Replace removed `cgi` module in `sra_ids_to_runinfo.py` and update `SRA_IDS_TO_RUNINFO` to Python 3.13.7
 - [PR #408](https://github.com/nf-core/fetchngs/pull/408) - Move module configs into `conf/modules.config` and respect `publish_dir_mode` for `FASTQDL` outputs
 - [PR #409](https://github.com/nf-core/fetchngs/pull/409) - Move SRA download steps into a `SRA_FETCH_FASTQ` subworkflow
-- [PR #XXX](https://github.com/nf-core/fetchngs/pull/XXX) - Request 1 CPU and 1 GB for `SRA_FASTQ_FTP` instead of 2 CPUs and 12 GB, so the pipeline runs on machines with less than 12 GB of memory ([#407](https://github.com/nf-core/fetchngs/issues/407))
+- [PR #411](https://github.com/nf-core/fetchngs/pull/XXX) - Request 1 CPU and 1 GB for `SRA_FASTQ_FTP` instead of 2 CPUs and 12 GB, so the pipeline runs on machines with less than 12 GB of memory ([#407](https://github.com/nf-core/fetchngs/issues/407))
 
 ## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
