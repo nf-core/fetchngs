@@ -1,6 +1,7 @@
 process SRA_FASTQ_FTP {
     tag "${meta.id}"
-    label 'process_low'
+    label 'process_single'
+    label 'process_low_memory'
     label 'error_retry'
 
     conda "${moduleDir}/environment.yml"
