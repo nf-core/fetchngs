@@ -41,7 +41,7 @@ workflow FETCHNGS {
     //
     ch_ids = ids.branch { source, id ->
         sra: source == 'sra'
-        return id
+            return id
         unknown: true
     }
 
