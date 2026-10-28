@@ -179,4 +179,19 @@ If you update images or graphics, follow the nf-core [style guidelines](https://
 
 ## Pipeline specific contribution guidelines
 
-<!-- TODO nf-core: Add any pipeline specific contribution guidelines here, such as coding styles, procedures, checklists etc. -->
+- Always include PR number in CHANGELOG entries (use format: `[PR #NNN](https://github.com/nf-core/fetchngs/pull/NNN)`)
+
+### Adding a new pipeline
+
+1. Add an entry to `pipeline_extras` in `subworkflows/local/channel_sra_create_csv/main.nf`:
+   - Map the pipeline name to its extra samplesheet columns (e.g., `[strandedness: strandedness]` for rnaseq)
+   - Missing pipelines return `[:]`, so no entry is needed if there are no extras
+
+2. Add a test in `workflows/tests/`:
+   - Create `sra_nf_core_pipeline_<pipeline>.nf.test`
+   - Set `input[5]` to the pipeline name and add the appropriate tags
+
+3. If the pipeline introduces new parameters, update the schema:
+   ```bash
+   nf-core pipelines schema build
+   ```

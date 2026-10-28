@@ -10,6 +10,34 @@
 
 ## Pipeline tools
 
+- [Aspera CLI](https://github.com/IBM/aspera-cli)
+
+- [fastq-dl](https://github.com/rpetit3/fastq-dl)
+
+- [Python](http://www.python.org)
+
+- [Requests](https://docs.python-requests.org/)
+
+- [sra-tools](https://github.com/ncbi/sra-tools)
+
+## Pipeline resources
+
+- [ENA](https://pubmed.ncbi.nlm.nih.gov/33175160/)
+
+  > Harrison PW, Ahamed A, Aslam R, Alako BTF, Burgin J, Buso N, Courtot M, Fan J, Gupta D, Haseeb M, Holt S, Ibrahim T, Ivanov E, Jayathilaka S, Kadhirvelu VB, Kumar M, Lopez R, Kay S, Leinonen R, Liu X, O'Cathail C, Pakseresht A, Park Y, Pesant S, Rahman N, Rajan J, Sokolov A, Vijayaraja S, Waheed Z, Zyoud A, Burdett T, Cochrane G. The European Nucleotide Archive in 2020. Nucleic Acids Res. 2021 Jan 8;49(D1):D82-D85. doi: 10.1093/nar/gkaa1028. PubMed PMID: 33175160; PubMed Central PMCID: PMC7778925.
+
+- [SRA](https://pubmed.ncbi.nlm.nih.gov/21062823/)
+
+  > Leinonen R, Sugawara H, Shumway M, International Nucleotide Sequence Database Collaboration. The sequence read archive. Nucleic Acids Res. 2011 Jan;39 (Database issue):D19-21. doi: 10.1093/nar/gkq1019. Epub 2010 Nov 9. PubMed PMID: 21062823; PubMed Central PMCID: PMC3013647.
+
+- [DDBJ](https://pubmed.ncbi.nlm.nih.gov/33156332/)
+
+  > Fukuda A, Kodama Y, Mashima J, Fujisawa T, Ogasawara O. DDBJ update: streamlining submission and access of human data. Nucleic Acids Res. 2021 Jan 8;49(D1):D71-D75. doi: 10.1093/nar/gkaa982. PubMed PMID: 33156332; PubMed Central PMCID: PMC7779041.
+
+- [GEO](https://pubmed.ncbi.nlm.nih.gov/23193258/)
+
+  > Barrett T, Wilhite SE, Ledoux P, Evangelista C, Kim IF, Tomashevsky M, Marshall KA, Phillippy KH, Sherman PM, Holko M, Yefanov A, Lee H, Zhang N, Robertson CL, Serova N, Davis S, Soboleva A. NCBI GEO: archive for functional genomics data sets--update. Nucleic Acids Res. 2013 Jan;41(Database issue):D991-5. doi: 10.1093/nar/gks1193. Epub 2012 Nov 27. PubMed PMID: 23193258; PubMed Central PMCID: PMC3531084.
+
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)
@@ -27,6 +55,8 @@
 - [Docker](https://dl.acm.org/doi/10.5555/2600239.2600241)
 
   > Merkel, D. (2014). Docker: lightweight linux containers for consistent development and deployment. Linux Journal, 2014(239), 2. doi: 10.5555/2600239.2600241.
+
+- [nf-test](https://code.askimed.com/nf-test)
 
 - [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
 

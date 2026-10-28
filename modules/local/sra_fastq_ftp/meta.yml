@@ -1,0 +1,71 @@
+name: sra_fastq_ftp
+description: Download FASTQ files from NCBI/ENA via FTP using wget with MD5 validation
+keywords:
+  - fastq
+  - download
+  - ftp
+  - sra
+  - ena
+  - wget
+tools:
+  - wget:
+      description: GNU Wget - network file retriever
+      homepage: https://www.gnu.org/software/wget/
+      documentation: https://www.gnu.org/software/wget/manual/wget.html
+      licence:
+        - "GPL-3.0"
+input:
+  - - meta:
+        type: map
+        description: >
+          Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+    - fastq:
+        type: string
+        description: >
+          FTP download URL(s) for FASTQ file(s)
+output:
+  fastq:
+    - - meta:
+          type: map
+          description: >
+            Groovy Map containing sample information
+      - "*fastq.gz":
+          type: file
+          description: Downloaded FASTQ file(s)
+          pattern: "*fastq.gz"
+  md5:
+    - - meta:
+          type: map
+          description: >
+            Groovy Map containing sample information
+      - "*md5":
+          type: file
+          description: MD5 checksum files
+          pattern: "*md5"
+  versions_wget:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wget:
+          type: string
+          description: The name of the tool
+      - wget --version | head -n 1 | sed "s/^GNU Wget //; s/ .*$$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wget:
+          type: string
+          description: The name of the tool
+      - wget --version | head -n 1 | sed "s/^GNU Wget //; s/ .*$$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ewels"
+maintainers:
+  - "@ewels"
+  - "@Midnighter"
+  - "@maxulysse"

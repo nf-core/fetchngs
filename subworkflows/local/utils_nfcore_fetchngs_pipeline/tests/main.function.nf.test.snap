@@ -1,0 +1,18 @@
+{
+    "Function sraCurateSamplesheetWarn": {
+        "content": null,
+        "timestamp": "2024-02-28T11:55:41.001798",
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        }
+    },
+    "Function sraCheckENAMetadataFields [success]": {
+        "content": null,
+        "timestamp": "2024-02-28T11:55:33.679255",
+        "meta": {
+            "nf-test": "0.8.4",
+            "nextflow": "23.10.1"
+        }
+    }
+}
