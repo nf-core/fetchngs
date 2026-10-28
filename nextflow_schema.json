@@ -64,6 +64,12 @@
                     "description": "Method to download FastQ files. Available options are 'aspera', 'fastq-dl', 'ftp' or 'sratools'. Default is 'ftp'.",
                     "help_text": "FTP and Aspera CLI download FastQ files directly from the ENA FTP whereas sratools uses sra-tools to download *.sra files and convert to FastQ."
                 },
+                "fastq_dl_args": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Additional arguments passed to fastq-dl when '--download_method fastq-dl' is selected.",
+                    "fa_icon": "fas fa-terminal"
+                },
                 "skip_fastq_download": {
                     "type": "boolean",
                     "fa_icon": "fas fa-fast-forward",
