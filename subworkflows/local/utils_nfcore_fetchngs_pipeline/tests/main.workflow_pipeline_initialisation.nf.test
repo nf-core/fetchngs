@@ -36,7 +36,8 @@ nextflow_workflow {
 
         then {
             assertAll(
-                { assert workflow.success }
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

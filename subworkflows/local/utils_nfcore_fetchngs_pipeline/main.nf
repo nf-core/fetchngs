@@ -126,11 +126,14 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from input file provided through params.input
     //
-    ch_ids = channel.fromList(samplesheetToList(input, "${projectDir}/assets/schema_input.json"))
+    def schema_input = "${projectDir}/assets/schema_input.json"
+    def schema = new groovy.json.JsonSlurper().parse(file(schema_input))
+    ch_ids = channel.fromList(samplesheetToList(input, schema_input))
         .unique()
+        .map { id -> [sourceForId(id, schema), id] }
 
     emit:
-    ids = ch_ids
+    ids = ch_ids // channel: [ val(source), val(id) ]
 }
 
 /*
@@ -191,6 +194,14 @@ def sraCheckENAMetadataFields(ena_metadata_fields) {
     if (!actual_ena_metadata_fields.containsAll(valid_ena_metadata_fields)) {
         error("Invalid option: '${ena_metadata_fields}'. Minimally required fields for '--ena_metadata_fields': '${valid_ena_metadata_fields.join(',')}'")
     }
+}
+
+//
+// Return the source of an id: the title of the schema_input.json entry whose pattern it matches
+//
+def sourceForId(id, schema) {
+    def entries = schema.items.anyOf ?: [schema.items]
+    return entries.find { entry -> id ==~ entry.pattern }?.title
 }
 
 //
