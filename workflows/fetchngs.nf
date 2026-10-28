@@ -45,9 +45,11 @@ workflow FETCHNGS {
         unknown: true
     }
 
-    ch_ids.unknown.subscribe { source, id ->
-        error("No subworkflow to fetch '${id}' from source '${source}'")
-    }
+    ch_ids.unknown
+        .collect(flat: false)
+        .subscribe { unknown ->
+            error("No subworkflow to fetch these ids:\n" + unknown.collect { source, id -> "  ${id} (source '${source}')" }.join('\n'))
+        }
 
     //
     // SUBWORKFLOW: Get run metadata and download FastQ files for SRA / ENA / DDBJ / GEO ids
