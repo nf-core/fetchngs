@@ -1,0 +1,59 @@
+nextflow_workflow {
+
+    name "Test workflow: workflows/fetchngs.nf"
+    script "../fetchngs.nf"
+    workflow "FETCHNGS"
+    tag "SRA_DOWNLOAD_METHOD_SRATOOLS"
+
+    // Dependencies
+    tag "FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS"
+    tag "SRA_IDS_TO_RUNINFO"
+    tag "SRA_RUNINFO_TO_FTP"
+    tag "SRA_TO_SAMPLESHEET"
+    tag "MULTIQC_MAPPINGS_CONFIG"
+
+    test("Parameters: --download_method sratools") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
+                input[1] = "${outputDir}"
+                input[2] = []
+                input[3] = 'sratools'
+                input[4] = ''
+                input[5] = ''
+                input[6] = 'auto'
+                input[7] = 'experiment_accession,run_accession,sample_accession,experiment_alias,run_alias,sample_alias,experiment_title,sample_title,sample_description'
+                input[8] = false
+                """
+            }
+        }
+
+        then {
+            // csv_file: Just the samplesheet
+            def csv_file = path(outputDir + '/samplesheet/samplesheet.csv').csv()
+
+            // Sanitize sra_metadata to remove unstable output directory paths
+            def sra_metadata = workflow.out.sra_metadata.collect { meta ->
+                assert meta instanceof Map
+                def fastq1 = meta.fastq_1 ? (meta.fastq_1 instanceof List ? path(meta.fastq_1[0]).fileName.toString() : path(meta.fastq_1).fileName.toString()) : ''
+                def fastq2 = meta.fastq_2 ? (meta.fastq_2 instanceof List ? path(meta.fastq_2[0]).fileName.toString() : path(meta.fastq_2).fileName.toString()) : ''
+                return [meta + [fastq_1: fastq1] + [fastq_2: fastq2]]
+            }
+
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // Samplesheet
+                    "samplesheet.csv:md5," + csv_file.sort().table.collect { row -> [row.getString("sample"), row.getString("fastq_1").replaceAll(outputDir, ""), row.getString("fastq_2").replaceAll(outputDir, "")].join(",") }.join("\n").md5(),
+                    workflow.out.mappings,
+                    workflow.out.sample_mappings,
+                    sra_metadata,
+                    // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_fetchngs_software_versions.yml", "Workflow"),
+                ).match() }
+            )
+        }
+    }
+}

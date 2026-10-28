@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: sra_fetch_fastq
+description: Fetch metadata and FastQ files for SRA / ENA / DDBJ / GEO ids
+keywords:
+  - SRA
+  - ENA
+  - DDBJ
+  - GEO
+  - download
+  - fastq
+  - metadata
+components:
+  - aspera/cli
+  - sra/fastq/ftp
+  - sra/ids/to/runinfo
+  - sra/runinfo/to/ftp
+  - fastqdl
+  - fastq_download_prefetch_fasterqdump_sratools
+input:
+  - ids:
+      type: string
+      description: >
+        Channel of SRA / ENA / DDBJ / GEO ids e.g. 'SRR13191702'
+
+  - outdir:
+      type: string
+      description: >
+        Output directory used to build the fastq_1 / fastq_2 paths in the metadata.
+        Must match params.outdir, which the FastQ files are published to
+
+  - dbgap_key:
+      type: file
+      description: >
+        dbGaP repository key for controlled-access data, or [] if not required
+
+  - download_method:
+      type: string
+      description: >
+        Method used to download FastQ files: 'aspera', 'ftp', 'sratools' or 'fastq-dl'
+
+  - ena_metadata_fields:
+      type: string
+      description: >
+        Comma-separated list of ENA metadata fields to fetch
+
+  - skip_fastq_download:
+      type: boolean
+      description: >
+        Only fetch metadata and skip downloading FastQ files
+
+output:
+  - metadata:
+      type: map
+      description: >
+        Groovy Map containing SRA metadata for each run
+
+authors:
+  - "@Tabea01"

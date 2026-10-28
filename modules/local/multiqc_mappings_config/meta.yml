@@ -1,0 +1,53 @@
+name: multiqc_mappings_config
+description: Generate MultiQC configuration YAML from sample name mappings
+keywords:
+  - multiqc
+  - qc
+  - reporting
+  - config
+tools:
+  - python:
+      description: General-purpose programming language
+      homepage: https://www.python.org/
+      documentation: https://docs.python.org/3/
+      licence:
+        - "PSF-2.0"
+input:
+  - csv:
+      type: file
+      description: >
+        CSV file with sample name mappings
+      pattern: "*.csv"
+output:
+  yml:
+    - "*config.yml":
+        type: file
+        description: MultiQC configuration YAML file with sample rename mappings
+        pattern: "*config.yml"
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@drpatelh"
+maintainers:
+  - "@ewels"
+  - "@taume"
+  - "@maxulysse"
