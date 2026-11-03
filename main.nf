@@ -29,7 +29,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_fetc
 //
 workflow NFCORE_FETCHNGS {
     take:
-    ids // channel: database ids read in from --input
+    ids // channel: [ val(source), val(id) ] database ids read in from --input
 
     main:
     //
