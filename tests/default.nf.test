@@ -8,7 +8,8 @@ nextflow_pipeline {
 
         when {
             params {
-                outdir = "$outputDir"
+                outdir = "${outputDir}"
+                input = 'https://raw.githubusercontent.com/nf-core/test-datasets/2732b911c57e607fa7aea5ba0c3d91b25bafb662/testdata/v1.12.0/sra_ids_test.csv'
             }
         }
 
@@ -17,15 +18,19 @@ nextflow_pipeline {
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_content: All files in ${params.outdir}/ with stable content
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            // csv_file: Just the samplesheet
+            def csv_file = path(params.outdir + '/samplesheet/samplesheet.csv').csv()
             assert workflow.success
             assertAll(
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
-                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_fetchngs_software_mqc_versions.yml"),
+                    removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_fetchngs_software_versions.yml", "Workflow"),
                     // All stable path name, with a relative path
                     stable_path,
                     // All files with stable contents
-                    stable_content
+                    stable_content,
+                    // Samplesheet
+                    "samplesheet.csv:md5," + csv_file.sort().table.collect { row -> [row.getString("sample"), row.getString("fastq_1").replaceAll(params.outdir, ""), row.getString("fastq_2").replaceAll(params.outdir, "")].join(",") }.join("\n").md5()
                 ).match() }
             )
         }

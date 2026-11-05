@@ -1,0 +1,54 @@
+name: sra_runinfo_to_ftp
+description: Parse SRA runinfo TSV files to extract and organize FTP download links and MD5 checksums
+keywords:
+  - sra
+  - ena
+  - ftp
+  - runinfo
+  - metadata
+tools:
+  - python:
+      description: General-purpose programming language
+      homepage: https://www.python.org/
+      documentation: https://docs.python.org/3/
+      licence:
+        - "PSF-2.0"
+input:
+  - runinfo:
+      type: file
+      description: >
+        TSV runinfo file(s) from SRA_IDS_TO_RUNINFO
+      pattern: "*.tsv"
+output:
+  tsv:
+    - "*.tsv":
+        type: file
+        description: TSV with FTP download links and MD5 checksums for FASTQ files
+        pattern: "*.tsv"
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@drpatelh"
+maintainers:
+  - "@ewels"
+  - "@taume"
+  - "@maxulysse"
