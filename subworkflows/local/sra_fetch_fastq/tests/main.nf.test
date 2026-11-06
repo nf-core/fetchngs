@@ -16,10 +16,13 @@ nextflow_workflow {
     test("Should emit metadata - skip_fastq_download") {
 
         when {
+            params {
+                outdir = "${outputDir}"
+            }
             workflow {
                 """
                 input[0] = channel.of("DRX026011", "ERX1234253", "SRX6725035")
-                input[1] = "${outputDir}"
+                input[1] = "${outputDir}/ngs"
                 input[2] = []
                 input[3] = 'ftp'
                 input[4] = ''
