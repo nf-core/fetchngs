@@ -30,7 +30,8 @@ Outputs for sequencing data are written to the `ngs/` directory.
   - `multiqc_config.yml`: [MultiQC](https://multiqc.info/docs/#bulk-sample-renaming) config file that can be passed to most nf-core pipelines via the `--multiqc_config` parameter for bulk renaming of sample names from database ids; [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
 - `ngs/metadata/`
   - `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA.
-  - `*.runinfo.tsv`: Original metadata file downloaded from the ENA.
+  - `*-run-info.tsv`: Metadata for each run downloaded with `--download_method fastq-dl`.
+  - `*-run-mergers.tsv`: Information about runs merged by fastq-dl; only created with `--download_method fastq-dl` when runs are merged.
 - `ngs/custom/`
   - `user-settings.mkfg`: NCBI settings file used by sra-tools; only created when reads are downloaded with sra-tools, i.e. with `--download_method sratools` or when the ENA provides no FTP or Aspera links for a run.
 
