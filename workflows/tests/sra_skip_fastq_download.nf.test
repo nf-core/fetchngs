@@ -14,6 +14,9 @@ nextflow_workflow {
     test("Parameters: --skip_fastq_download") {
 
         when {
+            params {
+                outdir = "${outputDir}"
+            }
             workflow {
                 """
                 input[0] = channel.of(["sra", "DRX026011"], ["sra", "ERX1234253"], ["sra", "SRX6725035"])
