@@ -27,9 +27,9 @@
                 }
             },
             [
-                "custom",
-                "custom/user-settings.mkfg",
                 "ngs",
+                "ngs/custom",
+                "ngs/custom/user-settings.mkfg",
                 "ngs/fastq",
                 "ngs/fastq/DRX024467_DRR026872.fastq.gz",
                 "ngs/fastq/DRX026011_DRR028935_1.fastq.gz",
@@ -134,7 +134,7 @@
             ],
             "samplesheet.csv:md5,cf728ea11291eca82d1cfe8ea382dafa"
         ],
-        "timestamp": "2026-11-06T10:00:22.10661",
+        "timestamp": "2026-11-06T12:08:08.94321",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
