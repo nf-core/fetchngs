@@ -51,16 +51,19 @@ workflow FETCHNGS {
             error("No subworkflow to fetch these ids:\n" + unknown.collect { source, id -> "  ${id} (source '${source}')" }.join('\n'))
         }
 
+    // Outputs for sequencing data are published under ngs/ (must match conf/modules.config)
+    def ngs_outdir = "${outdir}/ngs"
+
     //
     // SUBWORKFLOW: Get run metadata and download FastQ files for SRA / ENA / DDBJ / GEO ids
     //
-    SRA_FETCH_FASTQ(ch_ids.sra, outdir, dbgap_key, download_method, ena_metadata_fields, skip_fastq_download)
+    SRA_FETCH_FASTQ(ch_ids.sra, ngs_outdir, dbgap_key, download_method, ena_metadata_fields, skip_fastq_download)
     ch_sra_metadata = SRA_FETCH_FASTQ.out.metadata
 
     //
     // SUBWORKFLOW: Stage FastQ files downloaded by SRA together and auto-create a samplesheet
     //
-    CHANNEL_SRA_CREATE_CSV(ch_sra_metadata, nf_core_pipeline, nf_core_rnaseq_strandedness, sample_mapping_fields, outdir)
+    CHANNEL_SRA_CREATE_CSV(ch_sra_metadata, nf_core_pipeline, nf_core_rnaseq_strandedness, sample_mapping_fields, ngs_outdir)
 
     ch_samplesheet = CHANNEL_SRA_CREATE_CSV.out.samplesheet
     ch_mappings = CHANNEL_SRA_CREATE_CSV.out.mappings
