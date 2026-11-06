@@ -15,6 +15,9 @@ nextflow_workflow {
     test("Parameters: --nf_core_pipeline mag") {
 
         when {
+            params {
+                outdir = "${outputDir}"
+            }
             workflow {
                 """
                 input[0] = channel.of(["sra", "DRX026011"], ["sra", "ERX1234253"], ["sra", "SRX6725035"], ["sra", "SRX34639651"], ["sra", "SRX34639654"])
@@ -32,7 +35,7 @@ nextflow_workflow {
 
         then {
             // csv_file: Just the samplesheet
-            def csv_file = path(outputDir + '/samplesheet/samplesheet.csv').csv()
+            def csv_file = path(outputDir + '/ngs/samplesheet/samplesheet.csv').csv()
 
             // Sanitize sra_metadata to remove unstable output directory paths
             def sra_metadata = workflow.out.sra_metadata.collect { meta ->
