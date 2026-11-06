@@ -15,20 +15,24 @@ Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introductio
 
 ### SRA / ENA / DDBJ / GEO ids
 
+Outputs for sequencing data are written to the `ngs/` directory.
+
 <details markdown="1">
 <summary>Output files</summary>
 
-- `fastq/`
+- `ngs/fastq/`
   - `*.fastq.gz`: Paired-end/single-end reads downloaded from the SRA / ENA / DDBJ / GEO.
-- `fastq/md5/`
+- `ngs/fastq/md5/`
   - `*.md5`: Files containing `md5` sum for FastQ files downloaded from the ENA.
-- `samplesheet/`
+- `ngs/samplesheet/`
   - `samplesheet.csv`: Auto-created samplesheet with collated metadata and paths to downloaded FastQ files.
   - `id_mappings.csv`: File with selected fields that can be used to rename samples to more informative names; see [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
   - `multiqc_config.yml`: [MultiQC](https://multiqc.info/docs/#bulk-sample-renaming) config file that can be passed to most nf-core pipelines via the `--multiqc_config` parameter for bulk renaming of sample names from database ids; [`--sample_mapping_fields`](https://nf-co.re/fetchngs/parameters#sample_mapping_fields) parameter to customise this behaviour.
-- `metadata/`
+- `ngs/metadata/`
   - `*.runinfo_ftp.tsv`: Re-formatted metadata file downloaded from the ENA.
   - `*.runinfo.tsv`: Original metadata file downloaded from the ENA.
+- `ngs/custom/`
+  - `user-settings.mkfg`: NCBI settings file used by sra-tools; only created when reads are downloaded with sra-tools, i.e. with `--download_method sratools` or when the ENA provides no FTP or Aspera links for a run.
 
 </details>
 
