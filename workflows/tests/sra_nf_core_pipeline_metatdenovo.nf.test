@@ -15,9 +15,6 @@ nextflow_workflow {
     test("Parameters: --nf_core_pipeline metatdenovo") {
 
         when {
-            params {
-                outdir = "${outputDir}"
-            }
             workflow {
                 """
                 input[0] = channel.of(["sra", "DRX026011"], ["sra", "ERX1234253"], ["sra", "SRX6725035"])

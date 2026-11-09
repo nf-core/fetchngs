@@ -16,7 +16,6 @@ nextflow_workflow {
 
         when {
             params {
-                outdir          = "${outputDir}"
                 download_method = 'fastq-dl'
             }
             workflow {
