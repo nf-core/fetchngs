@@ -29,7 +29,7 @@ process ASPERA_CLI {
             ascli conf ascp install 1>&2
         fi
         ASCP=\$(find "\${HOME}/.aspera/sdk" -name "ascp" -type f | head -1)
-        BYPASS_KEY="${moduleDir}/assets/aspera_bypass_rsa.pem"
+        BYPASS_KEY="\$(dirname "\$ASCP")/aspera_bypass_rsa.pem"
 
         "\$ASCP" \\
             ${args} \\
@@ -51,7 +51,7 @@ process ASPERA_CLI {
             ascli conf ascp install 1>&2
         fi
         ASCP=\$(find "\${HOME}/.aspera/sdk" -name "ascp" -type f | head -1)
-        BYPASS_KEY="${moduleDir}/assets/aspera_bypass_rsa.pem"
+        BYPASS_KEY="\$(dirname "\$ASCP")/aspera_bypass_rsa.pem"
 
         "\$ASCP" \\
             ${args} \\
