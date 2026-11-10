@@ -5,18 +5,18 @@
                 [
                     "DRX026011_DRR028935",
                     false,
-                    "/fastq/DRX026011_DRR028935_1.fastq.gz",
-                    "/fastq/DRX026011_DRR028935_2.fastq.gz"
+                    "/ngs/fastq/DRX026011_DRR028935_1.fastq.gz",
+                    "/ngs/fastq/DRX026011_DRR028935_2.fastq.gz"
                 ],
                 [
                     "ERX1234253_ERR1160846",
                     true,
-                    "/fastq/ERX1234253_ERR1160846.fastq.gz",
+                    "/ngs/fastq/ERX1234253_ERR1160846.fastq.gz",
                     ""
                 ]
             ]
         ],
-        "timestamp": "2026-10-21T13:49:47.454208",
+        "timestamp": "2026-11-06T09:15:23.487612",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

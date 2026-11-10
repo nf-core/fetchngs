@@ -1,5 +1,5 @@
 .DS_Store
-custom/user-settings.mkfg
-metadata/*.runinfo_ftp.tsv
+ngs/custom/user-settings.mkfg
+ngs/metadata/*.runinfo_ftp.tsv
 pipeline_info/*.{html,json,txt,yml}
-samplesheet/samplesheet.csv
+ngs/samplesheet/samplesheet.csv
