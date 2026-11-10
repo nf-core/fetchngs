@@ -135,7 +135,7 @@
             ],
             {
                 "ASPERA_CLI": {
-                    "aspera_cli": "4.20.0"
+                    "aspera_cli": "4.28.0"
                 },
                 "MULTIQC_MAPPINGS_CONFIG": {
                     "python": "3.9.5"
@@ -148,7 +148,7 @@
                 }
             }
         ],
-        "timestamp": "2026-11-06T10:03:33.699554",
+        "timestamp": "2026-11-10T18:21:15.462003",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
