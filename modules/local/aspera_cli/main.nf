@@ -50,7 +50,6 @@ process ASPERA_CLI {
         if [ ! -d "\${HOME}/.aspera/sdk" ]; then
             ascli conf ascp install 1>&2
         fi
-        ASCP=\$(find "\${HOME}/.aspera/sdk" -name "ascp" -type f | head -1)
         ASCP=\$(find "\${HOME}/.aspera/sdk" -name ascp -type f -print -quit)
 		[ -n "\$ASCP" ] || { echo "ascp not found under \${HOME}/.aspera/sdk" >&2; exit 1; }
 		BYPASS_KEY="\$(dirname "\$ASCP")/aspera_bypass_rsa.pem"
