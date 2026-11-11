@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #409](https://github.com/nf-core/fetchngs/pull/409) - Move SRA download steps into a `SRA_FETCH_FASTQ` subworkflow
 - [PR #410](https://github.com/nf-core/fetchngs/pull/410) - Route input ids to a subworkflow by their source, defined in `assets/schema_input.json`
 - [PR #417](https://github.com/nf-core/fetchngs/pull/417) - Publish SRA outputs under `ngs/`: `fastq/`, `metadata/`, `samplesheet/` and `custom/` have moved to `ngs/fastq/`, `ngs/metadata/`, `ngs/samplesheet/` and `ngs/custom/`.
+- [PR #418](https://github.com/nf-core/fetchngs/pull/418) - Update aspera-cli to 4.28.0
 
 ## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
