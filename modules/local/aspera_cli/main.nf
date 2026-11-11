@@ -5,8 +5,8 @@ process ASPERA_CLI {
     conda "${moduleDir}/environment.yml"
 
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/aspera-cli:4.20.0--hdfd78af_0'
-        : 'biocontainers/aspera-cli:4.20.0--hdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/aspera-cli:4.28.0--hdfd78af_0'
+        : 'biocontainers/aspera-cli:4.28.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), val(fastq)
@@ -28,8 +28,10 @@ process ASPERA_CLI {
         if [ ! -d "\${HOME}/.aspera/sdk" ]; then
             ascli conf ascp install 1>&2
         fi
-        ASCP=\$(find "\${HOME}/.aspera/sdk" -name "ascp" -type f | head -1)
-        BYPASS_KEY="${moduleDir}/assets/aspera_bypass_rsa.pem"
+        ASCP=\$(find "\${HOME}/.aspera/sdk" -name ascp -type f -print -quit)
+        [ -n "\$ASCP" ] || { echo "ascp not found under \${HOME}/.aspera/sdk" >&2; exit 1; }
+        BYPASS_KEY="\$(dirname "\$ASCP")/aspera_bypass_rsa.pem"
+        [ -f "\$BYPASS_KEY" ] || { echo "Bypass key not found: \$BYPASS_KEY" >&2; exit 1; }
 
         "\$ASCP" \\
             ${args} \\
@@ -50,8 +52,10 @@ process ASPERA_CLI {
         if [ ! -d "\${HOME}/.aspera/sdk" ]; then
             ascli conf ascp install 1>&2
         fi
-        ASCP=\$(find "\${HOME}/.aspera/sdk" -name "ascp" -type f | head -1)
-        BYPASS_KEY="${moduleDir}/assets/aspera_bypass_rsa.pem"
+        ASCP=\$(find "\${HOME}/.aspera/sdk" -name ascp -type f -print -quit)
+        [ -n "\$ASCP" ] || { echo "ascp not found under \${HOME}/.aspera/sdk" >&2; exit 1; }
+        BYPASS_KEY="\$(dirname "\$ASCP")/aspera_bypass_rsa.pem"
+        [ -f "\$BYPASS_KEY" ] || { echo "Bypass key not found: \$BYPASS_KEY" >&2; exit 1; }
 
         "\$ASCP" \\
             ${args} \\
