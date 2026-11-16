@@ -14,6 +14,8 @@
 
 - [fastq-dl](https://github.com/rpetit3/fastq-dl)
 
+- [pridepy](https://github.com/PRIDE-Archive/pridepy)
+
 - [Python](http://www.python.org)
 
 - [Requests](https://docs.python-requests.org/)
@@ -37,6 +39,10 @@
 - [GEO](https://pubmed.ncbi.nlm.nih.gov/23193258/)
 
   > Barrett T, Wilhite SE, Ledoux P, Evangelista C, Kim IF, Tomashevsky M, Marshall KA, Phillippy KH, Sherman PM, Holko M, Yefanov A, Lee H, Zhang N, Robertson CL, Serova N, Davis S, Soboleva A. NCBI GEO: archive for functional genomics data sets--update. Nucleic Acids Res. 2013 Jan;41(Database issue):D991-5. doi: 10.1093/nar/gks1193. Epub 2012 Nov 27. PubMed PMID: 23193258; PubMed Central PMCID: PMC3531084.
+
+- [PRIDE](https://pubmed.ncbi.nlm.nih.gov/39494541/)
+
+  > Perez-Riverol Y, Bandla C, Kundu DJ, Kamatchinathan S, Bai J, Hewapathirana S, John NS, Prakash A, Walzer M, Wang S, Vizcaíno JA. The PRIDE database at 20 years: 2025 update. Nucleic Acids Res. 2024 Nov 4;53(D1):D543–D553. doi: 10.1093/nar/gkae1011. PubMed PMID: 39494541; PubMed Central PMCID: PMC11701690.
 
 ## Software packaging/containerisation tools
 
