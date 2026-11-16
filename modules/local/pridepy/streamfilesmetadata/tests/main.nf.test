@@ -23,14 +23,11 @@ nextflow_process {
         }
 
         then {
-            def files = path(process.out.json[0][1]).json
             assertAll(
                 { assert process.success },
-                { assert files.size() > 0 },
                 { assert snapshot(
-                    process.out.json.collect { meta, json -> meta },
-                    files.collect { file -> file.fileName }.sort(),
-                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    sanitizeOutput(process.out, unstableKeys: ["json"]),
+                    path(process.out.json[0][1]).json.collect { file -> file.fileName }.sort(),
                 ).match() }
             )
         }
