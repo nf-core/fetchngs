@@ -97,7 +97,7 @@ nextflow_function {
         }
     }
 
-    test("Function sourceForId [unknown id]") {
+    test("Function sourceForId [PRIDE project]") {
 
         function "sourceForId"
 
@@ -105,6 +105,27 @@ nextflow_function {
             function {
                 """
                 input[0] = 'PXD012345'
+                input[1] = new groovy.json.JsonSlurper().parse(file("${projectDir}/assets/schema_input.json"))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == 'pride' }
+            )
+        }
+    }
+
+    test("Function sourceForId [unknown id]") {
+
+        function "sourceForId"
+
+        when {
+            function {
+                """
+                input[0] = 'NOTVALID123'
                 input[1] = new groovy.json.JsonSlurper().parse(file("${projectDir}/assets/schema_input.json"))
                 """
             }

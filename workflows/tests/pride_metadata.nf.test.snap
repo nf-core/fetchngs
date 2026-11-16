@@ -1,0 +1,34 @@
+{
+    "PRIDE id: metadata only": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "PXD000001"
+                    },
+                    [
+                        "F063721.dat",
+                        "F063721.dat-mztab.txt",
+                        "PRIDE_Exp_Complete_Ac_22134.pride.mgf.gz",
+                        "PRIDE_Exp_Complete_Ac_22134.pride.mztab.gz",
+                        "PRIDE_Exp_Complete_Ac_22134.xml.gz",
+                        "PXD000001_community_annotated.sdrf.tsv",
+                        "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML",
+                        "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.raw",
+                        "erwinia_carotovora.fasta"
+                    ]
+                ]
+            ],
+            {
+                "PRIDEPY_STREAMFILESMETADATA": {
+                    "pridepy": "0.0.16"
+                }
+            }
+        ],
+        "timestamp": "2026-11-16T11:14:48.489974",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    }
+}

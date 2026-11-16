@@ -21,7 +21,7 @@
 
 ## Introduction
 
-**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from both public databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
+**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO ids and fetches file metadata for PRIDE ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
 ![nf-core/fetchngs metro map](docs/images/nf-core-fetchngs_metro_map_grey.png)
 
@@ -73,6 +73,10 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
      - Fetch in parallel via `aspera-cli` and perform `md5sum` check. Use `--download_method aspera` to force this behaviour.
    - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ. Use `--download_method sratools` to force this behaviour.
 4. Collate id metadata and paths to FastQ files in a single samplesheet
+
+### PRIDE ids
+
+1. Fetch the list of files in each project via [pridepy](https://github.com/PRIDE-Archive/pridepy)
 
 ## Pipeline output
 
