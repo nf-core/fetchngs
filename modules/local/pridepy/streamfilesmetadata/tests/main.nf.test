@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process PRIDEPY_STREAMFILESMETADATA"
+    script "../main.nf"
+    process "PRIDEPY_STREAMFILESMETADATA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pridepy"
+    tag "pridepy/streamfilesmetadata"
+
+    test("pride - PXD000001") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'PXD000001' ],
+                    'PXD000001'
+                ]
+                """
+            }
+        }
+
+        then {
+            def files = path(process.out.json[0][1]).json
+            assertAll(
+                { assert process.success },
+                { assert files.size() > 0 },
+                { assert snapshot(
+                    process.out.json.collect { meta, json -> meta },
+                    files.collect { file -> file.fileName }.sort(),
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                ).match() }
+            )
+        }
+
+    }
+
+    test("pride - PXD000001 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'PXD000001' ],
+                    'PXD000001'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

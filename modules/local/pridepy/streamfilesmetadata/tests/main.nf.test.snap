@@ -1,0 +1,62 @@
+{
+    "pride - PXD000001 - stub": {
+        "content": [
+            {
+                "json": [
+                    [
+                        {
+                            "id": "PXD000001"
+                        },
+                        "PXD000001.files.json:md5,58e0494c51d30eb3494f7c9198986bb9"
+                    ]
+                ],
+                "versions_pridepy": [
+                    [
+                        "PRIDEPY_STREAMFILESMETADATA",
+                        "pridepy",
+                        "0.0.16"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-12T16:33:40.636967",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "pride - PXD000001": {
+        "content": [
+            [
+                {
+                    "id": "PXD000001"
+                }
+            ],
+            [
+                "F063721.dat",
+                "F063721.dat-mztab.txt",
+                "PRIDE_Exp_Complete_Ac_22134.pride.mgf.gz",
+                "PRIDE_Exp_Complete_Ac_22134.pride.mztab.gz",
+                "PRIDE_Exp_Complete_Ac_22134.xml.gz",
+                "PXD000001_community_annotated.sdrf.tsv",
+                "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML",
+                "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.raw",
+                "erwinia_carotovora.fasta"
+            ],
+            {
+                "versions_pridepy": [
+                    [
+                        "PRIDEPY_STREAMFILESMETADATA",
+                        "pridepy",
+                        "0.0.16"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-12T16:33:37.287936",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    }
+}
