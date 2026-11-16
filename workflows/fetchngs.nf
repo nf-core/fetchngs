@@ -6,6 +6,7 @@
 
 include { MULTIQC_MAPPINGS_CONFIG                      } from '../modules/local/multiqc_mappings_config'
 include { CHANNEL_SRA_CREATE_CSV                       } from '../subworkflows/local/channel_sra_create_csv'
+include { PRIDE_FETCH                                  } from '../subworkflows/local/pride_fetch'
 include { SRA_FETCH_FASTQ                              } from '../subworkflows/local/sra_fetch_fastq'
 
 /*
@@ -42,6 +43,8 @@ workflow FETCHNGS {
     ch_ids = ids.branch { source, id ->
         sra: source == 'sra'
             return id
+        pride: source == 'pride'
+            return id
         unknown: true
     }
 
@@ -75,6 +78,12 @@ workflow FETCHNGS {
     ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
 
     //
+    // SUBWORKFLOW: Get file metadata for PRIDE ids
+    //
+    PRIDE_FETCH(ch_ids.pride)
+    ch_pride_metadata = PRIDE_FETCH.out.metadata
+
+    //
     // Collate and save software versions
     //
     def ch_collated_versions = softwareVersionsToYAML(
@@ -92,5 +101,6 @@ workflow FETCHNGS {
     mappings        = ch_mappings
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
+    pride_metadata  = ch_pride_metadata
     versions        = ch_collated_versions
 }
