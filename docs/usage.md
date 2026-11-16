@@ -6,7 +6,7 @@
 
 ## Introduction
 
-The pipeline has been set-up to automatically download and process the raw FastQ files from public repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported:
+The pipeline has been set-up to automatically download and process the raw FastQ files from public repositories. Identifiers can be provided in a file, one-per-line via the `--input` parameter. Currently, the following types of example identifiers are supported for sequencing data:
 
 | `SRA`        | `ENA`        | `DDBJ`       | `GEO`      |
 | ------------ | ------------ | ------------ | ---------- |
@@ -35,6 +35,12 @@ If you have a GEO accession (found in the data availability section of published
 - Select the desired samples in the `SRA Run Selector` and then download the `Accession List`
 
 This downloads a text file called `SRR_Acc_List.txt` that can be directly provided to the pipeline once renamed with a .csv extension e.g. `--input SRR_Acc_List.csv`.
+
+### PRIDE ids
+
+[PRIDE](https://www.ebi.ac.uk/pride/) project ids (e.g. `PXD000001`) are also supported and can be mixed with sequencing ids in the same input file. For each PRIDE id, the pipeline currently fetches the list of files in the project with [pridepy](https://github.com/PRIDE-Archive/pridepy), including file names, categories (e.g. `RAW`, `PEAK`, `RESULT`), sizes and download links. Downloading the files and creating a samplesheet for proteomics data is not supported yet.
+
+Parameters for sequencing data, such as `--ena_metadata_fields`, only affect the sequencing ids in the input file and are ignored for PRIDE ids. `--download_method` and `--nf_core_pipeline` are not supported for PRIDE ids yet.
 
 ### Samplesheet format
 
