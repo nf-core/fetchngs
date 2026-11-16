@@ -20,7 +20,7 @@
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.(csv|tsv|txt)$",
                     "fa_icon": "fas fa-file-excel",
-                    "description": "File containing SRA/ENA/GEO/DDBJ identifiers one per line to download their associated metadata and FastQ files."
+                    "description": "File containing SRA/ENA/GEO/DDBJ or PRIDE (PXD) identifiers one per line to download their associated metadata and data files."
                 },
                 "ena_metadata_fields": {
                     "type": "string",
