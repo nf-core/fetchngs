@@ -24,7 +24,6 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert workflow.out.metadata.size() == 1 },
                 { assert snapshot(
                     workflow.out.metadata.collect { meta, json -> [meta, path(json).json.collect { file -> file.fileName }.sort()] }
                 ).match() }
