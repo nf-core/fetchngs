@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: pride_fetch
+description: Fetch file metadata for PRIDE (PXD) ids
+keywords:
+  - PRIDE
+  - proteomics
+  - metadata
+components:
+  - pridepy/streamfilesmetadata
+input:
+  - ids:
+      type: string
+      description: >
+        Channel of PRIDE ids e.g. 'PXD000001'
+output:
+  - metadata:
+      type: file
+      description: >
+        Channel of [ meta, json ] with one JSON file listing all files of each PRIDE project
+authors:
+  - "@Tabea01"

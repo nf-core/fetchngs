@@ -1,0 +1,34 @@
+nextflow_workflow {
+
+    name "Test workflow: PRIDE_FETCH"
+    script "../main.nf"
+    workflow "PRIDE_FETCH"
+
+    tag "subworkflows"
+    tag "subworkflows_local"
+    tag "pride_fetch"
+
+    // Dependencies
+    tag "pridepy/streamfilesmetadata"
+
+    test("Should emit file metadata") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of("PXD000001")
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert workflow.out.metadata.size() == 1 },
+                { assert snapshot(
+                    workflow.out.metadata.collect { meta, json -> [meta, path(json).json.collect { file -> file.fileName }.sort()] }
+                ).match() }
+            )
+        }
+    }
+}
