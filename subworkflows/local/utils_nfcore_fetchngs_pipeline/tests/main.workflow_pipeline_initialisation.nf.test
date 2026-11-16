@@ -75,7 +75,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.failed },
                 { assert snapshot(
-                    filterNextflowOutput(workflow.stdout + workflow.stderr, include: ["Please provide a valid"])
+                    filterNextflowOutput(workflow.stdout + workflow.stderr, include: ["does not match"])
                 ).match() }
             )
         }
