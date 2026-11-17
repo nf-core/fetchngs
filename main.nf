@@ -45,6 +45,7 @@ workflow NFCORE_FETCHNGS {
         params.nf_core_rnaseq_strandedness ?: 'auto',
         params.sample_mapping_fields,
         params.skip_fastq_download,
+        params.proteomics_file_categories,
     )
 }
 

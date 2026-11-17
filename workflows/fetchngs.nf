@@ -34,6 +34,7 @@ workflow FETCHNGS {
     nf_core_rnaseq_strandedness
     sample_mapping_fields
     skip_fastq_download
+    proteomics_file_categories
 
     main:
 

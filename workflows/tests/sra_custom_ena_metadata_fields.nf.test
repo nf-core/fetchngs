@@ -26,6 +26,7 @@ nextflow_workflow {
                 input[6] = 'auto'
                 input[7] = 'run_accession,library_layout'
                 input[8] = false
+                input[9] = 'RAW'
                 """
             }
         }
