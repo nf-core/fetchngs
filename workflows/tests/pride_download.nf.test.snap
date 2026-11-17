@@ -1,0 +1,53 @@
+{
+    "PRIDE id: download files": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "F063721.dat-mztab.txt",
+                        "accession": "PXD000001",
+                        "category": "OTHER"
+                    },
+                    "F063721.dat-mztab.txt:md5,a568603dd821848848c74117346f1ed7"
+                ],
+                [
+                    {
+                        "id": "PRIDE_Exp_Complete_Ac_22134.pride.mztab.gz",
+                        "accession": "PXD000001",
+                        "category": "OTHER"
+                    },
+                    "PRIDE_Exp_Complete_Ac_22134.pride.mztab.gz:md5,2d47df18563f1cec01e40f3f6bb4ab40"
+                ],
+                [
+                    {
+                        "id": "PXD000001_community_annotated.sdrf.tsv",
+                        "accession": "PXD000001",
+                        "category": "EXPERIMENTAL DESIGN"
+                    },
+                    "PXD000001_community_annotated.sdrf.tsv:md5,542ede3f7343bd8ad1aacaeb4934d366"
+                ],
+                [
+                    {
+                        "id": "erwinia_carotovora.fasta",
+                        "accession": "PXD000001",
+                        "category": "OTHER"
+                    },
+                    "erwinia_carotovora.fasta:md5,510bcf6bac8efb33482b47f30aa6a930"
+                ]
+            ],
+            {
+                "PRIDEPY_DOWNLOADFILE": {
+                    "pridepy": "0.0.15"
+                },
+                "PRIDEPY_STREAMFILESMETADATA": {
+                    "pridepy": "0.0.16"
+                }
+            }
+        ],
+        "timestamp": "2026-11-17T15:46:17.831483",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    }
+}

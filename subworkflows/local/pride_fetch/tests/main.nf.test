@@ -10,6 +10,7 @@ nextflow_workflow {
 
     // Dependencies
     tag "pridepy/streamfilesmetadata"
+    tag "pridepy/downloadfile"
 
     test("Should emit file metadata") {
 
@@ -28,6 +29,29 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.metadata.collect { meta, json -> [meta, path(json).json.collect { file -> file.fileName }.sort()] }
+                ).match() }
+            )
+        }
+    }
+
+    test("Should download files of the selected categories and the SDRF") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of("PXD000001")
+                input[1] = 'OTHER'
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // file list content is unstable (e.g. download counts), so only its name is snapshotted
+                    sanitizeOutput(workflow.out, unstableKeys: ["metadata"])
                 ).match() }
             )
         }
