@@ -21,7 +21,7 @@
 
 ## Introduction
 
-**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw FastQ files from public databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO ids and fetches file metadata for PRIDE ids (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
+**nf-core/fetchngs** is a bioinformatics pipeline to fetch metadata and raw data files from public databases. At present, the pipeline supports SRA / ENA / DDBJ / GEO ids for sequencing data and PRIDE ids for proteomics data (see [usage docs](https://nf-co.re/fetchngs/usage#introduction)).
 
 ![nf-core/fetchngs metro map](docs/images/nf-core-fetchngs_metro_map_grey.png)
 
@@ -77,6 +77,7 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
 ### PRIDE ids
 
 1. Fetch the list of files in each project via [pridepy](https://github.com/PRIDE-Archive/pridepy)
+2. Download the files of the selected categories (`--proteomics_file_categories`, default `RAW`) and the SDRF file, if available, via pridepy
 
 ## Pipeline output
 

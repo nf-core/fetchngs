@@ -38,9 +38,13 @@ This downloads a text file called `SRR_Acc_List.txt` that can be directly provid
 
 ### PRIDE ids
 
-[PRIDE](https://www.ebi.ac.uk/pride/) project ids (e.g. `PXD000001`) are also supported and can be mixed with sequencing ids in the same input file. For each PRIDE id, the pipeline currently fetches the list of files in the project with [pridepy](https://github.com/PRIDE-Archive/pridepy), including file names, categories (e.g. `RAW`, `PEAK`, `RESULT`), sizes and download links. Downloading the files and creating a samplesheet for proteomics data is not supported yet.
+[PRIDE](https://www.ebi.ac.uk/pride/) project ids (e.g. `PXD000001`) are also supported and can be mixed with sequencing ids in the same input file. For each PRIDE id, the pipeline fetches the list of files in the project with [pridepy](https://github.com/PRIDE-Archive/pridepy), including file names, categories, sizes and download links, and then downloads the files of the selected categories.
 
-Parameters for sequencing data, such as `--ena_metadata_fields`, only affect the sequencing ids in the input file and are ignored for PRIDE ids. `--download_method` and `--nf_core_pipeline` are not supported for PRIDE ids yet.
+Use `--proteomics_file_categories` to choose which files to download, e.g. `--proteomics_file_categories RAW,PEAK`. The default is `RAW` (raw mass spectrometry files). Available categories are `RAW`, `PEAK`, `SEARCH`, `RESULT`, `SPECTRUM_LIBRARY`, `OTHER` and `FASTA`. SDRF files describing the experimental design are always downloaded if the project has one. If a project has no files in one of the selected categories, the pipeline prints a warning listing the categories that are available.
+
+File categories are assigned by PRIDE when a dataset is submitted, so older projects may list files under a different category than expected, e.g. FASTA databases under `OTHER`. The category of every file can be found in `proteomics/metadata/<id>.files.json`.
+
+`--skip_fastq_download` also applies to PRIDE ids: only the list of files is fetched and no files are downloaded. `--download_method aspera` downloads PRIDE files via Aspera; all other download methods use FTP. Other parameters for sequencing data, such as `--ena_metadata_fields` and `--nf_core_pipeline`, are ignored for PRIDE ids. Creating a samplesheet for proteomics data is not supported yet.
 
 ### Samplesheet format
 

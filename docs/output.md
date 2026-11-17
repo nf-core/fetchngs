@@ -9,7 +9,7 @@ This document describes the output produced by the pipeline. The directories lis
 The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data depending on the type of ids provided:
 
 - Download FastQ files and create samplesheet from [SRA / ENA / DDBJ / GEO ids](#sra--ena--ddbj--geo-ids)
-- Fetch file metadata for [PRIDE ids](#pride-ids)
+- Fetch file metadata and download files for [PRIDE ids](#pride-ids)
 - [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
 
 Please see the [usage documentation](https://nf-co.re/fetchngs/usage#introduction) for a list of supported public repository identifiers and how to provide them to the pipeline.
@@ -49,6 +49,8 @@ Outputs for proteomics data are written to the `proteomics/` directory.
 
 - `proteomics/metadata/`
   - `*.files.json`: List of all files in the PRIDE project with their names, categories, sizes, checksums and download links, fetched with [pridepy](https://github.com/PRIDE-Archive/pridepy).
+- `proteomics/files/<id>/`
+  - Files of the categories selected with [`--proteomics_file_categories`](https://nf-co.re/fetchngs/parameters#proteomics_file_categories) (default: `RAW`), plus the SDRF file describing the experimental design if the project has one. Not created with `--skip_fastq_download`.
 
 </details>
 
