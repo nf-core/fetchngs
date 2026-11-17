@@ -17,6 +17,8 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = channel.of("PXD000001")
+                input[1] = 'RAW'
+                input[2] = true
                 """
             }
         }

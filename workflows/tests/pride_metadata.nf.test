@@ -22,7 +22,7 @@ nextflow_workflow {
                 input[5] = ''
                 input[6] = 'auto'
                 input[7] = ''
-                input[8] = false
+                input[8] = true
                 input[9] = 'RAW'
                 """
             }
