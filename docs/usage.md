@@ -44,7 +44,7 @@ Use `--proteomics_file_categories` to choose which files to download, e.g. `--pr
 
 File categories are assigned by PRIDE when a dataset is submitted, so older projects may list files under a different category than expected, e.g. FASTA databases under `OTHER`. The category of every file can be found in `proteomics/metadata/<id>.files.json`.
 
-`--skip_fastq_download` also applies to PRIDE ids: only the list of files is fetched and no files are downloaded. `--download_method aspera` downloads PRIDE files via Aspera; all other download methods use FTP. Other parameters for sequencing data, such as `--ena_metadata_fields` and `--nf_core_pipeline`, are ignored for PRIDE ids. Creating a samplesheet for proteomics data is not supported yet.
+`--skip_fastq_download` also applies to PRIDE ids: only the list of files is fetched and no files are downloaded. PRIDE files are always downloaded via FTP; `--download_method` and other parameters for sequencing data, such as `--ena_metadata_fields` and `--nf_core_pipeline`, are ignored for PRIDE ids. Creating a samplesheet for proteomics data is not supported yet.
 
 ### Samplesheet format
 
