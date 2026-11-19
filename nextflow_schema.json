@@ -69,6 +69,14 @@
                     "fa_icon": "fas fa-fast-forward",
                     "description": "Only download metadata for public data database ids and don't download the FastQ files."
                 },
+                "proteomics_file_categories": {
+                    "type": "string",
+                    "default": "RAW",
+                    "fa_icon": "fas fa-filter",
+                    "pattern": "^(RAW|PEAK|SEARCH|RESULT|SPECTRUM_LIBRARY|OTHER|FASTA)(,(RAW|PEAK|SEARCH|RESULT|SPECTRUM_LIBRARY|OTHER|FASTA))*$",
+                    "description": "Comma-separated list of file categories to download for proteomics ids, e.g. 'RAW,PEAK'.",
+                    "help_text": "Available categories are 'RAW' (raw mass spectrometry files), 'PEAK' (peak lists such as mzML, mzXML or mgf), 'SEARCH' (search engine output), 'RESULT' (identification results such as mzIdentML or mzTab), 'SPECTRUM_LIBRARY' (spectral libraries), 'OTHER' (other files) and 'FASTA' (protein databases). SDRF files describing the experimental design are always downloaded if available."
+                },
                 "dbgap_key": {
                     "type": "string",
                     "fa_icon": "fas fa-address-card",

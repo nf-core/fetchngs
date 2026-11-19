@@ -1,21 +1,37 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: pride_fetch
-description: Fetch file metadata for PRIDE (PXD) ids
+description: Fetch file metadata and download files for PRIDE (PXD) ids
 keywords:
   - PRIDE
   - proteomics
   - metadata
+  - download
 components:
   - pridepy/streamfilesmetadata
+  - pridepy/downloadfile
 input:
   - ids:
       type: string
       description: >
         Channel of PRIDE ids e.g. 'PXD000001'
+  - file_categories:
+      type: string
+      description: >
+        Comma-separated list of file categories to download e.g. 'RAW,PEAK'.
+        SDRF files (category 'EXPERIMENTAL DESIGN') are always downloaded if available
+  - skip_download:
+      type: boolean
+      description: >
+        Only fetch file metadata and skip downloading files
 output:
   - metadata:
       type: file
       description: >
         Channel of [ meta, json ] with one JSON file listing all files of each PRIDE project
+  - files:
+      type: file
+      description: >
+        Channel of [ meta, file ] with one downloaded file per element; meta contains the
+        file name as id, the PRIDE accession and the file category
 authors:
   - "@Tabea01"

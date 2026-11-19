@@ -25,5 +25,58 @@
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
         }
+    },
+    "Should download files of the selected categories and the SDRF": {
+        "content": [
+            {
+                "files": [
+                    [
+                        {
+                            "accession": "PXD000001",
+                            "category": "OTHER",
+                            "id": "F063721.dat-mztab.txt"
+                        },
+                        "F063721.dat-mztab.txt:md5,a568603dd821848848c74117346f1ed7"
+                    ],
+                    [
+                        {
+                            "accession": "PXD000001",
+                            "category": "OTHER",
+                            "id": "PRIDE_Exp_Complete_Ac_22134.pride.mztab.gz"
+                        },
+                        "PRIDE_Exp_Complete_Ac_22134.pride.mztab.gz:md5,2d47df18563f1cec01e40f3f6bb4ab40"
+                    ],
+                    [
+                        {
+                            "accession": "PXD000001",
+                            "category": "EXPERIMENTAL DESIGN",
+                            "id": "PXD000001_community_annotated.sdrf.tsv"
+                        },
+                        "PXD000001_community_annotated.sdrf.tsv:md5,542ede3f7343bd8ad1aacaeb4934d366"
+                    ],
+                    [
+                        {
+                            "accession": "PXD000001",
+                            "category": "OTHER",
+                            "id": "erwinia_carotovora.fasta"
+                        },
+                        "erwinia_carotovora.fasta:md5,510bcf6bac8efb33482b47f30aa6a930"
+                    ]
+                ],
+                "metadata": [
+                    [
+                        {
+                            "id": "PXD000001"
+                        },
+                        "PXD000001.files.json"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T15:46:05.14708",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     }
 }

@@ -34,6 +34,7 @@ workflow FETCHNGS {
     nf_core_rnaseq_strandedness
     sample_mapping_fields
     skip_fastq_download
+    proteomics_file_categories
 
     main:
 
@@ -78,10 +79,11 @@ workflow FETCHNGS {
     ch_sample_mappings_yml = MULTIQC_MAPPINGS_CONFIG.out.yml
 
     //
-    // SUBWORKFLOW: Get file metadata for PRIDE ids
+    // SUBWORKFLOW: Get file metadata and download files for PRIDE ids
     //
-    PRIDE_FETCH(ch_ids.pride)
+    PRIDE_FETCH(ch_ids.pride, proteomics_file_categories, skip_fastq_download)
     ch_pride_metadata = PRIDE_FETCH.out.metadata
+    ch_pride_files = PRIDE_FETCH.out.files
 
     //
     // Collate and save software versions
@@ -102,5 +104,6 @@ workflow FETCHNGS {
     sample_mappings = ch_sample_mappings_yml
     sra_metadata    = ch_sra_metadata
     pride_metadata  = ch_pride_metadata
+    pride_files     = ch_pride_files
     versions        = ch_collated_versions
 }
