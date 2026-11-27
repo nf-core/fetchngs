@@ -12,6 +12,8 @@
 
 - [Aspera CLI](https://github.com/IBM/aspera-cli)
 
+- [AWS CLI](https://github.com/aws/aws-cli)
+
 - [fastq-dl](https://github.com/rpetit3/fastq-dl)
 
 - [pridepy](https://github.com/PRIDE-Archive/pridepy)

@@ -88,7 +88,13 @@ See [issue #260](https://github.com/nf-core/fetchngs/issues/260) for more detail
 
 ### Primary options for downloading data
 
-If the appropriate download links are available, the pipeline uses FTP by default to download FastQ files by setting the `--download_method ftp` parameter. If you are having issues and prefer to use sra-tools, Aspera or fastq-dl instead, you can set the [`--download_method`](https://nf-co.re/fetchngs/parameters#download_method) parameter to `--download_method sratools`, `--download_method aspera` or `--download_method fastq-dl`, respectively.
+If the appropriate download links are available, the pipeline uses FTP by default to download FastQ files by setting the `--download_method ftp` parameter. If you are having issues and prefer to use sra-tools, Aspera, fastq-dl or the SRA mirror on AWS instead, you can set the [`--download_method`](https://nf-co.re/fetchngs/parameters#download_method) parameter to `--download_method sratools`, `--download_method aspera`, `--download_method fastq-dl` or `--download_method aws`, respectively.
+
+### AWS download method
+
+With `--download_method aws`, the pipeline downloads `.sra` files from the [SRA mirror on AWS](https://registry.opendata.aws/ncbi-sra/) and converts them to FastQ with sra-tools. The mirror contains all public SRA, ENA and DDBJ runs, so this method also downloads runs for which the ENA provides no FastQ links. No AWS account is needed.
+
+The mirror is hosted in the AWS region `us-east-1`. Outside of AWS, for example in Europe, `--download_method ftp` can be faster. Controlled-access data from dbGaP is not available on the mirror; use `--download_method sratools` for it.
 
 ### Aspera download method limitations
 

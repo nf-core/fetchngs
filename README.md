@@ -72,6 +72,7 @@ Via a single file of ids, provided one-per-line (see [example input file](https:
      - Fetch in parallel via `wget` and perform `md5sum` check (`--download_method ftp`; default).
      - Fetch in parallel via `aspera-cli` and perform `md5sum` check. Use `--download_method aspera` to force this behaviour.
    - Otherwise use [`sra-tools`](https://github.com/ncbi/sra-tools) to download `.sra` files and convert them to FastQ. Use `--download_method sratools` to force this behaviour.
+   - Use `--download_method aws` to download `.sra` files from the [SRA mirror on AWS](https://registry.opendata.aws/ncbi-sra/) via the [AWS CLI](https://aws.amazon.com/cli/) and convert them to FastQ with `sra-tools`.
 4. Collate id metadata and paths to FastQ files in a single samplesheet
 
 ### PRIDE ids
