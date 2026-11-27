@@ -34,6 +34,7 @@ nextflow_workflow {
         then {
             // csv_file: Just the samplesheet
             def csv_file = path(outputDir + '/ngs/samplesheet/samplesheet.csv').csv()
+            def mag_columns = ['sample', 'run', 'group', 'short_reads_1', 'short_reads_2', 'short_reads_platform', 'long_reads', 'long_reads_platform']
 
             // Sanitize sra_metadata to remove unstable output directory paths
             def sra_metadata = workflow.out.sra_metadata.collect { meta ->
@@ -46,8 +47,9 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    // Samplesheet
-                    "samplesheet.csv:md5," + csv_file.sort().table.collect { row -> [row.getString("sample"), row.getString("fastq_1").replaceAll(outputDir, ""), row.getString("fastq_2").replaceAll(outputDir, "")].join(",") }.join("\n").md5(),
+                    // Samplesheet: the header, and the columns nf-core/mag reads
+                    csv_file.table.columnNames().join(","),
+                    csv_file.sort().table.collect { row -> mag_columns.collect { column -> row.getString(column).replaceAll(outputDir, "") }.join(",") },
                     workflow.out.mappings,
                     workflow.out.sample_mappings,
                     sra_metadata,
