@@ -45,4 +45,49 @@ nextflow_workflow {
             )
         }
     }
+
+    test("mag: short reads and long reads in their own columns") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        id:'DRX026011_DRR028935',
+                        run_accession:'DRR028935',
+                        study_accession:'PRJDB3392',
+                        instrument_platform:'ILLUMINA',
+                        fastq_1:'./results/fastq/DRX026011_DRR028935_1.fastq.gz',
+                        fastq_2:'./results/fastq/DRX026011_DRR028935_2.fastq.gz',
+                        md5_1:'',
+                        md5_2:'',
+                        single_end:false
+                    ],
+                    [
+                        id:'SRX34639654_SRR39975833',
+                        run_accession:'SRR39975833',
+                        study_accession:'PRJNA1506675',
+                        instrument_platform:'OXFORD_NANOPORE',
+                        fastq_1:'./results/fastq/SRX34639654_SRR39975833.fastq.gz',
+                        fastq_2:'',
+                        md5_1:'',
+                        md5_2:'',
+                        single_end:true
+                    ]
+                )
+                input[1] = 'mag'
+                input[2] = 'auto'
+                input[3] = ''
+                input[4] = "${outputDir}"
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(path(workflow.out.samplesheet[0]).readLines()).match() }
+            )
+        }
+    }
 }

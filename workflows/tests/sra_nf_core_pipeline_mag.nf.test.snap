@@ -1,7 +1,14 @@
 {
     "Parameters: --nf_core_pipeline mag": {
         "content": [
-            "samplesheet.csv:md5,46142d482a0fda9ced22c6033925097a",
+            "sample,run,group,short_reads_1,short_reads_2,short_reads_platform,long_reads,long_reads_platform,run_accession,experiment_accession,sample_accession,secondary_sample_accession,study_accession,secondary_study_accession,submission_accession,run_alias,experiment_alias,sample_alias,study_alias,library_layout,library_selection,library_source,library_strategy,library_name,instrument_model,instrument_platform,base_count,read_count,tax_id,scientific_name,sample_title,experiment_title,study_title,sample_description,fastq_md5,fastq_bytes,fastq_ftp,fastq_galaxy,fastq_aspera",
+            [
+                "DRX026011,DRR028935,PRJDB3420,/ngs/fastq/DRX026011_DRR028935_1.fastq.gz,/ngs/fastq/DRX026011_DRR028935_2.fastq.gz,ILLUMINA,,",
+                "ERX1234253,ERR1160846,PRJEB11419,/ngs/fastq/ERX1234253_ERR1160846.fastq.gz,,ILLUMINA,,",
+                "SRX34639651,SRR39975836,PRJNA1506675,,,,/ngs/fastq/SRX34639651_SRR39975836.fastq.gz,OXFORD_NANOPORE",
+                "SRX34639654,SRR39975833,PRJNA1506675,,,,/ngs/fastq/SRX34639654_SRR39975833.fastq.gz,OXFORD_NANOPORE",
+                "SRX6725035,SRR9984183,PRJNA560329,/ngs/fastq/SRX6725035_SRR9984183.fastq.gz,,ILLUMINA,,"
+            ],
             [
                 "id_mappings.csv:md5,6ba11efa75ec58f7c615eb90681183b9"
             ],
@@ -230,10 +237,10 @@
                 }
             }
         ],
-        "timestamp": "2026-11-03T13:50:29.395409",
+        "timestamp": "2026-11-27T13:11:40.011650939",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.10.7"
         }
     }
 }

@@ -45,18 +45,40 @@ workflow CHANNEL_SRA_CREATE_CSV {
 // FUNCTIONS
 
 def buildPipelineMap(meta, pipeline, strandedness) {
+    def sample = "${meta.id.toString().split('_')[0..-2].join('_')}"
+    def metadata = meta.subMap(meta.keySet() - ['id', 'md5_1', 'md5_2', 'single_end', 'fastq_1', 'fastq_2'])
+    if (pipeline == 'mag') {
+        return [sample: sample] + buildMagColumns(meta) + metadata
+    }
+
     def pipeline_extras = [
         ampliseq: [run: ''],
         atacseq: [replicate: 1],
-        mag: [group: '', short_reads_platform: 'ILLUMINA', long_reads_platform: ''],
         rnaseq: [strandedness: strandedness],
         sarek: [patient: meta.sample_accession],
         taxprofiler: [fasta: ''],
     ]
 
     return [
-        sample: "${meta.id.toString().split('_')[0..-2].join('_')}",
+        sample: sample,
         fastq_1: meta.fastq_1,
         fastq_2: meta.fastq_2,
-    ] + (pipeline_extras[pipeline] ?: [:]) + meta.subMap(meta.keySet() - ['id', 'md5_1', 'md5_2', 'single_end', 'fastq_1', 'fastq_2'])
+    ] + (pipeline_extras[pipeline] ?: [:]) + metadata
+}
+
+// nf-core/mag reads short and long reads from different columns. Every row gets all of them,
+// since the rows are merged under the header of the first one.
+def buildMagColumns(meta) {
+    def platform = meta.instrument_platform ?: ''
+    def is_long = platform in ['OXFORD_NANOPORE', 'PACBIO_SMRT']
+    return [
+        run: meta.id.toString().split('_')[-1],
+        group: meta.study_accession ?: '0',
+        short_reads_1: is_long ? '' : meta.fastq_1,
+        short_reads_2: is_long ? '' : meta.fastq_2,
+        short_reads_platform: is_long ? '' : platform,
+        long_reads: is_long ? meta.fastq_1 : '',
+        // ENA's PACBIO_SMRT does not say whether the reads are HiFi or CLR, which mag needs
+        long_reads_platform: platform == 'OXFORD_NANOPORE' ? platform : '',
+    ]
 }

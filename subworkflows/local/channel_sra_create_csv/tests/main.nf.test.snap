@@ -15,5 +15,19 @@
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
         }
+    },
+    "mag: short reads and long reads in their own columns": {
+        "content": [
+            [
+                "\"sample\",\"run\",\"group\",\"short_reads_1\",\"short_reads_2\",\"short_reads_platform\",\"long_reads\",\"long_reads_platform\",\"run_accession\",\"study_accession\",\"instrument_platform\"",
+                "\"DRX026011\",\"DRR028935\",\"PRJDB3392\",\"./results/fastq/DRX026011_DRR028935_1.fastq.gz\",\"./results/fastq/DRX026011_DRR028935_2.fastq.gz\",\"ILLUMINA\",\"\",\"\",\"DRR028935\",\"PRJDB3392\",\"ILLUMINA\"",
+                "\"SRX34639654\",\"SRR39975833\",\"PRJNA1506675\",\"\",\"\",\"\",\"./results/fastq/SRX34639654_SRR39975833.fastq.gz\",\"OXFORD_NANOPORE\",\"SRR39975833\",\"PRJNA1506675\",\"OXFORD_NANOPORE\""
+            ]
+        ],
+        "timestamp": "2026-11-27T13:09:30.648152959",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.7"
+        }
     }
 }

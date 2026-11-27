@@ -61,6 +61,8 @@ As a bonus, the columns in the auto-created samplesheet can be tailored to be ac
 
 You can use the `--nf_core_pipeline` parameter to customise this behaviour e.g. `--nf_core_pipeline rnaseq`. More pipelines will be supported in due course as we adopt and standardise samplesheet input across nf-core. It is highly recommended that you double-check that all of the identifiers required by the downstream nf-core pipeline are accurately represented in the samplesheet. For example, the nf-core/atacseq pipeline requires a `replicate` column to be provided in it's input samplehsheet, however, public databases don't reliably hold information regarding replicates so you may need to amend these entries if your samplesheet was created by providing `--nf_core_pipeline atacseq`.
 
+With `--nf_core_pipeline mag`, each run is one row: `run` is the run accession and `group` the study accession (or `0` if `study_accession` is not in `--ena_metadata_fields`). Runs from Oxford Nanopore and PacBio go in `long_reads`, all others in `short_reads_1` and `short_reads_2`, with the platform taken from `instrument_platform`. The ENA does not record whether PacBio reads are HiFi or CLR, so for PacBio runs fill in `long_reads_platform` (`PACBIO_HIFI` or `PACBIO_CLR`) before running nf-core/mag.
+
 From v1.9 of this pipeline the default `strandedness` in the output samplesheet will be set to `auto` when using `--nf_core_pipeline rnaseq`. This will only work with v3.10 onwards of nf-core/rnaseq which permits the auto-detection of strandedness during the pipeline execution. You can change this behaviour with the `--nf_core_rnaseq_strandedness` parameter which is set to `auto` by default.
 
 ### Accessions with more than 2 FastQ files

@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Enhancements & fixes
 
 - [PR #400](https://github.com/nf-core/fetchngs/pull/400) - Back to dev
-- [PR #401](https://github.com/nf-core/fetchngs/pull/401) - Render metro map with nf-metro 2.1.0
+- [PR #402](https://github.com/nf-core/fetchngs/pull/402) - Render metro map with nf-metro 2.1.0
 - [PR #403](https://github.com/nf-core/fetchngs/pull/403) - Replace removed `cgi` module in `sra_ids_to_runinfo.py` and update `SRA_IDS_TO_RUNINFO` to Python 3.13.7
 - [PR #408](https://github.com/nf-core/fetchngs/pull/408) - Move module configs into `conf/modules.config` and respect `publish_dir_mode` for `FASTQDL` outputs
 - [PR #409](https://github.com/nf-core/fetchngs/pull/409) - Move SRA download steps into a `SRA_FETCH_FASTQ` subworkflow
@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #419](https://github.com/nf-core/fetchngs/pull/419) - Template update for nf-core/tools v4.2.2
 - [PR #421](https://github.com/nf-core/fetchngs/pull/421) - Fetch file metadata for PRIDE ids, published under `proteomics/metadata/`
 - [PR #422](https://github.com/nf-core/fetchngs/pull/422) - Download files of PRIDE projects
+- [PR #426](https://github.com/nf-core/fetchngs/pull/426) - `--nf_core_pipeline mag` writes the columns nf-core/mag 5.x reads: `run`, `group` (the study accession), `short_reads_1/2` and `short_reads_platform` from `instrument_platform`; Oxford Nanopore and PacBio runs go in `long_reads` ([#401](https://github.com/nf-core/fetchngs/issues/401))
 
 ## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
