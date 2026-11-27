@@ -1,0 +1,60 @@
+{
+    "SRR13191702": {
+        "content": [
+            {
+                "sra": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false
+                        },
+                        [
+                            "SRR13191702.sra:md5,3631351c470ae7cbf18ed5964affe9ab"
+                        ]
+                    ]
+                ],
+                "versions_awscli": [
+                    [
+                        "AWSCLI_SRADOWNLOAD",
+                        "awscli",
+                        "2.38.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T15:06:04.714608",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    },
+    "SRR13191702 - stub": {
+        "content": [
+            {
+                "sra": [
+                    [
+                        {
+                            "id": "SRX9626017_SRR13191702",
+                            "single_end": false
+                        },
+                        [
+                            "SRR13191702.sra:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions_awscli": [
+                    [
+                        "AWSCLI_SRADOWNLOAD",
+                        "awscli",
+                        "2.38.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T15:06:08.521405",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
+    }
+}
