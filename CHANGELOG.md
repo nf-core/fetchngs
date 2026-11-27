@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [PR #419](https://github.com/nf-core/fetchngs/pull/419) - Template update for nf-core/tools v4.2.2
 - [PR #421](https://github.com/nf-core/fetchngs/pull/421) - Fetch file metadata for PRIDE ids, published under `proteomics/metadata/`
 - [PR #422](https://github.com/nf-core/fetchngs/pull/422) - Download files of PRIDE projects
+- [PR #427](https://github.com/nf-core/fetchngs/pull/427) - Add `--download_method aws` to download SRA runs from the SRA mirror on AWS ([#354](https://github.com/nf-core/fetchngs/issues/354))
 
 ## [[1.13.0](https://github.com/nf-core/fetchngs/releases/tag/1.13.0)] - 2026-09-15
 
