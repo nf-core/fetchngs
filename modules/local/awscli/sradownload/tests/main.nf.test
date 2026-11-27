@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process AWSCLI_SRADOWNLOAD"
+    script "../main.nf"
+    process "AWSCLI_SRADOWNLOAD"
+
+    tag "modules"
+    tag "modules_local"
+    tag "awscli"
+    tag "awscli/sradownload"
+
+    test("SRR13191702") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX9626017_SRR13191702', single_end:false ],
+                    'SRR13191702'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SRR13191702 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'SRX9626017_SRR13191702', single_end:false ],
+                    'SRR13191702'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -11,10 +11,13 @@ keywords:
   - metadata
 components:
   - aspera/cli
+  - awscli/sradownload
   - sra/fastq/ftp
   - sra/ids/to/runinfo
   - sra/runinfo/to/ftp
+  - custom/sratoolsncbisettings
   - fastqdl
+  - sratools/fasterqdump
   - fastq_download_prefetch_fasterqdump_sratools
 input:
   - ids:
@@ -36,7 +39,7 @@ input:
   - download_method:
       type: string
       description: >
-        Method used to download FastQ files: 'aspera', 'ftp', 'sratools' or 'fastq-dl'
+        Method used to download FastQ files: 'aspera', 'aws', 'ftp', 'sratools' or 'fastq-dl'
 
   - ena_metadata_fields:
       type: string

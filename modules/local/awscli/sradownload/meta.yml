@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "awscli_sradownload"
+description: Download a public SRA run in SRA format from the SRA mirror on AWS (registry of open data) with the AWS CLI.
+keywords:
+  - sra
+  - aws
+  - s3
+  - download
+  - fastq
+tools:
+  - "awscli":
+      description: "Universal Command Line Environment for AWS"
+      homepage: "https://aws.amazon.com/cli/"
+      documentation: "https://docs.aws.amazon.com/cli/latest/reference/s3/cp.html"
+      tool_dev_url: "https://github.com/aws/aws-cli"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'SRX9626017_SRR13191702', single_end:false ]`
+    - id:
+        type: string
+        description: SRA run accession, e.g. SRR13191702
+
+output:
+  sra:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'SRX9626017_SRR13191702', single_end:false ]`
+      - "${id}":
+          type: directory
+          description: Directory named after the run, containing the run in SRA format (`<id>.sra`), as created by sratools/prefetch
+          pattern: "*"
+  versions_awscli:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - awscli:
+          type: string
+          description: The name of the tool
+      - aws --version 2>&1 | cut -d' ' -f1 | cut -d/ -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - awscli:
+          type: string
+          description: The name of the tool
+      - aws --version 2>&1 | cut -d' ' -f1 | cut -d/ -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Tabea01"
+maintainers:
+  - "@Tabea01"

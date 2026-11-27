@@ -34,7 +34,7 @@ Outputs for sequencing data are written to the `ngs/` directory.
   - `*-run-info.tsv`: Metadata for each run downloaded with `--download_method fastq-dl`.
   - `*-run-mergers.tsv`: Information about runs merged by fastq-dl; only created with `--download_method fastq-dl` when runs are merged.
 - `ngs/custom/`
-  - `user-settings.mkfg`: NCBI settings file used by sra-tools; only created when reads are downloaded with sra-tools, i.e. with `--download_method sratools` or when the ENA provides no FTP or Aspera links for a run.
+  - `user-settings.mkfg`: NCBI settings file used by sra-tools; only created when reads are downloaded with sra-tools, i.e. with `--download_method sratools` or `--download_method aws`, or when the ENA provides no FTP or Aspera links for a run.
 
 </details>
 
