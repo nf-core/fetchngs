@@ -9,6 +9,7 @@
 */
 
 include { ASPERA_CLI                                   } from '../../../modules/local/aspera_cli'
+include { AWSCLI_SRADOWNLOAD                           } from '../../../modules/local/awscli/sradownload'
 include { SRA_FASTQ_FTP                                } from '../../../modules/local/sra_fastq_ftp'
 include { SRA_IDS_TO_RUNINFO                           } from '../../../modules/local/sra_ids_to_runinfo'
 include { SRA_RUNINFO_TO_FTP                           } from '../../../modules/local/sra_runinfo_to_ftp'
@@ -19,7 +20,9 @@ include { SRA_RUNINFO_TO_FTP                           } from '../../../modules/
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { CUSTOM_SRATOOLSNCBISETTINGS                  } from '../../../modules/nf-core/custom/sratoolsncbisettings'
 include { FASTQDL                                      } from '../../../modules/nf-core/fastqdl'
+include { SRATOOLS_FASTERQDUMP                         } from '../../../modules/nf-core/sratools/fasterqdump'
 include { FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS } from '../../nf-core/fastq_download_prefetch_fasterqdump_sratools'
 
 /*
@@ -33,7 +36,7 @@ workflow SRA_FETCH_FASTQ {
     ids // channel: [ ids ]
     outdir // val: output directory
     dbgap_key // path: dbGaP repository key, or []
-    download_method // val: 'aspera', 'ftp', 'sratools' or 'fastq-dl'
+    download_method // val: 'aspera', 'aws', 'ftp', 'sratools' or 'fastq-dl'
     ena_metadata_fields // val: comma-separated ENA metadata fields
     skip_fastq_download // val: boolean
 
@@ -71,8 +74,13 @@ workflow SRA_FETCH_FASTQ {
             if ((!meta.fastq_aspera && !meta.fastq_1) || download_method == 'sratools') {
                 final_download_method = 'sratools'
             }
+            if (download_method == 'aws') {
+                final_download_method = 'aws'
+            }
             aspera: final_download_method == 'aspera'
             return [meta, meta.fastq_aspera.tokenize(';').take(2)]
+            aws: final_download_method == 'aws'
+            return [meta, meta.run_accession]
             fastqdl: final_download_method == 'fastq-dl'
             return [meta, meta.run_accession]
             ftp: final_download_method == 'ftp'
@@ -98,11 +106,19 @@ workflow SRA_FETCH_FASTQ {
 
         FASTQDL(ch_sra_reads.fastqdl)
 
+        //
+        // MODULE: Download runs in SRA format from the SRA mirror on AWS and convert them to FastQ
+        //
+        AWSCLI_SRADOWNLOAD(ch_sra_reads.aws)
+        CUSTOM_SRATOOLSNCBISETTINGS(ch_sra_reads.aws.collect())
+        SRATOOLS_FASTERQDUMP(AWSCLI_SRADOWNLOAD.out.sra, CUSTOM_SRATOOLSNCBISETTINGS.out.ncbi_settings, dbgap_key)
+
         // Isolate FASTQ channel which will be added to emit block
         ch_sra_metadata = SRA_FASTQ_FTP.out.fastq
             .mix(FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS.out.reads)
             .mix(ASPERA_CLI.out.fastq)
             .mix(FASTQDL.out.fastq)
+            .mix(SRATOOLS_FASTERQDUMP.out.reads)
             .map { meta, fastq ->
                 def reads = fastq instanceof List ? fastq.flatten() : [fastq]
 

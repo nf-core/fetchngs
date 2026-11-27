@@ -60,9 +60,9 @@
                     "type": "string",
                     "default": "ftp",
                     "fa_icon": "fas fa-download",
-                    "enum": ["aspera", "fastq-dl", "ftp", "sratools"],
-                    "description": "Method to download FastQ files. Available options are 'aspera', 'fastq-dl', 'ftp' or 'sratools'. Default is 'ftp'.",
-                    "help_text": "FTP and Aspera CLI download FastQ files directly from the ENA FTP whereas sratools uses sra-tools to download *.sra files and convert to FastQ."
+                    "enum": ["aspera", "aws", "fastq-dl", "ftp", "sratools"],
+                    "description": "Method to download FastQ files. Available options are 'aspera', 'aws', 'fastq-dl', 'ftp' or 'sratools'. Default is 'ftp'.",
+                    "help_text": "FTP and Aspera CLI download FastQ files directly from the ENA FTP whereas sratools uses sra-tools to download *.sra files and convert to FastQ. aws downloads *.sra files from the SRA mirror on AWS and converts them to FastQ with sra-tools."
                 },
                 "skip_fastq_download": {
                     "type": "boolean",
